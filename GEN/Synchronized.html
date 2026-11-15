@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Synchronized - Notes</title>
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
@@ -41,14 +41,14 @@
     <span class="code-keyword">private final</span> Object lock = <span class="code-keyword">new</span> Object();
     <span class="code-keyword">private int</span> balance = 0;
 
-    <span class="code-comment"># synchronized block on a private lock</span>
+    <span class="code-comment">synchronized block on a private lock</span>
     <span class="code-keyword">public void</span> deposit(<span class="code-keyword">int</span> amt) {
         <span class="code-keyword">synchronized</span> (lock) {
             balance += amt;
         }
     }
 
-    <span class="code-comment"># synchronized instance method locks 'this'</span>
+    <span class="code-comment">synchronized instance method locks 'this'</span>
     <span class="code-keyword">public synchronized int</span> getBalance() {
         <span class="code-keyword">return</span> balance;
     }

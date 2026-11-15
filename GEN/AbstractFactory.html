@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abstract Factory</title>
+<link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Abstract Factory</div>
+
+    <div class="intro">
+        <p>Abstract Factory is a creational design pattern that provides an interface for creating families of related objects without specifying their concrete classes. Client code interacts only with the abstract factory and abstract products, so an entire family can be swapped by changing the concrete factory.</p>
+        <p>Use the Abstract Factory pattern when your system needs to create families of related or compatible objects that should be used together. It is especially useful when you want to support multiple variants-such as different platforms, themes, cloud providers, or vendors—while ensuring that objects from one family are not accidentally mixed with another.<br> It also helps keep client code decoupled from concrete classes, allowing the entire product family to be switched through configuration without changing the core business logic.</p>
+    </div>
+
+    <div class="callout callout-note"><p>The key phrase is: <strong>create a family of related objects that are designed to work together.</strong></p></div>
+    <div class="intro">
+        <p>For example, imagine a cross-platform GUI framework supporting Windows and macOS. Each platform needs related components: Button, Checkbox and Menu.</p>
+        <p>For Windows, you want <code>WindowsButton</code>, <code>WindowsCheckbox</code> and <code>WindowsMenu</code>.<br> For macOS: <code>MacButton</code>, <code>MacCheckbox</code> and <code>MacMenu</code>.</p>
+        <p>You don't want the client code doing this:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">if</span> (os.equals(<span class="code-string">"windows"</span>)) {
+    <span class="code-class">Button</span> button = <span class="code-keyword">new</span> <span class="code-class">WindowsButton</span>();
+    <span class="code-class">Checkbox</span> checkbox = <span class="code-keyword">new</span> <span class="code-class">WindowsCheckbox</span>();
+} else {
+    <span class="code-class">Button</span> button = <span class="code-keyword">new</span> <span class="code-class">MacButton</span>();
+    <span class="code-class">Checkbox</span> checkbox = <span class="code-keyword">new</span> <span class="code-class">MacCheckbox</span>();
+}</code></pre></div>
+    <div class="intro">
+        <p>Instead, you give the application a factory representing the entire product family.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-gui-overview.svg" alt="GUIFactory with Windows and Mac factories, each creating its own button and checkbox" style="width:100%;max-width:700px">
+    </div>
+
+    <div class="subheading">Main idea</div>
+    <div class="intro">
+        <p>Suppose these are your abstract products:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public interface</span> <span class="code-class">Button</span> {
+    <span class="code-keyword">void</span> render();
+}
+
+<span class="code-keyword">public interface</span> <span class="code-class">Checkbox</span> {
+    <span class="code-keyword">void</span> render();
+}</code></pre></div>
+    <div class="intro">
+        <p>Concrete Windows products:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public class</span> <span class="code-class">WindowsButton</span> <span class="code-keyword">implements</span> <span class="code-class">Button</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> render() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Windows button"</span>);
+    }
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">WindowsCheckbox</span> <span class="code-keyword">implements</span> <span class="code-class">Checkbox</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> render() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Windows checkbox"</span>);
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Concrete macOS products:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public class</span> <span class="code-class">MacButton</span> <span class="code-keyword">implements</span> <span class="code-class">Button</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> render() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Mac button"</span>);
+    }
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">MacCheckbox</span> <span class="code-keyword">implements</span> <span class="code-class">Checkbox</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> render() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Mac checkbox"</span>);
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Now we create an Abstract Factory.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public interface</span> <span class="code-class">GUIFactory</span> {
+    <span class="code-class">Button</span> createButton();
+    <span class="code-class">Checkbox</span> createCheckbox();
+}</code></pre></div>
+    <div class="intro">
+        <p>Notice something important. The factory doesn't create just one product. It creates an entire family of related products.</p>
+    </div>
+
+    <div class="subheading">Concrete factories</div>
+    <div class="intro">
+        <p>Windows factory:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public class</span> <span class="code-class">WindowsGUIFactory</span> <span class="code-keyword">implements</span> <span class="code-class">GUIFactory</span> {
+    <span class="code-keyword">public</span> <span class="code-class">Button</span> createButton() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">WindowsButton</span>();
+    }
+    
+    <span class="code-keyword">public</span> <span class="code-class">Checkbox</span> createCheckbox() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">WindowsCheckbox</span>();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Mac factory:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public class</span> <span class="code-class">MacGUIFactory</span> <span class="code-keyword">implements</span> <span class="code-class">GUIFactory</span> {
+    <span class="code-keyword">public</span> <span class="code-class">Button</span> createButton() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">MacButton</span>();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">Checkbox</span> createCheckbox() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">MacCheckbox</span>();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Each factory guarantees that compatible objects are created together:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-concrete-factories.svg" alt="Each concrete GUI factory creates a matching button and checkbox" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>This prevents something undesirable like <code>WindowsButton + MacCheckbox</code>.</p>
+    </div>
+
+    <div class="subheading">Client application</div>
+    <div class="intro">
+        <p>Now create an application that depends only on abstractions.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public class</span> <span class="code-class">Application</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Button</span> button;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Checkbox</span> checkbox;
+
+    <span class="code-keyword">public</span> <span class="code-class">Application</span>(<span class="code-class">GUIFactory</span> factory) {
+        <span class="code-keyword">this</span>.button = factory.createButton();
+        <span class="code-keyword">this</span>.checkbox = factory.createCheckbox();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> renderUI() {
+        button.render();
+        checkbox.render();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>The application has no idea whether these objects are <code>WindowsButton</code>, <code>MacButton</code>, <code>WindowsCheckbox</code> or <code>MacCheckbox</code>. It only knows <code>Button</code>, <code>Checkbox</code> and <code>GUIFactory</code>. That is the major advantage.</p>
+    </div>
+
+    <div class="subheading">Main method</div>
+    <div class="code-block"><pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-class">var</span> operatingSystem = <span class="code-class">System</span>.getProperty(<span class="code-string">"os.name"</span>).toLowerCase();
+    <span class="code-class">GUIFactory</span> factory = operatingSystem.contains(<span class="code-string">"win"</span>)
+            ? <span class="code-keyword">new</span> <span class="code-class">WindowsGUIFactory</span>()
+            : <span class="code-keyword">new</span> <span class="code-class">MacGUIFactory</span>();
+
+    <span class="code-class">Application</span> app = <span class="code-keyword">new</span> <span class="code-class">Application</span>(factory);
+    app.renderUI();
+}</code></pre></div>
+    <div class="intro">
+        <p>Output on Windows:</p>
+    </div>
+    <div class="code-block"><pre><code>Rendering Windows button
+Rendering Windows checkbox</code></pre></div>
+    <div class="intro">
+        <p>Running the same program on a Mac gives:</p>
+    </div>
+    <div class="code-block"><pre><code>Rendering Mac button
+Rendering Mac checkbox</code></pre></div>
+    <div class="intro">
+        <p>The important thing is that the <code>Application</code> class never changes.</p>
+    </div>
+
+    <div class="subheading">Structure of Abstract Factory</div>
+    <div class="intro">
+        <p>There are normally five major participants.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-structure.svg" alt="Structure: GUIFactory, its concrete factories, the concrete products they create, and the abstract products those implement" style="width:100%;max-width:820px">
+    </div>
+    <div class="section cmp"><div class="section-content">
+        <table class="cmp-table centered">
+            <thead><tr><th>Participant</th><th>Role</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td>Abstract Factory</td><td>Defines methods for creating each kind of product.</td><td><code>interface GUIFactory</code></td></tr>
+                <tr><td>Concrete Factory</td><td>Creates a particular family.</td><td><code>WindowsGUIFactory</code>, <code>MacGUIFactory</code></td></tr>
+                <tr><td>Abstract Product</td><td>Defines the common API.</td><td><code>interface Button</code>, <code>interface Checkbox</code></td></tr>
+                <tr><td>Concrete Product</td><td>Platform-specific implementations.</td><td><code>WindowsButton</code>, <code>MacButton</code>, <code>WindowsCheckbox</code>, <code>MacCheckbox</code></td></tr>
+                <tr><td>Client</td><td>Uses the abstract factory and abstract products.</td><td><code>class Application</code></td></tr>
+            </tbody>
+        </table>
+    </div></div>
+
+    <div class="subheading">Why do we need Abstract Factory?</div>
+    <div class="intro">
+        <p>Imagine without the pattern you have:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Application</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> start(<span class="code-class">String</span> os) {
+        <span class="code-class">Button</span> button;
+        <span class="code-class">Checkbox</span> checkbox;
+        <span class="code-keyword">if</span> (os.equals(<span class="code-string">"windows"</span>)) {
+            button = <span class="code-keyword">new</span> <span class="code-class">WindowsButton</span>();
+            checkbox = <span class="code-keyword">new</span> <span class="code-class">WindowsCheckbox</span>();
+        } else <span class="code-keyword">if</span> (os.equals(<span class="code-string">"mac"</span>)) {
+            button = <span class="code-keyword">new</span> <span class="code-class">MacButton</span>();
+            checkbox = <span class="code-keyword">new</span> <span class="code-class">MacCheckbox</span>();
+        }
+        <span class="code-comment">...</span>
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Initially this looks harmless. But suppose your UI grows to Button, Checkbox, Menu, TextField, Dialog, Toolbar and ScrollBar. Now your code becomes:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">if</span> (os.equals(<span class="code-string">"windows"</span>)) {
+    button = <span class="code-keyword">new</span> <span class="code-class">WindowsButton</span>();
+    checkbox = <span class="code-keyword">new</span> <span class="code-class">WindowsCheckbox</span>();
+    menu = <span class="code-keyword">new</span> <span class="code-class">WindowsMenu</span>();
+    dialog = <span class="code-keyword">new</span> <span class="code-class">WindowsDialog</span>();
+    toolbar = <span class="code-keyword">new</span> <span class="code-class">WindowsToolbar</span>();
+} else <span class="code-keyword">if</span> (os.equals(<span class="code-string">"mac"</span>)) {
+    button = <span class="code-keyword">new</span> <span class="code-class">MacButton</span>();
+    checkbox = <span class="code-keyword">new</span> <span class="code-class">MacCheckbox</span>();
+    menu = <span class="code-keyword">new</span> <span class="code-class">MacMenu</span>();
+    dialog = <span class="code-keyword">new</span> <span class="code-class">MacDialog</span>();
+    toolbar = <span class="code-keyword">new</span> <span class="code-class">MacToolbar</span>();
+}</code></pre></div>
+    <div class="intro">
+        <p>And the same condition might appear in many classes. Abstract Factory centralizes this decision. Instead, you hold a <code>GUIFactory factory;</code> and then everywhere:</p>
+    </div>
+    <div class="code-block"><pre><code>factory.createButton();
+factory.createCheckbox();
+factory.createMenu();
+factory.createDialog();</code></pre></div>
+
+    <div class="subheading">Why not just use constructors?</div>
+    <div class="intro">
+        <p>Because direct construction couples the client to concrete implementations. With <code>Button button = new WindowsButton();</code> the client now knows <code>WindowsButton</code>. If tomorrow you switch to macOS, <code>Button button = new MacButton();</code> means the client must change.</p>
+        <p>With Abstract Factory, <code>Button button = factory.createButton();</code> the client does not care. The factory decides what concrete object should be created.</p>
+    </div>
+
+    <div class="subheading">When should you use Abstract Factory?</div>
+    <div class="intro">
+        <p>Abstract Factory is particularly useful when you have multiple related objects that vary together. For example:</p>
+    </div>
+    <div class="section cmp"><div class="section-content">
+        <table class="cmp-table cmp-teal">
+            <thead><tr><th>Family type</th><th>Family A</th><th>Family B</th></tr></thead>
+            <tbody>
+                <tr><td>Database</td><td>MySQLConnection, MySQLCommand, MySQLTransaction</td><td>PostgresConnection, PostgresCommand, PostgresTransaction</td></tr>
+                <tr><td>Cloud</td><td>AWSStorage, AWSQueue, AWSDatabase</td><td>AzureStorage, AzureQueue, AzureDatabase</td></tr>
+                <tr><td>UI</td><td>WindowsButton, WindowsMenu, WindowsDialog</td><td>MacButton, MacMenu, MacDialog</td></tr>
+            </tbody>
+        </table>
+    </div></div>
+    <div class="callout callout-note"><p>The important condition is: <strong>several types of objects change together based on one configuration or environment.</strong></p></div>
+
+    <div class="subheading">Real-world example: Cloud providers</div>
+    <div class="intro">
+        <p>Consider an application that supports AWS and Azure. We need Storage, MessageQueue and Database. The AWS implementations are <code>S3Storage</code>, <code>SqsQueue</code> and <code>DynamoDatabase</code>; the Azure implementations are <code>BlobStorage</code>, <code>ServiceBusQueue</code> and <code>CosmosDatabase</code>. We could model them using Abstract Factory.</p>
+        <p>Product interfaces:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">CloudStorage</span> {
+    <span class="code-keyword">void</span> upload(<span class="code-class">String</span> file);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">MessageQueue</span> {
+    <span class="code-keyword">void</span> send(<span class="code-class">String</span> message);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">Database</span> {
+    <span class="code-keyword">void</span> save(<span class="code-class">String</span> data);
+}</code></pre></div>
+
+    <div class="subheading">AWS products</div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">S3Storage</span> <span class="code-keyword">implements</span> <span class="code-class">CloudStorage</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> upload(<span class="code-class">String</span> file) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Uploading "</span> + file + <span class="code-string">" to AWS S3"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SqsQueue</span> <span class="code-keyword">implements</span> <span class="code-class">MessageQueue</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending message using AWS SQS: "</span> + message);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">DynamoDatabase</span> <span class="code-keyword">implements</span> <span class="code-class">Database</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> save(<span class="code-class">String</span> data) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Saving data to DynamoDB: "</span> + data);
+    }
+}</code></pre></div>
+
+    <div class="subheading">Azure products</div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">BlobStorage</span> <span class="code-keyword">implements</span> <span class="code-class">CloudStorage</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> upload(<span class="code-class">String</span> file) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Uploading "</span> + file + <span class="code-string">" to Azure Blob Storage"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ServiceBusQueue</span> <span class="code-keyword">implements</span> <span class="code-class">MessageQueue</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending message using Azure Service Bus: "</span> + message);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CosmosDatabase</span> <span class="code-keyword">implements</span> <span class="code-class">Database</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> save(<span class="code-class">String</span> data) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Saving data to Azure Cosmos DB: "</span> + data);
+    }
+}</code></pre></div>
+
+    <div class="subheading">The cloud Abstract Factory</div>
+    <div class="intro">
+        <p>Now define our cloud infrastructure factory.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">CloudFactory</span> {
+    <span class="code-class">CloudStorage</span> createStorage();
+    <span class="code-class">MessageQueue</span> createQueue();
+    <span class="code-class">Database</span> createDatabase();
+}</code></pre></div>
+    <div class="intro">
+        <p>The factory represents a complete cloud ecosystem.</p>
+    </div>
+
+    <div class="subheading">AWS factory</div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">AWSCloudFactory</span> <span class="code-keyword">implements</span> <span class="code-class">CloudFactory</span> {
+    <span class="code-keyword">public</span> <span class="code-class">CloudStorage</span> createStorage() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">S3Storage</span>();
+    }
+    <span class="code-keyword">public</span> <span class="code-class">MessageQueue</span> createQueue() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">SqsQueue</span>();
+    }
+    <span class="code-keyword">public</span> <span class="code-class">Database</span> createDatabase() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">DynamoDatabase</span>();
+    }
+}</code></pre></div>
+
+    <div class="subheading">Azure factory</div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">AzureCloudFactory</span> <span class="code-keyword">implements</span> <span class="code-class">CloudFactory</span> {
+    <span class="code-keyword">public</span> <span class="code-class">CloudStorage</span> createStorage() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">BlobStorage</span>();
+    }
+    <span class="code-keyword">public</span> <span class="code-class">MessageQueue</span> createQueue() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">ServiceBusQueue</span>();
+    }
+    <span class="code-keyword">public</span> <span class="code-class">Database</span> createDatabase() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">CosmosDatabase</span>();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Now we have:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-cloud-factories.svg" alt="AWS and Azure cloud factories, each creating storage, queue and database" style="width:100%;max-width:820px">
+    </div>
+
+    <div class="subheading">Client service</div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">OrderService</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">CloudStorage</span> storage;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">MessageQueue</span> queue;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Database</span> database;
+    <span class="code-keyword">public</span> <span class="code-class">OrderService</span>(<span class="code-class">CloudFactory</span> factory) {
+        <span class="code-keyword">this</span>.storage = factory.createStorage();
+        <span class="code-keyword">this</span>.queue = factory.createQueue();
+        <span class="code-keyword">this</span>.database = factory.createDatabase();
+    }
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> processOrder() {
+        database.save(<span class="code-string">"Order-1001"</span>);
+        queue.send(<span class="code-string">"Order created"</span>);
+        storage.upload(<span class="code-string">"invoice.pdf"</span>);
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Notice that <code>OrderService</code> knows nothing about AWS, Azure, S3, SQS, DynamoDB, Blob Storage or Cosmos DB. It only depends on abstractions.</p>
+    </div>
+
+    <div class="subheading">Selecting the factory</div>
+    <div class="code-block"><pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-class">String</span> provider = <span class="code-string">"AWS"</span>;
+    <span class="code-class">CloudFactory</span> factory = provider.equalsIgnoreCase(<span class="code-string">"AWS"</span>)
+            ? <span class="code-keyword">new</span> <span class="code-class">AWSCloudFactory</span>()
+            : <span class="code-keyword">new</span> <span class="code-class">AzureCloudFactory</span>();
+
+    <span class="code-class">OrderService</span> orderService = <span class="code-keyword">new</span> <span class="code-class">OrderService</span>(factory);
+    orderService.processOrder();
+}</code></pre></div>
+    <div class="intro">
+        <p>AWS output:</p>
+    </div>
+    <div class="code-block"><pre><code>Saving data to DynamoDB: Order-1001
+Sending message using AWS SQS: Order created
+Uploading invoice.pdf to AWS S3</code></pre></div>
+    <div class="intro">
+        <p>Changing only <code>CloudFactory factory = new AzureCloudFactory();</code> produces:</p>
+    </div>
+    <div class="code-block"><pre><code>Saving data to Azure Cosmos DB: Order-1001
+Sending message using Azure Service Bus: Order created
+Uploading invoice.pdf to Azure Blob Storage</code></pre></div>
+    <div class="intro">
+        <p>The <code>OrderService</code> doesn't change. That is a very good example of why Abstract Factory exists.</p>
+    </div>
+
+    <div class="subheading">The most important concept: product families</div>
+    <div class="intro">
+        <p>This is the part that often makes Abstract Factory confusing. Think of the objects as a table:</p>
+    </div>
+    <div class="section cmp"><div class="section-content">
+        <table class="cmp-table cmp-teal">
+            <thead><tr><th>Product type</th><th>Windows family</th><th>Mac family</th></tr></thead>
+            <tbody>
+                <tr><td>Button</td><td>WindowsButton</td><td>MacButton</td></tr>
+                <tr><td>Checkbox</td><td>WindowsCheckbox</td><td>MacCheckbox</td></tr>
+                <tr><td>Menu</td><td>WindowsMenu</td><td>MacMenu</td></tr>
+            </tbody>
+        </table>
+    </div></div>
+    <div class="intro">
+        <p>Or:</p>
+    </div>
+    <div class="section cmp"><div class="section-content">
+        <table class="cmp-table cmp-teal">
+            <thead><tr><th>Product type</th><th>AWS family</th><th>Azure family</th></tr></thead>
+            <tbody>
+                <tr><td>Storage</td><td>S3</td><td>Blob Storage</td></tr>
+                <tr><td>Queue</td><td>SQS</td><td>Service Bus</td></tr>
+                <tr><td>Database</td><td>DynamoDB</td><td>Cosmos DB</td></tr>
+            </tbody>
+        </table>
+    </div></div>
+    <div class="intro">
+        <p>Vertical columns are families. Abstract Factory lets you choose a column. For example, <code>CloudFactory factory = new AWSCloudFactory();</code> effectively means <em>use the AWS column</em>. Then <code>factory.createStorage()</code>, <code>factory.createQueue()</code> and <code>factory.createDatabase()</code> will all return AWS-compatible products.</p>
+    </div>
+
+    <div class="subheading">Why is this better than creating objects individually?</div>
+    <div class="intro">
+        <p>Suppose the application accidentally does this:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">CloudStorage</span> storage = <span class="code-keyword">new</span> <span class="code-class">S3Storage</span>();
+
+<span class="code-class">MessageQueue</span> queue = <span class="code-keyword">new</span> <span class="code-class">ServiceBusQueue</span>();
+
+<span class="code-class">Database</span> database = <span class="code-keyword">new</span> <span class="code-class">DynamoDatabase</span>();</code></pre></div>
+    <div class="intro">
+        <p>Now we have a mixture: AWS, Azure, AWS. Sometimes mixing implementations is valid, but sometimes the products are expected to belong to the same family. Abstract Factory can enforce consistency:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">CloudFactory</span> factory = <span class="code-keyword">new</span> <span class="code-class">AWSCloudFactory</span>();
+
+<span class="code-class">CloudStorage</span> storage = factory.createStorage();
+<span class="code-class">MessageQueue</span> queue = factory.createQueue();
+<span class="code-class">Database</span> database = factory.createDatabase();</code></pre></div>
+    <div class="intro">
+        <p>Now all products come from the AWS family.</p>
+    </div>
+
+    <div class="subheading">How Abstract Factory achieves loose coupling</div>
+    <div class="intro">
+        <p>Without Abstract Factory:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">OrderService</span> {
+    <span class="code-keyword">private</span> <span class="code-class">S3Storage</span> storage = <span class="code-keyword">new</span> <span class="code-class">S3Storage</span>();
+    <span class="code-keyword">private</span> <span class="code-class">SqsQueue</span> queue = <span class="code-keyword">new</span> <span class="code-class">SqsQueue</span>();
+    <span class="code-keyword">private</span> <span class="code-class">DynamoDatabase</span> database = <span class="code-keyword">new</span> <span class="code-class">DynamoDatabase</span>();
+}</code></pre></div>
+    <div class="intro">
+        <p>Dependencies:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-tight-coupling.svg" alt="Without the pattern, OrderService depends directly on three concrete AWS classes" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>Very tightly coupled. With Abstract Factory:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">OrderService</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">CloudStorage</span> storage;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">MessageQueue</span> queue;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Database</span> database;
+    <span class="code-keyword">public</span> <span class="code-class">OrderService</span>(<span class="code-class">CloudFactory</span> factory) {
+        storage = factory.createStorage();
+        queue = factory.createQueue();
+        database = factory.createDatabase();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Dependencies become:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-loose-coupling.svg" alt="With the pattern, OrderService depends only on CloudFactory and three interfaces" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>Concrete classes are hidden behind abstractions.</p>
+    </div>
+
+    <div class="subheading">Adding another family</div>
+    <div class="intro">
+        <p>Suppose tomorrow you add Google Cloud. You might create:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">GCSStorage</span> <span class="code-keyword">implements</span> <span class="code-class">CloudStorage</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> upload(<span class="code-class">String</span> file) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Uploading to Google Cloud Storage"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PubSubQueue</span> <span class="code-keyword">implements</span> <span class="code-class">MessageQueue</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending using Google Pub/Sub"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">FirestoreDatabase</span> <span class="code-keyword">implements</span> <span class="code-class">Database</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> save(<span class="code-class">String</span> data) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Saving to Firestore"</span>);
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>And:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">GoogleCloudFactory</span> <span class="code-keyword">implements</span> <span class="code-class">CloudFactory</span> {
+    <span class="code-keyword">public</span> <span class="code-class">CloudStorage</span> createStorage() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">GCSStorage</span>();
+    }
+    <span class="code-keyword">public</span> <span class="code-class">MessageQueue</span> createQueue() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">PubSubQueue</span>();
+    }
+    <span class="code-keyword">public</span> <span class="code-class">Database</span> createDatabase() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">FirestoreDatabase</span>();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Then the application only needs <code>CloudFactory factory = new GoogleCloudFactory();</code>. The business logic stays unchanged. This follows the Open/Closed Principle reasonably well when you're adding a new family.</p>
+    </div>
+
+    <div class="subheading">Important disadvantage</div>
+    <div class="intro">
+        <p>Abstract Factory has an interesting tradeoff. It is very easy to add another family (AWS, Azure, GCP), but harder to add another product type. Suppose we suddenly need a Cache. You must modify:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">CloudFactory</span> {
+    <span class="code-class">CloudStorage</span> createStorage();
+    <span class="code-class">MessageQueue</span> createQueue();
+    <span class="code-class">Database</span> createDatabase();
+    <span class="code-class">Cache</span> createCache(); <span class="code-comment">NEW</span>
+}</code></pre></div>
+    <div class="intro">
+        <p>Now every concrete factory must change, <code>AWSCloudFactory</code>, <code>AzureCloudFactory</code> and <code>GoogleCloudFactory</code>, because every family needs to implement <code>createCache()</code>. Therefore:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-tradeoff.svg" alt="Adding a family is easy; adding a product type is relatively difficult" style="width:100%;max-width:560px">
+    </div>
+    <div class="intro">
+        <p>This is one of the most important tradeoffs of Abstract Factory.</p>
+    </div>
+
+    <div class="subheading">Factory Method vs Abstract Factory</div>
+    <div class="intro">
+        <p>These two are frequently confused. <strong>Factory Method</strong> usually focuses on creating one product type. For example:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public abstract</span> <span class="code-keyword">class</span> <span class="code-class">Dialog</span> {
+    <span class="code-keyword">public abstract</span> <span class="code-class">Button</span> createButton();
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">WindowsDialog</span> <span class="code-keyword">extends</span> <span class="code-class">Dialog</span> {
+    <span class="code-keyword">public</span> <span class="code-class">Button</span> createButton() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">WindowsButton</span>();
+    }
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">WebDialog</span> <span class="code-keyword">extends</span> <span class="code-class">Dialog</span> {
+    <span class="code-keyword">public</span> <span class="code-class">Button</span> createButton() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">HTMLButton</span>();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Conceptually:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-factory-method.svg" alt="Factory Method: a creator declares one factory method that returns one product" style="width:100%;max-width:600px">
+    </div>
+    <div class="intro">
+        <p><strong>Abstract Factory</strong> creates multiple related product types:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public interface</span> <span class="code-class">GUIFactory</span> {
+    <span class="code-class">Button</span> createButton();
+    <span class="code-class">Checkbox</span> createCheckbox();
+    <span class="code-class">Menu</span> createMenu();
+}</code></pre></div>
+    <div class="intro">
+        <p>Conceptually:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-creation-methods.svg" alt="Abstract Factory: one factory declares several creation methods, one per product type" style="width:100%;max-width:520px">
+    </div>
+    <div class="intro">
+        <p>So a useful shortcut is:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-vs-factory-method.svg" alt="Factory Method creates one type of product; Abstract Factory creates a family of related products" style="width:100%;max-width:660px">
+    </div>
+
+    <div class="subheading">Abstract Factory vs Simple Factory</div>
+    <div class="intro">
+        <p>Suppose you write:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public class</span> <span class="code-class">ButtonFactory</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-class">Button</span> create(<span class="code-class">String</span> type) {
+        <span class="code-keyword">return</span> switch (type) {
+            case <span class="code-string">"windows"</span> -&gt; <span class="code-keyword">new</span> <span class="code-class">WindowsButton</span>();
+            case <span class="code-string">"mac"</span> -&gt; <span class="code-keyword">new</span> <span class="code-class">MacButton</span>();
+            default -&gt; <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+        };
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>This is typically called a <strong>Simple Factory</strong>. It creates a <code>Button</code> based on a parameter.<br> Abstract Factory instead represents a family:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">GUIFactory</span> factory = <span class="code-keyword">new</span> <span class="code-class">WindowsGUIFactory</span>();
+
+<span class="code-class">Button</span> button = factory.createButton();
+<span class="code-class">Checkbox</span> checkbox = factory.createCheckbox();
+<span class="code-class">Menu</span> menu = factory.createMenu();</code></pre></div>
+    <div class="intro">
+        <p>So:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-vs-simple-factory.svg" alt="Simple Factory selects one product implementation; Abstract Factory selects an entire product family" style="width:100%;max-width:660px">
+    </div>
+
+    <div class="subheading">Abstract Factory and Dependency Injection</div>
+    <div class="intro">
+        <p>Abstract Factory works very naturally with dependency injection. Instead of doing this:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">CloudFactory</span> factory = <span class="code-keyword">new</span> <span class="code-class">AWSCloudFactory</span>();
+<span class="code-class">OrderService</span> service = <span class="code-keyword">new</span> <span class="code-class">OrderService</span>(factory);</code></pre></div>
+    <div class="intro">
+        <p>Spring could inject it:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-annotation">@Service</span>
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">OrderService</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">CloudFactory</span> cloudFactory;
+    <span class="code-keyword">public</span> <span class="code-class">OrderService</span>(<span class="code-class">CloudFactory</span> cloudFactory) {
+        <span class="code-keyword">this</span>.cloudFactory = cloudFactory;
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>And configuration decides which implementation exists. For example:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-annotation">@Configuration</span>
+<span class="code-keyword">public class</span> <span class="code-class">CloudConfiguration</span> {
+    <span class="code-annotation">@Bean</span>
+    <span class="code-class">public CloudFactory</span> cloudFactory() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">AWSCloudFactory</span>();
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Now business code doesn't choose the concrete family. Configuration does. Conceptually:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-dependency-injection.svg" alt="Configuration supplies the CloudFactory, which OrderService uses" style="width:100%;max-width:620px">
+    </div>
+    <div class="intro">
+        <p>This separation is extremely common in real applications.</p>
+    </div>
+
+    <div class="subheading">A simplified mental model</div>
+    <div class="intro">
+        <p>Whenever you see this situation, think Abstract Factory:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-grid-generic.svg" alt="Product types as rows and families as columns; a factory picks one column" style="width:100%;max-width:540px">
+    </div>
+    <div class="intro">
+        <p>For example:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-grid-ui.svg" alt="Windows and Mac columns of button, menu and dialog" style="width:100%;max-width:540px">
+    </div>
+    <div class="intro">
+        <p>Or:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-grid-cloud.svg" alt="AWS and Azure columns of storage, queue and database" style="width:100%;max-width:540px">
+    </div>
+    <div class="callout callout-note"><p>The Abstract Factory chooses the <strong>column</strong>, not the individual cell. That is probably the easiest way to remember the pattern.</p></div>
+
+    <div class="subheading">When NOT to use Abstract Factory</div>
+    <div class="intro">
+        <p>Don't use it just because you're creating objects. For example, this probably doesn't justify Abstract Factory:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">User</span> user = <span class="code-keyword">new</span> <span class="code-class">User</span>();
+<span class="code-class">Order</span> order = <span class="code-keyword">new</span> <span class="code-class">Order</span>();
+<span class="code-class">Product</span> product = <span class="code-keyword">new</span> <span class="code-class">Product</span>();</code></pre></div>
+    <div class="intro">
+        <p>Those classes don't form interchangeable families.<br> Abstract Factory makes sense when there is something like this, and the families can be switched:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-families.svg" alt="Two interchangeable families, each with three products" style="width:100%;max-width:540px">
+    </div>
+    <div class="intro">
+        <p>If you only need one abstraction with implementation A and implementation B, then a simple factory, Factory Method, dependency injection, or even normal construction may be enough.</p>
+    </div>
+
+    <div class="subheading">Advantages</div>
+    <div class="intro">
+        <p>Abstract Factory gives you several benefits:</p>
+    </div>
+    <div class="intro font-size-17"><ul>
+        <li><strong>Supports dependency inversion</strong> &mdash; high-level code depends on abstractions.</li>
+        <li><strong>Loose coupling</strong> &mdash; client code depends on interfaces rather than concrete classes.</li>
+        <li><strong>Isolates Concrete Classes</strong> &mdash; keeps concrete product classes hidden from the client code.</li>
+        <li><strong>Easy family switching</strong> &mdash; makes swapping entire product families easy and centralized.</li>
+        <li><strong>Open/Closed principle</strong> &mdash; follows the open-closed principle when adding new families.</li>
+        <li><strong>Family consistency</strong> &mdash; related objects can come from the same implementation family.</li>
+        <li><strong>Centralized object creation</strong> &mdash; creation logic doesn't spread throughout business code.</li>
+        <li><strong>Adding new families is relatively easy</strong> &mdash; you can introduce another concrete factory without modifying most client code.</li>
+        <li><strong>Easy family switching</strong> &mdash; changing <code>AWSCloudFactory</code> to <code>AzureCloudFactory</code> can switch the entire infrastructure family.</li>
+    </ul></div>
+
+    <div class="subheading">Disadvantages</div>
+    <div class="intro">
+        <p>There are also costs. The pattern introduces many interfaces and classes:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-class-count.svg" alt="The pattern adds nine types for two products in two families" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>For a small application this could be unnecessary complexity. Also, as discussed earlier, a new family is easy but a new product type is harder, because adding <code>Slider createSlider();</code> requires changing every factory implementation.</p>
+    </div>
+
+    <div class="subheading">Final mental model</div>
+    <div class="intro">
+        <p>Remember Abstract Factory like this:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/abstract-factory-mental-model.svg" alt="A factory defines product types A, B and C; each factory family supplies its own version of every type" style="width:100%;max-width:660px">
+    </div>
+    <div class="section cmp"><div class="section-content">
+        <table class="cmp-table centered">
+            <thead><tr><th>Pattern</th><th>Question it asks</th></tr></thead>
+            <tbody>
+                <tr><td>Factory Method</td><td>Which concrete implementation of this product should I create?</td></tr>
+                <tr><td>Abstract Factory</td><td>Which family of related products should my application use?</td></tr>
+            </tbody>
+        </table>
+    </div></div>
+    <div class="callout callout-note"><p>The strongest signal for Abstract Factory is this requirement: <strong>I have multiple related product types and I want to switch all of their implementations together as one family.</strong></p></div>
+</div>
+</body>
+</html>

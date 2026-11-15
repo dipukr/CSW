@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Association</title>
+<link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Association</div>
+
+    <div class="intro">
+        <p>Association is a general relationship between objects. Association is a relationship between two classes 
+            where objects <br> of one class are connected to or interact with objects of another class.</p>
+        <p>Objects are simply related.</p>
+    </div>
+
+    <div class="section when-use">
+        <div class="section-title">Key points</div>
+        <div class="section-content">
+            <ul>
+                <li>Associations relate entities that can exist independently of each other - such as Teacher and Student.</li>
+                <li>The Teacher and Student can exist independently. Neither object owns the lifecycle of the other.</li>
+                <li>The association can be one-to-one, many-to-one or many-to-many.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section code-section">
+        <div class="code-layout">
+            <div class="code-wrapper">
+<pre><code><span class="code-keyword">public class</span> <span class="code-class">Driver</span> {
+    private String name;
+    <span class="code-class">public Driver</span>(String name) {<span class="code-keyword">this</span>.name = name;}
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">Car</span> {
+    private String model;
+    <span class="code-class">public Car</span>(String model) {<span class="code-keyword">this</span>.model = model;}
+
+    <span class="code-comment">Car is associated with a Driver</span>
+    <span class="code-keyword">public void</span> drive(<span class="code-class">Driver</span> driver) {
+        System.out.println(driver.name + <span class="code-string">" drives "</span> + model);
+    }
+}</code></pre>
+            </div>
+
+            <div class="code-explanation">
+                <div class="code-explanation-title">How association works</div>
+                <p><code>Car</code> and <code>Driver</code> are independent classes.<br><br>
+                    <code>drive()</code> links a driver to a car when called.<br><br>
+                    Neither object owns or controls the other's lifecycle.<br><br>
+                    This is a plain <em>uses-a</em> relationship between the two.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

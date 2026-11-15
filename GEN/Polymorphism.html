@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymorphism</title>
+<link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Polymorphism</div>
+
+    <div class="intro">
+        <p>Polymorphism is a mechanism which allows an entity such as a variable, method or object to have more than one form.</p>
+        <p>Polymorphism enables us to deal with generalities and let the compiler and runtime environment to handle the specific.</p>
+        <p>Polymorphism can be achieved through method overloading, method overriding and generics.</p>
+        <p>Polymorphism is the provision of a single interface to entities of different types.</p>
+        <p>Polymorphism is the use of a single symbol to represent multiple different types.</p>
+        <p>Many methods can have one common name.</p>
+        <p>One method can accept many types of arguments.</p>
+        <p>One method header can be associated with many method body.</p>
+        <p>One type of reference variable can be used to access many type of objects.</p>
+        <p>Field level polymorphism: a reference variable of class E can point to objects of class E as well as objects of subclass of E.</p>
+        <p>Subtype polymorphism is a form of type polymorphism where a variable of a superclass refer to an object of a subclass.</p>
+        <p>Subtype polymorphism allows a single interface or symbol to represent different type of objects.</p>
+        <p>Which means code written for a superclass can be used with instances of its subclasses.</p>
+        <p>At runtime, the program calls the correct method based on the object's actual type.</p>
+        <p>Inheritance and substitutability - a subclass is considered a subtype of its superclass.</p>
+        <p>This relationship allows an object of the subclass to be substituted for an object of the superclass.</p>
+        <p>Dynamic method selection - the specific method that is executed is determined at runtime, not at compile time.</p>
+        <p class="minor-heading"><strong>Single Interface for Multiple Types (Polymorphism)</strong></p>
+        <p>Allows us to write <strong>generic, flexible and reusable code</strong> that operates on a common superclass or interface while working correctly with any of its subclasses or implementations. Each subclass can provide its own specialized behavior, and the appropriate implementation is selected automatically at runtime through <strong>dynamic method dispatch</strong>, without requiring the calling code to know or depend on the concrete object type.</p>
+        <p>This promotes <strong>loose coupling, extensibility and maintainability</strong>, because new implementations can be introduced without modifying existing client code, provided they honor the common contract.</p>
+    </div>
+
+    <div class="section code-section">
+        <div class="code-layout code-layout-equal">
+            <div class="code-wrapper">
+<pre><code><span class="code-keyword">public class</span> <span class="code-class">Animal</span> {
+    <span class="code-keyword">public</span> String sound() {<span class="code-keyword">return</span> <span class="code-string">"..."</span>;}
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">Dog</span> <span class="code-keyword">extends</span> <span class="code-class">Animal</span> {
+    <span class="code-class">@Override</span> <span class="code-keyword">public</span> String sound() {<span class="code-keyword">return</span> <span class="code-string">"Woof"</span>;}
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">Cat</span> <span class="code-keyword">extends</span> <span class="code-class">Animal</span> {
+    <span class="code-class">@Override</span> <span class="code-keyword">public</span> String sound() {<span class="code-keyword">return</span> <span class="code-string">"Meow"</span>;}
+}</code></pre>
+            </div>
+            <div class="code-wrapper code-wrapper-right">
+<pre><code><span class="code-keyword">void</span> main(String[] args) {
+    <span class="code-comment">one reference type, many forms</span>
+    <span class="code-class">Animal</span>[] animals = {<span class="code-keyword">new</span> <span class="code-class">Dog</span>(), <span class="code-keyword">new</span> <span class="code-class">Cat</span>()};
+    <span class="code-keyword">for</span> (<span class="code-class">Animal</span> animal: animals)
+        System.out.println(animal.sound());
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="subheading">Method Overloading</div>
+    <div class="intro">
+        <p>Process of writing multiple methods with the same name in the same class is called method overloading.</p>
+        <p>Method-overloading is a kind of static polymorphism.</p>
+    </div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages</strong></p>
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Advantage</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Improves Readability</td><td>Method overloading increases the readability of the program.</td></tr>
+                <tr><td>Fewer Names to Recall</td><td>It avoids the need to memorize multiple method names.</td></tr>
+                <tr><td>More Generic Code</td><td>Method overloading makes our code more generic.</td></tr>
+                <tr><td>Supports Clean Code</td><td>Method overloading supports clean code.</td></tr>
+                <tr><td>Reduced Complexity</td><td>The complexity of the code is reduced.</td></tr>
+                <tr><td>Compiler Binding</td><td>The compiler binds the method call with an appropriate method body.</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Method overloading is achieved by</strong></p>
+    </div>
+    <div class="section when-use key-points">
+        <div class="section-content"><ol class="kp-list">
+            <li><span class="kp-label">Argument Count</span><span>Changing the number of arguments.</span></li>
+            <li><span class="kp-label">Argument Types</span><span>Changing the data type of the arguments.</span></li>
+        </ol></div>
+    </div>
+
+    <div class="section code-section">
+        <div class="code-layout code-layout-equal">
+            <div class="code-wrapper">
+<pre><code><span class="code-keyword">public class</span> <span class="code-class">Calculator</span> {
+    <span class="code-keyword">public int</span> add(<span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b) {
+        <span class="code-keyword">return</span> a + b;
+    }
+
+    <span class="code-keyword">public double</span> add(<span class="code-keyword">double</span> a, <span class="code-keyword">double</span> b) {
+        <span class="code-keyword">return</span> a + b;
+    }
+
+    <span class="code-keyword">public int</span> add(<span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b, <span class="code-keyword">int</span> c) {
+        <span class="code-keyword">return</span> a + b + c;
+    }
+}</code></pre>
+            </div>
+
+            <div class="code-explanation">
+                <div class="code-explanation-title">How overloading works</div>
+                <p>All three methods are named <code>add</code> in one class.<br><br>
+                    They differ by parameter types and count.<br><br>
+                    The compiler chooses the match based on the arguments.<br><br>
+                    This is compile-time polymorphism, resolved statically.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="subheading">Method Overriding</div>
+    <div class="intro">
+        <p>Process of redefining a parent class instance method into its child class to give specific implementation of the
+        parent class method is known as method overriding. Referenced object type, not the reference variable type determines <br> which method will be called.
+        When we create a parent class reference variable and assign a child class object <br> then calling an overridden method on that variable will call the child class behaviour.</p>
+    </div>
+
+    <div class="section when-use">
+        <div class="section-title">Key points</div>
+        <div class="section-content">
+            <ul>
+                <li>Final methods can not be overridden.</li>
+                <li>Static methods can not be overridden.</li>
+                <li>Private methods can not be overridden.</li>
+                <li>Child class method is called overriding method.</li>
+                <li>Parent class method is called overridden method.</li>
+                <li>Overridden methods are dynamically dispatched.</li>
+                <li>Finalize method can be overridden to free system resources.</li>
+                <li>Overridden parent class method can be called using super keyword.</li>
+                <li>Runtime polymorphism can be achieved through method overriding.</li>
+                <li>Abstract methods can only be overridden by the first concrete class.</li>
+                <li>The access level cannot be more restrictive than the overridden method.</li>
+                <li>Override annotation denotes that the method overrides the base class method.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section code-section">
+        <div class="code-layout code-layout-equal">
+            <div class="code-wrapper">
+<pre><code><span class="code-keyword">public class</span> <span class="code-class">Shape</span> {
+    <span class="code-keyword">public</span> String name() {<span class="code-keyword">return</span> <span class="code-string">"shape"</span>;}
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">Circle</span> <span class="code-keyword">extends</span> <span class="code-class">Shape</span> {
+    <span class="code-class">@Override</span>
+    <span class="code-keyword">public</span> String name() {
+        <span class="code-keyword">return</span> <span class="code-string">"circle"</span>;
+    }
+}
+
+<span class="code-keyword">void</span> main() {
+    <span class="code-class">Shape</span> s = <span class="code-keyword">new</span> <span class="code-class">Circle</span>();
+    System.out.println(s.name()); 
+}</code></pre>
+            </div>
+
+            <div class="code-explanation">
+                <div class="code-explanation-title">How overriding works</div>
+                <p><code>Circle</code> redefines <code>name</code> with the same signature.<br><br>
+                    <code>@Override</code> tells the compiler to verify the match.<br><br>
+                    The <code>Shape</code> reference points to a <code>Circle</code> object.<br><br>
+                    Dynamic binding calls <code>Circle.name()</code> at runtime.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

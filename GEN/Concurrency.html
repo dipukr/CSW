@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Concurrency</title>
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
@@ -90,9 +90,9 @@
         <span class="code-class">Thread</span> first = <span class="code-keyword">new</span> <span class="code-class">Worker</span>();
         <span class="code-class">Runnable</span> task = () -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Implementing Runnable"</span>);
         <span class="code-class">Thread</span> second = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task);
-        first.start(); <span class="code-comment"># start(), not run(), creates a new thread</span>
+        first.start(); <span class="code-comment">start(), not run(), creates a new thread</span>
         second.start();
-        first.join(); <span class="code-comment"># wait for both to finish</span>
+        first.join(); <span class="code-comment">wait for both to finish</span>
         second.join();
     }
 }</code></pre>
@@ -115,7 +115,7 @@
     <span class="code-keyword">private</span> <span class="code-keyword">int</span> count;
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> increment() {
-        count++; <span class="code-comment"># read, add, write: three steps</span>
+        count++; <span class="code-comment">read, add, write: three steps</span>
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">int</span> get() {
@@ -136,7 +136,7 @@
         b.start();
         a.join();
         b.join();
-        <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment"># often less than 20000</span>
+        <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment">often less than 20000</span>
     }
 }</code></pre>
             </div>
@@ -158,7 +158,7 @@
     <span class="code-keyword">private</span> <span class="code-keyword">int</span> count;
 
     <span class="code-keyword">public</span> <span class="code-keyword">synchronized</span> <span class="code-keyword">void</span> increment() {
-        count++; <span class="code-comment"># one thread at a time</span>
+        count++; <span class="code-comment">one thread at a time</span>
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">synchronized</span> <span class="code-keyword">int</span> get() {
@@ -171,7 +171,7 @@
     <span class="code-keyword">private</span> <span class="code-class">AtomicInteger</span> count = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> increment() {
-        count.incrementAndGet(); <span class="code-comment"># lock-free compare-and-set</span>
+        count.incrementAndGet(); <span class="code-comment">lock-free compare-and-set</span>
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">int</span> get() {
@@ -198,8 +198,8 @@
         <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">1_000</span>; i++) {
             pool.submit(counter::incrementAndGet);
         }
-    } <span class="code-comment"># close() waits for every submitted task</span>
-    <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment"># always 1000</span>
+    } <span class="code-comment">close() waits for every submitted task</span>
+    <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment">always 1000</span>
 }</code></pre>
             </div>
             <div class="code-explanation">

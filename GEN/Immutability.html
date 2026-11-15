@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immutability</title>
+<link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Immutability and Immutable Classes</div>
+
+    <div class="intro">
+        <p><strong>Immutability</strong> means that the state of an object cannot change after the object has been created. An <strong>immutable class</strong> is a class designed so that every object it produces has this property. Immutability is the principle; an immutable class is how you apply it.</p>
+        <p>Immutability matters in Java for object-oriented design, concurrency and thread safety, caching, hash-based collections, functional programming and distributed systems. Many core JDK types are immutable:</p>
+        <ul>
+            <li><code>String</code></li>
+            <li>The wrapper types <code>Integer</code>, <code>Long</code>, <code>Double</code> and <code>Boolean</code></li>
+            <li><code>BigInteger</code> and <code>BigDecimal</code></li>
+            <li><code>LocalDate</code>, <code>LocalDateTime</code> and <code>Instant</code> from <code>java.time</code></li>
+            <li><code>UUID</code></li>
+        </ul>
+    </div>
+
+    <div class="subheading">Object State</div>
+    <div class="intro">
+        <p>An object&rsquo;s <strong>state</strong> is the values of its instance fields, plus any observable data reachable through them. An object is <strong>mutable</strong> if that state can change after construction, and <strong>immutable</strong> if it cannot.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Employee</span> {
+    <span class="code-keyword">private</span> <span class="code-class">String</span> name;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> salary;
+
+    <span class="code-keyword">public</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> salary) {
+        <span class="code-keyword">this</span>.name = name;
+        <span class="code-keyword">this</span>.salary = salary;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> getSalary() {
+        <span class="code-keyword">return</span> salary;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> setSalary(<span class="code-keyword">int</span> salary) {
+        <span class="code-keyword">this</span>.salary = salary;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Employee</span> emp = <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Alice"</span>, <span class="code-number">50000</span>);
+<span class="code-class">System</span>.out.println(emp.getSalary()); <span class="code-comment">50000</span>
+emp.setSalary(<span class="code-number">90000</span>); <span class="code-comment">The same object now has a different state</span>
+<span class="code-class">System</span>.out.println(emp.getSalary()); <span class="code-comment">90000</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Mutation vs Replacement</div>
+    <div class="intro">
+        <p>The key idea behind immutability is the difference between <strong>changing an existing object</strong> and <strong>creating a new object</strong>. On the left, a mutable <code>Employee</code> is changed in place, and every reference to it sees the new salary. On the right, an immutable <code>BankAccount</code> is never changed: <code>deposit()</code> returns a second object, and the original keeps its balance.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/immutability-mutation-vs-replacement.svg" alt="Left: the variable emp refers to one Employee object whose salary changes from 50000 to 90000. Right: original refers to a BankAccount with balance 5000; deposit(2000) creates a second BankAccount with balance 7000, referred to by updated" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p><code>String</code> works the same way. Its methods never change the string; they return a new one.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">String</span> str = <span class="code-string">"Hello"</span>;
+str.concat(<span class="code-string">" World"</span>); <span class="code-comment">The result is discarded; str is unchanged</span>
+<span class="code-class">System</span>.out.println(str); <span class="code-comment">Hello</span>
+str = str.concat(<span class="code-string">" World"</span>); <span class="code-comment">The variable now refers to a new String object</span>
+<span class="code-class">System</span>.out.println(str); <span class="code-comment">Hello World</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The second call does not modify <code>"Hello"</code>; it reassigns the variable to a different object. An <strong>immutable object</strong> is not the same thing as an <strong>immutable variable</strong>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">String</span> original = <span class="code-string">"Hello"</span>;
+<span class="code-class">String</span> modified = original.concat(<span class="code-string">" World"</span>);
+<span class="code-class">System</span>.out.println(original); <span class="code-comment">Hello</span>
+<span class="code-class">System</span>.out.println(modified); <span class="code-comment">Hello World</span>
+<span class="code-class">System</span>.out.println(original == modified); <span class="code-comment">false: two different objects</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">final vs Immutability</div>
+    <div class="intro">
+        <p><code>final</code> and immutability are related but not equivalent. A <code>final</code> variable or field cannot be <strong>reassigned</strong>, but the object it refers to can still be <strong>mutated</strong> if its class is mutable.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">final</span> <span class="code-keyword">int</span> x = <span class="code-number">10</span>; <span class="code-comment">x = 20; would not compile</span>
+<span class="code-keyword">final</span> <span class="code-class">StringBuilder</span> sb = <span class="code-keyword">new</span> <span class="code-class">StringBuilder</span>(<span class="code-string">"Hello"</span>); <span class="code-comment">sb = new StringBuilder(); would not compile</span>
+sb.append(<span class="code-string">" World"</span>); <span class="code-comment">Allowed: the reference is final, the object is mutable</span>
+<span class="code-class">System</span>.out.println(sb); <span class="code-comment">Hello World</span>
+<span class="code-class">String</span> name = <span class="code-string">"Alice"</span>;
+name = <span class="code-string">"Bob"</span>; <span class="code-comment">Allowed: the variable is not final, but no String object changed</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Declaration</th><th>Reassign the reference?</th><th>Mutate the object?</th></tr></thead>
+            <tbody>
+                <tr><td><code>final String</code></td><td>No</td><td>No</td></tr>
+                <tr><td><code>String</code></td><td>Yes</td><td>No</td></tr>
+                <tr><td><code>final StringBuilder</code></td><td>No</td><td>Yes</td></tr>
+                <tr><td><code>StringBuilder</code></td><td>Yes</td><td>Yes</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">How to Create an Immutable Class</div>
+    <div class="intro">
+        <ol>
+            <li>Declare the class <code>final</code>, so no subclass can add state-changing behavior.</li>
+            <li>Make every field <code>private</code> and <code>final</code>.</li>
+            <li>Initialize all fields in the constructor.</li>
+            <li>Provide no setters or other methods that change state.</li>
+            <li>Make <strong>defensive copies</strong> of mutable objects passed into the constructor.</li>
+            <li>Never expose internal mutable objects: return copies or unmodifiable views.</li>
+            <li>Do not let <code>this</code> escape during construction, for example by registering the object as a listener inside the constructor.</li>
+        </ol>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">Employee</span> { <span class="code-comment">final: no subclass can add mutable state</span>
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">String</span> name;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-keyword">int</span> salary;
+
+    <span class="code-keyword">public</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> salary) {
+        <span class="code-keyword">this</span>.name = name;
+        <span class="code-keyword">this</span>.salary = salary;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">String</span> getName() {
+        <span class="code-keyword">return</span> name;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> getSalary() {
+        <span class="code-keyword">return</span> salary;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This class is immutable because <code>String</code> is immutable, <code>int</code> is a primitive, and nothing in the class can change its fields. Code such as <code>emp.salary = 90000</code> or <code>emp.setSalary(90000)</code> does not compile.</p>
+    </div>
+    <div class="callout callout-note"><p>On this page the fields of immutable classes are declared <code>final</code> on purpose: <code>private final</code> fields are part of what makes the classes immutable, and the Java memory model gives <code>final</code> fields a visibility guarantee that matters for thread safety.</p></div>
+
+    <div class="subheading">Why final Fields Are Not Enough</div>
+    <div class="intro">
+        <p>A <code>final</code> field that refers to a mutable object, such as an <code>ArrayList</code>, only stops the field from being reassigned. The list itself can still be changed, both through the reference the caller passed in and through any getter that returns it.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">Department</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; employees;
+
+    <span class="code-keyword">public</span> <span class="code-class">Department</span>(<span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; employees) {
+        <span class="code-keyword">this</span>.employees = employees; <span class="code-comment">Keeps the caller's list: shared and mutable</span>
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; getEmployees() {
+        <span class="code-keyword">return</span> employees; <span class="code-comment">Hands out the internal list</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; names = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(<span class="code-class">List</span>.of(<span class="code-string">"Alice"</span>));
+<span class="code-class">Department</span> dept = <span class="code-keyword">new</span> <span class="code-class">Department</span>(names);
+names.add(<span class="code-string">"Bob"</span>); <span class="code-comment">Changes dept through the original reference</span>
+dept.getEmployees().add(<span class="code-string">"Charlie"</span>); <span class="code-comment">Changes dept through the getter</span>
+<span class="code-class">System</span>.out.println(dept.getEmployees()); <span class="code-comment">[Alice, Bob, Charlie]</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Defensive Copying</div>
+    <div class="intro">
+        <p>A <strong>defensive copy</strong> is a new object made so that callers cannot change an object&rsquo;s internal state through a shared reference. Copy mutable inputs in the constructor, and copy or wrap mutable outputs in getters.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">Department</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; employees;
+
+    <span class="code-keyword">public</span> <span class="code-class">Department</span>(<span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; employees) {
+        <span class="code-keyword">this</span>.employees = <span class="code-class">List</span>.copyOf(employees); <span class="code-comment">Unmodifiable snapshot of the caller's list</span>
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; getEmployees() {
+        <span class="code-keyword">return</span> employees; <span class="code-comment">Safe to share: nobody can modify it</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; names = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(<span class="code-class">List</span>.of(<span class="code-string">"Alice"</span>));
+<span class="code-class">Department</span> dept = <span class="code-keyword">new</span> <span class="code-class">Department</span>(names);
+names.add(<span class="code-string">"Bob"</span>); <span class="code-comment">Has no effect on dept</span>
+<span class="code-class">System</span>.out.println(dept.getEmployees()); <span class="code-comment">[Alice]</span>
+dept.getEmployees().add(<span class="code-string">"Charlie"</span>); <span class="code-comment">Throws UnsupportedOperationException</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>List.copyOf()</code> (Java 10) returns an unmodifiable copy, and may return its argument unchanged if that is already an unmodifiable list. An older alternative copies first and then wraps the copy:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">this</span>.employees = <span class="code-class">Collections</span>.unmodifiableList(<span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(employees)); <span class="code-comment">Copy, then wrap: safe</span>
+<span class="code-keyword">this</span>.employees = <span class="code-class">Collections</span>.unmodifiableList(employees); <span class="code-comment">Wrapper only: the caller can still change the list</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>Collections.unmodifiableList()</code> on its own is not enough: it returns a read-only <strong>view</strong>, so changes made by the caller to the original list still show through.</p>
+    </div>
+
+    <div class="subheading">Nested Mutable Objects</div>
+    <div class="intro">
+        <p>Immutability gets harder when a field refers to a mutable object of your own, such as an <code>Address</code> with a setter.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Address</span> {
+    <span class="code-keyword">private</span> <span class="code-class">String</span> city;
+
+    <span class="code-keyword">public</span> <span class="code-class">Address</span>(<span class="code-class">String</span> city) {
+        <span class="code-keyword">this</span>.city = city;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">String</span> getCity() {
+        <span class="code-keyword">return</span> city;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> setCity(<span class="code-class">String</span> city) {
+        <span class="code-keyword">this</span>.city = city;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>If <code>Employee</code> stores the caller&rsquo;s <code>Address</code> and returns it from a getter, both the caller&rsquo;s reference and the getter can change the employee&rsquo;s address. Copying in both directions closes both gaps:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">Employee</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">String</span> name;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Address</span> address;
+
+    <span class="code-keyword">public</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-class">Address</span> address) {
+        <span class="code-keyword">this</span>.name = name;
+        <span class="code-keyword">this</span>.address = <span class="code-keyword">new</span> <span class="code-class">Address</span>(address.getCity()); <span class="code-comment">Defensive copy on the way in</span>
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">String</span> getName() {
+        <span class="code-keyword">return</span> name;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">Address</span> getAddress() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Address</span>(address.getCity()); <span class="code-comment">Defensive copy on the way out</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Address</span> original = <span class="code-keyword">new</span> <span class="code-class">Address</span>(<span class="code-string">"Delhi"</span>);
+<span class="code-class">Employee</span> emp = <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Alice"</span>, original);
+original.setCity(<span class="code-string">"Mumbai"</span>); <span class="code-comment">Changes only the caller's Address</span>
+emp.getAddress().setCity(<span class="code-string">"Pune"</span>); <span class="code-comment">Changes only the returned copy</span>
+<span class="code-class">System</span>.out.println(emp.getAddress().getCity()); <span class="code-comment">Delhi</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>In larger object graphs every mutable component must be protected in the same way. The simpler design is often to make <code>Address</code> itself immutable, for example as a record, so no copying is needed at all.</p>
+    </div>
+
+    <div class="subheading">Shallow vs Deep Immutability</div>
+    <div class="intro">
+        <p><strong>Shallow immutability</strong> means an object&rsquo;s own fields cannot be reassigned, but objects reachable through them may still change. <strong>Deep immutability</strong> means no state reachable through the object can change. Copying a collection is shallow: the new list is unmodifiable, but its elements are the same objects.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Member</span> {
+    <span class="code-keyword">public</span> <span class="code-class">String</span> name;
+
+    <span class="code-keyword">public</span> <span class="code-class">Member</span>(<span class="code-class">String</span> name) {
+        <span class="code-keyword">this</span>.name = name;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">Member</span>&gt; members = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(<span class="code-class">List</span>.of(<span class="code-keyword">new</span> <span class="code-class">Member</span>(<span class="code-string">"Alice"</span>)));
+<span class="code-class">List</span>&lt;<span class="code-class">Member</span>&gt; snapshot = <span class="code-class">List</span>.copyOf(members); <span class="code-comment">Copies the list structure, not the members</span>
+members.get(<span class="code-number">0</span>).name = <span class="code-string">"Bob"</span>;
+<span class="code-class">System</span>.out.println(snapshot.get(<span class="code-number">0</span>).name); <span class="code-comment">Bob</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>For deep immutability, either make the elements immutable too, or copy each element as well as the collection.</p>
+    </div>
+
+    <div class="subheading">Changing an Immutable Object: Return a New Instance</div>
+    <div class="intro">
+        <p>Immutable classes can still offer methods that look like modifications, often called <strong>withers</strong>, as long as they return a <strong>new object</strong> and leave the current one unchanged. Validation happens before the new object is created.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">BankAccount</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">String</span> accountNumber;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-keyword">long</span> balance;
+
+    <span class="code-keyword">public</span> <span class="code-class">BankAccount</span>(<span class="code-class">String</span> accountNumber, <span class="code-keyword">long</span> balance) {
+        <span class="code-keyword">this</span>.accountNumber = accountNumber;
+        <span class="code-keyword">this</span>.balance = balance;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">BankAccount</span> deposit(<span class="code-keyword">long</span> amount) {
+        <span class="code-keyword">if</span> (amount &lt;= <span class="code-number">0</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Amount must be positive"</span>);
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">BankAccount</span>(accountNumber, <span class="code-class">Math</span>.addExact(balance, amount)); <span class="code-comment">New object; this one is unchanged</span>
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">BankAccount</span> withdraw(<span class="code-keyword">long</span> amount) {
+        <span class="code-keyword">if</span> (amount &lt;= <span class="code-number">0</span> || amount &gt; balance) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Invalid withdrawal"</span>);
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">BankAccount</span>(accountNumber, balance - amount);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">long</span> getBalance() {
+        <span class="code-keyword">return</span> balance;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">BankAccount</span> original = <span class="code-keyword">new</span> <span class="code-class">BankAccount</span>(<span class="code-string">"ACC123"</span>, <span class="code-number">5000</span>);
+<span class="code-class">BankAccount</span> updated = original.deposit(<span class="code-number">2000</span>);
+<span class="code-class">System</span>.out.println(original.getBalance()); <span class="code-comment">5000</span>
+<span class="code-class">System</span>.out.println(updated.getBalance()); <span class="code-comment">7000</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>deposit()</code> returns a separate value; it does not record a transaction anywhere. The JDK&rsquo;s immutable types follow the same pattern:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">LocalDate</span> today = <span class="code-class">LocalDate</span>.of(<span class="code-number">2026</span>, <span class="code-number">11</span>, <span class="code-number">14</span>);
+<span class="code-class">LocalDate</span> tomorrow = today.plusDays(<span class="code-number">1</span>); <span class="code-comment">Returns a new LocalDate</span>
+<span class="code-class">System</span>.out.println(today); <span class="code-comment">2026-11-14</span>
+<span class="code-class">System</span>.out.println(tomorrow); <span class="code-comment">2026-11-15</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Records and Immutability</div>
+    <div class="intro">
+        <p>Records (Java 16) are a concise way to declare immutable data carriers. The compiler generates <code>private final</code> fields, a canonical constructor, accessors, <code>equals()</code>, <code>hashCode()</code> and <code>toString()</code>, and records cannot be extended.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> salary) {}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Employee</span> emp = <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Alice"</span>, <span class="code-number">50000</span>);
+<span class="code-class">System</span>.out.println(emp.name()); <span class="code-comment">Alice</span>
+<span class="code-class">System</span>.out.println(emp); <span class="code-comment">Employee[name=Alice, salary=50000]</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Records are only shallowly immutable</strong></p>
+        <p>A record&rsquo;s fields are <code>final</code>, but the objects they refer to are not automatically immutable. A record holding a caller&rsquo;s <code>ArrayList</code> can still change:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Department</span>(<span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; employees) {}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; names = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(<span class="code-class">List</span>.of(<span class="code-string">"Alice"</span>));
+<span class="code-class">Department</span> dept = <span class="code-keyword">new</span> <span class="code-class">Department</span>(names);
+names.add(<span class="code-string">"Bob"</span>); <span class="code-comment">Changes the record through the original list</span>
+dept.employees().add(<span class="code-string">"Charlie"</span>); <span class="code-comment">Changes the record through its accessor</span>
+<span class="code-class">System</span>.out.println(dept.employees()); <span class="code-comment">[Alice, Bob, Charlie]</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Fix: copy in a compact constructor</strong></p>
+        <p>A <strong>compact constructor</strong> runs before the fields are assigned, so it can replace the argument with a defensive copy:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Department</span>(<span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; employees) {
+    <span class="code-keyword">public</span> <span class="code-class">Department</span> {
+        employees = <span class="code-class">List</span>.copyOf(employees); <span class="code-comment">Runs before the field is assigned</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Because <code>String</code> elements are immutable, this record is effectively deeply immutable.</p>
+        <p class="minor-heading"><strong>Mutable elements need deep copies</strong></p>
+        <p>If the list holds mutable objects, <code>List.copyOf()</code> alone still shares them. Copy each element in the constructor and again in the accessor:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Department</span>(<span class="code-class">List</span>&lt;<span class="code-class">Employee</span>&gt; employees) { <span class="code-comment">Employee here is a mutable class</span>
+    <span class="code-keyword">public</span> <span class="code-class">Department</span> {
+        employees = employees.stream().map(e -&gt; <span class="code-keyword">new</span> <span class="code-class">Employee</span>(e.getName())).toList(); <span class="code-comment">Copy every element</span>
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Employee</span>&gt; employees() {
+        <span class="code-keyword">return</span> employees.stream().map(e -&gt; <span class="code-keyword">new</span> <span class="code-class">Employee</span>(e.getName())).toList(); <span class="code-comment">Callers get copies</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Better: build the whole graph from immutable records</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> age) {}
+
+<span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Department</span>(<span class="code-class">List</span>&lt;<span class="code-class">Employee</span>&gt; employees) {
+    <span class="code-keyword">public</span> <span class="code-class">Department</span> {
+        employees = <span class="code-class">List</span>.copyOf(employees); <span class="code-comment">Immutable list of immutable records</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Arrays are always mutable</strong></p>
+        <p>An array component needs a copy on the way in and on the way out:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Polygon</span>(<span class="code-keyword">int</span>[] xs) {
+    <span class="code-keyword">public</span> <span class="code-class">Polygon</span> {
+        xs = xs.clone(); <span class="code-comment">Copy on the way in</span>
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span>[] xs() {
+        <span class="code-keyword">return</span> xs.clone(); <span class="code-comment">Copy on the way out</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Record</th><th>Deeply immutable?</th></tr></thead>
+            <tbody>
+                <tr><td><code>record A(int x)</code></td><td>Yes</td></tr>
+                <tr><td><code>record A(String name)</code></td><td>Yes</td></tr>
+                <tr><td><code>record A(LocalDate date)</code></td><td>Yes</td></tr>
+                <tr><td><code>record A(List&lt;String&gt; names)</code></td><td>No, by default</td></tr>
+                <tr><td><code>record A(List&lt;String&gt; names)</code> with <code>List.copyOf()</code></td><td>Yes</td></tr>
+                <tr><td><code>record A(List&lt;Employee&gt; list)</code> with <code>List.copyOf()</code>, where <code>Employee</code> is mutable</td><td>No</td></tr>
+                <tr><td><code>record A(List&lt;Employee&gt; list)</code> with <code>List.copyOf()</code>, where <code>Employee</code> is an immutable record</td><td>Yes</td></tr>
+                <tr><td><code>record A(int[] values)</code></td><td>No, unless the array is copied in and out</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Immutability and Thread Safety</div>
+    <div class="intro">
+        <p>A properly constructed immutable object can be shared between threads freely: there is no mutable state to race over, so reads need no locks. The Java memory model also guarantees that other threads see the correct values of <code>final</code> fields once the constructor has finished, provided <code>this</code> did not escape during construction.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Config</span>(<span class="code-class">String</span> host, <span class="code-keyword">int</span> port) {}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-class">Config</span> config = <span class="code-keyword">new</span> <span class="code-class">Config</span>(<span class="code-string">"localhost"</span>, <span class="code-number">8080</span>);
+    <span class="code-class">Runnable</span> task = () -&gt; <span class="code-class">System</span>.out.println(<span class="code-class">Thread</span>.currentThread().getName() + <span class="code-string">": "</span> + config.port());
+    <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"T1"</span>).start(); <span class="code-comment">No locks needed: config can never change</span>
+    <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"T2"</span>).start();
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>A shared reference still needs coordination</strong></p>
+        <p>Immutability protects the object, not the <strong>variable</strong> that refers to it. If several threads replace a shared reference, for example a field holding the current <code>BankAccount</code> or counter, the replacement itself must be atomic.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Counter</span>(<span class="code-keyword">int</span> count) {
+    <span class="code-keyword">public</span> <span class="code-class">Counter</span> increment() {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Counter</span>(count + <span class="code-number">1</span>);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
+    <span class="code-class">AtomicReference</span>&lt;<span class="code-class">Counter</span>&gt; counter = <span class="code-keyword">new</span> <span class="code-class">AtomicReference</span>&lt;&gt;(<span class="code-keyword">new</span> <span class="code-class">Counter</span>(<span class="code-number">0</span>));
+    <span class="code-class">Runnable</span> task = () -&gt; counter.updateAndGet(<span class="code-class">Counter</span>::increment); <span class="code-comment">Atomically swaps in the new value</span>
+    <span class="code-class">Thread</span> t1 = <span class="code-class">Thread</span>.ofPlatform().start(task);
+    <span class="code-class">Thread</span> t2 = <span class="code-class">Thread</span>.ofPlatform().start(task);
+    t1.join();
+    t2.join();
+    <span class="code-class">System</span>.out.println(counter.get().count()); <span class="code-comment">2</span>
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>updateAndGet()</code> may call the update function more than once when threads collide, so the function must have no side effects. Immutable values make that easy.</p>
+    </div>
+
+    <div class="subheading">Immutable Keys in HashMap</div>
+    <div class="intro">
+        <p>Hash-based collections such as <code>HashMap</code> and <code>HashSet</code> place an entry by the key&rsquo;s hash code when it is inserted. If a mutable key changes afterwards, its hash code changes too, and later lookups search the wrong bucket.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmployeeKey</span> {
+    <span class="code-keyword">public</span> <span class="code-class">String</span> department;
+
+    <span class="code-keyword">public</span> <span class="code-class">EmployeeKey</span>(<span class="code-class">String</span> department) {
+        <span class="code-keyword">this</span>.department = department;
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> equals(<span class="code-class">Object</span> o) {
+        <span class="code-keyword">return</span> o <span class="code-keyword">instanceof</span> <span class="code-class">EmployeeKey</span> other &amp;&amp; <span class="code-class">Objects</span>.equals(department, other.department);
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> hashCode() {
+        <span class="code-keyword">return</span> <span class="code-class">Objects</span>.hash(department);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">EmployeeKey</span> key = <span class="code-keyword">new</span> <span class="code-class">EmployeeKey</span>(<span class="code-string">"IT"</span>);
+<span class="code-class">Map</span>&lt;<span class="code-class">EmployeeKey</span>, <span class="code-class">String</span>&gt; map = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;&gt;();
+map.put(key, <span class="code-string">"Alice"</span>);
+key.department = <span class="code-string">"HR"</span>; <span class="code-comment">The key's hash code changes after insertion</span>
+<span class="code-class">System</span>.out.println(map.get(key)); <span class="code-comment">Usually null: the entry is now unreachable</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>An immutable key cannot change after insertion, so lookups always work:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">EmployeeKey</span>(<span class="code-class">String</span> department) {}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Immutability in Spring Boot</div>
+    <div class="intro">
+        <p>Records work well for request and response DTOs whose components are immutable types.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">CreateUserRequest</span>(<span class="code-class">String</span> name, <span class="code-class">String</span> email) {}
+
+<span class="code-annotation">@RestController</span>
+<span class="code-annotation">@RequestMapping</span>(<span class="code-string">"/users"</span>)
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">UserController</span> {
+    <span class="code-annotation">@PostMapping</span>
+    <span class="code-keyword">public</span> <span class="code-class">ResponseEntity</span>&lt;<span class="code-class">String</span>&gt; createUser(<span class="code-annotation">@RequestBody</span> <span class="code-class">CreateUserRequest</span> request) {
+        <span class="code-keyword">return</span> <span class="code-class">ResponseEntity</span>.ok(<span class="code-string">"Created: "</span> + request.name());
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Domain objects with state transitions can also be immutable: each transition returns a new value instead of changing the old one. Persistence, concurrency and transactions still have to be handled separately.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">enum</span> <span class="code-class">OrderStatus</span> { CREATED, PAID, CANCELLED }
+
+<span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Order</span>(<span class="code-class">String</span> id, <span class="code-class">OrderStatus</span> status) {
+    <span class="code-keyword">public</span> <span class="code-class">Order</span> markPaid() {
+        <span class="code-keyword">if</span> (status != <span class="code-class">OrderStatus</span>.CREATED) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalStateException</span>(<span class="code-string">"Order cannot be paid"</span>);
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Order</span>(id, <span class="code-class">OrderStatus</span>.PAID); <span class="code-comment">The original Order is unchanged</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Immutability and Functional Programming</div>
+    <div class="intro">
+        <p>Functional code avoids modifying its inputs. Instead of changing a list in place, it builds a new value and leaves the old one intact, which makes each step easier to reason about and to test.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; users1 = <span class="code-class">List</span>.of(<span class="code-string">"Alice"</span>);
+<span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; temp = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(users1);
+temp.add(<span class="code-string">"Bob"</span>);
+<span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; users2 = <span class="code-class">List</span>.copyOf(temp);
+<span class="code-class">System</span>.out.println(users1); <span class="code-comment">[Alice]</span>
+<span class="code-class">System</span>.out.println(users2); <span class="code-comment">[Alice, Bob]</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Related Concepts</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>Immutable object</td><td>Its observable state cannot change after creation</td></tr>
+                <tr><td><code>final</code> field</td><td>Cannot be reassigned after initialization</td></tr>
+                <tr><td><code>final</code> class</td><td>Cannot be extended</td></tr>
+                <tr><td>Unmodifiable collection</td><td>Changes through its own API are rejected, but it may be a view of a collection that can still change</td></tr>
+                <tr><td>Defensive copy</td><td>A copy that prevents sharing mutable internal state</td></tr>
+                <tr><td><code>record</code></td><td>A concise data carrier with final fields; not automatically deeply immutable</td></tr>
+                <tr><td>Encapsulation</td><td>Controls access to internal state; an encapsulated class can still be mutable</td></tr>
+                <tr><td>Thread safety</td><td>Correct behavior under concurrent access; a mutable class can be thread-safe, for example with <code>AtomicInteger</code></td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Common Mistakes</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Mistake</th><th>Why it is wrong</th><th>Fix</th></tr></thead>
+            <tbody>
+                <tr><td>Only making fields <code>final</code></td><td>Referenced objects can still change</td><td>Protect every mutable field</td></tr>
+                <tr><td>Returning an internal mutable list</td><td>Callers can change internal state</td><td>Return an unmodifiable snapshot or a copy</td></tr>
+                <tr><td>Copying a list but not its elements</td><td>Mutable elements remain shared</td><td>Use immutable elements or copy each one</td></tr>
+                <tr><td><code>Collections.unmodifiableList(original)</code></td><td>The original list can still change underneath</td><td>Copy before wrapping, or use <code>List.copyOf()</code></td></tr>
+                <tr><td>Storing a <code>java.util.Date</code> directly</td><td><code>Date</code> is mutable</td><td>Copy it, or use <code>Instant</code></td></tr>
+                <tr><td>Assuming a record is deeply immutable</td><td>Components may refer to mutable objects</td><td>Copy components in a compact constructor</td></tr>
+                <tr><td>Letting <code>this</code> escape from the constructor</td><td>Other code may see a half-built object</td><td>Never publish <code>this</code> during construction</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Pros and Cons</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pros</strong></p>
+        <ul>
+            <li><strong>Simpler Concurrency</strong><br>Immutable objects can be shared between threads without locks.</li>
+            <li><strong>No Accidental Changes</strong><br>No caller can change an object&rsquo;s state behind your back.</li>
+            <li><strong>Easier Reasoning</strong><br>A value means the same thing everywhere it is used, so code is easier to understand and test.</li>
+            <li><strong>Safe Sharing and Caching</strong><br>Instances can be reused and cached freely, like interned strings.</li>
+            <li><strong>Reliable Map Keys</strong><br>Hash codes never change, so <code>HashMap</code> and <code>HashSet</code> lookups always work.</li>
+            <li><strong>Functional Style</strong><br>Fits naturally with streams and functions that return new values.</li>
+        </ul>
+        <p class="minor-heading"><strong>Cons</strong></p>
+        <ul>
+            <li><strong>Extra Allocations</strong><br>Every change creates a new object; modern JVMs handle short-lived objects well, but very frequent updates still cost.</li>
+            <li><strong>Copying Large Structures</strong><br>Deep copies of big object graphs can be expensive, unless the design shares unchanged parts.</li>
+            <li><strong>More Careful Design</strong><br>Nested mutable objects need defensive copies in both directions.</li>
+            <li><strong>Awkward for Mutable State</strong><br>Counters, caches and long-lived stateful components are more natural as mutable objects.</li>
+            <li><strong>ORM Friction</strong><br>JPA and Hibernate entities are usually mutable, so immutable entity models can be awkward.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">When to Use Immutability</div>
+    <div class="intro">
+        <ul>
+            <li><strong>Prefer immutability</strong> for value objects such as money, coordinates, dates and identifiers, and for configuration snapshots, DTOs, event messages, map keys and data shared between threads.</li>
+            <li><strong>Prefer controlled mutability</strong> for in-memory counters, caches, long-lived stateful components, JPA entities and performance-critical algorithms where replacing whole structures is too costly.</li>
+        </ul>
+        <p>Most production applications combine both: immutable values represent facts and data, mutable services coordinate change, concurrency primitives manage shared updates, and database transactions protect persisted state.</p>
+    </div>
+
+    <div class="subheading">Interview Questions</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Can an immutable class contain mutable fields?</strong></p>
+        <p>Yes, as long as that state can never be changed from outside: copy it on the way in and never hand out a reference to it.</p>
+        <p class="minor-heading"><strong>Does final make an object immutable?</strong></p>
+        <p>No. <code>final</code> prevents a field or variable from being reassigned; it does not stop the referenced object from changing.</p>
+        <p class="minor-heading"><strong>Why is String immutable?</strong></p>
+        <p>It allows strings to be shared and interned safely, keeps hash codes stable so strings work as map keys, and makes them safe to pass between threads and to security-sensitive code.</p>
+        <p class="minor-heading"><strong>Are records always immutable?</strong></p>
+        <p>Only shallowly. Their fields are <code>final</code>, but deep immutability depends on the component types and on defensive copying of mutable components.</p>
+        <p class="minor-heading"><strong>Can an immutable class have methods that change values?</strong></p>
+        <p>Yes, if they return a new instance with the updated values and leave the original unchanged, like <code>String.concat()</code> or <code>LocalDate.plusDays()</code>.</p>
+        <p class="minor-heading"><strong>Why declare an immutable class final?</strong></p>
+        <p>So that no subclass can add mutable state or override methods in ways that break immutability. A class with a private constructor and static factory methods achieves the same.</p>
+    </div>
+
+    <div class="subheading">Key Takeaways</div>
+    <div class="intro">
+        <ul>
+            <li>Immutability means an object&rsquo;s state never changes after construction; it does not mean the application&rsquo;s state never changes.</li>
+            <li><code>final</code> stops reassignment, not mutation.</li>
+            <li>Defensive copies on the way in and the way out protect mutable components.</li>
+            <li>Records give shallow immutability; deep immutability needs immutable components or copies.</li>
+            <li>Immutable objects are safe to share between threads, but replacing a shared reference still needs atomic coordination.</li>
+            <li>Applications change state by creating new immutable values and atomically switching to them.</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

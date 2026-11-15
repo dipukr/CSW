@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thread Confinement</title>
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
@@ -32,8 +32,8 @@
         </ul>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public void</span> processData() {
-    <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; localList = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(); <span class="code-comment"># Confined entirely to this method stack</span>
-    localList.add(<span class="code-string">"Data"</span>); <span class="code-comment"># As long as localList doesn't escape this method, it is safe</span>
+    <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; localList = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;(); <span class="code-comment">Confined entirely to this method stack</span>
+    localList.add(<span class="code-string">"Data"</span>); <span class="code-comment">As long as localList doesn't escape this method, it is safe</span>
 }</code></pre></div>
     <div class="intro">
         <p class="minor-heading"><strong>3. <code>ThreadLocal</code> Confinement</strong></p>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Design</title>
+<link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+<div class="note plain-links">
+    <div class="title">Software Design</div>
+
+    <div class="intro">
+        <p><strong>Software design</strong> is the tactical, implementation-focused process of determining <strong>how</strong> software should be structured and built to satisfy its <strong>functional and non-functional requirements</strong>. It translates high-level requirements and <strong>architectural decisions</strong> into concrete classes, interfaces, methods, data structures, algorithms, responsibilities, and interactions between components.</p>
+        <p>While <strong>software architecture</strong> focuses on the system's <strong>big-picture structure</strong> &mdash; identifying major components, defining their boundaries, selecting architectural styles and establishing how they communicate&mdash;<strong>software design</strong> focuses on the <strong>internal organization and implementation</strong> of those components.</p>
+    </div>
+    <div class="benefit-grid benefit-grid-2x2 benefit-grid-spaced">
+        <div class="benefit-card">
+            <div class="benefit-title">Software Design</div>
+            <p>Defines how individual components are organized internally, how responsibilities are distributed, and how classes and objects<br> collaborate to implement the required behavior.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Software Architecture</div>
+            <p>Defines the system's overall structure, major components, relationships, constraints and key technical decisions.</p>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Although architecture and design operate at different levels of abstraction, they are <strong>closely related and often evolve together</strong>. Design decisions must respect <strong>architectural constraints</strong>, while implementation-level discoveries may lead<br> to architectural refinements.</p>
+    </div>
+
+    <div class="subheading">Characteristics of Good Software Design</div>
+    <div class="intro">
+        <p>Good software design emphasizes:</p>
+        <ul>
+            <li><strong>Separation of Concerns</strong><br>Divide the system into distinct, manageable responsibilities.</li>
+            <li><strong>High Cohesion</strong><br>Keep closely related data and behavior together within a class or module.</li>
+            <li><strong>Low Coupling</strong><br>Minimize unnecessary dependencies between classes and components.</li>
+            <li><strong>Encapsulation and Information Hiding</strong><br>Protect internal implementation details behind well-defined interfaces.</li>
+            <li><strong>Abstraction</strong><br>Expose essential behavior while hiding unnecessary complexity.</li>
+            <li><strong>Modularity</strong><br>Organize functionality into independently understandable and maintainable units.</li>
+            <li><strong>Extensibility</strong><br>Allow new functionality to be introduced with minimal changes to existing code.</li>
+            <li><strong>Reusability</strong><br>Design components that can be reused where it provides genuine value.</li>
+            <li><strong>Testability</strong><br>Make components easy to verify independently.</li>
+            <li><strong>Simplicity</strong><br>Avoid unnecessary complexity, premature abstractions, and overengineering.</li>
+        </ul>
+        <p>These qualities are supported by established <a href="GEN/DesignPrinciples.html" target="_blank" rel="noopener">software design principles</a> such as <strong><a href="GEN/SOLID.html" target="_blank" rel="noopener">SOLID</a>, DRY, KISS, YAGNI, GRASP</strong>, and <strong>composition over inheritance</strong>, along with proven <strong>design patterns</strong> that address recurring software design problems.</p>
+    </div>
+
+    <div class="subheading">Primary Goal</div>
+    <div class="intro stretch">
+        <p>The ultimate goal of software design is not to produce clever or highly abstract code, but to <strong>manage complexity</strong> and make software easier to understand, maintain, test, extend, and evolve.</p>
+        <p>A well-designed system accommodates <strong>changing requirements</strong> without requiring widespread modifications, minimizes the risk of <strong>unintended side effects</strong>, and allows developers to <strong>reason about individual components</strong> without understanding the entire codebase.</p>
+        <p><strong>In essence:</strong> Architecture establishes the system's <strong>structural foundation</strong>; software design transforms that foundation into a <strong>clear, maintainable, and executable implementation</strong>.</p>
+    </div>
+
+    <div class="section when-use">
+        <div class="section-content"><ol class="kp-list">
+            <li><span class="kp-label">Scope</span><span>Applies <strong>within a single component or service</strong>, after the architecture is set.</span></li>
+            <li><span class="kp-label">Patterns</span><span>Chooses concrete <strong>design patterns</strong> (<a href="GEN/Strategy.html" target="_blank" rel="noopener">Strategy</a>, <a href="GEN/FactoryMethod.html" target="_blank" rel="noopener">Factory</a>, <a href="GEN/Observer.html" target="_blank" rel="noopener">Observer</a>, ...) to solve local problems.</span></li>
+            <li><span class="kp-label">Responsibilities</span><span>Defines class <strong>responsibilities, boundaries, and interactions</strong>.</span></li>
+            <li><span class="kp-label">Cohesion and Coupling</span><span>Aims for <strong>high cohesion and low coupling</strong> so parts can change independently.</span></li>
+            <li><span class="kp-label">Principles</span><span>Guided by <strong><a href="GEN/SOLID.html" target="_blank" rel="noopener">SOLID</a>, DRY, KISS, YAGNI</strong>, and separation of concerns.</span></li>
+            <li><span class="kp-label">Abstractions</span><span>Favors <strong>programming to <a href="GEN/Interface.html" target="_blank" rel="noopener">interfaces</a></strong> over concrete implementations.</span></li>
+        </ol></div>
+    </div>
+
+    <div class="subheading">Advantages and Disadvantages</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages</strong></p>
+    </div>
+    <div class="intro"><ul>
+        <li><strong>Modular and Testable</strong><br>Small, focused units with clear boundaries are easy to reason about and test in isolation.</li>
+        <li><strong>Localized Change</strong><br>Well-placed abstractions keep an edit in one place from rippling across the whole system.</li>
+        <li><strong>Reusability</strong><br>Clean interfaces let components be reused in new contexts instead of copy-pasted.</li>
+        <li><strong>Readability</strong><br>Intention-revealing structure makes the code easier to understand and onboard new developers.</li>
+        <li><strong>Adaptability</strong><br>Loose coupling lets the system absorb new requirements with minimal rework.</li>
+    </ul></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Disadvantages</strong></p>
+    </div>
+    <div class="intro"><ul>
+        <li><strong>Over-Engineering</strong><br>Too many abstractions add indirection and complexity that outweigh their benefit.</li>
+        <li><strong>Premature Abstraction</strong><br>Designing for imagined future needs can lock in the wrong structure and slow you down.</li>
+        <li><strong>Analysis Paralysis</strong><br>Chasing the <strong>perfect</strong> design can stall delivery and hide the real requirements.</li>
+    </ul></div>
+
+    <div class="subheading">Design Patterns</div>
+    <div class="intro">
+        <p>Design patterns are reusable solutions to commonly occurring problems in software design.</p>
+        <p>Design patterns are solutions or techniques to avoid code design problems.</p>
+        <p>Design patterns help us write robust, clean, modular and extensible code.</p>
+        <p>They provide a template for solving design issues in various contexts, helping developers write code that is more maintainable, scalable and understandable. Design patterns are divided into three categories.</p>
+    </div> <br>
+
+    <div class="cat-grid">
+        <div class="cat-card cat-creational">
+            <div class="cat-badge">C</div>
+            <div class="cat-body">
+                <div class="cat-title">Creational</div>
+                <p>Deals with <strong>object creation</strong> &mdash; how objects are instantiated, hiding the construction details.</p>
+            </div>
+        </div>
+        <div class="cat-card cat-structural">
+            <div class="cat-badge">S</div>
+            <div class="cat-body">
+                <div class="cat-title">Structural</div>
+                <p>Deals with <strong>object composition</strong> &mdash; how classes and objects assemble into larger structures.</p>
+            </div>
+        </div>
+        <div class="cat-card cat-behavioral">
+            <div class="cat-badge">B</div>
+            <div class="cat-body">
+                <div class="cat-title">Behavioral</div>
+                <p>Deals with <strong>object interaction and responsibility</strong> &mdash; how objects communicate and share work.</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="subheading">Advantages of Design Patterns</div>
+    <div class="benefit-grid benefit-grid-2x2">
+        <div class="benefit-card">
+            <div class="benefit-title">Reusability</div>
+            <p>Provide a reusable solution to common software design problems, saving developers from reinventing the wheel whenever they hit a new problem &mdash; they reach for a tried and tested pattern instead.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Maintainability</div>
+            <p>Promote clean, organized, maintainable code, making it easier to maintain and modify as the software evolves.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Rapid Development</div>
+            <p>Provide a standard way to solve common design problems, saving time and effort so developers can focus on other aspects of the software.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Common Vocabulary</div>
+            <p>Give teams a shared language - saying <strong>use a Strategy here</strong> conveys an entire design in two words, making discussion and reviews faster.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Flexibility and Extensibility</div>
+            <p>Favor loose coupling and programming to interfaces, so new behavior can be added with little or no change to existing, tested code.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Testability</div>
+            <p>Well-separated responsibilities and injected dependencies make components easy to isolate and unit test.</p>
+        </div>
+    </div>
+
+    <div class="subheading">Design Patterns Summary</div>
+    <div class="section cmp">
+        <div class="section-content">
+            <table class="cmp-table centered font-size-17">
+                <thead><tr><th>Pattern</th><th>Category</th><th>What it does</th></tr></thead>
+                <tbody>
+                    <tr><td><a href="GEN/Singleton.html" target="_blank" rel="noopener">Singleton</a></td><td>Creational</td><td>Ensures a class has only one instance and gives a global point of access to it.</td></tr>
+                    <tr><td><a href="GEN/Builder.html" target="_blank" rel="noopener">Builder</a></td><td>Creational</td><td>Builds a complex object step by step, separating construction from its representation.</td></tr>
+                    <tr><td><a href="GEN/FactoryMethod.html" target="_blank" rel="noopener">Factory Method</a></td><td>Creational</td><td>Defines an interface for creating an object but lets subclasses decide which class to instantiate.</td></tr>
+                    <tr><td><a href="GEN/AbstractFactory.html" target="_blank" rel="noopener">Abstract Factory</a></td><td>Creational</td><td>Creates families of related objects without specifying their concrete classes.</td></tr>
+                    <tr><td><a href="GEN/Prototype.html" target="_blank" rel="noopener">Prototype</a></td><td>Creational</td><td>Creates new objects by cloning an existing instance instead of building from scratch.</td></tr>
+                    <tr><td><a href="GEN/Adapter.html" target="_blank" rel="noopener">Adapter</a></td><td>Structural</td><td>Converts one interface into another that the client expects.</td></tr>
+                    <tr><td><a href="GEN/Bridge.html" target="_blank" rel="noopener">Bridge</a></td><td>Structural</td><td>Decouples an abstraction from its implementation so the two can vary independently.</td></tr>
+                    <tr><td><a href="GEN/Composite.html" target="_blank" rel="noopener">Composite</a></td><td>Structural</td><td>Treats individual objects and groups of objects uniformly as a tree.</td></tr>
+                    <tr><td><a href="GEN/Decorator.html" target="_blank" rel="noopener">Decorator</a></td><td>Structural</td><td>Adds responsibilities to an object dynamically by wrapping it.</td></tr>
+                    <tr><td><a href="GEN/Facade.html" target="_blank" rel="noopener">Facade</a></td><td>Structural</td><td>Provides a simplified, unified interface to a complex subsystem.</td></tr>
+                    <tr><td><a href="GEN/Flyweight.html" target="_blank" rel="noopener">Flyweight</a></td><td>Structural</td><td>Shares common state across many objects to save memory.</td></tr>
+                    <tr><td><a href="GEN/Proxy.html" target="_blank" rel="noopener">Proxy</a></td><td>Structural</td><td>Provides a placeholder that controls access to another object.</td></tr>
+                    <tr><td><a href="GEN/CoR.html" target="_blank" rel="noopener">COR</a></td><td>Behavioral</td><td>Passes a request along a chain of handlers until one of them handles it.</td></tr>
+                    <tr><td><a href="GEN/Command.html" target="_blank" rel="noopener">Command</a></td><td>Behavioral</td><td>Encapsulates a request as an object so it can be queued, logged, or undone.</td></tr>
+                    <tr><td><a href="GEN/Iterator.html" target="_blank" rel="noopener">Iterator</a></td><td>Behavioral</td><td>Accesses elements of a collection in sequence without exposing its structure.</td></tr>
+                    <tr><td><a href="GEN/Mediator.html" target="_blank" rel="noopener">Mediator</a></td><td>Behavioral</td><td>Centralizes communication between objects to reduce direct coupling.</td></tr>
+                    <tr><td><a href="GEN/Memento.html" target="_blank" rel="noopener">Memento</a></td><td>Behavioral</td><td>Captures and restores an object's state without breaking encapsulation.</td></tr>
+                    <tr><td><a href="GEN/Observer.html" target="_blank" rel="noopener">Observer</a></td><td>Behavioral</td><td>Notifies dependent objects automatically when a subject's state changes.</td></tr>
+                    <tr><td><a href="GEN/State.html" target="_blank" rel="noopener">State</a></td><td>Behavioral</td><td>Lets an object change its behavior when its internal state changes.</td></tr>
+                    <tr><td><a href="GEN/Strategy.html" target="_blank" rel="noopener">Strategy</a></td><td>Behavioral</td><td>Defines a family of interchangeable algorithms and swaps them at runtime.</td></tr>
+                    <tr><td><a href="GEN/Template.html" target="_blank" rel="noopener">Template</a></td><td>Behavioral</td><td>Defines the skeleton of an algorithm, letting subclasses fill in specific steps.</td></tr>
+                    <tr><td><a href="GEN/Visitor.html" target="_blank" rel="noopener">Visitor</a></td><td>Behavioral</td><td>Adds new operations to an object structure without changing its classes.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="subheading">Object-oriented Programming</div>
+    <div class="intro">
+        <p>Object-oriented programming is a programming paradigm that organizes code around data, which are self-contained units that bundle data and functions together.
+            Object-oriented programming uses concepts like <a href="GEN/Class.html" target="_blank" rel="noopener">classes</a> (templates for objects), encapsulation (bundling data and methods), inheritance (reusing properties from other classes),
+            and polymorphism (objects taking on many forms) to create modular, reusable, and maintainable code.</p> <br>
+        <p>An object oriented program is basically a collection of objects and relationships among them and they communicate<br> or interact with each other using message passing.</p>
+        <p>Four main concept of OOPs are abstraction, encapsulation, inheritance and polymorphism which help us to write modular, reusable, extensible and generic software system.</p>
+    </div>
+
+    <div class="subheading">Four Pillars of OOP</div>
+    <div class="benefit-grid benefit-grid-2x2">
+        <div class="benefit-card">
+            <div class="benefit-title"><a href="GEN/Abstraction.html" target="_blank" rel="noopener">Abstraction</a></div>
+            <p>Expose only the essential features of an entity and hide the complex implementation behind a simple interface. A caller uses <em>what</em> an object does without needing to know <em>how</em> it does it, reducing complexity and coupling.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title"><a href="GEN/Encapsulation.html" target="_blank" rel="noopener">Encapsulation</a></div>
+            <p>Bundle data and the methods that operate on it inside a single unit, and restrict direct access to the internal state. Fields stay private and are reached only through controlled getters and setters, protecting an object's invariants.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title"><a href="GEN/Inheritance.html" target="_blank" rel="noopener">Inheritance</a></div>
+            <p>Let a class acquire the properties and behaviour of another class, establishing an "is-a" relationship. Common code lives in a base class and is reused by subclasses, which can add or refine behaviour.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title"><a href="GEN/Polymorphism.html" target="_blank" rel="noopener">Polymorphism</a></div>
+            <p>Allow one interface to take many forms, so the same call behaves differently depending on the actual object. Achieved through method <a href="GEN/Overriding.html" target="_blank" rel="noopener">overriding</a> (runtime) and <a href="GEN/Overloading.html" target="_blank" rel="noopener">overloading</a> (compile-time),<br> it lets code work with many types uniformly.</p>
+        </div>
+    </div>
+
+    <div class="subheading">Advantages and Disadvantages</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages</strong></p>
+    </div>
+    <div class="intro"><ul>
+        <li><strong>Modularity</strong><br>Encapsulation bundles data with the methods that operate on it, so each class is a self-contained unit.</li>
+        <li><strong>Reusability</strong><br>Inheritance and <a href="GEN/Composition.html" target="_blank" rel="noopener">composition</a> let existing classes be reused without duplicating code or data.</li>
+        <li><strong>Maintainability</strong><br>One part of the code can change without breaking others, because internals stay hidden behind interfaces.</li>
+        <li><strong>Extensibility</strong><br>New types can be added without modifying existing code, following the open-closed principle.</li>
+        <li><strong>Data Hiding and Security</strong><br>Private fields with getters and setters protect state from uncontrolled external modification.</li>
+        <li><strong>Flexibility Through Polymorphism</strong><br>One interface can work with many implementations, chosen at runtime.</li>
+        <li><strong>Easier Modelling</strong><br>Classes and relationships map closely to the problem domain, making designs easier to reason about.</li>
+        <li><strong>Testability</strong><br>Depending on abstractions rather than concrete classes makes components easy to mock and test in isolation.</li>
+    </ul></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Disadvantages</strong></p>
+    </div>
+    <div class="intro"><ul>
+        <li><strong>Added Complexity</strong><br>Simple problems can end up spread across many small classes and layers of indirection.</li>
+        <li><strong>Steeper Learning Curve</strong><br>Abstraction, inheritance hierarchies and dynamic dispatch take time to understand and design well.</li>
+        <li><strong>Performance Overhead</strong><br>Object allocation, indirection and virtual method calls cost more than plain procedural code.</li>
+        <li><strong>Fragile Base Class Problem</strong><br>Deep inheritance hierarchies couple subclasses tightly to their parents, so parent changes ripple downward.</li>
+        <li><strong>Over-engineering</strong><br>It is easy to build abstractions for flexibility that is never actually needed.</li>
+        <li><strong>Shared Mutable State</strong><br>Objects holding mutable state need careful synchronisation in multi-threaded environments.</li>
+        <li><strong>Harder to Trace Flow</strong><br>Behaviour resolved at runtime through polymorphism can make execution paths less obvious when debugging.</li>
+    </ul></div>
+
+    <div class="subheading">Object-Oriented Software Design Principles</div>
+    <div class="intro">
+        <p>Object-Oriented Software Design (OOD) is the process of designing software using <strong>objects, classes, interfaces, relationships, and design principles</strong> to build systems that are maintainable, extensible, reusable, testable and flexible.</p>
+        <p>Following is a structured roadmap of the major topics, from foundational concepts to advanced object-oriented design.</p>
+    </div>
+
+    <div class="subheading">Object-Oriented Programming (OOP) Fundamentals</div>
+    <div class="intro">
+        <p>These concepts form the foundation of object-oriented design.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Topic</th><th>Key concepts</th></tr></thead>
+            <tbody>
+                <tr><td><a href="GEN/Class.html" target="_blank" rel="noopener">Class and Object</a></td><td>State, behavior, identity</td></tr>
+                <tr><td><a href="GEN/Encapsulation.html" target="_blank" rel="noopener">Encapsulation</a></td><td>Data hiding, access modifiers, controlled access</td></tr>
+                <tr><td><a href="GEN/Abstraction.html" target="_blank" rel="noopener">Abstraction</a></td><td>Abstract classes, interfaces, implementation hiding</td></tr>
+                <tr><td><a href="GEN/Inheritance.html" target="_blank" rel="noopener">Inheritance</a></td><td>IS-A relationship, method overriding</td></tr>
+                <tr><td><a href="GEN/Polymorphism.html" target="_blank" rel="noopener">Polymorphism</a></td><td>Runtime polymorphism, compile-time polymorphism</td></tr>
+                <tr><td><a href="GEN/Composition.html" target="_blank" rel="noopener">Composition</a></td><td>HAS-A relationship, object collaboration</td></tr>
+                <tr><td><a href="GEN/Aggregation.html" target="_blank" rel="noopener">Aggregation</a></td><td>Weak ownership relationship</td></tr>
+                <tr><td><a href="GEN/Association.html" target="_blank" rel="noopener">Association</a></td><td>Relationships between objects</td></tr>
+                <tr><td><a href="GEN/Dependency.html" target="_blank" rel="noopener">Dependency</a></td><td>One object uses another</td></tr>
+                <tr><td>Delegation</td><td>Forwarding responsibilities to other objects</td></tr>
+                <tr><td><a href="GEN/Immutability.html" target="_blank" rel="noopener">Immutability</a></td><td>Immutable objects, value objects</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Fundamental Object-Oriented Design Principles</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Principle</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Separation of Concerns (SoC)</td><td>Divide software into distinct responsibilities</td></tr>
+                <tr><td>High Cohesion</td><td>Keep closely related responsibilities together</td></tr>
+                <tr><td>Low Coupling</td><td>Minimize dependencies between components</td></tr>
+                <tr><td>Encapsulate What Varies</td><td>Isolate functionality likely to change</td></tr>
+                <tr><td>Program to an Interface</td><td>Depend on contracts rather than concrete implementations</td></tr>
+                <tr><td>Information Hiding</td><td>Hide internal design decisions and implementation details</td></tr>
+                <tr><td>Principle of Least Knowledge</td><td>Minimize knowledge of other objects' internals</td></tr>
+                <tr><td>Tell, Don't Ask</td><td>Ask objects to perform behavior rather than exposing their data</td></tr>
+                <tr><td>Command-Query Separation</td><td>Separate operations that change state from those that return information</td></tr>
+                <tr><td>Protected Variations</td><td>Protect stable components from changes in volatile components</td></tr>
+                <tr><td>Favor Composition over Inheritance</td><td>Build flexible behavior using object composition</td></tr>
+                <tr><td>Hollywood Principle</td><td>Control flow is managed by a higher-level framework or component</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">SOLID Principles</div>
+    <div class="intro">
+        <p>The five most widely taught object-oriented design principles.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Principle</th><th>Main idea</th></tr></thead>
+            <tbody>
+                <tr><td>Single Responsibility Principle (SRP)</td><td>A module should have one reason to change</td></tr>
+                <tr><td>Open/Closed Principle (OCP)</td><td>Open for extension, closed for modification</td></tr>
+                <tr><td>Liskov Substitution Principle (LSP)</td><td>Subtypes should be substitutable for their base types</td></tr>
+                <tr><td>Interface Segregation Principle (ISP)</td><td>Prefer small, client-specific interfaces</td></tr>
+                <tr><td>Dependency Inversion Principle (DIP)</td><td>High-level policies should not depend on low-level implementation details</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Other Important Software Design Principles</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Principle</th><th>Main idea</th></tr></thead>
+            <tbody>
+                <tr><td>DRY (Don't Repeat Yourself)</td><td>Avoid duplication of knowledge and business rules</td></tr>
+                <tr><td>KISS (Keep It Simple)</td><td>Prefer simple, understandable solutions</td></tr>
+                <tr><td>YAGNI (You Aren't Gonna Need It)</td><td>Avoid functionality not currently needed</td></tr>
+                <tr><td>Principle of Least Astonishment</td><td>Make behavior predictable</td></tr>
+                <tr><td>Principle of Explicit Dependencies</td><td>Make component dependencies visible</td></tr>
+                <tr><td>Don't Repeat Abstractions Prematurely</td><td>Avoid creating unnecessary abstractions</td></tr>
+                <tr><td>Fail Fast</td><td>Detect and report invalid conditions early</td></tr>
+                <tr><td>Design by Contract</td><td>Define preconditions, postconditions, and invariants</td></tr>
+                <tr><td>Orthogonality</td><td>Keep independent concerns independent</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">GRASP Principles</div>
+    <div class="intro">
+        <p>GRASP stands for <strong>General Responsibility Assignment Software Patterns</strong>. GRASP helps determine which class should own a particular responsibility.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>GRASP principle</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Information Expert</td><td>Assign responsibility to the class with the required information</td></tr>
+                <tr><td>Creator</td><td>Determine which class should create an object</td></tr>
+                <tr><td>Controller</td><td>Assign responsibility for handling system events</td></tr>
+                <tr><td>Low Coupling</td><td>Minimize inter-class dependencies</td></tr>
+                <tr><td>High Cohesion</td><td>Keep class responsibilities focused</td></tr>
+                <tr><td>Polymorphism</td><td>Handle behavioral variations through polymorphism</td></tr>
+                <tr><td>Pure Fabrication</td><td>Introduce a service-like class when needed for better design</td></tr>
+                <tr><td>Indirection</td><td>Use intermediate objects to reduce direct coupling</td></tr>
+                <tr><td>Protected Variations</td><td>Isolate points of expected change</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Object Relationships and Class Design</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Topic</th><th>Concepts</th></tr></thead>
+            <tbody>
+                <tr><td><a href="GEN/Association.html" target="_blank" rel="noopener">Association</a></td><td>Unidirectional and bidirectional relationships</td></tr>
+                <tr><td><a href="GEN/Aggregation.html" target="_blank" rel="noopener">Aggregation</a></td><td>Shared ownership</td></tr>
+                <tr><td><a href="GEN/Composition.html" target="_blank" rel="noopener">Composition</a></td><td>Strong ownership and lifecycle relationship</td></tr>
+                <tr><td>Generalization</td><td>Inheritance and superclass relationships</td></tr>
+                <tr><td>Realization</td><td>Implementing interfaces</td></tr>
+                <tr><td><a href="GEN/Dependency.html" target="_blank" rel="noopener">Dependency</a></td><td>Usage relationships</td></tr>
+                <tr><td>Cardinality</td><td>One-to-one, one-to-many, many-to-many</td></tr>
+                <tr><td>Class Responsibility</td><td>Assigning behavior and data to classes</td></tr>
+                <tr><td>Object Lifecycle</td><td>Creation, initialization, destruction</td></tr>
+                <tr><td>Value Object vs Entity</td><td>Identity-based vs value-based objects</td></tr>
+                <tr><td>Anemic Domain Model</td><td>Data-only objects vs behavior-rich domain objects</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Domain-Driven Design (DDD)</div>
+    <div class="intro">
+        <p>DDD connects object-oriented software design with real business domains.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Topic</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Domain Model</td><td>Object representation of business concepts</td></tr>
+                <tr><td>Entity</td><td>Domain object with identity</td></tr>
+                <tr><td>Value Object</td><td>Object defined by its values</td></tr>
+                <tr><td>Aggregate</td><td>Consistency boundary around related domain objects</td></tr>
+                <tr><td>Aggregate Root</td><td>Entry point to an aggregate</td></tr>
+                <tr><td>Repository</td><td>Abstraction over aggregate persistence</td></tr>
+                <tr><td>Domain Service</td><td>Business logic not naturally owned by an entity</td></tr>
+                <tr><td>Domain Event</td><td>Representation of something significant that happened</td></tr>
+                <tr><td>Factory</td><td>Encapsulation of complex domain object creation</td></tr>
+                <tr><td>Bounded Context</td><td>Boundary within which a domain model is consistent</td></tr>
+                <tr><td>Ubiquitous Language</td><td>Shared terminology between developers and business experts</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Object-Oriented Analysis and Design (OOAD)</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Topic</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Requirement Analysis</td><td>Identify functional and non-functional requirements</td></tr>
+                <tr><td>Use Case Modeling</td><td>Define interactions with the system</td></tr>
+                <tr><td>Object Identification</td><td>Discover domain objects and responsibilities</td></tr>
+                <tr><td>Responsibility Assignment</td><td>Decide which class performs which action</td></tr>
+                <tr><td>Class Diagram</td><td>Model classes, properties, methods, and relationships</td></tr>
+                <tr><td>Sequence Diagram</td><td>Model interactions over time</td></tr>
+                <tr><td>Activity Diagram</td><td>Model workflows</td></tr>
+                <tr><td>State Machine Diagram</td><td>Model states and transitions</td></tr>
+                <tr><td>CRC Cards</td><td>Class–Responsibility–Collaborator modeling</td></tr>
+                <tr><td>Iterative Design</td><td>Refine object models incrementally</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Software Architecture Concepts Related to OOD</div>
+    <div class="intro">
+        <p>These are broader architectural concepts, but they frequently influence object-oriented class design.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Topic</th><th>Key concepts</th></tr></thead>
+            <tbody>
+                <tr><td>Layered Architecture</td><td>Presentation, business, persistence layers</td></tr>
+                <tr><td>Hexagonal Architecture</td><td>Ports and Adapters</td></tr>
+                <tr><td>Clean Architecture</td><td>Dependency Rule, use cases, entities</td></tr>
+                <tr><td>Onion Architecture</td><td>Domain-centric dependency organization</td></tr>
+                <tr><td>Dependency Injection</td><td>Constructor, setter, method injection</td></tr>
+                <tr><td>Inversion of Control</td><td>Externalized object creation and lifecycle management</td></tr>
+                <tr><td>Repository Pattern</td><td>Abstracting data access</td></tr>
+                <tr><td>Unit of Work</td><td>Coordinating persistence changes</td></tr>
+                <tr><td><a href="GEN/MVC.html" target="_blank" rel="noopener">MVC</a></td><td>Model–View–Controller</td></tr>
+                <tr><td><a href="GEN/CQRS.html" target="_blank" rel="noopener">CQRS</a></td><td>Separating command and query models</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Code Smells, Anti-Patterns and Refactoring</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Category</th><th>Important topics</th></tr></thead>
+            <tbody>
+                <tr><td>Class Design Smells</td><td>God Class, Large Class, Lazy Class</td></tr>
+                <tr><td>Method Smells</td><td>Long Method, Long Parameter List</td></tr>
+                <tr><td>Coupling Smells</td><td>Feature Envy, Inappropriate Intimacy</td></tr>
+                <tr><td>Inheritance Smells</td><td>Refused Bequest, Parallel Inheritance Hierarchies</td></tr>
+                <tr><td>Data Smells</td><td>Primitive Obsession, Data Clumps</td></tr>
+                <tr><td>Duplication</td><td>Duplicated Code, Shotgun Surgery</td></tr>
+                <tr><td>Anti-Patterns</td><td>Golden Hammer, Spaghetti Code, Service Locator misuse</td></tr>
+                <tr><td>Refactoring</td><td>Extract Method, Extract Class, Move Method</td></tr>
+                <tr><td>Inheritance Refactoring</td><td>Replace Inheritance with Delegation</td></tr>
+                <tr><td>Conditional Refactoring</td><td>Replace Conditional with Polymorphism</td></tr>
+                <tr><td>Dependency Refactoring</td><td>Introduce Interface, Dependency Injection</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Evaluating Object-Oriented Design Quality</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Topic</th><th>What it evaluates</th></tr></thead>
+            <tbody>
+                <tr><td>Cohesion</td><td>How closely related class responsibilities are</td></tr>
+                <tr><td>Coupling</td><td>Degree of dependency between classes</td></tr>
+                <tr><td>Complexity</td><td>Structural and behavioral complexity</td></tr>
+                <tr><td>Encapsulation Quality</td><td>How effectively implementation details are hidden</td></tr>
+                <tr><td>Extensibility</td><td>Ease of adding new behavior</td></tr>
+                <tr><td>Maintainability</td><td>Ease of understanding and modifying code</td></tr>
+                <tr><td>Reusability</td><td>Ability to use components in multiple contexts</td></tr>
+                <tr><td>Testability</td><td>Ease of testing components independently</td></tr>
+                <tr><td>LCOM</td><td>Lack of Cohesion in Methods</td></tr>
+                <tr><td>CBO</td><td>Coupling Between Objects</td></tr>
+                <tr><td>DIT</td><td>Depth of Inheritance Tree</td></tr>
+                <tr><td>WMC</td><td>Weighted Methods per Class</td></tr>
+                <tr><td>RFC</td><td>Response For a Class</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Key Takeways</div>
+    <div class="intro">
+        <ul>
+            <li><strong>OOP</strong> provides the programming mechanisms.</li>
+            <li><strong>OOD principles</strong> guide how those mechanisms should be used.</li>
+            <li><strong>GRASP</strong> helps assign responsibilities to objects.</li>
+            <li><strong>SOLID</strong> helps organize classes and dependencies.</li>
+            <li><strong>Design patterns</strong> provide reusable solutions to recurring design problems.</li>
+            <li><strong>OOAD</strong> provides a process for analyzing and modeling object-oriented systems.</li>
+            <li><strong>DDD</strong> helps model complex business domains.</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<svg width="720" height="272" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 272" role="img" aria-label="NotificationService holds a MessageSender and a MessageFormatter; EmailSender and SmsSender implement MessageSender, PlainTextFormatter and BrandedFormatter implement MessageFormatter">
+    <defs><marker id="ns-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="ns-l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#9A9A9A"/></marker></defs>
+    <rect x="260" y="14" width="200" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="39" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">NotificationService</text>
+    <text x="360" y="55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">coordinates delivery</text>
+    <path d="M360 70 V92 H180 V112 M360 92 H540 V112" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <rect x="80" y="114" width="200" height="52" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="180" y="137" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">MessageSender</text>
+    <text x="180" y="153" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">interface</text>
+    <rect x="440" y="114" width="200" height="52" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="540" y="137" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">MessageFormatter</text>
+    <text x="540" y="153" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">interface</text>
+    <rect x="20" y="214" width="150" height="44" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="95" y="240.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">EmailSender</text>
+    <rect x="190" y="214" width="150" height="44" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="265" y="240.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">SmsSender</text>
+    <rect x="380" y="214" width="150" height="44" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="455" y="240.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">PlainTextFormatter</text>
+    <rect x="550" y="214" width="150" height="44" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="625" y="240.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">BrandedFormatter</text>
+    <path d="M95 214 V194 H180 V168" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ns-l)"/>
+    <path d="M265 214 V194 H180 V168" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ns-l)"/>
+    <path d="M455 214 V194 H540 V168" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ns-l)"/>
+    <path d="M625 214 V194 H540 V168" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ns-l)"/>
+    <text x="180" y="208" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" fill="#555555" font-style="italic">implements</text>
+    <text x="540" y="208" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" fill="#555555" font-style="italic">implements</text>
+</svg>

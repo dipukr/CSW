@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MVC Pattern - Notes</title>
-<link rel="stylesheet" href="../styles.css">
+<title>MVC Pattern</title>
+<link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
@@ -176,7 +176,7 @@
 
     <span class="code-keyword">public void</span> setDisplay(<span class="code-class">String</span> text) {display.setText(text);}
 
-    <span class="code-comment"># Let the controller attach handlers to each operation</span>
+    <span class="code-comment">Let the controller attach handlers to each operation</span>
     <span class="code-keyword">public void</span> addAddListener(<span class="code-class">ActionListener</span> l)      {plus.addActionListener(l);}
     <span class="code-keyword">public void</span> addSubtractListener(<span class="code-class">ActionListener</span> l) {minus.addActionListener(l);}
     <span class="code-keyword">public void</span> addMultiplyListener(<span class="code-class">ActionListener</span> l) {times.addActionListener(l);}
@@ -226,7 +226,7 @@
     <span class="code-class">SwingUtilities</span>.invokeLater(() -&gt; {
         <span class="code-class">Model</span> model = <span class="code-keyword">new</span> <span class="code-class">Model</span>();
         <span class="code-class">View</span> view = <span class="code-keyword">new</span> <span class="code-class">View</span>();
-        <span class="code-keyword">var controller = new</span> <span class="code-class">Controller</span>(model, view); <span class="code-comment"># Controller wires them</span>
+        <span class="code-keyword">var controller = new</span> <span class="code-class">Controller</span>(model, view); <span class="code-comment">Controller wires them</span>
         view.setVisible(<span class="code-keyword">true</span>);
     });
 }</code></pre></div>

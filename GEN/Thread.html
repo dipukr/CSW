@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thread - Notes</title>
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
@@ -173,17 +173,17 @@
             <div class="code-wrapper">
 <pre><code><span class="code-keyword">void</span> <span class="code-class">main</span>(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
     <span class="code-class">Thread</span> monitor = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
-        <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {                   <span class="code-comment"># Endless background loop</span>
+        <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {                   <span class="code-comment">Endless background loop</span>
             <span class="code-class">System</span>.out.println(<span class="code-string">"monitoring..."</span>);
             <span class="code-keyword">try</span> {<span class="code-class">Thread</span>.sleep(<span class="code-number">200</span>);}
             <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {<span class="code-keyword">return</span>;}
         }
     });
 
-    monitor.setDaemon(<span class="code-keyword">true</span>);          <span class="code-comment"># must be set before start()</span>
+    monitor.setDaemon(<span class="code-keyword">true</span>);          <span class="code-comment">must be set before start()</span>
     monitor.start();
 
-    <span class="code-class">Thread</span>.sleep(<span class="code-number">500</span>);                 <span class="code-comment"># Main is the only user thread</span>
+    <span class="code-class">Thread</span>.sleep(<span class="code-number">500</span>);                 <span class="code-comment">Main is the only user thread</span>
     <span class="code-class">System</span>.out.println(<span class="code-string">"main done, JVM exits and kills daemon"</span>);
 }</code></pre>
             </div>

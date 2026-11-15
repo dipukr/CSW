@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composition</title>
+<link rel="stylesheet" href="../src/styles.css">
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var box = document.getElementById("gw-compose");
+    if (!box) return;
+    var pick = function (name) { return box.querySelector('input[name="' + name + '"]:checked').value; };
+    var draw = function () {
+        var sms = pick("gw-sender") === "sms", branded = pick("gw-format") === "branded";
+        box.querySelector('[data-o="to"]').textContent = sms ? "SMS to +919876543210:" : "EMAIL to alice@example.com:";
+        box.querySelector('[data-o="msg"]').textContent = (branded ? "[ACME] " : "") + "Your order has shipped";
+    };
+    box.querySelectorAll("input").forEach(function (el) { el.addEventListener("change", draw); });
+    box.querySelector('[data-act="copy"]').onclick = function () {
+        var sender = pick("gw-sender") === "sms" ? "new SmsSender()" : "new EmailSender()";
+        var formatter = pick("gw-format") === "branded" ? "new BrandedFormatter(\"ACME\")" : "new PlainTextFormatter()";
+        var text = "NotificationService service = new NotificationService(" + sender + ", " + formatter + ");";
+        var btn = this;
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy Java configuration"; }, 1500); });
+    };
+    draw();
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Composition</div>
+
+    <div class="intro">
+        <p>Composition is a stronger form of association where one object contains another object and the contained object cannot exist independently of the container.</p>
+        <p>The lifetime of the contained object depends on the lifetime of the container.</p>
+        <p>In composition if owning object is garbage collected the owned object will also be which is not the case in aggregation.</p>
+        <p>Composition means the child entity (order items) is part of a whole and cannot exist independently of the parent entity (order). The child entity is contained in the parent entity and can only be accessed via the parent entity.</p>
+        <p>Both composition and aggregation express a has-a relationship.</p>
+        <p>Composition expresses a strong has-a relationship (whole-part ownership).</p>
+        <p>Aggregation expresses a weak has-a relationship (association without ownership).</p>
+        <p>Both composition and inheritance used to solve the same problem that is code reuse.</p>
+        <p>Process of building complex objects from simpler ones is called object composition.</p>
+        <p>Use inheritance only when you want both hierarchical reuse of code and subtype polymorphism.</p>
+    </div>
+
+    <div class="section code-section">
+        <div class="code-layout code-layout-equal">
+            <div class="code-wrapper">
+<pre><code><span class="code-keyword">public class</span> <span class="code-class">Room</span> {
+    <span class="code-keyword">private</span> String name;
+    <span class="code-class">public Room</span>(String name) {<span class="code-keyword">this</span>.name = name;}
+}
+
+<span class="code-keyword">public class</span> <span class="code-class">House</span> {
+    <span class="code-comment">House owns and creates its Rooms</span>
+    <span class="code-keyword">private</span> List&lt;<span class="code-class">Room</span>&gt; rooms = <span class="code-keyword">new</span> ArrayList&lt;&gt;();
+
+    <span class="code-class">public House</span>() {
+        rooms.add(<span class="code-keyword">new</span> <span class="code-class">Room</span>(<span class="code-string">"Kitchen"</span>));
+        rooms.add(<span class="code-keyword">new</span> <span class="code-class">Room</span>(<span class="code-string">"Bedroom"</span>));
+    }
+}</code></pre>
+            </div>
+
+            <div class="code-explanation">
+                <div class="code-explanation-title">How composition works</div>
+                <p><code>House</code> creates its own <code>Room</code> objects internally.<br><br>
+                    The rooms belong to that house and are not shared.<br><br>
+                    When the house is garbage collected, its rooms go with it.<br><br>
+                    This models a strong <em>part-of</em> ownership relationship.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section cmp">
+        <div class="section-title">Composition vs Inheritance</div>
+        <div class="section-content">
+            <table class="cmp-table">
+                <thead><tr><th>Aspect</th><th>Composition</th><th>Inheritance</th></tr></thead>
+                <tbody>
+                    <tr><td>Relationship</td><td><em>has-a</em> &mdash; an object holds a reference to another</td><td><em>is-a</em> &mdash; a subclass is a kind of its superclass</td></tr>
+                    <tr><td>Coupling</td><td>Loose &mdash; depends only on the other type's interface</td><td>Tight &mdash; subclass is bound to the parent's implementation</td></tr>
+                    <tr><td>Binding</td><td>Decided at runtime; behaviour can be swapped dynamically</td><td>Fixed at compile time by the class hierarchy</td></tr>
+                    <tr><td>Flexibility</td><td>High &mdash; swap or add parts without touching the container</td><td>Low &mdash; changing the hierarchy affects all subclasses</td></tr>
+                    <tr><td>Code reuse</td><td>By delegating to contained objects</td><td>By inheriting fields and methods from the parent</td></tr>
+                    <tr><td>Polymorphism</td><td>Via interfaces the parts implement</td><td>Via subtype substitution of the superclass</td></tr>
+                    <tr><td>Encapsulation</td><td>Strong &mdash; internals of the part stay hidden</td><td>Weaker &mdash; subclass sees protected members of the parent</td></tr>
+                    <tr><td>Fragile base class</td><td>Not affected &mdash; parts are independent</td><td>Prone &mdash; parent changes can silently break subclasses</td></tr>
+                    <tr><td>Multiple sources</td><td>Can compose many objects freely</td><td>Java allows only single class inheritance</td></tr>
+                    <tr><td>When to use</td><td>Default choice for reuse; parts vary or change over time</td><td>Only when you need both code reuse and subtype polymorphism</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!-- chatgpt-guide:start -->
+
+    <div class="subheading">Composition in Java — Complete Guide with Code Examples</div>
+    <div class="intro">
+        <p><strong>Composition is one of the most important principles in Object-Oriented Programming (OOP).</strong> It allows you to build complex objects by combining smaller, independent objects rather than inheriting their implementations.</p>
+        <p>The principle <strong>"Favor Composition Over Inheritance"</strong>, popularized by the Gang of Four design patterns book, is fundamental to designing flexible, maintainable, testable software.</p>
+        <p>We will cover composition from basic Java examples through real-world designs, runtime behavior changes, design patterns, and Spring Boot.</p>
+    </div>
+
+    <div class="subheading">1. What is composition?</div>
+    <div class="intro">
+        <p><strong>Composition is an object-oriented design technique in which one object contains or uses other objects to provide its functionality.</strong></p>
+        <p>Instead of inheriting behavior from a parent class, an object delegates work to the objects it contains.</p>
+        <p>Consider a <code>Car</code> and an <code>Engine</code>.</p>
+        <ul>
+            <li>A car <strong>has an</strong> engine.</li>
+            <li>A car <strong>is not an</strong> engine.</li>
+            <li>A car delegates engine-related operations to its engine.</li>
+        </ul>
+        <p>This is a <strong>HAS-A relationship</strong>.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/composition-car-engine.svg" alt="Car has-a Engine" style="width:100%;max-width:460px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Example 1: Basic composition</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Engine</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> start() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Engine started"</span>);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> stop() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Engine stopped"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Car</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Engine</span> engine = <span class="code-keyword">new</span> <span class="code-class">Engine</span>(); <span class="code-comment">Car contains an Engine object</span>
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> start() {
+        engine.start(); <span class="code-comment">Delegation</span>
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Car is moving"</span>);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> stop() {
+        engine.stop();
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Main</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">Car</span> car = <span class="code-keyword">new</span> <span class="code-class">Car</span>();
+        car.start();
+        car.stop();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Engine started
+Car is moving
+Engine stopped</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Notice what is happening:</p>
+        <ol>
+            <li><code>Car</code> contains an <code>Engine</code> object.</li>
+            <li><code>Car</code> does not extend <code>Engine</code>.</li>
+            <li>When <code>car.start()</code> is called, the <code>Car</code> delegates part of the operation to <code>engine.start()</code>.</li>
+            <li><code>Engine</code> can have its own internal logic without exposing that implementation through <code>Car</code>&rsquo;s API.</li>
+        </ol>
+        <p>This is called <strong>delegation</strong>, a fundamental mechanism used in composition.</p>
+        <p class="minor-heading"><strong>Composition vs inheritance</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Composition</th><th>Inheritance</th></tr></thead>
+            <tbody>
+                <tr><td>Represents HAS-A or USES-A</td><td>Represents IS-A</td></tr>
+                <tr><td>Uses object references</td><td>Uses <code>extends</code></td></tr>
+                <tr><td>Reuses behavior through delegation</td><td>Reuses inherited methods</td></tr>
+                <tr><td>Can change delegates at runtime</td><td>Cannot change the superclass at runtime</td></tr>
+                <tr><td>Allows independently varying behaviors</td><td>Couples subclasses to their superclass</td></tr>
+                <tr><td>Often uses interfaces</td><td>Uses classes/interfaces in a subtype hierarchy</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Animal</span> {} <span class="code-comment">Inheritance: IS-A</span>
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Dog</span> <span class="code-keyword">extends</span> <span class="code-class">Animal</span> {} <span class="code-comment">Dog IS AN Animal</span>
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Engine</span> {} <span class="code-comment">Composition: HAS-A</span>
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Car</span> { <span class="code-comment">Car HAS AN Engine</span>
+    <span class="code-keyword">private</span> <span class="code-class">Engine</span> engine;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>One subtle distinction: in strict UML terminology, composition implies ownership and a dependent lifecycle, whereas aggregation is a weaker whole–part relationship. In everyday Java design, the term composition is also widely used for collaborating objects supplied through constructors or setters, even when they have independent lifecycles.</p>
+    </div>
+
+    <div class="subheading">2. Why choose composition over inheritance?</div>
+    <div class="intro">
+        <p>The biggest problem with inheritance is that <strong>it creates a fixed relationship between a child class and its parent implementation</strong>.</p>
+        <p>Inheritance works well for genuine subtype relationships, but becomes problematic when used only to reuse code.</p>
+        <p>Consider a notification system that supports:</p>
+        <ul>
+            <li>Email and SMS delivery.</li>
+            <li>Plain-text and HTML formatting.</li>
+            <li>Different retry behaviors.</li>
+        </ul>
+        <p>Let&rsquo;s implement this first with inheritance, identify its limitations, and then redesign it using composition.</p>
+    </div>
+
+    <div class="subheading">3. The problem with inheritance — practical example</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Approach A: Using inheritance</strong></p>
+        <p>Suppose we start with an abstract notification class.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">abstract</span> <span class="code-keyword">class</span> <span class="code-class">Notification</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">abstract</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailPlainNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: "</span> + message);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsPlainNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: "</span> + message);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailBrandedNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: [ACME] "</span> + message);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsBrandedNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: [ACME] "</span> + message);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Usage:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Notification</span> notification = <span class="code-keyword">new</span> <span class="code-class">EmailPlainNotification</span>();
+notification.send(<span class="code-string">"Order shipped"</span>);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This works, but there are problems.</p>
+        <p class="minor-heading"><strong>Problem 1: Subclass explosion</strong></p>
+        <p>Suppose we support three delivery channels, three formatting strategies, and two retry policies.</p>
+    </div>
+    <div class="gw-card gw-vflow">
+        <div class="gw-cols3">
+            <div class="gw-tile"><p class="gw-big">3</p><p class="gw-note2">Channels</p></div>
+            <div class="gw-tile"><p class="gw-big">3</p><p class="gw-note2">Formats</p></div>
+            <div class="gw-tile"><p class="gw-big">2</p><p class="gw-note2">Retry policies</p></div>
+        </div>
+        <div class="gw-eq"><p class="gw-note2">3 &times; 3 &times; 2 =</p><p class="gw-bigger">18 subclasses</p></div>
+        <p class="gw-cap" style="text-align:center">If every combination requires its own concrete subclass</p>
+    </div>
+    <div class="intro">
+        <p>We might end up with classes such as:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>EmailPlainNoRetryNotification
+EmailPlainRetryNotification
+EmailBrandedNoRetryNotification
+EmailBrandedRetryNotification
+SmsPlainNoRetryNotification
+SmsPlainRetryNotification
+...</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Every additional dimension of behavior multiplies the potential combinations.</p>
+        <p>An inheritance hierarchy could use intermediate subclasses to share some code, but Java&rsquo;s single class inheritance makes independently combining these dimensions awkward.</p>
+        <p class="minor-heading"><strong>Problem 2: Tight coupling</strong></p>
+        <p>If subclasses depend heavily on how the parent class works, changing the parent can break multiple subclasses.</p>
+        <p>For example, a parent may change the order in which overridable methods are called. A subclass that relies on the previous order may behave incorrectly, even though it still compiles.</p>
+        <p>This is known as the <strong>fragile base class problem</strong>.</p>
+        <p class="minor-heading"><strong>Problem 3: Fixed inherited behavior</strong></p>
+        <p>Consider:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Notification</span> notification = <span class="code-keyword">new</span> <span class="code-class">EmailPlainNotification</span>();</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The object&rsquo;s runtime type is <code>EmailPlainNotification</code>. You cannot make that same object become an <code>SmsBrandedNotification</code>.</p>
+        <p>You can replace the reference with a different subclass instance, but you cannot independently replace the inherited behavior of the existing object.</p>
+        <p>With composition, you can change just the delivery channel or just the formatter.</p>
+        <p class="minor-heading"><strong>Problem 4: Poor separation of responsibilities</strong></p>
+        <p>Our notification subclasses are simultaneously responsible for deciding how to format a message and how to deliver it.</p>
+        <p>These responsibilities change for different reasons and should be independently configurable.</p>
+    </div>
+
+    <div class="subheading">4. Redesign using composition</div>
+    <div class="intro">
+        <p>We can separate the notification system into three independent responsibilities.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/composition-notification-structure.svg" alt="NotificationService composed of MessageSender and MessageFormatter" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>The <code>NotificationService</code> now contains two collaborating objects:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">NotificationService</span> {
+    <span class="code-keyword">private</span> <span class="code-class">MessageSender</span> sender;
+    <span class="code-keyword">private</span> <span class="code-class">MessageFormatter</span> formatter;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The service no longer needs to know whether a message is sent through email or SMS, or whether a message is formatted as plain text or branded text.</p>
+        <p>It only knows the interfaces.</p>
+        <p class="minor-heading"><strong>Complete runnable Java implementation</strong></p>
+        <p>Save as <code>CompositionDemo.java</code>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-comment">============================================</span>
+<span class="code-comment">1. Delivery behavior</span>
+<span class="code-comment">============================================</span>
+
+<span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">MessageSender</span> {
+    <span class="code-keyword">void</span> send(<span class="code-class">String</span> destination, <span class="code-class">String</span> message);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"EMAIL to "</span> + destination + <span class="code-string">": "</span> + message);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS to "</span> + destination + <span class="code-string">": "</span> + message);
+    }
+}
+
+<span class="code-comment">============================================</span>
+<span class="code-comment">2. Formatting behavior</span>
+<span class="code-comment">============================================</span>
+
+<span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">MessageFormatter</span> {
+    <span class="code-class">String</span> format(<span class="code-class">String</span> message);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PlainTextFormatter</span> <span class="code-keyword">implements</span> <span class="code-class">MessageFormatter</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-class">String</span> format(<span class="code-class">String</span> message) {
+        <span class="code-keyword">return</span> message;
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">BrandedFormatter</span> <span class="code-keyword">implements</span> <span class="code-class">MessageFormatter</span> {
+    <span class="code-keyword">private</span> <span class="code-class">String</span> brand;
+
+    <span class="code-keyword">public</span> <span class="code-class">BrandedFormatter</span>(<span class="code-class">String</span> brand) {
+        <span class="code-keyword">this</span>.brand = brand;
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-class">String</span> format(<span class="code-class">String</span> message) {
+        <span class="code-keyword">return</span> <span class="code-string">"["</span> + brand + <span class="code-string">"] "</span> + message;
+    }
+}
+
+<span class="code-comment">============================================</span>
+<span class="code-comment">3. Composition</span>
+<span class="code-comment">============================================</span>
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">NotificationService</span> {
+    <span class="code-keyword">private</span> <span class="code-class">MessageSender</span> sender;
+    <span class="code-keyword">private</span> <span class="code-class">MessageFormatter</span> formatter;
+
+    <span class="code-keyword">public</span> <span class="code-class">NotificationService</span>(<span class="code-class">MessageSender</span> sender, <span class="code-class">MessageFormatter</span> formatter) {
+        <span class="code-keyword">this</span>.sender = <span class="code-class">Objects</span>.requireNonNull(sender);
+        <span class="code-keyword">this</span>.formatter = <span class="code-class">Objects</span>.requireNonNull(formatter);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> sendNotification(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
+        <span class="code-class">String</span> formatted = formatter.format(message); <span class="code-comment">Step 1: Delegate formatting</span>
+        sender.send(destination, formatted); <span class="code-comment">Step 2: Delegate delivery</span>
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> setSender(<span class="code-class">MessageSender</span> sender) {
+        <span class="code-keyword">this</span>.sender = <span class="code-class">Objects</span>.requireNonNull(sender);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> setFormatter(<span class="code-class">MessageFormatter</span> formatter) {
+        <span class="code-keyword">this</span>.formatter = <span class="code-class">Objects</span>.requireNonNull(formatter);
+    }
+}
+
+<span class="code-comment">============================================</span>
+<span class="code-comment">4. Application</span>
+<span class="code-comment">============================================</span>
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CompositionDemo</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">NotificationService</span> notification = <span class="code-keyword">new</span> <span class="code-class">NotificationService</span>(<span class="code-keyword">new</span> <span class="code-class">EmailSender</span>(), <span class="code-keyword">new</span> <span class="code-class">PlainTextFormatter</span>());
+        notification.sendNotification(<span class="code-string">"alice@example.com"</span>, <span class="code-string">"Order shipped"</span>); <span class="code-comment">Scenario 1: Email + Plain Text</span>
+        notification.setSender(<span class="code-keyword">new</span> <span class="code-class">SmsSender</span>()); <span class="code-comment">Change only the delivery behavior</span>
+        notification.setFormatter(<span class="code-keyword">new</span> <span class="code-class">BrandedFormatter</span>(<span class="code-string">"ACME"</span>)); <span class="code-comment">Change only the formatting behavior</span>
+        notification.sendNotification(<span class="code-string">"+919876543210"</span>, <span class="code-string">"Order shipped"</span>); <span class="code-comment">Scenario 2: SMS + Branded</span>
+        notification.setSender(<span class="code-keyword">new</span> <span class="code-class">EmailSender</span>()); <span class="code-comment">Change only delivery again</span>
+        notification.sendNotification(<span class="code-string">"bob@example.com"</span>, <span class="code-string">"Delivery confirmed"</span>); <span class="code-comment">Scenario 3: Email + Branded</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>EMAIL to alice@example.com: Order shipped
+SMS to +919876543210: [ACME] Order shipped
+EMAIL to bob@example.com: [ACME] Delivery confirmed</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>What improved?</strong></p>
+        <p>Notice that <strong>the </strong><code>NotificationService</code><strong> itself never changes class</strong>.</p>
+        <p>We can independently change its behavior by supplying different objects.</p>
+    </div>
+    <div class="gw-card gw-vflow" id="gw-compose">
+        <p class="gw-label" style="margin:0">Try changing the composed behaviors</p>
+        <div class="gw-cols2" style="gap:12px">
+            <div class="gw-field">
+                <label>Delivery strategy</label>
+                <label class="gw-radio"><input type="radio" name="gw-sender" value="email" checked> EmailSender</label>
+                <label class="gw-radio"><input type="radio" name="gw-sender" value="sms"> SmsSender</label>
+            </div>
+            <div class="gw-field">
+                <label>Formatting strategy</label>
+                <label class="gw-radio"><input type="radio" name="gw-format" value="plain" checked> PlainTextFormatter</label>
+                <label class="gw-radio"><input type="radio" name="gw-format" value="branded"> BrandedFormatter</label>
+            </div>
+        </div>
+        <p class="gw-cap">Resulting behavior</p>
+        <div class="gw-phase">
+            <p class="gw-n" data-o="to"></p>
+            <p class="gw-t" data-o="msg"></p>
+        </div>
+        <div class="gw-btns"><button class="gw-btn" type="button" data-act="copy">Copy Java configuration</button></div>
+    </div>
+    <div class="intro">
+        <p>With two senders and two formatters, we have four possible combinations without creating four subclasses. As more independent behaviors are introduced, the advantage becomes larger.</p>
+        <p>This is the key difference:</p>
+        <p><strong>Inheritance reuses a fixed class implementation. Composition assembles behavior from collaborating objects.</strong></p>
+        <p>The pattern used in this notification example is also an application of the <strong>Strategy design pattern</strong>, which we will examine below.</p>
+    </div>
+
+    <div class="subheading">5. Composition can be immutable or runtime-configurable</div>
+    <div class="intro">
+        <p>An important distinction: composition does <strong>not</strong> require mutable fields or setter methods.</p>
+        <p class="minor-heading"><strong>Immutable composition — usually preferred</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">NotificationService</span> {
+    <span class="code-keyword">private</span> <span class="code-class">MessageSender</span> sender;
+    <span class="code-keyword">private</span> <span class="code-class">MessageFormatter</span> formatter;
+
+    <span class="code-keyword">public</span> <span class="code-class">NotificationService</span>(<span class="code-class">MessageSender</span> sender, <span class="code-class">MessageFormatter</span> formatter) {
+        <span class="code-keyword">this</span>.sender = <span class="code-class">Objects</span>.requireNonNull(sender);
+        <span class="code-keyword">this</span>.formatter = <span class="code-class">Objects</span>.requireNonNull(formatter);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> sendNotification(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
+        sender.send(destination, formatter.format(message));
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Here, dependencies are supplied through the constructor and cannot be reassigned.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">NotificationService</span> emailService = <span class="code-keyword">new</span> <span class="code-class">NotificationService</span>(<span class="code-keyword">new</span> <span class="code-class">EmailSender</span>(), <span class="code-keyword">new</span> <span class="code-class">PlainTextFormatter</span>());
+<span class="code-class">NotificationService</span> smsService = <span class="code-keyword">new</span> <span class="code-class">NotificationService</span>(<span class="code-keyword">new</span> <span class="code-class">SmsSender</span>(), <span class="code-keyword">new</span> <span class="code-class">BrandedFormatter</span>(<span class="code-string">"ACME"</span>));</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Each service has its own behavior configuration. This approach is often easier to reason about, especially when objects are shared across threads.</p>
+        <p class="minor-heading"><strong>Runtime selection without modifying a shared object</strong></p>
+        <p>In a multithreaded application, changing a singleton service&rsquo;s sender using setters can create race conditions.</p>
+        <p>A safer approach is to select an appropriate sender for each request.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">enum</span> <span class="code-class">Channel</span> {
+    EMAIL, SMS
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">NotificationRouter</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Map</span>&lt;<span class="code-class">Channel</span>, <span class="code-class">MessageSender</span>&gt; senders;
+
+    <span class="code-keyword">public</span> <span class="code-class">NotificationRouter</span>() {
+        senders = <span class="code-class">Map</span>.of(<span class="code-class">Channel</span>.EMAIL, <span class="code-keyword">new</span> <span class="code-class">EmailSender</span>(), <span class="code-class">Channel</span>.SMS, <span class="code-keyword">new</span> <span class="code-class">SmsSender</span>());
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">Channel</span> channel, <span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
+        <span class="code-class">MessageSender</span> sender = senders.get(channel);
+        <span class="code-keyword">if</span> (sender == <span class="code-keyword">null</span>) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Unsupported channel: "</span> + channel);
+        }
+        sender.send(destination, message);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Usage:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">NotificationRouter</span> router = <span class="code-keyword">new</span> <span class="code-class">NotificationRouter</span>();
+router.send(<span class="code-class">Channel</span>.EMAIL, <span class="code-string">"alice@example.com"</span>, <span class="code-string">"Hello"</span>);
+router.send(<span class="code-class">Channel</span>.SMS, <span class="code-string">"+919876543210"</span>, <span class="code-string">"Hello"</span>);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The router remains the same object, but independently composed sender objects determine the behavior of each request. This design avoids mutating the router&rsquo;s shared configuration.</p>
+    </div>
+
+    <div class="subheading">6. Composition and the Strategy design pattern</div>
+    <div class="intro">
+        <p>Composition is a general OOP technique. <strong>Strategy</strong> is a design pattern that uses composition to make interchangeable algorithms possible.</p>
+        <p>Consider a payment system.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">PaymentStrategy</span> {
+    <span class="code-keyword">void</span> pay(<span class="code-keyword">double</span> amount);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CardPayment</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentStrategy</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-keyword">double</span> amount) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by card: "</span> + amount);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">UpiPayment</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentStrategy</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-keyword">double</span> amount) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by UPI: "</span> + amount);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Now build a <code>Checkout</code> object using composition.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Checkout</span> {
+    <span class="code-keyword">private</span> <span class="code-class">PaymentStrategy</span> paymentStrategy;
+
+    <span class="code-keyword">public</span> <span class="code-class">Checkout</span>(<span class="code-class">PaymentStrategy</span> paymentStrategy) {
+        <span class="code-keyword">this</span>.paymentStrategy = paymentStrategy;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> changePaymentMethod(<span class="code-class">PaymentStrategy</span> paymentStrategy) {
+        <span class="code-keyword">this</span>.paymentStrategy = paymentStrategy;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> placeOrder(<span class="code-keyword">double</span> amount) {
+        paymentStrategy.pay(amount);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Usage:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Checkout</span> checkout = <span class="code-keyword">new</span> <span class="code-class">Checkout</span>(<span class="code-keyword">new</span> <span class="code-class">CardPayment</span>());
+checkout.placeOrder(<span class="code-number">1000</span>);
+checkout.changePaymentMethod(<span class="code-keyword">new</span> <span class="code-class">UpiPayment</span>()); <span class="code-comment">Change behavior at runtime</span>
+checkout.placeOrder(<span class="code-number">2000</span>);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Paying by card: 1000.0
+Paying by UPI: 2000.0</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The <code>Checkout</code> class does not implement card or UPI payment algorithms. It composes a <code>PaymentStrategy</code>, and the chosen strategy performs the work.</p>
+        <p>For financial applications, use <code>BigDecimal</code> or an appropriate money type instead of <code>double</code>; the example above uses <code>double</code> only to keep the design demonstration short.</p>
+    </div>
+
+    <div class="subheading">7. Composition with the Decorator pattern</div>
+    <div class="intro">
+        <p>Composition also enables us to add functionality around existing implementations without modifying them.</p>
+        <p>Suppose every notification must be logged.</p>
+        <p>With inheritance, we might create <code>LoggingEmailSender</code>, <code>LoggingSmsSender</code>, and more subclasses for every existing sender.</p>
+        <p>With composition, one reusable wrapper is enough.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LoggingSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
+    <span class="code-keyword">private</span> <span class="code-class">MessageSender</span> delegate;
+
+    <span class="code-keyword">public</span> <span class="code-class">LoggingSender</span>(<span class="code-class">MessageSender</span> delegate) {
+        <span class="code-keyword">this</span>.delegate = delegate;
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending notification..."</span>);
+        delegate.send(destination, message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Send operation completed"</span>);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Usage:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">MessageSender</span> email = <span class="code-keyword">new</span> <span class="code-class">LoggingSender</span>(<span class="code-keyword">new</span> <span class="code-class">EmailSender</span>());
+<span class="code-class">MessageSender</span> sms = <span class="code-keyword">new</span> <span class="code-class">LoggingSender</span>(<span class="code-keyword">new</span> <span class="code-class">SmsSender</span>());
+email.send(<span class="code-string">"alice@example.com"</span>, <span class="code-string">"Welcome"</span>);
+sms.send(<span class="code-string">"+919876543210"</span>, <span class="code-string">"Welcome"</span>);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This is the <strong>Decorator design pattern</strong>.</p>
+        <p>The decorator implements the same interface as the object it wraps. Because both share an interface, the decorator can be added without modifying the original sender implementation.</p>
+        <p>We can even compose multiple decorators:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">MessageSender</span> sender = <span class="code-keyword">new</span> <span class="code-class">LoggingSender</span>(<span class="code-keyword">new</span> <span class="code-class">LoggingSender</span>(<span class="code-keyword">new</span> <span class="code-class">EmailSender</span>()));</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>In practice, each wrapper would provide a distinct behavior, such as metrics, validation, or retry policies. Retrying a delivery operation requires care because repeating an operation that already succeeded can cause duplicate messages.</p>
+    </div>
+
+    <div class="subheading">8. Composition improves unit testing</div>
+    <div class="intro">
+        <p>This is one of the biggest advantages in production applications.</p>
+        <p>Suppose we want to test that <code>NotificationService</code> formats messages correctly. We should not need to send a real email or SMS.</p>
+        <p>We can replace the sender with a fake implementation.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">FakeSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
+    <span class="code-class">String</span> lastDestination;
+    <span class="code-class">String</span> lastMessage;
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
+        lastDestination = destination;
+        lastMessage = message;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>JUnit 5 test:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">NotificationServiceTest</span> {
+    <span class="code-annotation">@Test</span>
+    <span class="code-keyword">void</span> shouldFormatMessageBeforeSending() {
+        <span class="code-class">FakeSender</span> fakeSender = <span class="code-keyword">new</span> <span class="code-class">FakeSender</span>();
+        <span class="code-class">NotificationService</span> service = <span class="code-keyword">new</span> <span class="code-class">NotificationService</span>(fakeSender, <span class="code-keyword">new</span> <span class="code-class">BrandedFormatter</span>(<span class="code-string">"ACME"</span>));
+        service.sendNotification(<span class="code-string">"alice@example.com"</span>, <span class="code-string">"Order shipped"</span>);
+        assertEquals(<span class="code-string">"alice@example.com"</span>, fakeSender.lastDestination);
+        assertEquals(<span class="code-string">"[ACME] Order shipped"</span>, fakeSender.lastMessage);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The test doesn&rsquo;t need a network connection, SMTP server, or SMS gateway.</p>
+        <p>Composition makes this straightforward because the service depends on an abstraction (<code>MessageSender</code>), not a concrete delivery mechanism. Inheritance can also support test doubles, but interface-based composition usually gives each component a smaller and more focused testing contract.</p>
+    </div>
+
+    <div class="subheading">9. Composition in Spring Boot</div>
+    <div class="intro">
+        <p>Spring Boot relies heavily on composition and dependency injection.</p>
+        <p>Let&rsquo;s build a checkout service that delegates payment processing to a separate component.</p>
+        <p class="minor-heading"><strong>Step 1: Define an interface</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">PaymentGateway</span> {
+    <span class="code-keyword">void</span> charge(<span class="code-class">BigDecimal</span> amount);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Step 2: Implement different gateways</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-annotation">@Component</span>(<span class="code-string">"cardGateway"</span>)
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CardPaymentGateway</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentGateway</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> charge(<span class="code-class">BigDecimal</span> amount) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Card payment: "</span> + amount);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-annotation">@Component</span>(<span class="code-string">"upiGateway"</span>)
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">UpiPaymentGateway</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentGateway</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> charge(<span class="code-class">BigDecimal</span> amount) {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"UPI payment: "</span> + amount);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>These are illustrative payment implementations, not real integrations with a payment provider.</p>
+        <p class="minor-heading"><strong>Step 3: Compose the service using constructor injection</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-annotation">@Service</span>
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CheckoutService</span> {
+    <span class="code-keyword">private</span> <span class="code-class">PaymentGateway</span> paymentGateway;
+
+    <span class="code-keyword">public</span> <span class="code-class">CheckoutService</span>(<span class="code-annotation">@Qualifier</span>(<span class="code-string">"cardGateway"</span>) <span class="code-class">PaymentGateway</span> paymentGateway) {
+        <span class="code-keyword">this</span>.paymentGateway = paymentGateway;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> checkout(<span class="code-class">BigDecimal</span> amount) {
+        paymentGateway.charge(amount);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Spring injects the <code>CardPaymentGateway</code> into <code>CheckoutService</code>.</p>
+        <p>If the application needs a different implementation, we can change the injection configuration without changing <code>CheckoutService</code>&rsquo;s business logic.</p>
+        <p>This demonstrates the relationship between three important concepts:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>Composition</td><td><code>CheckoutService</code> contains a <code>PaymentGateway</code> reference</td></tr>
+                <tr><td>Dependency Injection</td><td>Spring supplies the appropriate gateway object</td></tr>
+                <tr><td>Dependency Inversion Principle</td><td>High-level checkout logic depends on the <code>PaymentGateway</code> abstraction</td></tr>
+            </tbody>
+        </table></div>
+        <p>These concepts complement each other, but are not identical.</p>
+        <p><strong>Composition does not require Spring.</strong> The same design works with ordinary Java constructors, as shown in the earlier examples.</p>
+    </div>
+
+    <div class="subheading">10. Composition vs inheritance — deeper design comparison</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Design concern</th><th>Inheritance</th><th>Composition</th></tr></thead>
+            <tbody>
+                <tr><td>Relationship</td><td>IS-A</td><td>HAS-A / USES-A</td></tr>
+                <tr><td>Reuse mechanism</td><td>Inherited implementation</td><td>Object delegation</td></tr>
+                <tr><td>Coupling</td><td>Subclass may depend on superclass internals</td><td>Client depends on collaborator&rsquo;s API</td></tr>
+                <tr><td>Behavior changes</td><td>Override methods or replace subtype instance</td><td>Replace or configure individual collaborators</td></tr>
+                <tr><td>Multiple behaviors</td><td>May cause complex hierarchies</td><td>Independently combine objects</td></tr>
+                <tr><td>Testability</td><td>Can be harder when superclass behavior is involved</td><td>Dependencies can be easily substituted</td></tr>
+                <tr><td>Encapsulation</td><td>Protected implementation details may be exposed</td><td>Collaborator internals can remain private</td></tr>
+                <tr><td>Flexibility</td><td>Strong for stable subtype hierarchies</td><td>Strong for varying behavior and policies</td></tr>
+                <tr><td>Main drawback</td><td>Fragile hierarchies and inappropriate subtyping</td><td>More objects and delegation code</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>When inheritance violates substitutability</strong></p>
+        <p>Inheritance should respect the <strong>Liskov Substitution Principle (LSP)</strong>: a subtype should be usable wherever its parent type is expected without violating the parent&rsquo;s behavioral contract.</p>
+        <p>Consider this classic example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Bird</span> {
+    <span class="code-keyword">void</span> fly() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Flying"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Penguin</span> <span class="code-keyword">extends</span> <span class="code-class">Bird</span> {
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">void</span> fly() {
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">UnsupportedOperationException</span>(<span class="code-string">"Penguins cannot fly"</span>);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>A function that accepts a <code>Bird</code> and assumes <code>fly()</code> will work fails for a <code>Penguin</code>.</p>
+        <p>The problem is not that a penguin isn&rsquo;t a bird. The problem is that the base class incorrectly assumes every bird has a flying behavior.</p>
+        <p>A better model separates the capability.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">Movement</span> {
+    <span class="code-keyword">void</span> move();
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Flying</span> <span class="code-keyword">implements</span> <span class="code-class">Movement</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> move() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Flying"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Walking</span> <span class="code-keyword">implements</span> <span class="code-class">Movement</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> move() {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Walking"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Bird</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Movement</span> movement;
+
+    <span class="code-class">Bird</span>(<span class="code-class">Movement</span> movement) {
+        <span class="code-keyword">this</span>.movement = movement;
+    }
+
+    <span class="code-keyword">void</span> move() {
+        movement.move();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Usage:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Bird</span> eagle = <span class="code-keyword">new</span> <span class="code-class">Bird</span>(<span class="code-keyword">new</span> <span class="code-class">Flying</span>());
+<span class="code-class">Bird</span> penguin = <span class="code-keyword">new</span> <span class="code-class">Bird</span>(<span class="code-keyword">new</span> <span class="code-class">Walking</span>());
+eagle.move(); <span class="code-comment">Flying</span>
+penguin.move(); <span class="code-comment">Walking</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The key improvement is that movement is modeled as an independently variable capability rather than an assumption embedded in every bird subtype.</p>
+        <p>This is particularly useful when behavior is shared across otherwise unrelated classes.</p>
+    </div>
+
+    <div class="subheading">11. When should you actually use inheritance?</div>
+    <div class="intro">
+        <p>"Favor composition over inheritance" does <strong>not</strong> mean inheritance is bad or should never be used.</p>
+        <p>Inheritance remains appropriate when there is a genuine, stable subtype relationship and a clear behavioral contract.</p>
+        <p>For example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">abstract</span> <span class="code-keyword">class</span> <span class="code-class">Shape</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">abstract</span> <span class="code-keyword">double</span> area();
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Circle</span> <span class="code-keyword">extends</span> <span class="code-class">Shape</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">double</span> radius;
+
+    <span class="code-keyword">public</span> <span class="code-class">Circle</span>(<span class="code-keyword">double</span> radius) {
+        <span class="code-keyword">this</span>.radius = radius;
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">double</span> area() {
+        <span class="code-keyword">return</span> <span class="code-class">Math</span>.<span class="code-class">PI</span> * radius * radius;
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Rectangle</span> <span class="code-keyword">extends</span> <span class="code-class">Shape</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">double</span> width;
+    <span class="code-keyword">private</span> <span class="code-keyword">double</span> height;
+
+    <span class="code-keyword">public</span> <span class="code-class">Rectangle</span>(<span class="code-keyword">double</span> width, <span class="code-keyword">double</span> height) {
+        <span class="code-keyword">this</span>.width = width;
+        <span class="code-keyword">this</span>.height = height;
+    }
+
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">double</span> area() {
+        <span class="code-keyword">return</span> width * height;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Here, <code>Circle</code> and <code>Rectangle</code> are both shapes, and both honor the <code>area()</code> contract.</p>
+        <p>Inheritance is reasonable because the types are genuine specializations with a consistent abstraction.</p>
+        <p>Even here, Java interfaces could also express the common capability. The choice between an interface and an abstract base class depends on whether shared implementation or state is genuinely useful.</p>
+    </div>
+
+    <div class="subheading">12. How to choose between composition and inheritance</div>
+    <div class="intro">
+        <p>Use this decision guide when designing Java classes.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/composition-decision.svg" alt="Decision guide for composition or inheritance" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>A practical rule is to ask two questions before writing <code>extends</code>:</p>
+        <p><strong>1. Is the new class truly a specialized version of the parent?</strong> If not, composition is probably a better fit.</p>
+        <p><strong>2. Am I inheriting only because I want to reuse a few methods?</strong> If so, consider extracting those methods into a separate collaborator instead.</p>
+        <p>Also avoid composition overengineering. A separate interface and class for every one-line operation can make a simple system harder to understand. Extract behaviors that represent meaningful responsibilities or realistic variation points.</p>
+    </div>
+
+    <div class="subheading">13. Important distinctions</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Relationship to composition</th></tr></thead>
+            <tbody>
+                <tr><td>Encapsulation</td><td>Keeps an object&rsquo;s internal collaborators and implementation hidden behind its public API</td></tr>
+                <tr><td>Delegation</td><td>One object forwards a responsibility to another object</td></tr>
+                <tr><td>Aggregation</td><td>A weaker whole–part relationship where the part can exist independently</td></tr>
+                <tr><td>Dependency Injection</td><td>Supplies collaborators from outside rather than forcing the object to create them</td></tr>
+                <tr><td>Strategy pattern</td><td>Uses interchangeable behavior objects</td></tr>
+                <tr><td>Decorator pattern</td><td>Wraps objects to add behavior</td></tr>
+                <tr><td>Bridge pattern</td><td>Separates an abstraction from independently variable implementations</td></tr>
+                <tr><td>Dependency Inversion</td><td>Encourages depending on interfaces or abstractions rather than concrete classes</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">14. Final takeaway</div>
+    <div class="intro">
+        <p>The goal of composition is not simply to avoid the <code>extends</code> keyword.</p>
+        <p>Its real value is to <strong>separate responsibilities, isolate changes, and assemble behavior from independent components</strong>.</p>
+        <p>Think of it this way:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-comment">Inheritance:</span>
+<span class="code-comment">"I want to become a specialized version of you."</span>
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Child</span> <span class="code-keyword">extends</span> <span class="code-class">Parent</span> {}
+
+<span class="code-comment">Composition:</span>
+<span class="code-comment">"I want to use your capability."</span>
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Service</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Capability</span> capability;
+
+    <span class="code-class">Service</span>(<span class="code-class">Capability</span> capability) {
+        <span class="code-keyword">this</span>.capability = capability;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>When a system has behaviors that evolve independently—payment processing, notification delivery, caching, validation, persistence, retry logic, or formatting—composition generally leads to a design that is easier to extend and test.</p>
+        <p><strong>The central principle: Inherit a type only when the subtype relationship is genuinely valid. Compose objects when you want to reuse or vary behavior.</strong></p>
+    </div>
+<!-- chatgpt-guide:end -->
+</div>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Race Condition</title>
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
@@ -74,7 +74,7 @@
     <span class="code-keyword">private</span> <span class="code-class">AtomicInteger</span> count = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
 
     <span class="code-keyword">public void</span> <span class="code-class">inc</span>() {
-        count.incrementAndGet();   <span class="code-comment"># single atomic op</span>
+        count.incrementAndGet();   <span class="code-comment">single atomic op</span>
     }
 
     <span class="code-keyword">public int</span> <span class="code-class">get</span>() {

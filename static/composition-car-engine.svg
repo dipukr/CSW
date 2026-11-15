@@ -1,0 +1,11 @@
+<svg width="460" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200" role="img" aria-label="Car holds an Engine (has-a) and delegates start() to it">
+    <defs><marker id="ce-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="ce-l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#9A9A9A"/></marker></defs>
+    <rect x="130" y="14" width="200" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="230" y="39" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Car</text>
+    <text x="230" y="55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">start()</text>
+    <path d="M230 70 V128" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ce-a)"/>
+    <text x="242" y="104" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" fill="#555555" font-style="italic">has-a</text>
+    <rect x="130" y="130" width="200" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="230" y="155" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Engine</text>
+    <text x="230" y="171" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">start()</text>
+</svg>

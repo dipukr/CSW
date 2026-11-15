@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microservices</title>
+<link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Microservices</div>
+
+    <div class="intro">
+        <p>Microservice architecture organizes an application into a collection of small, independent, and loosely coupled services.</p>
+        <p>Each service focuses on a specific business capability and can be developed, deployed, and scaled independently.</p>
+        <p>Services do not share code or implementation and communicate via well-defined APIs.</p>
+        <p>Each component can be operated and scaled without affecting the functioning of other services.</p>
+    </div>
+
+    <div class="section-diagram">
+        <img src="../static/monolith-vs-microservices.svg" alt="Monolithic architecture: UI, business logic and data access layer in one unit over a single database. Microservice architecture: the UI talks to many separate microservices, each with its own database" style="width:100%;max-width:760px">
+    </div>
+
+    <div class="section when-use">
+        <div class="section-title">Key points</div>
+        <div class="section-content"><ul>
+            <li>The key trait is independent development, deployment, and scaling per module.</li>
+            <li>Communication happens through lightweight protocols like REST or messaging.</li>
+            <li>Each service typically owns its own database.</li>
+            <li>Best for large systems and multiple autonomous teams.</li>
+        </ul></div>
+    </div>
+
+    <div class="subheading">Pros and Cons</div>
+    <div class="pc-grid">
+        <div class="pc-card pro">
+            <div class="pc-title">Agility</div>
+            <p>Teams deliver faster because they deploy their services independently.</p>
+        </div>
+        <div class="pc-card pro">
+            <div class="pc-title">Independent Scalability</div>
+            <p>You can scale individual services instead of the whole application.</p>
+        </div>
+        <div class="pc-card pro">
+            <div class="pc-title">Fault Isolation</div>
+            <p>A failure in one service stays isolated and does not bring down the rest.</p>
+        </div>
+        <div class="pc-card pro">
+            <div class="pc-title">Team Autonomy</div>
+            <p>Small teams can independently own and evolve specific services.</p>
+        </div>
+    
+
+        <div class="pc-card con">
+            <div class="pc-title">Operational Complexity</div>
+            <p>Managing a distributed system is harder than managing a single monolith.</p>
+        </div>
+        <div class="pc-card con">
+            <div class="pc-title">Communication Overhead</div>
+            <p>Calls between services add network latency and require careful error handling.</p>
+        </div>
+        <div class="pc-card con">
+            <div class="pc-title">Data Consistency</div>
+            <p>Maintaining consistency across independent services and databases is difficult.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

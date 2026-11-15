@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mutual Exclusion - Notes</title>
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
@@ -43,11 +43,11 @@
     <span class="code-keyword">private int</span> count = 0;
 
     <span class="code-keyword">public void</span> increment() {
-        lock.lock();          <span class="code-comment"># acquire the mutex</span>
+        lock.lock();          <span class="code-comment">acquire the mutex</span>
         <span class="code-keyword">try</span> {
-            count++;          <span class="code-comment"># critical section</span>
+            count++;          <span class="code-comment">critical section</span>
         } <span class="code-keyword">finally</span> {
-            lock.unlock();    <span class="code-comment"># always release</span>
+            lock.unlock();    <span class="code-comment">always release</span>
         }
     }
 
