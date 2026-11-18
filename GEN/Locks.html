@@ -12,7 +12,7 @@
     <div class="title">Locking API</div>
 
     <div class="intro">
-        <p>The <strong>Locking API</strong> provides more flexible programmatic concurrency control mechanisms than the <code>synchronized</code> keyword.</p>
+        <p><strong>Locking API</strong> provides more flexible programmatic concurrency control mechanisms than the <code>synchronized</code> keyword.</p>
     </div>
     <div class="intro"><ul>
         <li>Allows actions to be performed on an object without interference from other threads.</li>
@@ -21,7 +21,7 @@
         <li>A <strong>read lock</strong> can be acquired by multiple threads at the same time if the write lock is not held by another thread, allowing concurrent read actions.</li>
     </ul></div>
     <div class="intro">
-        <p>With <code>synchronized</code>, the JVM acquires and releases a monitor automatically around a block. With the Locking API, the program calls <code>lock()</code> and <code>unlock()</code> itself. That costs a little discipline, since every <code>lock()</code> must be paired with an <code>unlock()</code> in a <code>finally</code> block, but in return the program can try for a lock without blocking, give up after a timeout, be interrupted while waiting, choose fair ordering, keep several wait conditions and let readers share access.</p>
+        <p>With <code>synchronized</code>, the JVM acquires and releases a monitor automatically around a block.<br>With the Locking API, the program calls <code>lock</code> and <code>unlock</code> itself. That costs a little discipline, since every <code>lock</code> must be paired with an <code>unlock</code> in a <code>finally</code> block, but in return the program can try for a lock without blocking, give up after<br> a timeout, be interrupted while waiting, choose fair ordering, keep several wait conditions and let readers share access.</p>
     </div>
 
     <div class="section cmp">
@@ -78,7 +78,7 @@
         <div class="code-wrapper">
 <pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PriceList</span> {
     <span class="code-keyword">private</span> <span class="code-class">List</span>&lt;<span class="code-class">Product</span>&gt; menu = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;();
-    <span class="code-keyword">private</span> <span class="code-class">ReentrantReadWriteLock</span> rwl = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>();
+    <span class="code-keyword">private</span> <span class="code-class">ReadWriteLock</span> rwl = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>();
     <span class="code-keyword">private</span> <span class="code-class">Lock</span> rl = rwl.readLock();
     <span class="code-keyword">private</span> <span class="code-class">Lock</span> wl = rwl.writeLock();
 
