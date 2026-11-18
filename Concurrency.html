@@ -10,6 +10,297 @@
 <div class="note plain-links">
     <div class="title">Concurrency</div>
 
+
+
+<!-- chatgpt-guide:start -->
+    <div class="intro">
+        <p><strong>Concurrency</strong> and <strong>multithreading</strong> are fundamental concepts in software development that allow applications to manage multiple tasks efficiently, improve responsiveness, and utilize system resources effectively.</p>
+        <p>They are especially important in Java backend development, Spring Boot applications, databases, and distributed systems.</p>
+    </div>
+
+    <div class="subheading">1. What is concurrency?</div>
+    <div class="intro">
+        <p><strong>Concurrency</strong> is the ability of a system to make progress on multiple tasks during overlapping periods of time. The tasks may execute by taking turns on a single CPU core or simultaneously on multiple CPU cores.</p>
+        <p>These tasks may not execute at exactly the same instant. Instead, the CPU can switch between them, allowing each task to make progress.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/concurrency-interleaved.svg" alt="Concurrency: tasks A, B and C interleaved over time on a single CPU core" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Only one task executes at a given instant, but all three make progress.</p>
+        <p>For example, consider a Spring Boot application handling three requests:</p>
+        <ul>
+            <li>Request A: Fetch customer details.</li>
+            <li>Request B: Process a payment.</li>
+            <li>Request C: Generate an invoice.</li>
+        </ul>
+        <p>Instead of completing A, then B, then C, the application can make progress on all three requests concurrently. In the same way, a web server can handle requests from multiple clients concurrently while some requests wait for database results.</p>
+    </div>
+
+    <div class="subheading">2. What is parallelism?</div>
+    <div class="intro">
+        <p><strong>Parallelism</strong> means executing multiple tasks simultaneously, typically on different CPU cores.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/concurrency-parallel.svg" alt="Parallelism: tasks A, B and C running at the same time on three CPU cores" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Three tasks execute at the same time on three CPU cores.</p>
+        <p class="minor-heading"><strong>Concurrency vs parallelism</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concurrency</th><th>Parallelism</th></tr></thead>
+            <tbody>
+                <tr><td>Multiple tasks make progress over overlapping time intervals</td><td>Multiple tasks execute at the same instant</td></tr>
+                <tr><td>Possible on a single CPU core</td><td>Requires multiple execution resources for CPU tasks</td></tr>
+                <tr><td>Focuses on managing and coordinating tasks</td><td>Focuses on simultaneous execution and throughput</td></tr>
+                <tr><td>Useful for responsiveness and overlapping waits</td><td>Useful for CPU-intensive workloads</td></tr>
+                <tr><td>Example: Web server managing requests</td><td>Example: Image processing on multiple cores</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Key point:</strong> Parallelism is one way to achieve concurrency, but concurrency does not require parallelism.</p>
+        <p><strong>Important:</strong> An application can be concurrent without being parallel, parallel without using multiple application threads (such as GPU computing), or both.</p>
+    </div>
+
+    <div class="subheading">3. What is multithreading?</div>
+    <div class="intro">
+        <p><strong>Multithreading</strong> is a programming technique where multiple threads execute within a single process.</p>
+        <p>A thread is an independent path of execution within a process.</p>
+        <p>Threads belonging to the same process generally share heap memory and process resources, while each thread has its own execution stack and program counter.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/concurrency-jvm-threads.svg" alt="A JVM process with three threads, each with its own stack, sharing one heap" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Calling <code>start()</code> schedules threads for execution. Calling <code>run()</code> directly would simply execute the method on the current thread.</p>
+        <p>The exact order in which the threads execute is not guaranteed.</p>
+    </div>
+
+    <div class="subheading">4. Concept map of concurrency</div>
+    <div class="intro">
+        <p>Concurrency is a broad area containing several interrelated concepts: how work is executed, how correctness is preserved, how tasks coordinate, and how the system performs.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/concurrency-concept-map.svg" alt="Concept map: concurrency splits into execution, correctness, coordination and performance, each with its main concepts" style="width:100%;max-width:720px">
+    </div>
+
+    <div class="subheading">5. Core concepts of concurrency and multithreading</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>A. Execution models</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Process</strong></td><td>An executing program with its own virtual address space</td></tr>
+                <tr><td><strong>Thread</strong></td><td>An execution path within a process; threads can share process memory</td></tr>
+                <tr><td><strong>Multithreading</strong></td><td>Using multiple threads within a single process</td></tr>
+                <tr><td><strong>Context switching</strong></td><td>CPU switching execution between threads or processes</td></tr>
+                <tr><td><strong>Scheduling</strong></td><td>Deciding which task or thread gets CPU time</td></tr>
+                <tr><td><strong>Thread pool</strong></td><td>A reusable collection of worker threads</td></tr>
+                <tr><td><strong>Asynchronous execution</strong></td><td>Starting an operation without having to wait synchronously for its completion</td></tr>
+                <tr><td><strong>Virtual threads</strong></td><td>Lightweight Java threads, useful for scaling blocking I/O workloads</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>B. Thread lifecycle and states</strong></p>
+        <p>Java threads have six official states:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><code>NEW</code></td><td>Thread created but not started</td></tr>
+                <tr><td><code>RUNNABLE</code></td><td>Eligible to run or currently running</td></tr>
+                <tr><td><code>BLOCKED</code></td><td>Waiting to acquire an intrinsic monitor lock</td></tr>
+                <tr><td><code>WAITING</code></td><td>Waiting indefinitely for another action</td></tr>
+                <tr><td><code>TIMED_WAITING</code></td><td>Waiting for a specified time</td></tr>
+                <tr><td><code>TERMINATED</code></td><td>Thread execution completed</td></tr>
+            </tbody>
+        </table></div>
+        <p>Java does not define a separate <code>RUNNING</code> state in <code>Thread.State</code>; running is included in <code>RUNNABLE</code>.</p>
+        <p class="minor-heading"><strong>C. Thread scheduling and context switching</strong></p>
+        <p>The scheduler determines which runnable threads receive CPU time.</p>
+        <p><strong>Context switching</strong> occurs when the system switches execution from one thread to another. It has overhead due to scheduling work and CPU state changes.</p>
+        <p>Related concepts include thread priorities, preemption, CPU time slices, and thread starvation.</p>
+        <p class="minor-heading"><strong>D. Shared state and race conditions</strong></p>
+        <p>When multiple threads access the same mutable data, coordination may be necessary.</p>
+        <p>A <strong>race condition</strong> occurs when program behavior depends on the relative timing or ordering of concurrent operations.</p>
+        <p><code>count++</code> involves reading, modifying, and writing a value. Two threads may read the same old value and overwrite each other&rsquo;s updates.</p>
+        <p>Consider two threads incrementing <code>counter</code>, initially zero:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Thread A</th><th>Thread B</th></tr></thead>
+            <tbody>
+                <tr><td>1. Read counter = 0</td><td></td></tr>
+                <tr><td></td><td>2. Read counter = 0</td></tr>
+                <tr><td>3. Calculate 0 + 1</td><td></td></tr>
+                <tr><td></td><td>4. Calculate 0 + 1</td></tr>
+                <tr><td>5. Write counter = 1</td><td></td></tr>
+                <tr><td></td><td>6. Write counter = 1</td></tr>
+            </tbody>
+        </table></div>
+        <p>Expected result: 2. Actual result: <strong>1</strong>.</p>
+        <p>This is a <strong>lost update</strong>, a common concurrency bug.</p>
+        <p class="minor-heading"><strong>E. Critical section</strong></p>
+        <p>A <strong>critical section</strong> is a region of code that accesses shared mutable state and must be protected from unsafe concurrent access.</p>
+        <p>The <code>synchronized</code> keyword provides mutual exclusion and memory-visibility guarantees when threads use the same monitor correctly.</p>
+        <p class="minor-heading"><strong>F. Atomicity, visibility, and ordering</strong></p>
+        <p>These are the three fundamental correctness properties of concurrent programs.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Property</th><th>Description</th><th>Java mechanisms</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Atomicity</strong></td><td>An operation occurs indivisibly with respect to competing threads</td><td><code>synchronized</code>, <code>Lock</code>, atomic classes</td></tr>
+                <tr><td><strong>Visibility</strong></td><td>Changes made by one thread become visible to other threads</td><td><code>volatile</code>, synchronization, atomics</td></tr>
+                <tr><td><strong>Ordering</strong></td><td>Operations are observed according to required ordering constraints</td><td>Java Memory Model, happens-before</td></tr>
+            </tbody>
+        </table></div>
+        <p>Important distinction: <code>volatile</code> provides visibility and ordering guarantees but does not make compound operations such as <code>count++</code> atomic.</p>
+        <p>For atomic counters, Java provides <code>AtomicInteger</code>, <code>AtomicLong</code>, and <code>LongAdder</code>.</p>
+        <p class="minor-heading"><strong>G. Java Memory Model (JMM)</strong></p>
+        <p>The <strong>Java Memory Model (JMM)</strong> defines how threads interact through memory, including the happens-before relationships that establish visibility and ordering guarantees.</p>
+        <p>Important ideas include the <strong>happens-before relationship</strong>, safe publication, visibility, synchronization actions, <code>volatile</code>, and the semantics of <code>final</code> fields.</p>
+        <p>Without appropriate synchronization, one thread is not necessarily guaranteed to observe another thread&rsquo;s latest writes.</p>
+        <p class="minor-heading"><strong>H. Synchronization mechanisms</strong></p>
+        <p>Synchronization coordinates concurrent access to shared resources. Common mechanisms, with their Java forms:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Mechanism</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Mutex / Lock</td><td>Protect access to a critical section</td></tr>
+                <tr><td><code>synchronized</code></td><td>Java intrinsic monitor-based locking and memory synchronization</td></tr>
+                <tr><td><code>ReentrantLock</code></td><td>Explicit, reentrant mutual exclusion with advanced capabilities</td></tr>
+                <tr><td><code>ReadWriteLock</code></td><td>Separate read and write locking: concurrent readers, exclusive writer</td></tr>
+                <tr><td><code>StampedLock</code></td><td>Supports read, write, and optimistic read modes</td></tr>
+                <tr><td><code>Semaphore</code></td><td>Limits concurrent access to a resource through permits</td></tr>
+                <tr><td>Atomic variables</td><td>Lock-free atomic operations for individual values</td></tr>
+                <tr><td>Condition variables</td><td>Allow threads to wait for specific conditions</td></tr>
+                <tr><td><code>CountDownLatch</code></td><td>Waits for a specified number of events</td></tr>
+                <tr><td><code>CyclicBarrier</code></td><td>Synchronizes a fixed group of threads at a common execution point</td></tr>
+                <tr><td><code>Phaser</code></td><td>Coordinates multiple synchronization phases</td></tr>
+                <tr><td>Blocking queue</td><td>Safely transfers data between producer and consumer threads</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>I. Thread communication</strong></p>
+        <p>Threads sometimes need to wait for data or coordinate actions.</p>
+        <p>Common mechanisms include <code>wait()</code>, <code>notify()</code>, <code>notifyAll()</code>, <code>Condition</code>, <code>BlockingQueue</code>, and <code>CompletableFuture</code>.</p>
+        <p>For example, a producer thread can put tasks into a <code>BlockingQueue</code>, while consumer threads take tasks from it.</p>
+        <p class="minor-heading"><strong>J. Common concurrency problems</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Problem</th><th>Explanation</th></tr></thead>
+            <tbody>
+                <tr><td>Race condition</td><td>Execution timing changes the result</td></tr>
+                <tr><td>Data race</td><td>Conflicting unsynchronized memory accesses without a happens-before relationship</td></tr>
+                <tr><td>Deadlock</td><td>Threads remain blocked waiting for resources held by one another</td></tr>
+                <tr><td>Livelock</td><td>Threads remain active but cannot make useful progress</td></tr>
+                <tr><td>Starvation</td><td>A thread is repeatedly denied the resources or execution opportunities it needs</td></tr>
+                <tr><td>Priority inversion</td><td>High-priority work is delayed by lower-priority work</td></tr>
+                <tr><td>Contention</td><td>Multiple threads compete for a resource or lock</td></tr>
+                <tr><td>False sharing</td><td>Independent frequently updated variables occupy the same cache line, degrading performance</td></tr>
+            </tbody>
+        </table></div>
+        <p>Consistent lock ordering, timeouts, reducing lock scope, and appropriate synchronization policies help prevent these problems.</p>
+        <p class="minor-heading"><strong>K. Thread pools and executors</strong></p>
+        <p>Creating a new platform thread for every task can be expensive. Thread pools allow worker threads to be reused.</p>
+        <p>The Executor framework includes <code>ExecutorService</code>, <code>ThreadPoolExecutor</code>, <code>ScheduledExecutorService</code>, and <code>Future</code>.</p>
+        <p class="minor-heading"><strong>L. Virtual threads</strong></p>
+        <p>Java 21 introduced virtual threads as a permanent feature.</p>
+        <p>Virtual threads are lightweight Java threads managed by the JVM. They are especially valuable for applications handling large numbers of concurrent blocking I/O operations.</p>
+        <p>Virtual threads improve scalability for suitable workloads, but they do not automatically make CPU-intensive operations faster or eliminate race conditions.</p>
+        <p class="minor-heading"><strong>M. Asynchronous programming</strong></p>
+        <p>Asynchronous programming allows a caller to initiate an operation without necessarily waiting for it to complete before doing other work.</p>
+        <p>In Java, <code>CompletableFuture</code> provides APIs for asynchronous computation and task composition.</p>
+        <p>Asynchronous programming and multithreading are related, but they are not identical.</p>
+        <p class="minor-heading"><strong>N. Concurrency design approaches</strong></p>
+        <ul>
+            <li><strong>Shared-memory concurrency:</strong> Multiple threads operate on shared data, coordinated through locks or atomics.</li>
+            <li><strong>Message passing:</strong> Tasks communicate by sending messages rather than directly modifying shared state.</li>
+            <li><strong>Thread confinement:</strong> Mutable state is restricted to a single thread.</li>
+            <li><strong>Immutability:</strong> Data cannot be modified after creation, reducing synchronization requirements.</li>
+            <li><strong>Optimistic concurrency:</strong> Proceed assuming conflicts are infrequent; detect conflicts and retry or reject.</li>
+            <li><strong>Pessimistic concurrency:</strong> Acquire exclusive or controlled access before changing shared state.</li>
+            <li><strong>Structured concurrency:</strong> Organize related concurrent tasks into bounded lifetimes with coordinated completion and cancellation.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">6. Advanced concurrency concepts</div>
+    <div class="intro">
+        <p>Once the fundamentals are understood, the following concepts become important in production applications.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Thread safety</td><td>Ensuring correctness under concurrent access</td></tr>
+                <tr><td>Immutability</td><td>Avoiding shared-state modification</td></tr>
+                <tr><td>Thread confinement</td><td>Keeping mutable data owned by one thread</td></tr>
+                <tr><td>ThreadLocal</td><td>Providing thread-associated data</td></tr>
+                <tr><td>Lock-free algorithms</td><td>Coordinating operations without conventional mutual exclusion</td></tr>
+                <tr><td>Compare-and-swap (CAS)</td><td>Atomic conditional updates</td></tr>
+                <tr><td>Concurrent collections</td><td>Thread-safe data structures such as <code>ConcurrentHashMap</code></td></tr>
+                <tr><td>Fork/Join framework</td><td>Recursive parallel task execution and work stealing</td></tr>
+                <tr><td>Backpressure</td><td>Preventing producers from overwhelming consumers</td></tr>
+                <tr><td>Cancellation and interruption</td><td>Stopping or signaling ongoing tasks</td></tr>
+                <tr><td>Structured concurrency</td><td>Managing related concurrent tasks as a unit</td></tr>
+                <tr><td>False sharing</td><td>CPU cache contention involving separate variables</td></tr>
+                <tr><td>Amdahl&rsquo;s Law</td><td>Understanding theoretical parallel speedup limits</td></tr>
+                <tr><td>Linearizability</td><td>A correctness model for concurrent operations</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">7. Concurrency in Java and Spring Boot applications</div>
+    <div class="intro">
+        <p>Consider an order processing system:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/concurrency-spring-order.svg" alt="Requests A, B and C processed concurrently by a Spring Boot application whose inventory, payment and order services share one database" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Concurrency considerations include:</p>
+        <ul>
+            <li>Multiple users purchasing the final available unit of a product.</li>
+            <li>Preventing double deduction of the same payment.</li>
+            <li>Coordinating inventory updates across application instances.</li>
+            <li>Handling simultaneous writes to the same database record.</li>
+            <li>Managing thread-pool exhaustion and connection-pool contention.</li>
+        </ul>
+        <p>For example, a Java <code>synchronized</code> block coordinates threads inside one JVM, but <strong>does not coordinate multiple Spring Boot instances</strong>. Distributed concurrency requires solutions such as database constraints, row locks, optimistic versioning, or carefully designed distributed coordination.</p>
+        <p class="minor-heading"><strong>Web request processing</strong></p>
+        <p>Multiple requests can be processed concurrently using servlet container threads or other execution models. Shared Spring singleton services must be designed with thread safety in mind.</p>
+        <p class="minor-heading"><strong>Concurrent database updates</strong></p>
+        <p>Transaction isolation, optimistic locking, pessimistic locking, and database constraints help coordinate concurrent access to records.</p>
+        <p class="minor-heading"><strong>Background processing</strong></p>
+        <p>Spring <code>@Async</code>, task executors, scheduled jobs, and message consumers can execute independent workloads concurrently.</p>
+        <p class="minor-heading"><strong>Parallel service calls</strong></p>
+        <p><code>CompletableFuture</code> can help issue independent API calls concurrently and combine their results, reducing total waiting time when execution resources permit.</p>
+    </div>
+
+    <div class="subheading">8. Other important distinctions</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concepts</th><th>Difference</th></tr></thead>
+            <tbody>
+                <tr><td>Concurrency vs. parallelism</td><td>Overlapping progress vs. simultaneous execution</td></tr>
+                <tr><td>Synchronous vs. asynchronous</td><td>Waiting for completion vs. decoupled completion</td></tr>
+                <tr><td>Blocking vs. non-blocking</td><td>Waiting may suspend a thread vs. operations that do not require the caller to wait</td></tr>
+                <tr><td>Thread safety vs. reentrancy</td><td>Safe under concurrent access vs. safe to enter again before a prior invocation completes</td></tr>
+                <tr><td>Lock-free vs. wait-free</td><td>System-wide progress guarantee vs. per-operation progress guarantee</td></tr>
+                <tr><td>CPU-bound vs. I/O-bound</td><td>Computation-limited vs. waiting-on-I/O-limited</td></tr>
+                <tr><td>Local vs. distributed concurrency</td><td>Coordination within a process vs. across processes or machines</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">9. Recommended learning sequence for Java backend development</div>
+    <div class="intro">
+        <ol>
+            <li><strong>Fundamentals:</strong> Processes vs threads, concurrency vs parallelism, scheduling, context switching, thread lifecycle.</li>
+            <li><strong>Thread safety and the Java Memory Model:</strong> Shared memory, race conditions, critical sections, atomicity, visibility, ordering, happens-before, <code>volatile</code>.</li>
+            <li><strong>Synchronization:</strong> <code>synchronized</code>, intrinsic monitors, <code>ReentrantLock</code>, read-write locks, conditions, semaphores, latches, barriers, thread communication.</li>
+            <li><strong>Java concurrency utilities:</strong> <code>ExecutorService</code>, thread pools, <code>Future</code>, <code>CompletableFuture</code>, atomics, <code>ConcurrentHashMap</code>, <code>BlockingQueue</code>, <code>CountDownLatch</code>, <code>Semaphore</code>.</li>
+            <li><strong>Advanced concurrency:</strong> CAS, lock-free algorithms, Fork/Join, virtual threads, thread-pool tuning, structured concurrency, performance tuning.</li>
+            <li><strong>Database, distributed and real-world concurrency:</strong> Transactions, isolation levels, optimistic/pessimistic locking, lost updates, distributed locks, idempotency and concurrent API requests, Spring Boot request handling, asynchronous processing, Kafka consumers.</li>
+        </ol>
+    </div>
+
+    <div class="subheading">10. Key takeaways</div>
+    <div class="intro">
+        <p><strong>The most important idea:</strong> Concurrency is not just about executing more work at once. It is about ensuring that independently progressing tasks produce correct results, use resources efficiently, and do not interfere with one another.</p>
+        <p>Concurrency is about coordinating multiple tasks that can progress during overlapping periods. Multithreading is one mechanism for achieving concurrency, while parallelism is about executing work simultaneously. The most important challenge is not merely running multiple threads—it is ensuring <strong>correctness, thread safety, predictable progress, and efficient resource usage</strong> under concurrent execution.</p>
+        <p>For a Java/Spring Boot backend engineer, the foundational topics to master first are <strong>race conditions, synchronization, the Java Memory Model, thread pools, atomic operations, and database concurrency control</strong>.</p>
+    </div>
+<!-- chatgpt-guide:end -->
 </div>
 </body>
 </html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collectors</title>
+<link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Collectors API</div>
+
+    <div class="intro">
+        <p>Here’s a <strong>complete guide to the Java Stream API <code>Collectors</code> class</strong> — one of the most powerful tools for processing and aggregating stream data.</p>
+        <p>We’ll cover <strong>concepts, categories and detailed examples</strong> for every major collector.</p>
+    </div>
+
+    <div class="subheading">What is <code>Collectors</code>?</div>
+    <div class="intro">
+        <p><code>Collectors</code> is a <strong>utility class</strong> in <code>java.util.stream</code> that provides <strong>static factory methods</strong> for creating <code>Collector</code> instances.</p>
+        <p>A <strong>Collector</strong> defines how to:</p>
+        <ul>
+            <li><strong>Accumulate</strong> elements of a stream into a container (like a <code>List</code>, <code>Map</code>, or <code>String</code>)</li>
+            <li><strong>Combine</strong> results from parallel execution</li>
+            <li><strong>Finish</strong> the collection operation</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Basic Collectors</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>toList()</code>, <code>toSet()</code>, <code>toCollection()</code></strong></p>
+        <p>Collect elements into a list, set, or custom collection.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; names = <span class="code-class">List</span>.of(<span class="code-string">"Alice"</span>, <span class="code-string">"Bob"</span>, <span class="code-string">"Charlie"</span>, <span class="code-string">"Alice"</span>);
+    <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; list = names.stream().collect(<span class="code-class">Collectors</span>.toList()); <span class="code-comment">allows duplicates</span>
+    <span class="code-class">Set</span>&lt;<span class="code-class">String</span>&gt; set = names.stream().collect(<span class="code-class">Collectors</span>.toSet()); <span class="code-comment">removes duplicates</span>
+    <span class="code-class">LinkedList</span>&lt;<span class="code-class">String</span>&gt; linkedList = names.stream().collect(<span class="code-class">Collectors</span>.toCollection(<span class="code-class">LinkedList</span>::<span class="code-keyword">new</span>)); <span class="code-comment">custom</span>
+    <span class="code-class">System</span>.out.println(list);
+    <span class="code-class">System</span>.out.println(set);
+    <span class="code-class">System</span>.out.println(linkedList);
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Joining Strings</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>joining()</code></strong></p>
+        <p>Concatenate stream elements into a single <code>String</code>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; names = <span class="code-class">List</span>.of(<span class="code-string">"Alice"</span>, <span class="code-string">"Bob"</span>, <span class="code-string">"Charlie"</span>);
+<span class="code-class">String</span> joined = names.stream().collect(<span class="code-class">Collectors</span>.joining(<span class="code-string">", "</span>, <span class="code-string">"["</span>, <span class="code-string">"]"</span>));
+<span class="code-class">System</span>.out.println(joined); <span class="code-comment">[Alice, Bob, Charlie]</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Parameters:</p>
+        <ul>
+            <li><strong>Delimiter</strong> (<code>, </code>)</li>
+            <li><strong>Prefix</strong> (<code>[</code>)</li>
+            <li><strong>Suffix</strong> (<code>]</code>)</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Counting and Summing</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>counting()</code></strong></p>
+        <p>Count number of elements.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">long</span> count = names.stream().collect(<span class="code-class">Collectors</span>.counting());</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>summingInt()</code>, <code>summingDouble()</code>, <code>summingLong()</code></strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; numbers = <span class="code-class">List</span>.of(<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>);
+<span class="code-keyword">int</span> sum = numbers.stream().collect(<span class="code-class">Collectors</span>.summingInt(<span class="code-class">Integer</span>::intValue)); <span class="code-comment">10</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Averaging</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>averagingInt()</code>, <code>averagingDouble()</code>, <code>averagingLong()</code></strong></p>
+        <p>Calculates the average.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">double</span> avg = numbers.stream().collect(<span class="code-class">Collectors</span>.averagingInt(<span class="code-class">Integer</span>::intValue)); <span class="code-comment">2.5</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Summarizing Statistics</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>summarizingInt()</code>, <code>summarizingLong()</code>, <code>summarizingDouble()</code></strong></p>
+        <p>Gives count, sum, min, average and max in one shot.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">IntSummaryStatistics</span> stats = numbers.stream().collect(<span class="code-class">Collectors</span>.summarizingInt(<span class="code-class">Integer</span>::intValue));
+<span class="code-class">System</span>.out.println(stats); <span class="code-comment">count=4, sum=10, min=1, average=2.5, max=4</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Grouping Data</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>groupingBy(classifier)</code></strong></p>
+        <p>Groups elements based on a function.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Person</span>(<span class="code-class">String</span> name, <span class="code-class">String</span> city) {}
+
+<span class="code-class">List</span>&lt;<span class="code-class">Person</span>&gt; people = <span class="code-class">List</span>.of(<span class="code-keyword">new</span> <span class="code-class">Person</span>(<span class="code-string">"Alice"</span>, <span class="code-string">"London"</span>),
+                              <span class="code-keyword">new</span> <span class="code-class">Person</span>(<span class="code-string">"Bob"</span>, <span class="code-string">"Paris"</span>),
+                              <span class="code-keyword">new</span> <span class="code-class">Person</span>(<span class="code-string">"Charlie"</span>, <span class="code-string">"London"</span>));
+<span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">List</span>&lt;<span class="code-class">Person</span>&gt;&gt; byCity = people.stream().collect(<span class="code-class">Collectors</span>.groupingBy(<span class="code-class">Person</span>::city));
+<span class="code-class">System</span>.out.println(byCity);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>{Paris=[Bob], London=[Alice, Charlie]}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Multi-level Grouping</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> dept, <span class="code-class">String</span> city, <span class="code-keyword">int</span> salary) {}
+
+<span class="code-class">List</span>&lt;<span class="code-class">Employee</span>&gt; employees = <span class="code-class">List</span>.of(<span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"HR"</span>, <span class="code-string">"London"</span>, <span class="code-number">5000</span>),
+                                   <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"HR"</span>, <span class="code-string">"Paris"</span>, <span class="code-number">7000</span>),
+                                   <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"IT"</span>, <span class="code-string">"London"</span>, <span class="code-number">8000</span>));
+<span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">List</span>&lt;<span class="code-class">Employee</span>&gt;&gt;&gt; grouped =
+    employees.stream().collect(<span class="code-class">Collectors</span>.groupingBy(<span class="code-class">Employee</span>::dept, <span class="code-class">Collectors</span>.groupingBy(<span class="code-class">Employee</span>::city)));
+<span class="code-class">System</span>.out.println(grouped);</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Downstream Collectors (with groupingBy)</div>
+    <div class="intro">
+        <p>Combine grouping with other operations.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Double</span>&gt; avgSalaryByDept = employees.stream()
+        .collect(<span class="code-class">Collectors</span>.groupingBy(<span class="code-class">Employee</span>::dept, <span class="code-class">Collectors</span>.averagingInt(<span class="code-class">Employee</span>::salary)));
+<span class="code-class">System</span>.out.println(avgSalaryByDept);</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Partitioning</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>partitioningBy(predicate)</code></strong></p>
+        <p>Divides elements into two groups: <code>true</code> and <code>false</code>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; nums = <span class="code-class">List</span>.of(<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>, <span class="code-number">6</span>);
+<span class="code-class">Map</span>&lt;<span class="code-class">Boolean</span>, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; partitioned = nums.stream().collect(<span class="code-class">Collectors</span>.partitioningBy(n -&gt; n % <span class="code-number">2</span> == <span class="code-number">0</span>));
+<span class="code-class">System</span>.out.println(partitioned); <span class="code-comment">{false=[1, 3, 5], true=[2, 4, 6]}</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Mapping During Collection</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>mapping(mapper, downstream)</code></strong></p>
+        <p>Applies a transformation before collecting.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; nameLengthByCity = people.stream()
+        .collect(<span class="code-class">Collectors</span>.groupingBy(<span class="code-class">Person</span>::city, <span class="code-class">Collectors</span>.mapping(p -&gt; p.name().length(), <span class="code-class">Collectors</span>.toList())));
+<span class="code-class">System</span>.out.println(nameLengthByCity);</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Reducing Collectors</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>reducing(identity, mapper, combiner)</code></strong></p>
+        <p>Custom aggregation logic.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">int</span> totalLength = names.stream().collect(<span class="code-class">Collectors</span>.reducing(<span class="code-number">0</span>, <span class="code-class">String</span>::length, <span class="code-class">Integer</span>::sum));
+<span class="code-class">System</span>.out.println(totalLength); <span class="code-comment">total length of all names</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">To Map Collectors</div>
+    <div class="intro">
+        <p class="minor-heading"><strong><code>toMap(keyMapper, valueMapper)</code></strong></p>
+        <p>Creates a map from stream elements.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Integer</span>&gt; nameLength = names.stream().collect(<span class="code-class">Collectors</span>.toMap(n -&gt; n, <span class="code-class">String</span>::length));
+<span class="code-class">System</span>.out.println(nameLength);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Handling Duplicate Keys</strong></p>
+        <p>Provide a <strong>merge function</strong>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; fruits = <span class="code-class">List</span>.of(<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>, <span class="code-string">"apricot"</span>);
+<span class="code-class">Map</span>&lt;<span class="code-class">Character</span>, <span class="code-class">String</span>&gt; map = fruits.stream()
+        .collect(<span class="code-class">Collectors</span>.toMap(f -&gt; f.charAt(<span class="code-number">0</span>),             <span class="code-comment">key: first letter</span>
+                                  f -&gt; f,                       <span class="code-comment">value</span>
+                                  (s1, s2) -&gt; s1 + <span class="code-string">", "</span> + s2)); <span class="code-comment">merge duplicates</span>
+<span class="code-class">System</span>.out.println(map); <span class="code-comment">{a=apple, apricot, b=banana}</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">CollectingAndThen</div>
+    <div class="intro">
+        <p>Allows post-processing after collecting.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; immutableList = names.stream()
+        .collect(<span class="code-class">Collectors</span>.collectingAndThen(<span class="code-class">Collectors</span>.toList(), <span class="code-class">Collections</span>::unmodifiableList));
+<span class="code-class">System</span>.out.println(immutableList);</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Custom Collector Example</div>
+    <div class="intro">
+        <p>You can create your own collector using <code>Collector.of()</code>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Collector</span>&lt;<span class="code-class">String</span>, <span class="code-class">StringBuilder</span>, <span class="code-class">String</span>&gt; customCollector =
+        <span class="code-class">Collector</span>.of(<span class="code-class">StringBuilder</span>::<span class="code-keyword">new</span>,                  <span class="code-comment">supplier</span>
+                     (sb, s) -&gt; sb.append(s).append(<span class="code-string">"|"</span>), <span class="code-comment">accumulator</span>
+                     <span class="code-class">StringBuilder</span>::append,               <span class="code-comment">combiner</span>
+                     <span class="code-class">StringBuilder</span>::toString);            <span class="code-comment">finisher</span>
+<span class="code-class">String</span> result = names.stream().collect(customCollector);
+<span class="code-class">System</span>.out.println(result); <span class="code-comment">Alice|Bob|Charlie|</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Summary Table</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Category</th><th>Collector Method(s)</th><th>Example Output Type</th></tr></thead>
+            <tbody>
+                <tr><td>To collection</td><td><code>toList()</code>, <code>toSet()</code>, <code>toCollection()</code></td><td><code>List</code>, <code>Set</code>, custom</td></tr>
+                <tr><td>String joining</td><td><code>joining()</code></td><td><code>String</code></td></tr>
+                <tr><td>Counting/Summing</td><td><code>counting()</code>, <code>summingInt()</code></td><td><code>Long</code>, <code>Integer</code></td></tr>
+                <tr><td>Averaging</td><td><code>averagingInt()</code></td><td><code>Double</code></td></tr>
+                <tr><td>Statistics summary</td><td><code>summarizingInt()</code></td><td><code>IntSummaryStatistics</code></td></tr>
+                <tr><td>Grouping</td><td><code>groupingBy()</code>, <code>groupingByConcurrent()</code></td><td><code>Map</code></td></tr>
+                <tr><td>Partitioning</td><td><code>partitioningBy()</code></td><td><code>Map&lt;Boolean, List&gt;</code></td></tr>
+                <tr><td>Mapping</td><td><code>mapping()</code></td><td>Transformed downstream result</td></tr>
+                <tr><td>Reducing</td><td><code>reducing()</code></td><td>Custom reduced result</td></tr>
+                <tr><td>Mapping to Map</td><td><code>toMap()</code></td><td><code>Map&lt;K, V&gt;</code></td></tr>
+                <tr><td>Post-processing</td><td><code>collectingAndThen()</code></td><td>Modified result</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Real-World Example: Employee Aggregation</div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-class">String</span> dept, <span class="code-keyword">double</span> salary) {}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Example</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">List</span>&lt;<span class="code-class">Employee</span>&gt; employees = <span class="code-class">List</span>.of(<span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Alice"</span>, <span class="code-string">"HR"</span>, <span class="code-number">40000</span>),
+                                           <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Bob"</span>, <span class="code-string">"IT"</span>, <span class="code-number">60000</span>),
+                                           <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Charlie"</span>, <span class="code-string">"IT"</span>, <span class="code-number">70000</span>),
+                                           <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"David"</span>, <span class="code-string">"HR"</span>, <span class="code-number">45000</span>));
+        <span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Double</span>&gt; avgSalary = employees.stream() <span class="code-comment">Average salary by department</span>
+            .collect(<span class="code-class">Collectors</span>.groupingBy(<span class="code-class">Employee</span>::dept, <span class="code-class">Collectors</span>.averagingDouble(<span class="code-class">Employee</span>::salary)));
+        <span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Optional</span>&lt;<span class="code-class">Employee</span>&gt;&gt; topEarners = employees.stream() <span class="code-comment">Highest paid employee by department</span>
+            .collect(<span class="code-class">Collectors</span>.groupingBy(<span class="code-class">Employee</span>::dept, <span class="code-class">Collectors</span>.maxBy(<span class="code-class">Comparator</span>.comparing(<span class="code-class">Employee</span>::salary))));
+        <span class="code-class">System</span>.out.println(avgSalary);
+        <span class="code-class">System</span>.out.println(topEarners);
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Inner Working of Collectors</div>
+    <div class="intro">
+        <p>Let’s go deep inside how <strong>Java Stream Collectors</strong> actually <em>work under the hood</em>.</p>
+        <p>You already know <code>Collectors</code> are used at the <strong>terminal stage</strong> of a Stream pipeline (in <code>collect()</code>), but here we’ll dissect <strong>how</strong> they process, combine and finish the results.</p>
+    </div>
+
+    <div class="subheading">The <code>Collector</code> Interface</div>
+    <div class="intro">
+        <p>The <code>Collector&lt;T, A, R&gt;</code> interface is the <strong>core contract</strong> behind all <code>Collectors</code> created using the <code>Collectors</code> utility class.</p>
+        <p>It has <strong>three type parameters</strong>:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Collector</span>&lt;<span class="code-class">T</span>, <span class="code-class">A</span>, <span class="code-class">R</span>&gt;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Type Parameter</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><code>T</code></td><td>Type of stream elements</td></tr>
+                <tr><td><code>A</code></td><td>Type of the <em>mutable accumulator</em> (intermediate container)</td></tr>
+                <tr><td><code>R</code></td><td>Type of the <em>final result</em></td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Collector Lifecycle (Conceptually)</strong></p>
+        <p>When you call <code>stream.collect(collector)</code>, the Stream API goes through <strong>three internal phases</strong>:</p>
+        <ol>
+            <li><strong>Supplier</strong> → Create a new mutable accumulator (<code>A</code>)</li>
+            <li><strong>Accumulator</strong> → Add each element (<code>T</code>) into <code>A</code></li>
+            <li><strong>Combiner</strong> → Merge two accumulators (used in parallel streams)</li>
+            <li><strong>Finisher</strong> → Convert accumulator <code>A</code> into final result <code>R</code></li>
+            <li><strong>Characteristics</strong> → Optimizations (e.g. identity finish, concurrent, unordered)</li>
+        </ol>
+    </div>
+
+    <div class="subheading">The Methods of <code>Collector</code></div>
+    <div class="intro">
+        <p>Here’s the official contract:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">interface</span> <span class="code-class">Collector</span>&lt;<span class="code-class">T</span>, <span class="code-class">A</span>, <span class="code-class">R</span>&gt; {
+    <span class="code-class">Supplier</span>&lt;<span class="code-class">A</span>&gt; supplier();
+    <span class="code-class">BiConsumer</span>&lt;<span class="code-class">A</span>, <span class="code-class">T</span>&gt; accumulator();
+    <span class="code-class">BinaryOperator</span>&lt;<span class="code-class">A</span>&gt; combiner();
+    <span class="code-class">Function</span>&lt;<span class="code-class">A</span>, <span class="code-class">R</span>&gt; finisher();
+    <span class="code-class">Set</span>&lt;<span class="code-class">Characteristics</span>&gt; characteristics();
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Let’s break them down with an example.</p>
+    </div>
+
+    <div class="subheading">Example: <code>Collectors.toList()</code></div>
+    <div class="intro">
+        <p>Let’s simulate what <code>Collectors.toList()</code> does internally.</p>
+        <p class="minor-heading"><strong>User Code</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; result = <span class="code-class">Stream</span>.of(<span class="code-string">"A"</span>, <span class="code-string">"B"</span>, <span class="code-string">"C"</span>).collect(<span class="code-class">Collectors</span>.toList());</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Equivalent (Simplified Implementation)</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> &lt;<span class="code-class">T</span>&gt; <span class="code-class">Collector</span>&lt;<span class="code-class">T</span>, <span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;, <span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;&gt; toList() {
+    <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Collector</span>&lt;&gt;() {
+        <span class="code-keyword">public</span> <span class="code-class">Supplier</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;&gt; supplier() {
+            <span class="code-keyword">return</span> <span class="code-class">ArrayList</span>::<span class="code-keyword">new</span>; <span class="code-comment">step 1: create accumulator</span>
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">BiConsumer</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;, <span class="code-class">T</span>&gt; accumulator() {
+            <span class="code-keyword">return</span> <span class="code-class">List</span>::add; <span class="code-comment">step 2: add element</span>
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">BinaryOperator</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;&gt; combiner() {
+            <span class="code-keyword">return</span> (left, right) -&gt; { <span class="code-comment">step 3: merge accumulators</span>
+                left.addAll(right);
+                <span class="code-keyword">return</span> left;
+            };
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">Function</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;, <span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;&gt; finisher() {
+            <span class="code-keyword">return</span> <span class="code-class">Function</span>.identity(); <span class="code-comment">step 4: no conversion needed</span>
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">Set</span>&lt;<span class="code-class">Characteristics</span>&gt; characteristics() {
+            <span class="code-keyword">return</span> <span class="code-class">Set</span>.of(<span class="code-class">Characteristics</span>.IDENTITY_FINISH); <span class="code-comment">optimization</span>
+        }
+    };
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">How <code>collect()</code> Executes Internally</div>
+    <div class="intro">
+        <p>When you call:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">R</span> result = stream.collect(collector);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Internally (simplified)</strong></p>
+        <ol>
+            <li><strong>Initialize accumulator</strong><br><code>A container = collector.supplier().get();</code></li>
+            <li><strong>Process each element</strong><br><code>stream.forEach(element -&gt; collector.accumulator().accept(container, element));</code></li>
+            <li><strong>Parallel merge (if parallel stream)</strong><br><code>container = collector.combiner().apply(container1, container2);</code></li>
+            <li><strong>Finalize result</strong><br><code>R finalResult = collector.finisher().apply(container);</code></li>
+        </ol>
+    </div>
+
+    <div class="subheading">Example: <code>Collectors.joining()</code></div>
+    <div class="intro">
+        <p>For <code>joining(",")</code>, here’s roughly what happens:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-class">Collector</span>&lt;<span class="code-class">CharSequence</span>, <span class="code-class">StringBuilder</span>, <span class="code-class">String</span>&gt; joining(<span class="code-class">String</span> delimiter) {
+    <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Collector</span>&lt;&gt;() {
+        <span class="code-keyword">public</span> <span class="code-class">Supplier</span>&lt;<span class="code-class">StringBuilder</span>&gt; supplier() {
+            <span class="code-keyword">return</span> <span class="code-class">StringBuilder</span>::<span class="code-keyword">new</span>;
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">BiConsumer</span>&lt;<span class="code-class">StringBuilder</span>, <span class="code-class">CharSequence</span>&gt; accumulator() {
+            <span class="code-keyword">return</span> (sb, csq) -&gt; {
+                <span class="code-keyword">if</span> (sb.length() &gt; <span class="code-number">0</span>) sb.append(delimiter);
+                sb.append(csq);
+            };
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">BinaryOperator</span>&lt;<span class="code-class">StringBuilder</span>&gt; combiner() {
+            <span class="code-keyword">return</span> (sb1, sb2) -&gt; {
+                <span class="code-keyword">if</span> (sb1.length() &gt; <span class="code-number">0</span> &amp;&amp; sb2.length() &gt; <span class="code-number">0</span>) sb1.append(delimiter);
+                sb1.append(sb2);
+                <span class="code-keyword">return</span> sb1;
+            };
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">Function</span>&lt;<span class="code-class">StringBuilder</span>, <span class="code-class">String</span>&gt; finisher() {
+            <span class="code-keyword">return</span> <span class="code-class">StringBuilder</span>::toString;
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">Set</span>&lt;<span class="code-class">Characteristics</span>&gt; characteristics() {
+            <span class="code-keyword">return</span> <span class="code-class">EnumSet</span>.noneOf(<span class="code-class">Characteristics</span>.<span class="code-keyword">class</span>);
+        }
+    };
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>So as the stream flows:</p>
+        <ul>
+            <li>Each element is appended to a shared <code>StringBuilder</code></li>
+            <li>The delimiter is inserted when needed</li>
+            <li>Finally, <code>StringBuilder</code> → <code>String</code> in <code>finisher()</code></li>
+        </ul>
+    </div>
+
+    <div class="subheading">Parallel Stream Considerations</div>
+    <div class="intro">
+        <p>For <strong>parallel streams</strong>, multiple threads work on <strong>independent accumulators</strong>.</p>
+        <p>At the end, those accumulators are <strong>merged</strong> using the <code>combiner()</code>.</p>
+        <p>Example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; numbers = <span class="code-class">IntStream</span>.rangeClosed(<span class="code-number">1</span>, <span class="code-number">10</span>).boxed().toList();
+<span class="code-keyword">int</span> sum = numbers.parallelStream().collect(<span class="code-class">Collectors</span>.summingInt(<span class="code-class">Integer</span>::intValue)); <span class="code-comment">internally uses combiner</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>If a collector has the <strong><code>Characteristics.CONCURRENT</code></strong> flag and the stream is <strong>unordered</strong>, then multiple threads can safely modify the same accumulator concurrently.</p>
+    </div>
+
+    <div class="subheading">Collector Characteristics</div>
+    <div class="intro">
+        <p>Collectors can declare optimizations using an <code>EnumSet</code> of <code>Collector.Characteristics</code>.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Characteristic</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><code>CONCURRENT</code></td><td>Accumulator can be used safely by multiple threads</td></tr>
+                <tr><td><code>UNORDERED</code></td><td>Result doesn’t depend on encounter order</td></tr>
+                <tr><td><code>IDENTITY_FINISH</code></td><td>Accumulator and final result are the same object type (<code>A == R</code>)</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example:</p>
+        <ul>
+            <li><code>toList()</code> → <code>IDENTITY_FINISH</code></li>
+            <li><code>joining()</code> → none</li>
+            <li><code>groupingByConcurrent()</code> → <code>CONCURRENT</code>, <code>UNORDERED</code></li>
+        </ul>
+    </div>
+
+    <div class="subheading">Complex Example: <code>groupingBy</code></div>
+    <div class="intro">
+        <p><code>groupingBy</code> uses <strong>nested collectors</strong> internally.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Map</span>&lt;<span class="code-class">K</span>, <span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;&gt; groupingBy(<span class="code-class">Function</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">T</span>, ? <span class="code-keyword">extends</span> <span class="code-class">K</span>&gt; classifier)</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Under the hood:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> &lt;<span class="code-class">T</span>, <span class="code-class">K</span>&gt; <span class="code-class">Collector</span>&lt;<span class="code-class">T</span>, ?, <span class="code-class">Map</span>&lt;<span class="code-class">K</span>, <span class="code-class">List</span>&lt;<span class="code-class">T</span>&gt;&gt;&gt; groupingBy(<span class="code-class">Function</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">T</span>, ? <span class="code-keyword">extends</span> <span class="code-class">K</span>&gt; classifier) {
+    <span class="code-keyword">return</span> groupingBy(classifier, <span class="code-class">HashMap</span>::<span class="code-keyword">new</span>, toList());
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Expanded logic:</p>
+        <ul>
+            <li>Each element is <strong>classified</strong> (key computed)</li>
+            <li>The value is accumulated using a <strong>downstream collector</strong> (<code>toList()</code> by default)</li>
+            <li>Accumulators are <strong>merged</strong> by combining maps</li>
+        </ul>
+        <p>Internally, it’s like:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">BiConsumer</span>&lt;<span class="code-class">Map</span>&lt;<span class="code-class">K</span>, <span class="code-class">A</span>&gt;, <span class="code-class">T</span>&gt; accumulator = (map, element) -&gt; {
+    <span class="code-class">K</span> key = classifier.apply(element);
+    <span class="code-class">A</span> acc = map.computeIfAbsent(key, k -&gt; downstream.supplier().get());
+    downstream.accumulator().accept(acc, element);
+};</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Then the <strong>combiner</strong> merges two maps:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">BinaryOperator</span>&lt;<span class="code-class">Map</span>&lt;<span class="code-class">K</span>, <span class="code-class">A</span>&gt;&gt; combiner = (m1, m2) -&gt; {
+    <span class="code-keyword">for</span> (<span class="code-class">Map</span>.<span class="code-class">Entry</span>&lt;<span class="code-class">K</span>, <span class="code-class">A</span>&gt; e : m2.entrySet()) {
+        m1.merge(e.getKey(), e.getValue(), downstream.combiner());
+    }
+    <span class="code-keyword">return</span> m1;
+};</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">How <code>collectingAndThen</code> Works</div>
+    <div class="intro">
+        <p>It wraps a downstream collector and applies a transformation <em>after</em> finishing:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> &lt;<span class="code-class">T</span>, <span class="code-class">A</span>, <span class="code-class">R</span>, <span class="code-class">RR</span>&gt; <span class="code-class">Collector</span>&lt;<span class="code-class">T</span>, <span class="code-class">A</span>, <span class="code-class">RR</span>&gt; collectingAndThen(<span class="code-class">Collector</span>&lt;<span class="code-class">T</span>, <span class="code-class">A</span>, <span class="code-class">R</span>&gt; downstream,
+                                                                  <span class="code-class">Function</span>&lt;<span class="code-class">R</span>, <span class="code-class">RR</span>&gt; finisher) {
+    <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Collector</span>&lt;&gt;() {
+        <span class="code-keyword">public</span> <span class="code-class">Supplier</span>&lt;<span class="code-class">A</span>&gt; supplier() { <span class="code-keyword">return</span> downstream.supplier(); }
+
+        <span class="code-keyword">public</span> <span class="code-class">BiConsumer</span>&lt;<span class="code-class">A</span>, <span class="code-class">T</span>&gt; accumulator() { <span class="code-keyword">return</span> downstream.accumulator(); }
+
+        <span class="code-keyword">public</span> <span class="code-class">BinaryOperator</span>&lt;<span class="code-class">A</span>&gt; combiner() { <span class="code-keyword">return</span> downstream.combiner(); }
+
+        <span class="code-keyword">public</span> <span class="code-class">Function</span>&lt;<span class="code-class">A</span>, <span class="code-class">RR</span>&gt; finisher() {
+            <span class="code-keyword">return</span> downstream.finisher().andThen(finisher);
+        }
+
+        <span class="code-keyword">public</span> <span class="code-class">Set</span>&lt;<span class="code-class">Characteristics</span>&gt; characteristics() { <span class="code-keyword">return</span> downstream.characteristics(); }
+    };
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>So it effectively <strong>decorates</strong> an existing collector.</p>
+    </div>
+
+    <div class="subheading">Key Internal Design Pattern: Composite Collector</div>
+    <div class="intro">
+        <p>Most advanced collectors (like <code>groupingBy</code>, <code>mapping</code>, <code>partitioningBy</code>) are <strong>composite collectors</strong> — they take another collector as an argument (a <em>downstream collector</em>) and delegate part of the work.</p>
+        <p>This design makes collectors <strong>composable</strong>, <strong>lazy</strong> and <strong>highly parallelizable</strong>.</p>
+    </div>
+
+    <div class="subheading">Summary Diagram (Mental Model)</div>
+    <div class="svg-diagram">
+        <img src="../static/collectors-lifecycle.svg" alt="Stream elements go to supplier(), which creates the mutable container A. The container feeds accumulator() and, for parallel streams, combiner(); accumulator() leads to finisher(), which produces the final result R." style="width:100%;max-width:520px">
+    </div>
+
+    <div class="subheading">Recap</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Stage</th><th>Collector Method</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Create accumulator</td><td><code>supplier()</code></td><td>Create mutable container</td></tr>
+                <tr><td>Add element</td><td><code>accumulator()</code></td><td>Process each element</td></tr>
+                <tr><td>Merge accumulators</td><td><code>combiner()</code></td><td>Parallel merge</td></tr>
+                <tr><td>Convert result</td><td><code>finisher()</code></td><td>Final transformation</td></tr>
+                <tr><td>Optimization</td><td><code>characteristics()</code></td><td>Hints for performance</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+</div>
+</body>
+</html>

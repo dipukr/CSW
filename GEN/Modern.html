@@ -11,7 +11,7 @@
     <div class="title">Modern Java: Features After Java 8</div>
 
     <div class="intro">
-        <p>Java 8 (2014) was a turning point: it brought lambdas, streams, <code>Optional</code> and the <code>java.time</code> API. The releases after it changed the language and the platform even more. Since Java 10 (2018) a new feature release ships every six months, and every few releases is a <strong>long-term support (LTS)</strong> release: 11, 17, 21 and 25.</p>
+        <p>Java 8 (2014) was a turning point: it brought lambdas, streams, <code>Optional</code> and the <code>java.time</code> API. The releases after it changed the language and the platform even more. Since Java 10 (2018) a new feature release ships every six months and every few releases is a <strong>long-term support (LTS)</strong> release: 11, 17, 21 and 25.</p>
         <p>This page covers the important features from <strong>Java 9 to Java 25</strong>, grouped by topic, with an example for each. The examples print with <code>IO.println</code>, which was added in Java 25; on older versions use <code>System.out.println</code>. For Java basics, see <a href="Java.html">Java</a>.</p>
     </div>
 
@@ -58,8 +58,8 @@
     </div>
     <div class="intro">
         <ul>
-            <li><strong>Allowed:</strong> local variables with an initializer, the variable of an enhanced <code>for</code> loop, a classic <code>for</code> loop index, and try-with-resources variables.</li>
-            <li><strong>Not allowed:</strong> fields, method parameters, return types, variables without an initializer, and <code>var x = null;</code>.</li>
+            <li><strong>Allowed:</strong> local variables with an initializer, the variable of an enhanced <code>for</code> loop, a classic <code>for</code> loop index and try-with-resources variables.</li>
+            <li><strong>Not allowed:</strong> fields, method parameters, return types, variables without an initializer and <code>var x = null;</code>.</li>
             <li><strong>Lambda parameters (Java 11):</strong> <code>var</code> in lambda parameters is mainly useful for adding annotations to them.</li>
         </ul>
         <p>Use <code>var</code> when the type is obvious from the right-hand side, as in <code>var list = new ArrayList&lt;String&gt;()</code>. Spell out the type when it helps the reader, for example when the value comes from a method call whose return type is not obvious.</p>
@@ -67,7 +67,7 @@
 
     <div class="subheading">2. Switch Expressions (Java 14)</div>
     <div class="intro">
-        <p><code>switch</code> can now be an <strong>expression</strong> that produces a value. The arrow form <code>case X -&gt;</code> does not fall through, so <code>break</code> is no longer needed, and one case can list several labels. A block uses <code>yield</code> to return its value. For enums and sealed types, the compiler checks that every case is covered.</p>
+        <p><code>switch</code> can now be an <strong>expression</strong> that produces a value. The arrow form <code>case X -&gt;</code> does not fall through, so <code>break</code> is no longer needed and one case can list several labels. A block uses <code>yield</code> to return its value. For enums and sealed types, the compiler checks that every case is covered.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -90,7 +90,7 @@
 
     <div class="subheading">3. Text Blocks (Java 15)</div>
     <div class="intro">
-        <p>A text block is a multi-line string literal between <code>"""</code> delimiters. The compiler removes the common leading indentation, so the text can be indented together with the code. Inside a text block, <code>\</code> at the end of a line joins it with the next line, and <code>\s</code> keeps a trailing space.</p>
+        <p>A text block is a multi-line string literal between <code>"""</code> delimiters. The compiler removes the common leading indentation, so the text can be indented together with the code. Inside a text block, <code>\</code> at the end of a line joins it with the next line and <code>\s</code> keeps a trailing space.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -113,7 +113,7 @@
 
     <div class="subheading">4. Records (Java 16)</div>
     <div class="intro">
-        <p>A record is a concise, immutable data carrier. From the header <code>record Point(int x, int y)</code>, the compiler generates private fields, a canonical constructor, accessor methods <code>x()</code> and <code>y()</code> (not <code>getX()</code>), and <code>equals</code>, <code>hashCode</code> and <code>toString</code>. A <strong>compact constructor</strong> validates or normalizes the arguments before the fields are assigned.</p>
+        <p>A record is a concise, immutable data carrier. From the header <code>record Point(int x, int y)</code>, the compiler generates private fields, a canonical constructor, accessor methods <code>x()</code> and <code>y()</code> (not <code>getX()</code>) and <code>equals</code>, <code>hashCode</code> and <code>toString</code>. A <strong>compact constructor</strong> validates or normalizes the arguments before the fields are assigned.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -187,7 +187,7 @@
 
     <div class="subheading">7. Pattern Matching for switch (Java 21)</div>
     <div class="intro">
-        <p><code>switch</code> can match on the <strong>type</strong> of any object. A <code>case</code> can add a guard with <code>when</code>, <code>case null</code> handles <code>null</code> explicitly, and a <code>switch</code> over a sealed type needs no <code>default</code> when all subtypes are covered.</p>
+        <p><code>switch</code> can match on the <strong>type</strong> of any object. A <code>case</code> can add a guard with <code>when</code>, <code>case null</code> handles <code>null</code> explicitly and a <code>switch</code> over a sealed type needs no <code>default</code> when all subtypes are covered.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -217,7 +217,7 @@
 
     <div class="subheading">8. Record Patterns (Java 21)</div>
     <div class="intro">
-        <p>A record pattern matches a record and <strong>deconstructs</strong> it into its components in one step. Patterns can be nested, and <code>var</code> can be used for component types.</p>
+        <p>A record pattern matches a record and <strong>deconstructs</strong> it into its components in one step. Patterns can be nested and <code>var</code> can be used for component types.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -257,7 +257,7 @@ map.forEach((_, value) -&gt; <span class="code-class">IO</span>.println(value));
 
     <div class="subheading">10. Compact Source Files and Instance main Methods (Java 25)</div>
     <div class="intro">
-        <p>A source file can now contain a <code>main</code> method, fields and other methods without declaring a class; the compiler wraps them in an implicitly declared class. <code>main</code> no longer has to be <code>public static</code>, and the <code>String[] args</code> parameter is optional. A compact source file automatically imports all packages of the <code>java.base</code> module, so <code>List</code>, <code>Map</code> and other common classes need no imports. The new <code>java.lang.IO</code> class provides <code>IO.println</code>, <code>IO.print</code> and <code>IO.readln</code> for simple console input and output.</p>
+        <p>A source file can now contain a <code>main</code> method, fields and other methods without declaring a class; the compiler wraps them in an implicitly declared class. <code>main</code> no longer has to be <code>public static</code> and the <code>String[] args</code> parameter is optional. A compact source file automatically imports all packages of the <code>java.base</code> module, so <code>List</code>, <code>Map</code> and other common classes need no imports. The new <code>java.lang.IO</code> class provides <code>IO.println</code>, <code>IO.print</code> and <code>IO.readln</code> for simple console input and output.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -268,7 +268,7 @@ map.forEach((_, value) -&gt; <span class="code-class">IO</span>.println(value));
         </div>
     </div>
     <div class="intro">
-        <p>This makes small programs and scripts much shorter, and it is a gentler start for learners. Larger programs still use ordinary classes.</p>
+        <p>This makes small programs and scripts much shorter and it is a gentler start for learners. Larger programs still use ordinary classes.</p>
     </div>
 
     <div class="subheading">11. Flexible Constructor Bodies (Java 25)</div>
@@ -288,7 +288,7 @@ map.forEach((_, value) -&gt; <span class="code-class">IO</span>.println(value));
 
     <div class="subheading">12. Module Import Declarations (Java 25)</div>
     <div class="intro">
-        <p><code>import module java.sql;</code> imports all public top-level types from every package that the <code>java.sql</code> module exports, and from the modules it requires transitively. It replaces long lists of single-type and on-demand imports. If two imported packages contain a type with the same simple name, a single-type import resolves the conflict.</p>
+        <p><code>import module java.sql;</code> imports all public top-level types from every package that the <code>java.sql</code> module exports and from the modules it requires transitively. It replaces long lists of single-type and on-demand imports. If two imported packages contain a type with the same simple name, a single-type import resolves the conflict.</p>
     </div>
 
     <div class="subheading">13. Private Interface Methods (Java 9)</div>
@@ -356,7 +356,7 @@ map.forEach((_, value) -&gt; <span class="code-class">IO</span>.println(value));
     <div class="intro">
         <ul>
             <li>The collections are unmodifiable and do not allow <code>null</code> elements, keys or values.</li>
-            <li><code>Set.of</code> and <code>Map.of</code> reject duplicate elements or keys, and their iteration order is not specified.</li>
+            <li><code>Set.of</code> and <code>Map.of</code> reject duplicate elements or keys and their iteration order is not specified.</li>
             <li><code>Collectors.toUnmodifiableList()</code> (Java 10) and <code>Stream.toList()</code> (Java 16) also produce unmodifiable lists.</li>
         </ul>
     </div>
@@ -376,7 +376,7 @@ letters.addFirst(<span class="code-string">"z"</span>);
 scores.put(<span class="code-string">"x"</span>, <span class="code-number">1</span>);
 scores.put(<span class="code-string">"y"</span>, <span class="code-number">2</span>);
 <span class="code-class">IO</span>.println(scores.firstEntry()); <span class="code-comment">x=1</span>
-<span class="code-class">IO</span>.println(scores.pollLastEntry()); <span class="code-comment">y=2, and removes it</span></code></pre>
+<span class="code-class">IO</span>.println(scores.pollLastEntry()); <span class="code-comment">y=2 and removes it</span></code></pre>
         </div>
     </div>
 
@@ -440,7 +440,7 @@ scores.put(<span class="code-string">"y"</span>, <span class="code-number">2</sp
 
     <div class="subheading">22. HTTP Client (Java 11)</div>
     <div class="intro">
-        <p><code>java.net.http.HttpClient</code> replaces the old <code>HttpURLConnection</code>. It supports HTTP/1.1 and HTTP/2, synchronous and asynchronous calls, and WebSockets.</p>
+        <p><code>java.net.http.HttpClient</code> replaces the old <code>HttpURLConnection</code>. It supports HTTP/1.1 and HTTP/2, synchronous and asynchronous calls and WebSockets.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -505,7 +505,7 @@ client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span cla
 
     <div class="subheading">25. Scoped Values (Java 25)</div>
     <div class="intro">
-        <p>A scoped value shares immutable data with the methods a thread calls, and with child threads, for a bounded period. It is a safer, cheaper alternative to <code>ThreadLocal</code> for passing context such as the current user or request ID: the value cannot be changed, and it is automatically unbound when the scope ends.</p>
+        <p>A scoped value shares immutable data with the methods a thread calls and with child threads, for a bounded period. It is a safer, cheaper alternative to <code>ThreadLocal</code> for passing context such as the current user or request ID: the value cannot be changed and it is automatically unbound when the scope ends.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -522,7 +522,7 @@ client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span cla
     </div>
     <div class="intro">
         <p class="minor-heading"><strong>Structured concurrency (preview)</strong></p>
-        <p>Structured concurrency, a preview feature in Java 25, treats a group of related tasks running in different threads as one unit of work. If one subtask fails, the others are cancelled, and the parent waits for all of them before continuing, so no task is left running in the background.</p>
+        <p>Structured concurrency, a preview feature in Java 25, treats a group of related tasks running in different threads as one unit of work. If one subtask fails, the others are cancelled and the parent waits for all of them before continuing, so no task is left running in the background.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -593,7 +593,7 @@ client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span cla
         <p class="minor-heading"><strong>Container awareness (Java 10)</strong></p>
         <p>The JVM reads the CPU and memory limits of its Docker or Kubernetes container instead of the host machine&rsquo;s resources. Size the heap relative to the container with <code>-XX:MaxRAMPercentage=75</code>.</p>
         <p class="minor-heading"><strong>Faster startup: CDS and AOT cache (Java 10 to 25)</strong></p>
-        <p>Class Data Sharing stores pre-parsed classes in an archive that is shared between JVM runs. Java 24 and 25 extend it into an <strong>ahead-of-time (AOT) cache</strong>: a training run records which classes are loaded and linked, and which methods are hot, so later runs start and warm up faster.</p>
+        <p>Class Data Sharing stores pre-parsed classes in an archive that is shared between JVM runs. Java 24 and 25 extend it into an <strong>ahead-of-time (AOT) cache</strong>: a training run records which classes are loaded and linked and which methods are hot, so later runs start and warm up faster.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -625,7 +625,7 @@ client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span cla
 
     <div class="subheading">Example: Result Type Instead of Exceptions</div>
     <div class="intro">
-        <p>This example combines records, sealed interfaces, pattern matching for <code>switch</code> and record patterns. A service method returns a sealed <code>Result</code> that is either a success or one of a fixed set of failures, instead of returning <code>null</code> or throwing exceptions. The caller must handle every outcome, and the compiler enforces it.</p>
+        <p>This example combines records, sealed interfaces, pattern matching for <code>switch</code> and record patterns. A service method returns a sealed <code>Result</code> that is either a success or one of a fixed set of failures, instead of returning <code>null</code> or throwing exceptions. The caller must handle every outcome and the compiler enforces it.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">

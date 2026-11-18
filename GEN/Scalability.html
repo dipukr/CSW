@@ -13,7 +13,7 @@
     <div class="intro">
         <p>Scalability is a system's ability to handle growing amounts of work, traffic, or data efficiently without losing performance or quality.
         A system must be scalable in order to accommodate growing user traffic, data volumes, or computing demands without suffering a major performance hit or necessitating a total redesign.</p>
-        <p>For example, an online shopping application might initially serve <strong>1,000 users</strong>. Later, it must serve <strong>1 million users</strong>, store hundreds of millions of orders, and process thousands of payments per second.</p>
+        <p>For example, an online shopping application might initially serve <strong>1,000 users</strong>. Later, it must serve <strong>1 million users</strong>, store hundreds of millions of orders and process thousands of payments per second.</p>
         <p>A scalable design lets the system grow to meet that demand without requiring a complete redesign.</p>
         <p>Scalability is not simply <strong>add more servers</strong>. If all those servers depend on one overloaded database, adding servers may achieve very little.</p>
     </div>
@@ -138,7 +138,7 @@
             <li>Higher disk throughput.</li>
             <li>More concurrent requests, provided the application can use the additional resources.</li>
         </ul>
-        <p><strong>Ways to scale vertically:</strong> increase CPU cores or speed, add RAM, use faster storage or more provisioned throughput, increase network bandwidth, and adjust application limits so it can use the new capacity.</p>
+        <p><strong>Ways to scale vertically:</strong> increase CPU cores or speed, add RAM, use faster storage or more provisioned throughput, increase network bandwidth and adjust application limits so it can use the new capacity.</p>
         <p>Adding resources does not automatically remove every bottleneck. A single-threaded operation may not benefit much from additional CPU cores. A global lock can prevent multiple threads from doing useful work simultaneously.</p>
         <p><strong>Advantages:</strong> usually simpler to implement; often requires fewer architectural changes; keeps data and transactions within one machine; useful for databases and applications that are difficult to distribute.</p>
         <p><strong>Limitations:</strong> there is a maximum practical machine size; larger machines can become disproportionately expensive; resizing may require interruption; one machine remains a failure domain unless redundancy is added separately.</p>
@@ -209,12 +209,12 @@
             <li>Email delivery requires background workers.</li>
         </ul>
         <p>You do not need to scale all of them equally. Microservices can enable this, but <strong>microservices do not automatically make a system scalable</strong>. Poor boundaries and excessive synchronous calls can create additional bottlenecks.</p>
-        <p><strong>Z-axis: divide the workload or data.</strong> Customer IDs in one group go to shard A, another group goes to shard B, and each shard handles only its assigned customers. This helps when one database or processing group cannot handle the full dataset or workload. The difficulty is selecting a partitioning strategy that avoids hotspots and supports your access patterns.</p>
+        <p><strong>Z-axis: divide the workload or data.</strong> Customer IDs in one group go to shard A, another group goes to shard B and each shard handles only its assigned customers. This helps when one database or processing group cannot handle the full dataset or workload. The difficulty is selecting a partitioning strategy that avoids hotspots and supports your access patterns.</p>
     </div>
 
     <div class="subheading">Stateless application design eases horizontal scaling</div>
     <div class="intro">
-        <p>Suppose a user logs in through application instance A, and A stores the user's session only in its own memory. The next request reaches instance B. B does not have that session. This creates a problem because requests are distributed across instances.</p>
+        <p>Suppose a user logs in through application instance A and A stores the user's session only in its own memory. The next request reaches instance B. B does not have that session. This creates a problem because requests are distributed across instances.</p>
         <p>A more scalable design keeps application instances <strong>stateless with respect to durable, user-specific state</strong>. That does not mean the entire system has no state &mdash; it means state is stored somewhere appropriate:</p>
     </div>
     <div class="section cmp"><div class="section-content">
@@ -273,7 +273,7 @@
             <thead><tr><th>Cache location</th><th>Typical use</th></tr></thead>
             <tbody>
                 <tr><td>Browser</td><td>Static assets and cacheable responses</td></tr>
-                <tr><td>CDN</td><td>Images, videos, scripts, and other cacheable content</td></tr>
+                <tr><td>CDN</td><td>Images, videos, scripts and other cacheable content</td></tr>
                 <tr><td>Reverse proxy</td><td>Cacheable HTTP responses</td></tr>
                 <tr><td>Application memory</td><td>Small, frequently used local data</td></tr>
                 <tr><td>Distributed cache</td><td>Data shared across application instances</td></tr>
@@ -281,7 +281,7 @@
         </table>
     </div></div> <br>
     <div class="intro">
-        <p>Caching works best when data is reused enough to justify storing it. Its challenges include stale data, cache invalidation, memory limits and eviction, hot keys, and cache stampedes when many requests regenerate the same expired entry.</p>
+        <p>Caching works best when data is reused enough to justify storing it. Its challenges include stale data, cache invalidation, memory limits and eviction, hot keys and cache stampedes when many requests regenerate the same expired entry.</p>
     </div>
     <div class="callout callout-warning"><p><strong>A cache reduces backend demand; it does not eliminate the need to plan backend capacity.</strong> A cold or unavailable cache can suddenly expose the database to much higher traffic.</p></div>
 
@@ -295,11 +295,11 @@
             <li>Update analytics.</li>
             <li>Notify the warehouse.</li>
         </ol>
-        <p>If every action runs synchronously, the user waits for all of them, and downstream delays occupy request-handling capacity. Instead, the request can complete after the required durable order operation, while suitable follow-up work runs asynchronously.</p>
+        <p>If every action runs synchronously, the user waits for all of them and downstream delays occupy request-handling capacity. Instead, the request can complete after the required durable order operation, while suitable follow-up work runs asynchronously.</p>
     </div>
     <div class="section-diagram">
         <div class="diagram-panel">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 552" style="width:100%;max-width:420px;height:auto" role="img" aria-label="The order API saves orders and an outbox; an outbox publisher sends events to a message broker, which distributes work to email, invoice, and warehouse consumers"><defs><marker id="async-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#527b8a"/></marker></defs><path d="M400 64 V98" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 146 V180" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 234 V268" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 316 V350" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 398 V430 H140 V464" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 398 V464" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 398 V430 H660 V464" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><rect x="300" y="16" width="200" height="48" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="400" y="46" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Client</text><rect x="300" y="98" width="200" height="48" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="400" y="128" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Order API</text><rect x="275" y="180" width="250" height="54" rx="12" fill="#e8f4f1" stroke="#9db5c5"/><text x="400" y="213" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Orders and outbox</text><rect x="290" y="268" width="220" height="48" rx="12" fill="#e8f4f1" stroke="#9db5c5"/><text x="400" y="298" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Outbox publisher</text><rect x="300" y="350" width="200" height="48" rx="12" fill="#e8f4f1" stroke="#9db5c5"/><text x="400" y="380" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Message broker</text><rect x="30" y="464" width="220" height="60" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="140" y="500" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Email workers</text><rect x="290" y="464" width="220" height="60" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="400" y="500" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Invoice workers</text><rect x="550" y="464" width="220" height="60" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="660" y="500" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Warehouse integration</text></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 552" style="width:100%;max-width:420px;height:auto" role="img" aria-label="The order API saves orders and an outbox; an outbox publisher sends events to a message broker, which distributes work to email, invoice and warehouse consumers"><defs><marker id="async-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#527b8a"/></marker></defs><path d="M400 64 V98" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 146 V180" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 234 V268" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 316 V350" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 398 V430 H140 V464" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 398 V464" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><path d="M400 398 V430 H660 V464" fill="none" stroke="#527b8a" stroke-width="2.2" marker-end="url(#async-arrow)"/><rect x="300" y="16" width="200" height="48" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="400" y="46" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Client</text><rect x="300" y="98" width="200" height="48" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="400" y="128" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Order API</text><rect x="275" y="180" width="250" height="54" rx="12" fill="#e8f4f1" stroke="#9db5c5"/><text x="400" y="213" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Orders and outbox</text><rect x="290" y="268" width="220" height="48" rx="12" fill="#e8f4f1" stroke="#9db5c5"/><text x="400" y="298" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Outbox publisher</text><rect x="300" y="350" width="200" height="48" rx="12" fill="#e8f4f1" stroke="#9db5c5"/><text x="400" y="380" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Message broker</text><rect x="30" y="464" width="220" height="60" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="140" y="500" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Email workers</text><rect x="290" y="464" width="220" height="60" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="400" y="500" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Invoice workers</text><rect x="550" y="464" width="220" height="60" rx="12" fill="#f1f5fb" stroke="#9db5c5"/><text x="660" y="500" text-anchor="middle" fill="#173649" font-family="Arial, sans-serif" font-size="17">Warehouse integration</text></svg>
         </div>
     </div>
     <div class="intro">
@@ -309,7 +309,7 @@
     <div class="intro"><p>If jobs arrive at 10,000/second and workers process 8,000/second:</p></div>
     <div class="callout callout-note"><p style="text-align:center"><code>Backlog growth = 10,000 &minus; 8,000 = <strong>2,000 jobs/second</strong></code></p></div>
     <div class="intro">
-        <p>The backlog keeps growing until processing capacity increases or incoming work decreases. Queue-based systems also need retry handling, idempotent processing, backpressure, handling for repeatedly failing jobs, and ordering rules where required.</p>
+        <p>The backlog keeps growing until processing capacity increases or incoming work decreases. Queue-based systems also need retry handling, idempotent processing, backpressure, handling for repeatedly failing jobs and ordering rules where required.</p>
     </div>
 
     <div class="subheading">Geographic scalability: bring processing closer to users</div>
@@ -324,7 +324,7 @@
         </ul>
         <p>The difficult part is usually mutable data. For example, if two regions simultaneously update the same account balance, the system needs a clear coordination or conflict-resolution strategy. Synchronous cross-region coordination adds network latency. Asynchronous replication permits temporary differences between regions.</p>
     </div>
-    <div class="callout callout-note"><p><strong>Geographic scaling involves decisions about latency, consistency, availability, and where writes are accepted.</strong></p></div>
+    <div class="callout callout-note"><p><strong>Geographic scaling involves decisions about latency, consistency, availability and where writes are accepted.</strong></p></div>
 
     <div class="subheading">The real limit is often the bottleneck</div>
     <div class="intro">
@@ -338,7 +338,7 @@
             <tbody>
                 <tr><td>Application CPU</td><td>Improve algorithms, scale up, or add instances</td></tr>
                 <tr><td>Memory</td><td>Reduce allocations, bound caches, stream data, or add RAM</td></tr>
-                <tr><td>Database query cost</td><td>Improve queries, indexes, and access patterns</td></tr>
+                <tr><td>Database query cost</td><td>Improve queries, indexes and access patterns</td></tr>
                 <tr><td>Database lock contention</td><td>Shorten transactions and reduce shared updates</td></tr>
                 <tr><td>Storage throughput</td><td>Reduce I/O or use higher-throughput storage</td></tr>
                 <tr><td>Network bandwidth</td><td>Compress, reduce payloads, or use a CDN</td></tr>
@@ -359,12 +359,12 @@
     <div class="intro"><p>Ideally, doubling resources doubles throughput:</p></div>
     <div class="callout callout-note"><p style="text-align:center"><code>T(N) &asymp; N &times; T(1)</code></p></div>
     <div class="intro">
-        <p>where <em>T(N)</em> is throughput with <em>N</em> equivalent instances. Actual throughput is usually lower because of shared resources, network overhead, coordination, serial processing, lock contention, and uneven work distribution.</p>
+        <p>where <em>T(N)</em> is throughput with <em>N</em> equivalent instances. Actual throughput is usually lower because of shared resources, network overhead, coordination, serial processing, lock contention and uneven work distribution.</p>
         <p>A useful theoretical model is <strong>Amdahl's law</strong>:</p>
     </div>
     <div class="callout callout-note"><p style="text-align:center"><code>Speedup(N) = 1 / [s + (1 &minus; s) / N]</code></p></div>
     <div class="intro">
-        <p>Here <em>s</em> is the fraction of work that must remain serial, and <em>N</em> is the number of parallel workers. If 10% of a fixed workload is inherently serial, the theoretical maximum speedup is:</p>
+        <p>Here <em>s</em> is the fraction of work that must remain serial and <em>N</em> is the number of parallel workers. If 10% of a fixed workload is inherently serial, the theoretical maximum speedup is:</p>
     </div>
     <div class="callout callout-note"><p style="text-align:center"><code>1 / 0.10 = <strong>10&times;</strong></code></p></div>
     <div class="intro">
@@ -375,7 +375,7 @@
     <div class="intro">
         <p><strong>Handles 10,000 requests/second</strong> is incomplete. Useful measurements include:</p>
     </div>
-    <div class="callout callout-note"><p>Sustain 10,000 requests/second with p99 latency below 300 ms, errors below 0.1%, and enough spare capacity to tolerate one instance failure.</p></div>
+    <div class="callout callout-note"><p>Sustain 10,000 requests/second with p99 latency below 300 ms, errors below 0.1% and enough spare capacity to tolerate one instance failure.</p></div>
     <div class="section cmp"><div class="section-content">
         <table class="cmp-table cmp-teal centered">
             <thead><tr><th>Metric</th><th>What it tells you</th></tr></thead>
@@ -392,7 +392,7 @@
         </table>
     </div></div>
     <div class="intro">
-        <p>Concurrency also matters. For a stable system, <strong>Little's law</strong> relates average in-flight work, throughput, and average time in the system:</p>
+        <p>Concurrency also matters. For a stable system, <strong>Little's law</strong> relates average in-flight work, throughput and average time in the system:</p>
     </div>
     <div class="callout callout-note"><p style="text-align:center"><code>L = &lambda;W</code></p></div>
     <div class="intro"><p>At 2,000 requests/second and an average response time of 0.2 seconds:</p></div>
@@ -412,8 +412,8 @@
             <li>Active connections.</li>
             <li>Processing latency.</li>
         </ul>
-        <p>CPU is not always the right signal. An application waiting on a slow database may have low CPU while requests pile up. Scaling also takes time: instances must start, initialize, warm caches, and become healthy.</p>
-        <p>Useful protections include spare capacity, bounded queues, concurrency limits, rate limiting, timeouts, retries with backoff and jitter, and load shedding when capacity is exhausted.</p>
+        <p>CPU is not always the right signal. An application waiting on a slow database may have low CPU while requests pile up. Scaling also takes time: instances must start, initialize, warm caches and become healthy.</p>
+        <p>Useful protections include spare capacity, bounded queues, concurrency limits, rate limiting, timeouts, retries with backoff and jitter and load shedding when capacity is exhausted.</p>
         <p>Without these protections, retries and unbounded queues can turn a temporary overload into a larger failure.</p>
     </div>
 
@@ -435,7 +435,7 @@
             </tbody>
         </table>
     </div></div>
-    <div class="callout callout-note"><p>The central design habit is to <strong>identify the workload, define acceptable service levels, measure the limiting resource, and choose a scaling approach that addresses that specific limit.</strong></p></div>
+    <div class="callout callout-note"><p>The central design habit is to <strong>identify the workload, define acceptable service levels, measure the limiting resource and choose a scaling approach that addresses that specific limit.</strong></p></div>
 </div>
 </body>
 </html>

@@ -11,6 +11,7 @@
     <div class="title">Concurrency</div>
 
     <div class="intro">
+        <p><strong>Concurrency</strong> and <strong>multithreading</strong> are fundamental concepts in software development that allow applications to manage multiple tasks efficiently, improve responsiveness and utilize system resources effectively.</p>
         <p>Java multithreading and concurrency are fundamental concepts for building efficient and responsive applications, especially in modern multi-core environments.</p>
         <p><strong>Multithreading</strong> refers to the ability of a program to execute multiple parts of its code (called threads) concurrently within a single process. This allows a program to perform multiple tasks seemingly simultaneously, improving responsiveness and resource utilization. In Java, threads can be created by extending the <code>Thread</code> class or by implementing the <code>Runnable</code> interface.</p>
         <p><strong>Concurrency</strong> is the ability of multiple threads to access and operate on shared resources (like data or objects) at the same time. While multithreading enables the execution of multiple threads, concurrency addresses the challenges that arise when these threads interact with shared resources. Without proper handling, concurrent access can lead to issues such as:</p>
@@ -25,10 +26,10 @@
     </div>
     <div class="intro"><ul>
         <li><strong><code>synchronized</code> keyword:</strong> Used to create synchronized blocks or methods, ensuring that only one thread can execute a critical section of code at a time.</li>
-        <li><strong><code>Lock</code> interface (from <code>java.util.concurrent.locks</code>):</strong> Offers more flexible and powerful locking mechanisms than <code>synchronized</code> blocks, including reentrant locks, read-write locks, and condition variables.</li>
+        <li><strong><code>Lock</code> interface (from <code>java.util.concurrent.locks</code>):</strong> Offers more flexible and powerful locking mechanisms than <code>synchronized</code> blocks, including reentrant locks, read-write locks and condition variables.</li>
         <li><strong><code>Semaphore</code> (from <code>java.util.concurrent</code>):</strong> Controls access to a limited number of resources.</li>
         <li><strong><code>Atomic</code> classes (from <code>java.util.concurrent.atomic</code>):</strong> Provide atomic operations on single variables, ensuring thread-safe updates without explicit locking.</li>
-        <li><strong><code>java.util.concurrent</code> package:</strong> Offers a rich set of high-level concurrency utilities, including <code>ExecutorService</code> for managing thread pools, <code>CountDownLatch</code>, <code>CyclicBarrier</code>, and <code>BlockingQueue</code> for inter-thread communication and coordination.</li>
+        <li><strong><code>java.util.concurrent</code> package:</strong> Offers a rich set of high-level concurrency utilities, including <code>ExecutorService</code> for managing thread pools, <code>CountDownLatch</code>, <code>CyclicBarrier</code> and <code>BlockingQueue</code> for inter-thread communication and coordination.</li>
     </ul></div>
 
     <div class="subheading">Best Practices for Java Concurrency</div>
@@ -67,8 +68,8 @@
     </div>
     <div class="intro"><ul>
         <li><strong>Hard to Reason About</strong><br>The number of possible interleavings explodes, so correctness can no longer be checked by reading the code top to bottom.</li>
-        <li><strong>Non-Deterministic Bugs</strong><br>Race conditions and deadlocks may appear only under load or on certain machines, and are hard to reproduce and test.</li>
-        <li><strong>Overhead</strong><br>Thread creation, context switching, and lock contention cost time and memory; too many threads can make a program slower.</li>
+        <li><strong>Non-Deterministic Bugs</strong><br>Race conditions and deadlocks may appear only under load or on certain machines and are hard to reproduce and test.</li>
+        <li><strong>Overhead</strong><br>Thread creation, context switching and lock contention cost time and memory; too many threads can make a program slower.</li>
         <li><strong>Shared-State Complexity</strong><br>Every piece of shared mutable data needs a clear protection strategy, which adds design and review effort.</li>
     </ul></div>
 
@@ -100,7 +101,7 @@
             <div class="code-explanation">
                 <div class="code-explanation-title">How it works</div>
                 <p>Extending <code>Thread</code> puts the work in <code>run()</code>; implementing <code>Runnable</code> keeps the task separate from the thread that runs it.<br><br>
-                    <code>Runnable</code> is usually preferred: the class can still extend something else, and the same task can be handed to a thread pool.<br><br>
+                    <code>Runnable</code> is usually preferred: the class can still extend something else and the same task can be handed to a thread pool.<br><br>
                     Calling <code>run()</code> directly would execute the code on the current thread; <code>start()</code> is what creates a new one.</p>
             </div>
         </div>
@@ -142,7 +143,7 @@
             </div>
             <div class="code-explanation">
                 <div class="code-explanation-title">How it works</div>
-                <p><code>count++</code> reads the value, adds one, and writes it back.<br><br>
+                <p><code>count++</code> reads the value, adds one and writes it back.<br><br>
                     If both threads read the same value before either writes, one increment is lost, so the final total changes from run to run.<br><br>
                     This is a race condition: the result depends on how the two threads happen to interleave.</p>
             </div>
@@ -181,7 +182,7 @@
             </div>
             <div class="code-explanation">
                 <div class="code-explanation-title">How it works</div>
-                <p><code>synchronized</code> makes the read-add-write a single critical section, and also guarantees that <code>get()</code> sees the latest value.<br><br>
+                <p><code>synchronized</code> makes the read-add-write a single critical section and also guarantees that <code>get()</code> sees the latest value.<br><br>
                     <code>AtomicInteger</code> does the same update without locking, using a hardware compare-and-set that retries if another thread changed the value first.<br><br>
                     Either version always prints 20000.</p>
             </div>

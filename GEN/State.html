@@ -12,7 +12,7 @@
 
     <div class="intro">
         <p>State is a behavioral design pattern that lets an object alter its behavior when its internal state changes, so the object appears to change its class.</p>
-        <p>Each possible state is represented by a separate class, and the context delegates state-specific behavior to the current state object.</p>
+        <p>Each possible state is represented by a separate class and the context delegates state-specific behavior to the current state object.</p>
         <p>It is essentially an object-oriented way to implement a finite state machine, replacing large conditional statements with polymorphism.</p>
     </div>
 
@@ -23,7 +23,7 @@
                 <li>When an object's behavior depends on its state and must change at runtime.</li>
                 <li>When you have large conditionals that branch on the object's state.</li>
                 <li>When state-specific code is duplicated across many methods.</li>
-                <li>Typical uses: workflow engines, TCP connections, vending machines, and media players.</li>
+                <li>Typical uses: workflow engines, TCP connections, vending machines and media players.</li>
             </ul>
         </div>
     </div>
@@ -82,7 +82,7 @@
         <p>Instead of implementing state-dependent behavior using large <code>if-else</code> or <code>switch</code> statements, the State Pattern encapsulates the behavior associated with each state into separate classes.</p>
         <p>The object, called the <strong>Context</strong>, maintains a reference to its current state object and delegates state-dependent operations to it. As the internal state changes, the Context switches to a different state object, automatically changing how it responds to operations.</p>
     </div>
-    <div class="callout callout-note"><p><strong>Key idea:</strong> An object's behavior depends on its current state, and this behavior can change at runtime without modifying the object's class.</p></div>
+    <div class="callout callout-note"><p><strong>Key idea:</strong> An object's behavior depends on its current state and this behavior can change at runtime without modifying the object's class.</p></div>
     <div class="intro">
         <p class="minor-heading"><strong>Real-world example: Order management system</strong></p>
         <p>Consider an e-commerce application where an order moves through several states:</p>
@@ -91,8 +91,8 @@
         <img src="../static/state-order-lifecycle.svg" alt="Order lifecycle: CREATED to PAID to SHIPPED to DELIVERED; an order can also go from CREATED to CANCELLED" style="width:100%;max-width:760px">
     </div>
     <div class="intro">
-        <p>Conceptual order lifecycle. Cancellation is allowed from CREATED; the normal path proceeds through payment, shipping, and delivery.</p>
-        <p>An order supports operations like <code>pay()</code>, <code>ship()</code>, <code>deliver()</code>, and <code>cancel()</code>.</p>
+        <p>Conceptual order lifecycle. Cancellation is allowed from CREATED; the normal path proceeds through payment, shipping and delivery.</p>
+        <p>An order supports operations like <code>pay()</code>, <code>ship()</code>, <code>deliver()</code> and <code>cancel()</code>.</p>
         <p>However, the same operation may behave differently depending on the current state.</p>
     </div>
     <div class="section cmp"><div class="section-content">
@@ -427,7 +427,7 @@ Order ORD-102: CREATED -&gt; CANCELLED</code></pre></div>
         <li><code>PausedState</code></li>
     </ul></div>
     <div class="intro">
-        <p>The media player provides three operations: <code>play()</code>, <code>pause()</code>, and <code>stop()</code>.</p>
+        <p>The media player provides three operations: <code>play()</code>, <code>pause()</code> and <code>stop()</code>.</p>
         <p class="minor-heading"><strong>State transitions</strong></p>
     </div>
     <div class="svg-diagram">
@@ -614,7 +614,7 @@ Order ORD-102: CREATED -&gt; CANCELLED</code></pre></div>
 
     <div class="subheading">State Pattern vs Strategy Pattern</div>
     <div class="intro">
-        <p>These two patterns have very similar structures. Both use composition, interfaces, and runtime polymorphism.</p>
+        <p>These two patterns have very similar structures. Both use composition, interfaces and runtime polymorphism.</p>
         <p>However, their intentions are different.</p>
     </div>
     <div class="section cmp"><div class="section-content">
@@ -664,7 +664,7 @@ Order ORD-102: CREATED -&gt; CANCELLED</code></pre></div>
         <li><strong>Strategy:</strong> How should this operation be performed?</li>
         <li><strong>State:</strong> What should this operation do in the object's current condition?</li>
     </ul></div>
-    <div class="callout callout-note"><p>These are conceptual distinctions, not absolute rules. Strategies can be changed internally, and States can sometimes be selected externally.</p></div>
+    <div class="callout callout-note"><p>These are conceptual distinctions, not absolute rules. Strategies can be changed internally and States can sometimes be selected externally.</p></div>
 
     <div class="subheading">State Pattern vs Finite State Machine</div>
     <div class="intro">
@@ -743,7 +743,7 @@ Order ORD-102: CREATED -&gt; CANCELLED</code></pre></div>
 }</code></pre></div>
     <div class="intro">
         <p>A real application must confirm that payment succeeded before treating the order as paid.</p>
-        <p>For workflows involving external services, consider idempotency, retry handling, and the transactional outbox pattern where appropriate.</p>
+        <p>For workflows involving external services, consider idempotency, retry handling and the transactional outbox pattern where appropriate.</p>
     </div>
     <div class="callout callout-warning"><p>The State Pattern organizes business behavior; it does not replace transaction management or distributed consistency mechanisms.</p></div>
     <div class="intro">
@@ -778,7 +778,7 @@ Order ORD-102: CREATED -&gt; CANCELLED</code></pre></div>
             </tbody>
         </table>
     </div></div>
-    <div class="callout callout-warning"><p>However, if you only have two or three simple states, a handful of operations, and straightforward transition rules, using an <code>enum</code> with a <code>switch</code> may be more readable.</p></div>
+    <div class="callout callout-warning"><p>However, if you only have two or three simple states, a handful of operations and straightforward transition rules, using an <code>enum</code> with a <code>switch</code> may be more readable.</p></div>
 
     <div class="subheading">Key Takeaways</div>
     <div class="intro">

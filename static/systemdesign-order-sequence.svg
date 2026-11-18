@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 952 756" font-family="'Segoe UI', Roboto, Arial, sans-serif" fill="#222">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#444"/>
+    </marker>
+    <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10" fill="none" stroke="#444" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <g stroke="#999" stroke-width="1">
+    <path d="M86 86 V672"/>
+    <path d="M242 62 V676"/>
+    <path d="M398 62 V676"/>
+    <path d="M554 62 V676"/>
+    <path d="M710 62 V676"/>
+    <path d="M866 62 V676"/>
+  </g>
+  <g fill="#fff" stroke="#222" stroke-width="1.5">
+    <circle cx="86" cy="17" r="9"/>
+    <path d="M86 26 V46 M71 33 H101 M86 46 L74 60 M86 46 L98 60"/>
+    <rect rx="3" x="172" y="12" width="140" height="50"/>
+    <rect rx="3" x="328" y="12" width="140" height="50"/>
+    <rect rx="3" x="484" y="12" width="140" height="50"/>
+    <rect rx="3" x="640" y="12" width="140" height="50"/>
+    <rect rx="3" x="796" y="12" width="140" height="50"/>
+    <circle cx="86" cy="681" r="9"/>
+    <path d="M86 690 V710 M71 697 H101 M86 710 L74 724 M86 710 L98 724"/>
+    <rect rx="3" x="172" y="676" width="140" height="50"/>
+    <rect rx="3" x="328" y="676" width="140" height="50"/>
+    <rect rx="3" x="484" y="676" width="140" height="50"/>
+    <rect rx="3" x="640" y="676" width="140" height="50"/>
+    <rect rx="3" x="796" y="676" width="140" height="50"/>
+  </g>
+  <g stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#ah)">
+    <path d="M95 130 H240"/>
+    <path d="M251 184 H396"/>
+    <path d="M251 292 H552"/>
+    <path d="M251 400 C312 388 312 434 246 424"/>
+    <path d="M857 632 H88"/>
+  </g>
+  <g stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#ah)" stroke-dasharray="3 3">
+    <path d="M389 238 H244"/>
+    <path d="M545 346 H244"/>
+    <path d="M233 470 H88"/>
+    <path d="M719 578 H864"/>
+  </g>
+  <g stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#ao)">
+    <path d="M251 524 H708"/>
+  </g>
+  <g fill="#222">
+    <circle cx="86" cy="130" r="9"/>
+    <circle cx="242" cy="184" r="9"/>
+    <circle cx="398" cy="238" r="9"/>
+    <circle cx="242" cy="292" r="9"/>
+    <circle cx="554" cy="346" r="9"/>
+    <circle cx="242" cy="400" r="9"/>
+    <circle cx="242" cy="470" r="9"/>
+    <circle cx="242" cy="524" r="9"/>
+    <circle cx="710" cy="578" r="9"/>
+    <circle cx="866" cy="632" r="9"/>
+  </g>
+  <g>
+    <text x="86" y="76" text-anchor="middle" font-size="14">Customer</text>
+    <text x="242" y="42" text-anchor="middle" font-size="14">Order Service</text>
+    <text x="398" y="42" text-anchor="middle" font-size="14">Inventory Service</text>
+    <text x="554" y="42" text-anchor="middle" font-size="14">Payment Service</text>
+    <text x="710" y="42" text-anchor="middle" font-size="14">Kafka</text>
+    <text x="866" y="42" text-anchor="middle" font-size="14">Notification Service</text>
+    <text x="86" y="740" text-anchor="middle" font-size="14">Customer</text>
+    <text x="242" y="706" text-anchor="middle" font-size="14">Order Service</text>
+    <text x="398" y="706" text-anchor="middle" font-size="14">Inventory Service</text>
+    <text x="554" y="706" text-anchor="middle" font-size="14">Payment Service</text>
+    <text x="710" y="706" text-anchor="middle" font-size="14">Kafka</text>
+    <text x="866" y="706" text-anchor="middle" font-size="14">Notification Service</text>
+    <text x="86" y="134" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">1</text>
+    <text x="164.0" y="121" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Place order</text>
+    <text x="242" y="188" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">2</text>
+    <text x="320.0" y="175" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Reserve inventory</text>
+    <text x="398" y="242" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">3</text>
+    <text x="320.0" y="229" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Reservation result</text>
+    <text x="242" y="296" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">4</text>
+    <text x="398.0" y="283" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Initiate payment</text>
+    <text x="554" y="350" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">5</text>
+    <text x="398.0" y="337" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Payment result</text>
+    <text x="242" y="404" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">6</text>
+    <text x="316" y="390" text-anchor="start" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Persist order status</text>
+    <text x="242" y="474" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">7</text>
+    <text x="164.0" y="461" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Order result</text>
+    <text x="242" y="528" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">8</text>
+    <text x="476.0" y="515" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Publish OrderConfirmed</text>
+    <text x="710" y="582" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">9</text>
+    <text x="788.0" y="569" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Consume event</text>
+    <text x="866" y="636" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">10</text>
+    <text x="476.0" y="623" text-anchor="middle" font-size="13" stroke="#fff" stroke-width="4" paint-order="stroke">Send notification</text>
+  </g>
+</svg>

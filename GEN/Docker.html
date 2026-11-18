@@ -13,17 +13,17 @@
     <div class="intro">
         <p><strong>Docker</strong> is a containerization platform that provides a way to package an application and its dependencies into a single, self-contained unit called a container. Containers are isolated from each other and from the host operating system, which makes them an ideal solution for deploying applications in a consistent and predictable manner across different environments.</p>
         <p>For example, using Docker, you can deploy Java and .NET Microservice in same way, unlike traditional way where you need JDK installed or CLR installed for .NET. Docker abstract that and allow you to deploy containers instead of JAR files or .NET executables.</p>
-        <p>On the other hand, <strong>Kubernetes</strong>, is an open-source platform for automating the deployment, scaling, and management of containerized applications. It provides a set of APIs and tools for deploying, scaling, and managing containers, including Docker containers.</p>
-        <p>In summary, Docker provides the containers, and Kubernetes provides the orchestration and management of those containers. The combination of Docker and Kubernetes allows organizations to manage and scale their applications more effectively and efficiently in a production environment.</p>
-        <p>It's also important to note that Kubernetes is not the only platform for orchestration and management of containers. There are many other alternatives available, such as Docker Swarm and OpenShift. However, Kubernetes is probably most popular solution in recent years due to its robust feature set, large community, and broad ecosystem.</p>
+        <p>On the other hand, <strong>Kubernetes</strong>, is an open-source platform for automating the deployment, scaling and management of containerized applications. It provides a set of APIs and tools for deploying, scaling and managing containers, including Docker containers.</p>
+        <p>In summary, Docker provides the containers and Kubernetes provides the orchestration and management of those containers. The combination of Docker and Kubernetes allows organizations to manage and scale their applications more effectively and efficiently in a production environment.</p>
+        <p>It's also important to note that Kubernetes is not the only platform for orchestration and management of containers. There are many other alternatives available, such as Docker Swarm and OpenShift. However, Kubernetes is probably most popular solution in recent years due to its robust feature set, large community and broad ecosystem.</p>
     </div>
     <div class="intro">
-        <p>A container is not a virtual machine. It is an ordinary process on the host that the Linux kernel isolates: <em>namespaces</em> give it its own view of processes, network, and file system, and <em>cgroups</em> limit how much CPU and memory it may use. All containers share the host&rsquo;s kernel, which is why they start in milliseconds and take megabytes rather than gigabytes.</p>
-        <p>The famous &ldquo;works on my machine&rdquo; problem disappears because the image carries the exact runtime, libraries, and configuration the application was tested with. The same image runs unchanged on a laptop, a CI server, and production.</p>
+        <p>A container is not a virtual machine. It is an ordinary process on the host that the Linux kernel isolates: <em>namespaces</em> give it its own view of processes, network and file system and <em>cgroups</em> limit how much CPU and memory it may use. All containers share the host&rsquo;s kernel, which is why they start in milliseconds and take megabytes rather than gigabytes.</p>
+        <p>The famous &ldquo;works on my machine&rdquo; problem disappears because the image carries the exact runtime, libraries and configuration the application was tested with. The same image runs unchanged on a laptop, a CI server and production.</p>
     </div>
 
     <div class="section-diagram">
-        <img src="../static/docker-architecture.svg" alt="Docker architecture: the Docker Client sends build, run and pull commands to the Docker Daemon on the Docker Host; the daemon manages read-only images and the running containers created from them, and pulls images from or pushes them to a registry such as Docker Hub">
+        <img src="../static/docker-architecture.svg" alt="Docker architecture: the Docker Client sends build, run and pull commands to the Docker Daemon on the Docker Host; the daemon manages read-only images and the running containers created from them and pulls images from or pushes them to a registry such as Docker Hub">
     </div>
 
     <div class="section cmp">
@@ -31,14 +31,14 @@
         <div class="section-content">
             <table class="cmp-table">
                 <tbody>
-                    <tr><td>Image</td><td>A read-only template containing the application, its runtime, libraries, and configuration. Built in layers, where each instruction in a Dockerfile adds one layer that can be cached and shared.</td></tr>
+                    <tr><td>Image</td><td>A read-only template containing the application, its runtime, libraries and configuration. Built in layers, where each instruction in a Dockerfile adds one layer that can be cached and shared.</td></tr>
                     <tr><td>Container</td><td>A running instance of an image. It adds a thin writable layer on top of the image; many containers can run from the same image.</td></tr>
                     <tr><td>Dockerfile</td><td>A text file of instructions (<code>FROM</code>, <code>COPY</code>, <code>RUN</code>, <code>CMD</code>, ...) that describes how to build an image.</td></tr>
                     <tr><td>Registry</td><td>A store for images, such as Docker Hub, Amazon ECR, or a private Harbor registry. Images are pushed after a build and pulled wherever they run.</td></tr>
-                    <tr><td>Docker Daemon</td><td>The background service (<code>dockerd</code>) that builds images and creates, runs, and stops containers.</td></tr>
+                    <tr><td>Docker Daemon</td><td>The background service (<code>dockerd</code>) that builds images and creates, runs and stops containers.</td></tr>
                     <tr><td>Docker Client</td><td>The <code>docker</code> command-line tool; it sends each command to the daemon through its REST API.</td></tr>
                     <tr><td>Volume</td><td>Storage managed by Docker that lives outside the container&rsquo;s writable layer, so data survives when the container is removed.</td></tr>
-                    <tr><td>Network</td><td>A virtual network that lets containers reach each other by container name; the default types are bridge, host, and none.</td></tr>
+                    <tr><td>Network</td><td>A virtual network that lets containers reach each other by container name; the default types are bridge, host and none.</td></tr>
                     <tr><td>Docker Compose</td><td>A tool that defines and runs multi-container applications from a single <code>compose.yaml</code> file.</td></tr>
                 </tbody>
             </table>
@@ -99,7 +99,7 @@
                     <tr><td><code>docker start api</code></td><td>Start a stopped container again.</td></tr>
                     <tr><td><code>docker rm api</code></td><td>Remove a stopped container; add <code>-f</code> to stop and remove it.</td></tr>
                     <tr><td><code>docker inspect api</code></td><td>Show full configuration and state as JSON (IP address, mounts, environment).</td></tr>
-                    <tr><td><code>docker stats</code></td><td>Show live CPU, memory, and network usage per container.</td></tr>
+                    <tr><td><code>docker stats</code></td><td>Show live CPU, memory and network usage per container.</td></tr>
                     <tr><td><code>docker cp api:/app/log.txt .</code></td><td>Copy files between a container and the host.</td></tr>
                 </tbody>
             </table>
@@ -118,7 +118,7 @@
                     <tr><td><code>docker compose up -d</code></td><td>Build if needed, then start every service in <code>compose.yaml</code> in the background.</td></tr>
                     <tr><td><code>docker compose down</code></td><td>Stop and remove the services and their network; add <code>-v</code> to remove volumes too.</td></tr>
                     <tr><td><code>docker compose logs -f</code></td><td>Follow the combined logs of all services.</td></tr>
-                    <tr><td><code>docker system prune</code></td><td>Remove stopped containers, unused networks, dangling images, and build cache.</td></tr>
+                    <tr><td><code>docker system prune</code></td><td>Remove stopped containers, unused networks, dangling images and build cache.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -129,11 +129,11 @@
         <p class="minor-heading"><strong>Pros</strong></p>
     </div>
     <div class="intro"><ul>
-        <li><strong>Consistent Environments</strong><br>The image carries the exact runtime and libraries, so the application behaves the same in development, testing, and production.</li>
+        <li><strong>Consistent Environments</strong><br>The image carries the exact runtime and libraries, so the application behaves the same in development, testing and production.</li>
         <li><strong>Lightweight and Fast</strong><br>Containers share the host kernel, so they start in seconds and use far less memory and disk than virtual machines.</li>
-        <li><strong>Isolation</strong><br>Each service gets its own file system, dependencies, and resource limits, so conflicting library versions can run side by side.</li>
+        <li><strong>Isolation</strong><br>Each service gets its own file system, dependencies and resource limits, so conflicting library versions can run side by side.</li>
         <li><strong>Portability</strong><br>The same image runs on any host with a container runtime: a laptop, an on-premise server, or any cloud.</li>
-        <li><strong>Faster Delivery</strong><br>Images are versioned, immutable artifacts, which makes CI/CD pipelines, rollbacks, and blue-green releases straightforward.</li>
+        <li><strong>Faster Delivery</strong><br>Images are versioned, immutable artifacts, which makes CI/CD pipelines, rollbacks and blue-green releases straightforward.</li>
         <li><strong>Easy Scaling</strong><br>New instances are just new containers from the same image, which orchestrators such as Kubernetes start and stop automatically.</li>
     </ul></div>
     <div class="intro">
@@ -142,10 +142,10 @@
     <div class="intro"><ul>
         <li><strong>Weaker Isolation than VMs</strong><br>All containers share one kernel; a kernel vulnerability or a container running as root can put the whole host at risk.</li>
         <li><strong>Persistent Data Is Harder</strong><br>Container file systems are temporary; databases and other stateful services need carefully managed volumes and backups.</li>
-        <li><strong>Operational Complexity</strong><br>Running many containers in production needs orchestration, service discovery, logging, and monitoring, which adds tools to learn and operate.</li>
+        <li><strong>Operational Complexity</strong><br>Running many containers in production needs orchestration, service discovery, logging and monitoring, which adds tools to learn and operate.</li>
         <li><strong>Image Sprawl and Size</strong><br>Careless Dockerfiles produce large images with outdated packages, slowing deployments and widening the attack surface.</li>
         <li><strong>Kernel Dependency</strong><br>Linux containers need a Linux kernel; on Windows and macOS Docker runs them inside a hidden virtual machine.</li>
-        <li><strong>Networking and Debugging</strong><br>Port mappings, overlay networks, and short-lived containers make troubleshooting harder than on a plain server.</li>
+        <li><strong>Networking and Debugging</strong><br>Port mappings, overlay networks and short-lived containers make troubleshooting harder than on a plain server.</li>
     </ul></div>
 
     <div class="section code-section">
@@ -173,7 +173,7 @@
                 <div class="code-explanation-title">How it works</div>
                 <p>A <em>multi-stage build</em>: the first stage has Maven and the full JDK, the second keeps only the JRE and the finished JAR.<br><br>
                     Copying <code>pom.xml</code> before the source lets Docker reuse the cached dependency layer when only code changes.<br><br>
-                    The final image is small, contains no build tools, and runs as an unprivileged user.</p>
+                    The final image is small, contains no build tools and runs as an unprivileged user.</p>
             </div>
         </div>
     </div>
@@ -193,7 +193,7 @@ docker stop orders &amp;&amp; docker rm orders <span class="code-comment">clean 
             </div>
             <div class="code-explanation">
                 <div class="code-explanation-title">How it works</div>
-                <p><code>-d</code> runs the container in the background, <code>-p</code> publishes its port on the host, and <code>-e</code> passes configuration as environment variables.<br><br>
+                <p><code>-d</code> runs the container in the background, <code>-p</code> publishes its port on the host and <code>-e</code> passes configuration as environment variables.<br><br>
                     Tagging with the registry address and pushing makes the same image available to every other environment.</p>
             </div>
         </div>

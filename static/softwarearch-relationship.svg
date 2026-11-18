@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 470" font-family="'Segoe UI', Roboto, Arial, sans-serif" fill="#222">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#444"/>
+    </marker>
+  </defs>
+  <g fill="#fff" stroke="#222" stroke-width="1.5">
+    <rect rx="3" x="20" y="10" width="440" height="56"/>
+    <rect rx="3" x="20" y="96" width="440" height="128"/>
+    <rect rx="3" x="20" y="254" width="440" height="128"/>
+    <rect rx="3" x="20" y="412" width="440" height="56"/>
+  </g>
+  <g fill="#fff" stroke="#222" stroke-width="1">
+    <rect rx="3" x="36" y="134" width="200" height="34"/>
+    <rect rx="3" x="244" y="134" width="200" height="34"/>
+    <rect rx="3" x="36" y="176" width="200" height="34"/>
+    <rect rx="3" x="244" y="176" width="200" height="34"/>
+    <rect rx="3" x="36" y="292" width="200" height="34"/>
+    <rect rx="3" x="244" y="292" width="200" height="34"/>
+    <rect rx="3" x="36" y="334" width="200" height="34"/>
+    <rect rx="3" x="244" y="334" width="200" height="34"/>
+  </g>
+  <g stroke="#888" stroke-width="1.5" fill="none" marker-end="url(#ah)">
+    <path d="M240 66 V93"/>
+    <path d="M240 224 V251"/>
+    <path d="M240 382 V409"/>
+  </g>
+  <g text-anchor="middle">
+    <text x="240" y="33" font-size="14" font-weight="700">Business and technical requirements</text>
+    <text x="240" y="53" font-size="12" fill="#555">Features, users, scale, security, availability, constraints</text>
+    <text x="240" y="121" font-size="14" font-weight="700">Software Architecture Decisions</text>
+    <text x="136" y="156" font-size="12">Component boundaries</text>
+    <text x="344" y="156" font-size="12">Architectural styles</text>
+    <text x="136" y="198" font-size="12">Dependencies and interfaces</text>
+    <text x="344" y="198" font-size="12">Quality attribute strategies</text>
+    <text x="240" y="279" font-size="14" font-weight="700">System Design</text>
+    <text x="136" y="314" font-size="12">API and data design</text>
+    <text x="344" y="314" font-size="12">Scaling and capacity</text>
+    <text x="136" y="356" font-size="12">Infrastructure topology</text>
+    <text x="344" y="356" font-size="12">Failure and recovery flows</text>
+    <text x="240" y="435" font-size="14" font-weight="700">Detailed Design and Implementation</text>
+    <text x="240" y="455" font-size="12" fill="#555">Classes, methods, SQL, configuration, tests, deployment</text>
+  </g>
+</svg>

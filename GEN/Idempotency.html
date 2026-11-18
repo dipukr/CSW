@@ -218,7 +218,7 @@ Content-Type: application/json
     </div></div>
     <div class="intro">
         <p>Even if the final insert fails, the duplicate business effect may already have happened—especially if it involved another service.</p>
-        <p>The solution is to <strong>atomically claim the key before performing the business operation</strong>, and coordinate the claim and database changes in one transaction.</p>
+        <p>The solution is to <strong>atomically claim the key before performing the business operation</strong> and coordinate the claim and database changes in one transaction.</p>
         <p>A Java <code>synchronized</code> block is insufficient when the application runs on multiple instances.</p>
     </div>
 
@@ -514,7 +514,7 @@ Second request: product 101, quantity 10</code></pre></div>
 
     <div class="subheading">What happens when two requests arrive together?</div>
     <div class="intro">
-        <p>Suppose requests A and B have the same caller, operation, and key.</p>
+        <p>Suppose requests A and B have the same caller, operation and key.</p>
     </div>
     <div class="svg-diagram">
         <img src="../static/idempotency-sequence.svg" alt="Two requests with the same key: A inserts the key and owns it; B&#x27;s insert waits for A to finish; A inserts the order, stores the response and commits; B&#x27;s insert then inserts zero rows, so B selects the stored result and gets the original response" style="width:100%;max-width:600px">
@@ -550,7 +550,7 @@ Idempotency-Replayed: false</code></pre></div>
 }</code></pre></div>
     <div class="intro">
         <p>Run the same command again.</p>
-        <p>You receive the <strong>same order ID, status, body, and location</strong>, with:</p>
+        <p>You receive the <strong>same order ID, status, body and location</strong>, with:</p>
     </div>
     <div class="code-block"><pre><code>Idempotency-Replayed: true</code></pre></div>
     <div class="intro">
@@ -643,7 +643,7 @@ FAILED</code></pre></div>
         <li>What if the external operation succeeded but its result was never recorded?</li>
     </ul></div>
     <div class="intro">
-        <p>Such systems may need leases, ownership tokens, fencing, provider idempotency, and reconciliation.</p>
+        <p>Such systems may need leases, ownership tokens, fencing, provider idempotency and reconciliation.</p>
         <p>Simply inserting <code>IN_PROGRESS</code> in one transaction and completing the work in another does not provide the same atomic guarantee as our local database example.</p>
     </div>
 
@@ -731,7 +731,7 @@ WHERE product_id = :productId
         </table>
     </div></div>
     <div class="intro">
-        <p>The essential implementation rule is: <strong>claim the key atomically, perform the local business change, and save the result in one transaction.</strong> For external effects, extend that protection across the service boundary.</p>
+        <p>The essential implementation rule is: <strong>claim the key atomically, perform the local business change and save the result in one transaction.</strong> For external effects, extend that protection across the service boundary.</p>
     </div>
 </div>
 </body>

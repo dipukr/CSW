@@ -228,12 +228,12 @@
   <section class="hero">
     <div class="pill">Microservices Resilience Note</div>
     <h1>Cascading Failure in Microservices</h1>
-    <p>How a local slowdown or failure propagates through dependent services, why retries can amplify it, and how resilience patterns contain the blast radius.</p>
+    <p>How a local slowdown or failure propagates through dependent services, why retries can amplify it and how resilience patterns contain the blast radius.</p>
   </section>
 
   <section class="card">
     <h2>What is a Cascading Failure?</h2>
-    <p>A <strong>cascading failure in microservices</strong> happens when a failure or slowdown in one service causes dependent services to fail or slow down, and that impact keeps spreading through the system.</p>
+    <p>A <strong>cascading failure in microservices</strong> happens when a failure or slowdown in one service causes dependent services to fail or slow down and that impact keeps spreading through the system.</p>
     <p>Suppose you have:</p>
     <pre>Client
   |
@@ -336,7 +336,7 @@ Retry #2 = 1000
 Retry #3 = 1000</pre>
     <p>Potential effective load:</p>
     <pre>4000 requests/sec</pre>
-    <p>So the service is already unhealthy, and retries send <strong>even more traffic to it</strong>.</p>
+    <p>So the service is already unhealthy and retries send <strong>even more traffic to it</strong>.</p>
     <p>This is called a <strong>retry storm</strong>.</p>
     <pre>Service slow
    ↓
@@ -753,7 +753,7 @@ Async Messaging
 
 Load Shedding
    protects the system under extreme load</pre>
-    <p>In microservices, a healthy architecture assumes that <strong>network calls will fail, services will slow down, databases will stall, and dependencies will sometimes disappear</strong>.</p>
+    <p>In microservices, a healthy architecture assumes that <strong>network calls will fail, services will slow down, databases will stall and dependencies will sometimes disappear</strong>.</p>
     <p>Cascading failure occurs when the architecture allows those local failures to consume shared resources and propagate outward.</p>
   </section>
 

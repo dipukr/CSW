@@ -26,7 +26,7 @@
         <li><strong>Independent reactions:</strong> Each observer can respond differently to the same event.</li>
     </ul></div>
     <div class="intro">
-        <p>The pattern is commonly used in event-driven programming, GUI frameworks, notification systems, stock market applications, and application event handling.</p>
+        <p>The pattern is commonly used in event-driven programming, GUI frameworks, notification systems, stock market applications and application event handling.</p>
     </div>
 
     <div class="subheading">Real-World Example: E-Commerce Order Tracking</div>
@@ -291,7 +291,7 @@ Audit: Order ORD-101 changed from SHIPPED to DELIVERED</code></pre></div>
     <div class="code-block"><pre><code>observer.onStatusChanged(event);</code></pre></div>
     <div class="intro">
         <p>The observer doesn't need to query the subject for information.</p>
-        <p><strong>Advantages:</strong> Fewer queries back to the subject, easy event processing, and the event can preserve the state at the moment the change occurred.</p>
+        <p><strong>Advantages:</strong> Fewer queries back to the subject, easy event processing and the event can preserve the state at the moment the change occurred.</p>
         <p><strong>Disadvantages:</strong> Events can contain more data than some observers need.</p>
         <p class="minor-heading"><strong>Pull Model</strong></p>
         <p>In the Pull Model, the observer receives a reference to the subject and retrieves the information it needs.</p>
@@ -354,7 +354,7 @@ Audit: Order ORD-101 changed from SHIPPED to DELIVERED</code></pre></div>
 Analytics event recorded</code></pre></div>
     <div class="intro">
         <p>The button doesn't need to know what the listeners do.</p>
-        <p>One listener might update a label, another might play a sound, and another might record analytics.</p>
+        <p>One listener might update a label, another might play a sound and another might record analytics.</p>
         <p>All can respond to the same user action.</p>
         <p>This is a practical application of Observer-style event handling.</p>
     </div>
@@ -586,9 +586,9 @@ ALERT: High temperature!</code></pre></div>
         <p>For example, in an e-commerce application:</p>
     </div>
     <div class="intro"><ul>
-        <li><strong>Observer:</strong> When an order ships, notify the email, analytics, and audit components.</li>
+        <li><strong>Observer:</strong> When an order ships, notify the email, analytics and audit components.</li>
         <li><strong>Strategy:</strong> Choose a shipping-cost calculation algorithm based on delivery method.</li>
-        <li><strong>Mediator:</strong> Coordinate interactions among checkout, payment, inventory, and shipping components through a central coordinator.</li>
+        <li><strong>Mediator:</strong> Coordinate interactions among checkout, payment, inventory and shipping components through a central coordinator.</li>
     </ul></div>
 
     <div class="subheading">Key Takeaways</div>
@@ -598,7 +598,7 @@ ALERT: High temperature!</code></pre></div>
     </div>
     <div class="callout callout-note">
         <p>The central idea is that the object producing a change should not need to know every concrete component interested in that change. <br>
-            This separation makes event-driven systems more modular, extensible, and loosely coupled.</p></div>
+            This separation makes event-driven systems more modular, extensible and loosely coupled.</p></div>
 </div>
 </body>
 </html>

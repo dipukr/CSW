@@ -84,7 +84,7 @@ homeTheater.endMovie();</code></pre></div>
     </div>
     <div class="intro">
         <p>Now the client knows only about <code>HomeTheaterFacade</code> and its high-level methods.</p>
-        <p>The facade knows which subsystem methods to call, in what order, and with which parameters.</p>
+        <p>The facade knows which subsystem methods to call, in what order and with which parameters.</p>
     </div>
 
     <div class="subheading">Example: Home Theater System</div>
@@ -323,7 +323,7 @@ Lights turned ON</code></pre></div>
     <span class="code-class">OrderDetails</span> details = facade.getOrderDetails(<span class="code-number">1001</span>);
     <span class="code-class">System</span>.out.println(details);
 }</code></pre></div>
-    <div class="callout callout-note"><p>This is runnable with Java 25+ when the records, interfaces, facade, and <code>main</code> method are placed in the same source file.</p></div>
+    <div class="callout callout-note"><p>This is runnable with Java 25+ when the records, interfaces, facade and <code>main</code> method are placed in the same source file.</p></div>
     <div class="intro">
         <p>The client only interacts with the facade, not with the individual services.</p>
     </div>
@@ -427,7 +427,7 @@ Lights turned ON</code></pre></div>
             </tbody>
         </table>
     </div></div>
-    <div class="callout callout-warning"><p><strong>Important:</strong> A facade simplifies the code's interface; it does not automatically reduce database queries, network calls, or response time.<br> If these services communicate over the network, you must still consider timeouts, failures, and latency.</p></div>
+    <div class="callout callout-warning"><p><strong>Important:</strong> A facade simplifies the code's interface; it does not automatically reduce database queries, network calls, or response time.<br> If these services communicate over the network, you must still consider timeouts, failures and latency.</p></div>
 
     <div class="subheading">Structure and Participants of the Facade Pattern</div>
     <div class="intro">
@@ -525,7 +525,7 @@ checkoutFacade.checkout(cart);</code></pre></div>
         <p class="minor-heading"><strong>Facade vs Mediator</strong></p>
         <p>A <strong>Mediator</strong> coordinates communication between collaborating objects, reducing their direct dependencies on one another.</p>
         <p>A <strong>Facade</strong> primarily provides a simplified entry point for clients.</p>
-        <p>For example, a chat-room mediator manages communication between participants, whereas a facade might offer a convenient <code>sendAnnouncement</code> operation that internally calls messaging, persistence, and notification services.</p>
+        <p>For example, a chat-room mediator manages communication between participants, whereas a facade might offer a convenient <code>sendAnnouncement</code> operation that internally calls messaging, persistence and notification services.</p>
     </div>
 
     <div class="subheading">Facade vs Service Layer in Spring Boot</div>
@@ -605,7 +605,7 @@ checkoutFacade.checkout(cart);</code></pre></div>
             </tbody>
         </table>
     </div></div>
-    <div class="callout callout-warning"><p>For workflows involving payments, reservations, or other state-changing operations, the facade can expose the high-level operation, but the implementation still needs appropriate transaction management, compensation, idempotency, and failure handling. The Facade pattern itself does not provide these guarantees.</p></div>
+    <div class="callout callout-warning"><p>For workflows involving payments, reservations, or other state-changing operations, the facade can expose the high-level operation, but the implementation still needs appropriate transaction management, compensation, idempotency and failure handling. The Facade pattern itself does not provide these guarantees.</p></div>
 
     <div class="subheading">Important Interview Questions</div>
     <div class="intro">
@@ -621,7 +621,7 @@ checkoutFacade.checkout(cart);</code></pre></div>
     <div class="intro">
         <p>Each provides a focused interface to related functionality.</p>
         <p><strong>Is an API Gateway a Facade?</strong><br>An API Gateway can provide facade-like functionality by aggregating calls to multiple backend services and exposing a simpler client-facing API.</p>
-        <p>However, gateways also handle concerns such as routing, authentication, rate limiting, and request transformation.<br> So an API Gateway isn't automatically an implementation of the Facade pattern.</p>
+        <p>However, gateways also handle concerns such as routing, authentication, rate limiting and request transformation.<br> So an API Gateway isn't automatically an implementation of the Facade pattern.</p>
         <p><strong>Does using Facade reduce the number of service calls?</strong><br>Not necessarily. It reduces the number of calls and dependencies visible to the client. Internally, the facade may still make several calls to complete the operation.</p>
     </div>
 

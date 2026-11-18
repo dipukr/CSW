@@ -12,9 +12,9 @@
 
     <div class="intro">
         <p>MVC (Model-View-Controller) is an architectural pattern that separates an application into three interconnected parts.</p>
-        <p>The Model holds data and business logic, the View renders the UI, and the Controller handles input.</p>
+        <p>The Model holds data and business logic, the View renders the UI and the Controller handles input.</p>
         <p>The Controller mediates between the View and the Model.</p>
-        <p>This separation of concerns makes applications easier to develop, test, and maintain.</p>
+        <p>This separation of concerns makes applications easier to develop, test and maintain.</p>
     </div>
 
     <div class="solid-grid">
@@ -22,7 +22,7 @@
             <div class="solid-badge">M</div>
             <div class="solid-body">
                 <div class="solid-name">Model</div>
-                <p class="solid-tag">Data, state, and business rules.</p>
+                <p class="solid-tag">Data, state and business rules.</p>
                 <p>Holds the application's data and logic. It knows nothing about the UI &mdash; in classic MVC it notifies its observers (views) whenever its state changes.</p>
             </div>
         </div>
@@ -41,7 +41,7 @@
             <div class="solid-body">
                 <div class="solid-name">Controller</div>
                 <p class="solid-tag">Handles input, coordinates the two.</p>
-                <p>Receives user input (clicks, requests), translates it into operations on the model, and selects which view to render.</p>
+                <p>Receives user input (clicks, requests), translates it into operations on the model and selects which view to render.</p>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
         <div class="section-content"><ul>
             <li>Interactive applications where the same data is shown in multiple ways or must stay in sync across views.</li>
             <li>The backbone of web frameworks (Spring MVC, ASP.NET MVC, Rails) and desktop UI toolkits (Java Swing).</li>
-            <li>Whenever you want UI, logic, and input handling to evolve and be tested independently.</li>
+            <li>Whenever you want UI, logic and input handling to evolve and be tested independently.</li>
         </ul></div>
     </div>
 
@@ -75,7 +75,7 @@
     <div class="pc-grid">
         <div class="pc-card pro">
             <div class="pc-title">Separation of Concerns</div>
-            <p>The pattern gives each responsibility its own layer, keeping data, presentation, and input handling cleanly separated.</p>
+            <p>The pattern gives each responsibility its own layer, keeping data, presentation and input handling cleanly separated.</p>
         </div>
         <div class="pc-card pro">
             <div class="pc-title">Independent Development</div>
@@ -103,7 +103,7 @@
     <div class="subheading">Java Swing Example &mdash; a Calculator</div>
 
     <div class="intro">
-        <p>A desktop MVC calculator: the <strong>Model</strong> holds the running result and the arithmetic rules and notifies listeners when the result changes; the <strong>View</strong> is a Swing window with a display, two number fields, and operation buttons; the <strong>Controller</strong> reads the inputs, calls the right model operation, and the view re-renders. The view and model never reference each other directly.</p>
+        <p>A desktop MVC calculator: the <strong>Model</strong> holds the running result and the arithmetic rules and notifies listeners when the result changes; the <strong>View</strong> is a Swing window with a display, two number fields and operation buttons; the <strong>Controller</strong> reads the inputs, calls the right model operation and the view re-renders. The view and model never reference each other directly.</p>
     </div>
 
     <div class="subheading">Model</div>
@@ -140,7 +140,7 @@
     <div class="subheading">View</div>
 
     <div class="intro">
-        <p>Lays out the fields, display, and operation buttons. It exposes <code>getA()</code>/<code>getB()</code> to read input and <code>setDisplay()</code> to show results, and offers one <code>add&hellip;Listener</code> per button so the controller can react &mdash; it holds no arithmetic:</p>
+        <p>Lays out the fields, display and operation buttons. It exposes <code>getA()</code>/<code>getB()</code> to read input and <code>setDisplay()</code> to show results and offers one <code>add&hellip;Listener</code> per button so the controller can react &mdash; it holds no arithmetic:</p>
     </div>
 
     <div class="code-block"><pre><code><span class="code-keyword">public class</span> <span class="code-class">View</span> <span class="code-keyword">extends</span> <span class="code-class">JFrame</span> {

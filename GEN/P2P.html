@@ -11,7 +11,7 @@
     <div class="title">Peer-to-Peer (P2P) Architecture</div>
 
     <div class="intro">
-        <p>A <strong>peer-to-peer (P2P)</strong> architecture consists of a decentralized network of peers: nodes that are both clients and servers. P2P networks distribute the workload between peers, and all peers contribute and consume resources within the network without the need for a centralized server.</p>
+        <p>A <strong>peer-to-peer (P2P)</strong> architecture consists of a decentralized network of peers: nodes that are both clients and servers. P2P networks distribute the workload between peers and all peers contribute and consume resources within the network without the need for a centralized server.</p>
     </div>
     <div class="svg-diagram">
         <img src="../static/p2p-mesh.svg" alt="Six peers, A to F, connected directly to one another in a partial mesh with no central server" style="width:100%;max-width:460px">
@@ -29,9 +29,9 @@
         <p class="minor-heading"><strong>Shared Resources</strong></p>
         <p>Peers contribute resources to the network: storage (IPFS), bandwidth (BitTorrent), computing power (BOINC volunteer computing) or validation work (Bitcoin miners and nodes).</p>
         <p class="minor-heading"><strong>Self-Organization</strong></p>
-        <p>Peers discover each other, join and leave, and route requests without central coordination. The network keeps working while its membership constantly changes.</p>
+        <p>Peers discover each other, join and leave and route requests without central coordination. The network keeps working while its membership constantly changes.</p>
         <p class="minor-heading"><strong>Churn</strong></p>
-        <p>Peers come and go all the time, often without warning, when users close an application or lose their connection. This constant change of membership is called <strong>churn</strong>, and every P2P design has to tolerate it.</p>
+        <p>Peers come and go all the time, often without warning, when users close an application or lose their connection. This constant change of membership is called <strong>churn</strong> and every P2P design has to tolerate it.</p>
         <p class="minor-heading"><strong>Scalability</strong></p>
         <p>Every new peer is both a consumer and a provider, so demand and capacity grow together. A popular file in BitTorrent becomes easier to download, not harder, because more peers can serve it.</p>
         <p class="minor-heading"><strong>Fault Tolerance</strong></p>
@@ -67,15 +67,15 @@
         <p>Peers connect to each other randomly, with no rule about which peer stores which data. To find something, a peer <strong>floods</strong> the query to its neighbors, which forward it to theirs up to a hop limit (TTL), or sends it on a <strong>random walk</strong>.</p>
         <ul>
             <li><strong>Examples:</strong> Gnutella, early versions of Freenet.</li>
-            <li><strong>Strengths:</strong> Simple, cheap to join and leave, and supports complex queries such as keyword search.</li>
-            <li><strong>Weaknesses:</strong> Flooding creates heavy network traffic, and rare items may not be found before the TTL runs out.</li>
+            <li><strong>Strengths:</strong> Simple, cheap to join and leave and supports complex queries such as keyword search.</li>
+            <li><strong>Weaknesses:</strong> Flooding creates heavy network traffic and rare items may not be found before the TTL runs out.</li>
         </ul>
         <p class="minor-heading"><strong>2. Structured P2P (Distributed Hash Tables)</strong></p>
-        <p>Peers and data keys share one <strong>ID space</strong>, and a fixed rule decides which peer is responsible for each key. A <strong>distributed hash table (DHT)</strong> can route a lookup to the responsible peer in about O(log N) hops, where N is the number of peers.</p>
+        <p>Peers and data keys share one <strong>ID space</strong> and a fixed rule decides which peer is responsible for each key. A <strong>distributed hash table (DHT)</strong> can route a lookup to the responsible peer in about O(log N) hops, where N is the number of peers.</p>
         <ul>
             <li><strong>Examples:</strong> Chord, Kademlia (used by BitTorrent&rsquo;s Mainline DHT, IPFS and Ethereum&rsquo;s node discovery), Pastry, CAN.</li>
             <li><strong>Strengths:</strong> Efficient, guaranteed lookups that scale to millions of peers.</li>
-            <li><strong>Weaknesses:</strong> Only exact-key lookups, and more overhead to maintain routing tables under churn.</li>
+            <li><strong>Weaknesses:</strong> Only exact-key lookups and more overhead to maintain routing tables under churn.</li>
         </ul>
         <p class="minor-heading"><strong>3. Hybrid P2P</strong></p>
         <p>Some functions are centralized, usually discovery or indexing, while the actual data transfer happens directly between peers.</p>
@@ -111,20 +111,20 @@
     <div class="subheading">Distributed Hash Tables and Kademlia</div>
     <div class="intro">
         <p>A DHT works like a giant <code>Map&lt;Key, Value&gt;</code> spread over all peers. Both peers and keys get IDs from the same hash function, for example 160-bit SHA-1 in Kademlia. A key is stored on the peers whose IDs are <strong>closest</strong> to the key.</p>
-        <p><strong>Kademlia</strong> defines the distance between two IDs as their bitwise <strong>XOR</strong>, interpreted as an integer. XOR distance has useful properties: the distance from a node to itself is 0, it is symmetric, and for any ID and distance there is exactly one ID at that distance.</p>
+        <p><strong>Kademlia</strong> defines the distance between two IDs as their bitwise <strong>XOR</strong>, interpreted as an integer. XOR distance has useful properties: the distance from a node to itself is 0, it is symmetric and for any ID and distance there is exactly one ID at that distance.</p>
         <ul>
             <li>Each peer keeps a routing table of 160 <strong>k-buckets</strong>. Bucket i holds up to k peers (typically 20) whose distance has its highest set bit at position i, so a peer knows many peers close to itself and a few far away.</li>
             <li>A lookup asks the closest known peers for even closer peers, in parallel. Each step gets at least one bit closer to the key, so a lookup finishes in O(log N) steps.</li>
             <li>A k-bucket prefers peers that have been online for a long time, because such peers are most likely to stay online. This also makes the table harder to flood with fake peers.</li>
         </ul>
     </div>
-    <div class="callout callout-note"><p>Consistent hashing in systems such as Cassandra and DynamoDB uses the same idea as a DHT: both nodes and keys are placed on a hash ring, and each key belongs to the nearest node. See <a href="Sharding.html">Sharding</a>.</p></div>
+    <div class="callout callout-note"><p>Consistent hashing in systems such as Cassandra and DynamoDB uses the same idea as a DHT: both nodes and keys are placed on a hash ring and each key belongs to the nearest node. See <a href="Sharding.html">Sharding</a>.</p></div>
 
     <div class="subheading">NAT Traversal</div>
     <div class="intro">
         <p>Most peers sit behind home routers or carrier-grade NAT, so they cannot accept incoming connections directly. P2P applications use several techniques to connect such peers; see <a href="NAT.html">NAT</a> for how NAT works.</p>
         <ul>
-            <li><strong>STUN:</strong> A peer asks a public server which external IP address and port its NAT assigned to it, and shares that address with the other peer.</li>
+            <li><strong>STUN:</strong> A peer asks a public server which external IP address and port its NAT assigned to it and shares that address with the other peer.</li>
             <li><strong>UDP hole punching:</strong> Both peers send packets to each other&rsquo;s external address at the same time, which opens matching mappings in both NATs.</li>
             <li><strong>TURN:</strong> When a direct connection is impossible, traffic is relayed through a server. This always works but costs server bandwidth.</li>
             <li><strong>ICE:</strong> Tries all candidate addresses (local, STUN-discovered and TURN relay) and picks the best path that works. WebRTC uses ICE.</li>
@@ -133,13 +133,13 @@
 
     <div class="subheading">Gossip Protocols</div>
     <div class="intro">
-        <p>In a <strong>gossip</strong> (epidemic) protocol, each peer periodically passes what it knows to a few random peers, which pass it on in turn. Information reaches all N peers in about O(log N) rounds, without any central coordinator, and the protocol keeps working when many peers fail.</p>
+        <p>In a <strong>gossip</strong> (epidemic) protocol, each peer periodically passes what it knows to a few random peers, which pass it on in turn. Information reaches all N peers in about O(log N) rounds, without any central coordinator and the protocol keeps working when many peers fail.</p>
         <ul>
             <li>Bitcoin and Ethereum nodes gossip new transactions and blocks.</li>
             <li>Cassandra nodes gossip cluster membership and node state every second.</li>
             <li>Consul and Serf use the SWIM gossip protocol for failure detection.</li>
         </ul>
-        <p>The chat example below uses the simplest form of gossip: <strong>flooding with duplicate suppression</strong>. Every message has a unique ID, and each peer forwards a message only the first time it sees that ID.</p>
+        <p>The chat example below uses the simplest form of gossip: <strong>flooding with duplicate suppression</strong>. Every message has a unique ID and each peer forwards a message only the first time it sees that ID.</p>
     </div>
 
     <div class="subheading">Real-World Examples</div>
@@ -149,12 +149,12 @@
             <tbody>
                 <tr><td>BitTorrent</td><td>Files are split into pieces; peers download pieces from each other and upload the pieces they have. Peers are found through trackers, the Mainline DHT (Kademlia) and peer exchange.</td></tr>
                 <tr><td>Bitcoin, Ethereum</td><td>Every full node keeps a copy of the blockchain, validates transactions and gossips them to its peers. Consensus replaces a central authority.</td></tr>
-                <tr><td>IPFS</td><td>Content is addressed by its hash (a CID) instead of a location. A Kademlia DHT finds which peers provide a CID, and the libp2p library handles transport, encryption and NAT traversal.</td></tr>
+                <tr><td>IPFS</td><td>Content is addressed by its hash (a CID) instead of a location. A Kademlia DHT finds which peers provide a CID and the libp2p library handles transport, encryption and NAT traversal.</td></tr>
                 <tr><td>WebRTC</td><td>Browsers send audio, video and data directly to each other. A signaling server only exchanges the connection details; ICE, STUN and TURN handle NAT.</td></tr>
                 <tr><td>Skype (before about 2012)</td><td>Used a P2P overlay with super-nodes; Microsoft later moved it to central servers.</td></tr>
                 <tr><td>Spotify (before 2014)</td><td>Desktop clients served cached music to each other to reduce server load.</td></tr>
                 <tr><td>Cassandra, DynamoDB-style stores</td><td>Leaderless clusters where every node is equal; nodes gossip membership and keys are placed by consistent hashing.</td></tr>
-                <tr><td>Git</td><td>Every clone is a complete repository, and any two repositories can push and pull to each other directly.</td></tr>
+                <tr><td>Git</td><td>Every clone is a complete repository and any two repositories can push and pull to each other directly.</td></tr>
             </tbody>
         </table></div>
     </div>
@@ -174,7 +174,7 @@
 
     <div class="subheading">Java Example 1: P2P Chat Node with Gossip</div>
     <div class="intro">
-        <p>Each <code>PeerNode</code> is both a server, accepting connections on its own port, and a client, connecting to other peers. Messages are flooded through the network with duplicate suppression, so a message reaches peers that are not directly connected to the sender. The example uses plain sockets and virtual threads (Java 21+).</p>
+        <p>Each <code>PeerNode</code> is both a server, accepting connections on its own port and a client, connecting to other peers. Messages are flooded through the network with duplicate suppression, so a message reaches peers that are not directly connected to the sender. The example uses plain sockets and virtual threads (Java 21+).</p>
     </div>
     <div class="section code-section">
         <div class="section-title">PeerNode.java</div>
@@ -244,7 +244,7 @@
         </div>
     </div>
     <div class="intro">
-        <p>A small program starts three peers. Bob connects to Alice, and Carol connects only to Bob, yet Alice&rsquo;s message still reaches Carol through Bob.</p>
+        <p>A small program starts three peers. Bob connects to Alice and Carol connects only to Bob, yet Alice&rsquo;s message still reaches Carol through Bob.</p>
     </div>
     <div class="section code-section">
         <div class="section-title">Main.java</div>
@@ -281,7 +281,7 @@
 
     <div class="subheading">Java Example 2: Peer Discovery on a Local Network</div>
     <div class="intro">
-        <p>Peers on the same LAN can find each other without any configuration: each peer broadcasts a small UDP announcement, and every peer listens for announcements on a well-known port. Once discovered, peers connect over TCP as in the first example.</p>
+        <p>Peers on the same LAN can find each other without any configuration: each peer broadcasts a small UDP announcement and every peer listens for announcements on a well-known port. Once discovered, peers connect over TCP as in the first example.</p>
     </div>
     <div class="section code-section">
         <div class="section-title">PeerDiscovery.java</div>
@@ -329,7 +329,7 @@
         </div>
     </div>
     <div class="intro">
-        <p>Broadcast only reaches the local network. Across the internet, peers use bootstrap nodes, trackers or a DHT instead, and real applications also filter out their own announcements.</p>
+        <p>Broadcast only reaches the local network. Across the internet, peers use bootstrap nodes, trackers or a DHT instead and real applications also filter out their own announcements.</p>
     </div>
 
     <div class="subheading">Java Example 3: Kademlia XOR Distance and Routing Table</div>
@@ -474,7 +474,7 @@
     <div class="subheading">When to Use P2P</div>
     <div class="intro">
         <ul>
-            <li><strong>Good fit:</strong> Distributing large files to many users, decentralized systems without a trusted operator (cryptocurrencies), real-time communication between clients (video calls, multiplayer games), local collaboration and offline sync between devices, and leaderless distributed databases.</li>
+            <li><strong>Good fit:</strong> Distributing large files to many users, decentralized systems without a trusted operator (cryptocurrencies), real-time communication between clients (video calls, multiplayer games), local collaboration and offline sync between devices and leaderless distributed databases.</li>
             <li><strong>Poor fit:</strong> Systems that need one authoritative copy of data, strict consistency and transactions (banking ledgers run by a bank), central access control and auditing, or predictable performance and easy operations.</li>
         </ul>
         <p>Many modern systems are <strong>hybrid</strong>: a central server handles login, discovery and signaling, while bulk data flows directly between peers. WebRTC video calls and many game engines work this way.</p>
@@ -483,7 +483,7 @@
     <div class="subheading">Summary</div>
     <div class="intro">
         <ul>
-            <li>In P2P, every node is both a client and a server, and the workload is shared by all peers.</li>
+            <li>In P2P, every node is both a client and a server and the workload is shared by all peers.</li>
             <li>Networks are unstructured (flooding), structured (DHTs such as Kademlia) or hybrid (central index or trackers).</li>
             <li>Bootstrapping, peer discovery, NAT traversal and churn are problems every P2P system must solve.</li>
             <li>Data from peers is untrusted and must be verified, usually with cryptographic hashes and signatures.</li>

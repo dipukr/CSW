@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 476" font-family="'Segoe UI', Roboto, Arial, sans-serif" fill="#222">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#444"/>
+    </marker>
+    <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10" fill="none" stroke="#444" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <g fill="#fff" stroke="#222" stroke-width="1.5">
+    <rect rx="3" x="170" y="10" width="260" height="40"/>
+    <rect rx="3" x="170" y="80" width="260" height="40"/>
+    <rect rx="3" x="170" y="150" width="260" height="40"/>
+    <rect rx="3" x="100" y="220" width="400" height="52"/>
+    <rect rx="3" x="40" y="320" width="140" height="48"/>
+    <rect rx="3" x="230" y="320" width="140" height="48"/>
+    <rect rx="3" x="420" y="320" width="140" height="48"/>
+    <rect rx="3" x="420" y="418" width="140" height="48"/>
+  </g>
+  <g fill="#fff" stroke="#222" stroke-width="1.5" stroke-dasharray="5 4">
+    <rect rx="3" x="40" y="418" width="330" height="48"/>
+  </g>
+  <g stroke="#888" stroke-width="1.5" fill="none">
+    <path d="M300 272 V294 H110"/>
+    <path d="M300 294 H490"/>
+  </g>
+  <g stroke="#888" stroke-width="1.5" fill="none" marker-end="url(#ah)">
+    <path d="M300 50 V77"/>
+    <path d="M300 120 V147"/>
+    <path d="M300 190 V217"/>
+    <path d="M110 294 V317"/>
+    <path d="M300 294 V317"/>
+    <path d="M490 294 V317"/>
+    <path d="M490 368 V415"/>
+  </g>
+  <g>
+    <text x="300" y="35" text-anchor="middle" font-size="14" font-weight="700">Web / Mobile Clients</text>
+    <text x="300" y="105" text-anchor="middle" font-size="14" font-weight="700">CDN / WAF / Load Balancer</text>
+    <text x="300" y="175" text-anchor="middle" font-size="14" font-weight="700">API Gateway</text>
+    <text x="300" y="243" text-anchor="middle" font-size="14" font-weight="700">Stateless Application Services</text>
+    <text x="300" y="261" text-anchor="middle" font-size="12" fill="#555">Spring Boot instances</text>
+    <text x="110" y="341" text-anchor="middle" font-size="14" font-weight="700">Cache</text>
+    <text x="110" y="358" text-anchor="middle" font-size="12" fill="#555">Redis</text>
+    <text x="300" y="341" text-anchor="middle" font-size="14" font-weight="700">Database</text>
+    <text x="300" y="358" text-anchor="middle" font-size="12" fill="#555">PostgreSQL</text>
+    <text x="490" y="341" text-anchor="middle" font-size="14" font-weight="700">Broker</text>
+    <text x="490" y="358" text-anchor="middle" font-size="12" fill="#555">Kafka / RabbitMQ</text>
+    <text x="490" y="439" text-anchor="middle" font-size="14" font-weight="700">Workers</text>
+    <text x="490" y="456" text-anchor="middle" font-size="12" fill="#555">Async processing</text>
+    <text x="205" y="439" text-anchor="middle" font-size="14" font-weight="700">Observability</text>
+    <text x="205" y="456" text-anchor="middle" font-size="12" fill="#555">Metrics · Logs · Traces · Alerts</text>
+  </g>
+</svg>

@@ -5,64 +5,541 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>System Design</title>
 <link rel="stylesheet" href="src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
 </head>
 <body>
 <div class="note">
     <div class="title">System Design</div>
 
     <div class="intro">
-        <p>System design is the process of defining the architecture, components, interfaces and data of a software system to meet specific requirements.</p>
-        <p>It ensures a system is well-structured, efficient, and able to meet the evolving needs of its users.</p>
-        <p>It balances functional needs against quality attributes like scalability, availability, and consistency.</p>
-        <p>It spans everything from load balancers and caches to data stores and communication protocols.</p>
-        <p>Scalability, Availability, Reliability and Performance are the four pillars of system design that stand as the foundation for creating robust software systems.</p>
+        <p>System Design is one of the most important areas of software engineering. It focuses on <strong>how to design software systems that are scalable, reliable, available, secure, maintainable and cost-effective</strong>.</p>
+        <p>System Design is the process of defining how a software system should be structured, how its components interact, how data flows through it and how it meets functional and non-functional requirements.</p>
+        <p>System Design bridges the gap between <strong>business requirements and technical implementation</strong>.</p>
+        <p>System Design is the process of defining a software system's <strong>architecture, components, data models, interfaces, communication mechanisms and infrastructure</strong> to satisfy specified functional and non-functional requirements.</p>
     </div>
 
-    <div class="subheading">Key Components of System Design</div>
-    <div class="benefit-grid benefit-grid-2x2">
-        <div class="benefit-card">
-            <div class="benefit-title">Scalability</div>
-            <p>Designing systems that can accommodate growth in users, data, and traffic without sacrificing performance or reliability.</p>
-        </div>
-        <div class="benefit-card">
-            <div class="benefit-title">Reliability</div>
-            <p>Building resilient systems that can withstand failures and disruptions, ensuring continuity of service for users.</p>
-        </div>
-        <div class="benefit-card">
-            <div class="benefit-title">Availability</div>
-            <p>Ensuring that systems are accessible and operational whenever they are needed, minimizing downtime and service interruptions.</p>
-        </div>
-        <div class="benefit-card">
-            <div class="benefit-title">Performance</div>
-            <p>Optimizing system performance to deliver fast response times and smooth user experiences, even under heavy loads.</p>
-        </div>
-        <div class="benefit-card">
-            <div class="benefit-title">Security</div>
-            <p>Implementing robust security measures to protect data, prevent unauthorized access, and safeguard against cyber threats.</p>
-        </div>
-        <div class="benefit-card">
-            <div class="benefit-title">Flexibility</div>
-            <p>Designing systems that are adaptable and extensible, allowing for future changes and new requirements without major rework.</p>
-        </div>
+    <div class="intro">
+        <p>System Design answers questions such as:</p>
+        <ul>
+            <li>What components are required to build the system?</li>
+            <li>How should components communicate?</li>
+            <li>Where and how should data be stored?</li>
+            <li>How can the system handle millions of users?</li>
+            <li>How can it remain available when servers fail?</li>
+            <li>How should security, performance and consistency be managed?</li>
+            <li>How can the system be monitored, maintained and evolved?</li>
+        </ul>
+        <p>For example, imagine building an e-commerce application similar to Amazon.</p>
+        <p>You need to determine how customers will browse products, how inventory is managed, how payments are processed, how orders are tracked and how the system continues functioning during heavy traffic or infrastructure failures.</p>
+        <p>These decisions belong to System Design.</p>
     </div>
 
-    <div class="subheading">Advantages and Disadvantages</div>
+    <div class="subheading">Main Objectives of System Design</div>
     <div class="intro">
-        <p class="minor-heading"><strong>Advantages</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Objective</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>Scalability</td><td>Handle increasing users, requests and data</td></tr>
+                <tr><td>Availability</td><td>Keep the system accessible</td></tr>
+                <tr><td>Reliability</td><td>Perform operations correctly and consistently</td></tr>
+                <tr><td>Performance</td><td>Achieve acceptable response times and throughput</td></tr>
+                <tr><td>Consistency</td><td>Maintain appropriate data correctness across components</td></tr>
+                <tr><td>Fault tolerance</td><td>Continue functioning despite component failures</td></tr>
+                <tr><td>Resilience</td><td>Recover and adapt when failures occur</td></tr>
+                <tr><td>Security</td><td>Protect data, services and access</td></tr>
+                <tr><td>Maintainability</td><td>Make the system easier to modify and debug</td></tr>
+                <tr><td>Extensibility</td><td>Support new features with minimal disruption</td></tr>
+                <tr><td>Cost efficiency</td><td>Use infrastructure resources economically</td></tr>
+                <tr><td>Observability</td><td>Understand internal system behavior through telemetry</td></tr>
+            </tbody>
+        </table></div>
+        <p>These objectives often conflict. For example, increasing availability by running services in multiple regions may increase cost and operational complexity. Good system design finds an appropriate balance.</p>
     </div>
-    <div class="intro"><ul>
-        <li><strong>Exposes Weak Points Early</strong><br>It reveals bottlenecks and single points of failure before any code is written.</li>
-        <li><strong>Shared Blueprint</strong><br>It gives the whole team a common blueprint to build against.</li>
-        <li><strong>Explicit Trade-offs</strong><br>It makes trade-offs such as cost versus performance explicit.</li>
-    </ul></div>
+
+    <div class="subheading">System Design vs Software Architecture vs Software Design</div>
     <div class="intro">
-        <p class="minor-heading"><strong>Disadvantages</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Aspect</th><th>System Design</th><th>Software Architecture</th><th>Software Design</th></tr></thead>
+            <tbody>
+                <tr><td>Focus</td><td>End-to-end system</td><td>Overall structural organization</td><td>Internal implementation</td></tr>
+                <tr><td>Scope</td><td>APIs, data, infrastructure, integrations, operations</td><td>Services, layers, boundaries, communication</td><td>Classes, interfaces, algorithms, modules</td></tr>
+                <tr><td>Decisions</td><td>Scaling, storage, reliability, deployment</td><td>Monolith vs microservices, event-driven, layered</td><td>Design patterns, OOP, SOLID</td></tr>
+                <tr><td>Example</td><td>Design an e-commerce platform</td><td>Choose microservices and event-driven integration</td><td>Implement a payment strategy pattern</td></tr>
+            </tbody>
+        </table></div>
+        <p>These fields overlap significantly. Software architecture is a major part of system design and software design supports both.</p>
     </div>
-    <div class="intro"><ul>
-        <li><strong>Premature Scaling</strong><br>Designing for scale you do not yet need wastes effort and money.</li>
-        <li><strong>Uncertain Estimates</strong><br>Estimates are uncertain, so designs must stay adaptable.</li>
-        <li><strong>No Perfect Design</strong><br>No single design satisfies every quality attribute at once.</li>
-    </ul></div>
+
+    <div class="subheading">Levels of System Design: HLD vs LLD</div>
+    <div class="svg-diagram">
+        <img src="static/systemdesign-levels.svg" alt="System Design, High-Level Design and Low-Level Design levels" style="width:100%;max-width:560px">
+    </div>
+    <div class="benefit-grid benefit-grid-2x2 benefit-grid-spaced">
+        <div class="benefit-card">
+            <div class="benefit-title">High-Level Design</div>
+            <p>What components exist and how they interact</p>
+            <p><img src="static/systemdesign-hld.svg" alt="Client, API Gateway, Order Service and Database" style="display:block;width:100%;max-width:220px;margin:0 auto"></p>
+            <p>Concerned with services, databases, networks, integration, infrastructure and scalability.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Low-Level Design</div>
+            <p>How individual components are implemented</p>
+            <p><img src="static/systemdesign-lld.svg" alt="OrderController, OrderService and OrderRepository with their methods" style="display:block;width:100%;max-width:220px;margin:0 auto"></p>
+            <p>Concerned with classes, interfaces, methods, data structures, design patterns and algorithms.</p>
+        </div>
+    </div>
+    <div class="intro">
+        <p>For example, HLD decides that an Order Service communicates with a Payment Service using events. LLD defines the Java classes, methods, interfaces, repositories and event handlers that implement this behavior.</p>
+    </div>
+
+    <div class="subheading">Core Concepts of System Design</div>
+    <div class="intro">
+        <p>This is the main conceptual map of the subject.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Area</th><th>Important concepts</th></tr></thead>
+            <tbody>
+                <tr><td>Requirements Engineering</td><td>Functional requirements, non-functional requirements, constraints, assumptions</td></tr>
+                <tr><td>Architecture</td><td>Monolith, layered, microservices, SOA, event-driven, serverless, distributed systems</td></tr>
+                <tr><td>Networking</td><td>TCP/IP, HTTP/HTTPS, DNS, TLS, REST, gRPC, WebSocket</td></tr>
+                <tr><td>Communication</td><td>Synchronous, asynchronous, request-response, messaging, pub/sub</td></tr>
+                <tr><td>Load Distribution</td><td>Load balancing, reverse proxy, API Gateway, service discovery</td></tr>
+                <tr><td>Scalability</td><td>Vertical scaling, horizontal scaling, partitioning, sharding, replication</td></tr>
+                <tr><td>Data Management</td><td>SQL, NoSQL, transactions, indexes, replication, sharding, consistency</td></tr>
+                <tr><td>Caching</td><td>Cache layers, eviction, invalidation, TTL, caching strategies</td></tr>
+                <tr><td>Messaging</td><td>Queues, streams, Kafka, RabbitMQ, ordering, delivery guarantees</td></tr>
+                <tr><td>Distributed Systems</td><td>CAP theorem, consensus, distributed transactions, coordination, clocks</td></tr>
+                <tr><td>Reliability</td><td>Redundancy, failover, retries, circuit breakers, disaster recovery</td></tr>
+                <tr><td>Performance</td><td>Latency, throughput, concurrency, capacity planning, bottlenecks</td></tr>
+                <tr><td>Security</td><td>Authentication, authorization, encryption, rate limiting, zero trust</td></tr>
+                <tr><td>Observability</td><td>Logging, metrics, tracing, monitoring, alerting</td></tr>
+                <tr><td>Deployment</td><td>Containers, Kubernetes, cloud, CI/CD, autoscaling, infrastructure</td></tr>
+                <tr><td>Design Patterns</td><td>CQRS, Saga, Event Sourcing, Outbox, Bulkhead, Idempotency</td></tr>
+            </tbody>
+        </table></div>
+        <p>Each area contains multiple concepts, technologies, patterns and trade-offs.</p>
+        <p class="minor-heading"><strong>Fundamental System Design concepts</strong></p>
+        <p>The following concepts form the foundation of modern system design.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Meaning</th><th>Common techniques</th></tr></thead>
+            <tbody>
+                <tr><td>Scalability</td><td>Ability to accommodate growth</td><td>Horizontal/vertical scaling</td></tr>
+                <tr><td>Availability</td><td>Fraction of time a system is usable</td><td>Replication, failover</td></tr>
+                <tr><td>Reliability</td><td>Ability to provide correct service over time</td><td>Retries, redundancy, fault handling</td></tr>
+                <tr><td>Latency</td><td>Time taken to complete an operation</td><td>Caching, indexing, fewer network hops</td></tr>
+                <tr><td>Throughput</td><td>Amount of work completed per unit time</td><td>Batching, parallelism, partitioning</td></tr>
+                <tr><td>Consistency</td><td>Rules governing visibility and correctness of data</td><td>Transactions, quorum, versioning</td></tr>
+                <tr><td>Partition tolerance</td><td>Continuing to operate despite network partitions, subject to consistency/availability trade-offs</td><td>Distributed coordination</td></tr>
+                <tr><td>Fault tolerance</td><td>Ability to continue functioning despite component failures</td><td>Redundancy, graceful degradation</td></tr>
+                <tr><td>Durability</td><td>Persistence of committed data</td><td>WAL, replication, backups</td></tr>
+                <tr><td>Elasticity</td><td>Ability to increase or decrease resources with demand</td><td>Autoscaling</td></tr>
+                <tr><td>Idempotency</td><td>Safe repetition of an operation without duplicating its intended effect</td><td>Idempotency keys, deduplication</td></tr>
+                <tr><td>Observability</td><td>Ability to understand internal behavior from outputs</td><td>Logs, metrics, traces</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Scalability</strong></p>
+        <p>There are two primary approaches to scaling.</p>
+    </div>
+    <div class="benefit-grid benefit-grid-2x2 benefit-grid-spaced">
+        <div class="benefit-card">
+            <div class="benefit-title">Vertical Scaling (Scale UP)</div>
+            <p><img src="static/systemdesign-scale-up.svg" alt="One server replaced by a bigger server" style="display:block;width:100%;max-width:250px;margin:0 auto"></p>
+            <p>Increase CPU, RAM, or storage capacity of an existing machine.</p>
+            <p>Simpler to start, but limited by hardware capacity.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">Horizontal Scaling (Scale OUT)</div>
+            <p><img src="static/systemdesign-scale-out.svg" alt="One server replaced by several servers" style="display:block;width:100%;max-width:250px;margin:0 auto"></p>
+            <p>Add more machines or instances to distribute workload.</p>
+            <p>Supports substantial growth, but adds coordination and distributed-system complexity.</p>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Performance: latency vs throughput</strong></p>
+        <ul>
+            <li><strong>Latency:</strong> How long a particular request takes. Usually measured in milliseconds.</li>
+            <li><strong>Throughput:</strong> How many requests or operations the system processes per second.</li>
+            <li><strong>Concurrency:</strong> How many requests or tasks are in progress simultaneously.</li>
+            <li><strong>Response-time percentiles:</strong> p50, p95, p99 describe the distribution of response times.</li>
+        </ul>
+        <p>For example, a service may handle 10,000 requests per second but still have poor p99 latency. High throughput does not automatically mean low latency.</p>
+        <p class="minor-heading"><strong>Availability vs Reliability</strong></p>
+        <p><strong>Availability</strong> is the proportion of time a system is operational and usable. <strong>Reliability</strong> concerns whether it continues delivering correct service over a period.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Availability target</th><th>Approximate maximum downtime/year</th></tr></thead>
+            <tbody>
+                <tr><td>99%</td><td>3.65 days</td></tr>
+                <tr><td>99.9%</td><td>8.76 hours</td></tr>
+                <tr><td>99.99%</td><td>52.56 minutes</td></tr>
+                <tr><td>99.999%</td><td>5.26 minutes</td></tr>
+            </tbody>
+        </table></div>
+        <p>These figures assume an entire 365-day year as the measurement window. Actual service-level agreements may use different windows and exclusions.</p>
+    </div>
+
+    <div class="subheading">Important System Design Metrics</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Metric</th><th>What it measures</th></tr></thead>
+            <tbody>
+                <tr><td>Latency</td><td>Time required to process an operation</td></tr>
+                <tr><td>Throughput</td><td>Operations processed per unit time</td></tr>
+                <tr><td>RPS / QPS</td><td>Requests or queries per second</td></tr>
+                <tr><td>Concurrency</td><td>Operations simultaneously in progress</td></tr>
+                <tr><td>Availability</td><td>Percentage of time a service is operational</td></tr>
+                <tr><td>p95 / p99 latency</td><td>Response-time percentiles</td></tr>
+                <tr><td>Error rate</td><td>Percentage of failed requests</td></tr>
+                <tr><td>CPU / Memory utilization</td><td>Resource consumption</td></tr>
+                <tr><td>Storage growth</td><td>Rate at which stored data increases</td></tr>
+                <tr><td>RTO</td><td>Target time to restore service after a disruption</td></tr>
+                <tr><td>RPO</td><td>Maximum tolerable data loss measured in time</td></tr>
+            </tbody>
+        </table></div>
+        <p>A good system design needs measurable targets, such as a p99 response latency below 200 ms under a specified workload, rather than vague goals like "the system should be fast."</p>
+    </div>
+
+    <div class="subheading">Major Building Blocks of System Design</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Reference architecture for a scalable web application</strong></p>
+        <p>Illustrative architecture showing request processing, persistence, caching and asynchronous work.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/systemdesign-reference-architecture.svg" alt="Reference architecture: clients, edge layer, API gateway, application services, cache, database, broker, workers and observability" style="width:100%;max-width:600px">
+    </div>
+    <div class="intro">
+        <p>Logical architecture only. Actual data flows, replicas, network boundaries and service topology depend on requirements.</p>
+        <p>In a real application, cross-cutting capabilities such as authentication, logging, tracing, metrics, service discovery, configuration and deployment management support this architecture.</p>
+        <p>Each building block solves a distinct problem.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Component</th><th>Purpose</th><th>Examples</th></tr></thead>
+            <tbody>
+                <tr><td>Client</td><td>User-facing interface</td><td>Browser, Android, iOS</td></tr>
+                <tr><td>DNS</td><td>Resolve domain names</td><td>Route 53, Cloud DNS</td></tr>
+                <tr><td>CDN</td><td>Serve content near users</td><td>Cloudflare, CloudFront</td></tr>
+                <tr><td>Load Balancer</td><td>Distribute requests</td><td>Nginx, HAProxy, ALB</td></tr>
+                <tr><td>API Gateway</td><td>Central API entry, routing, policies</td><td>Spring Cloud Gateway, Kong</td></tr>
+                <tr><td>Application Server</td><td>Execute business logic</td><td>Java Spring Boot</td></tr>
+                <tr><td>Cache</td><td>Reduce repeated computation/storage access</td><td>Redis, Caffeine</td></tr>
+                <tr><td>Relational DB</td><td>Transactional structured data</td><td>PostgreSQL, MySQL</td></tr>
+                <tr><td>NoSQL DB</td><td>Specialized data models/access patterns</td><td>MongoDB, DynamoDB</td></tr>
+                <tr><td>Message Broker</td><td>Decouple components asynchronously</td><td>Kafka, RabbitMQ</td></tr>
+                <tr><td>Object Storage</td><td>Store files and large objects</td><td>Amazon S3, Azure Blob</td></tr>
+                <tr><td>Search Engine</td><td>Full-text search and indexing</td><td>Elasticsearch, OpenSearch</td></tr>
+                <tr><td>Monitoring</td><td>Detect and diagnose issues</td><td>Prometheus, Grafana</td></tr>
+                <tr><td>Container Orchestrator</td><td>Deploy and manage containers</td><td>Kubernetes</td></tr>
+            </tbody>
+        </table></div>
+        <p>Not every application requires every component. A small application with one backend and one database may be the most appropriate design.</p>
+    </div>
+
+    <div class="subheading">Types of System Architecture</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Architecture</th><th>Description</th><th>Suitable use cases</th></tr></thead>
+            <tbody>
+                <tr><td>Monolithic</td><td>All major functionality deployed as one application</td><td>Small and medium applications</td></tr>
+                <tr><td>Modular Monolith</td><td>Single deployment with well-defined internal modules</td><td>Growing products with manageable complexity</td></tr>
+                <tr><td>Layered / N-Tier</td><td>Separate presentation, business and data layers</td><td>Enterprise applications</td></tr>
+                <tr><td>Microservices</td><td>Independently deployable services</td><td>Large systems requiring independent scaling and teams</td></tr>
+                <tr><td>Event-Driven</td><td>Components communicate through events</td><td>Notifications, order processing, integrations</td></tr>
+                <tr><td>SOA</td><td>Services organized around reusable business capabilities</td><td>Enterprise integration</td></tr>
+                <tr><td>Serverless</td><td>Event-driven execution using managed infrastructure</td><td>Intermittent workloads, automation</td></tr>
+                <tr><td>Hexagonal / Clean</td><td>Domain logic separated from external dependencies</td><td>Maintainable applications</td></tr>
+                <tr><td>Distributed</td><td>Components execute across multiple networked machines</td><td>Large-scale and resilient applications</td></tr>
+                <tr><td>CQRS</td><td>Separate read and write models or processing paths</td><td>Different read/write requirements</td></tr>
+                <tr><td>Microkernel / Plugin</td><td>Core system extended with plugins</td><td>IDEs, extensible platforms</td></tr>
+            </tbody>
+        </table></div>
+        <p>These classifications overlap. For example, microservices are usually distributed, may use event-driven communication and may implement CQRS internally. Each service can also follow hexagonal architecture.</p>
+    </div>
+
+    <div class="subheading">Essential Design Techniques and Patterns</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Data and storage</strong></p>
+        <ul>
+            <li><strong>Database indexing</strong><br>Accelerate queries for particular access patterns.</li>
+            <li><strong>Replication</strong><br>Maintain multiple copies of data for availability or read scaling.</li>
+            <li><strong>Sharding</strong><br>Partition data across databases or servers.</li>
+            <li><strong>Partitioning</strong><br>Organize large datasets into smaller partitions.</li>
+            <li><strong>Caching</strong><br>Store frequently requested or expensive-to-compute results.</li>
+            <li><strong>Denormalization</strong><br>Duplicate selected data to optimize reads at the cost of more complex updates.</li>
+            <li><strong>Transactions</strong><br>Ensure multi-step data changes follow correctness guarantees.</li>
+        </ul>
+        <p class="minor-heading"><strong>Communication and processing</strong></p>
+        <ul>
+            <li><strong>Synchronous communication</strong><br>Caller waits for a response, commonly HTTP or gRPC.</li>
+            <li><strong>Asynchronous communication</strong><br>Work is decoupled through messaging or task queues.</li>
+            <li><strong>Publish-subscribe</strong><br>Producers publish events that multiple consumers can process.</li>
+            <li><strong>Batch processing</strong><br>Process data in groups.</li>
+            <li><strong>Stream processing</strong><br>Process continuously arriving events.</li>
+            <li><strong>Event sourcing</strong><br>Store changes as a sequence of events.</li>
+        </ul>
+        <p class="minor-heading"><strong>Fault handling and distributed coordination</strong></p>
+        <ul>
+            <li><strong>Timeouts</strong><br>Bound how long an operation can block.</li>
+            <li><strong>Retries with backoff and jitter</strong><br>Handle transient failures without creating retry storms.</li>
+            <li><strong>Circuit breaker</strong><br>Temporarily stop calls to unhealthy dependencies.</li>
+            <li><strong>Bulkhead</strong><br>Isolate resources so one failing workload does not exhaust everything.</li>
+            <li><strong>Rate limiting</strong><br>Limit excessive traffic.</li>
+            <li><strong>Idempotency</strong><br>Prevent duplicated effects from repeated requests.</li>
+            <li><strong>Saga</strong><br>Coordinate distributed business transactions with compensation where appropriate.</li>
+            <li><strong>Transactional outbox</strong><br>Reliably publish business events associated with committed database changes.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Distributed System Design Concepts</div>
+    <div class="intro">
+        <p>A distributed system consists of multiple independent computers that coordinate over a network.</p>
+        <p>Because networks and machines can fail independently, distributed design introduces challenges beyond a single-process application.</p>
+        <ul>
+            <li><strong>Scalability and load distribution</strong><br>Increasing capacity through more resources or more servers, with load balancing, data partitioning, sharding, replication and autoscaling.</li>
+            <li><strong>Data consistency and transactions</strong><br>Strong vs eventual consistency, ACID transactions, distributed transactions, isolation levels and the trade-offs involved in CAP.</li>
+            <li><strong>Fault tolerance and resilience</strong><br>Designing for failures with replication, timeouts, retries, circuit breakers, bulkheads, graceful degradation and failover.</li>
+            <li><strong>Concurrency and coordination</strong><br>Race conditions, locking, optimistic concurrency control, distributed locks, idempotency, consensus and leader election.</li>
+            <li><strong>Performance and observability</strong><br>Measuring and improving latency, throughput, resource utilization, error rates and system behavior through metrics, logs and traces.</li>
+        </ul>
+        <p class="minor-heading"><strong>CAP Theorem</strong></p>
+        <p>The CAP theorem states that during a network partition, a distributed data system cannot guarantee both linearizable consistency and availability for every request.</p>
+    </div>
+    <div class="benefit-grid benefit-grid-2x2 benefit-grid-spaced">
+        <div class="benefit-card">
+            <div class="benefit-title">CP-oriented behavior</div>
+            <p>Prioritizes consistency during a partition, potentially rejecting or delaying some requests.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">AP-oriented behavior</div>
+            <p>Prioritizes availability during a partition, potentially exposing stale or divergent data.</p>
+        </div>
+    </div>
+    <div class="intro">
+        <p>CAP does not mean a system always chooses only two of three independent features. Its trade-off specifically arises during network partitions.</p>
+        <p>Other important distributed-system topics include:</p>
+        <ul>
+            <li>Strong, eventual and causal consistency</li>
+            <li>Leader election and consensus (Raft, Paxos)</li>
+            <li>Quorum reads and writes</li>
+            <li>Distributed locks and leases</li>
+            <li>Clock skew and event ordering</li>
+            <li>Duplicate message delivery and delivery guarantees</li>
+            <li>Split-brain scenarios</li>
+            <li>Distributed transactions</li>
+        </ul>
+    </div>
+
+    <div class="subheading">System Design Process: Step by Step</div>
+    <div class="intro">
+        <p>A disciplined design process helps avoid jumping directly to technology choices.</p>
+    </div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Understand requirements</div><div class="step-body">Identify users, features, use cases, business rules, constraints and success criteria.</div></div>
+        <div class="step"><div class="step-title">Define non-functional requirements</div><div class="step-body">Specify availability, performance, consistency, durability, security, recovery and cost targets.</div></div>
+        <div class="step"><div class="step-title">Estimate scale and capacity</div><div class="step-body">Estimate daily active users, QPS, peak traffic, data volumes, storage growth, bandwidth and concurrency.</div></div>
+        <div class="step"><div class="step-title">Define APIs and data models</div><div class="step-body">Establish endpoints, events, entities, schemas, indexes and access patterns.</div></div>
+        <div class="step"><div class="step-title">Choose architecture and components</div><div class="step-body">Select architectural style, service boundaries, databases, caches, communication mechanisms and infrastructure.</div></div>
+        <div class="step"><div class="step-title">Design data flow and critical workflows</div><div class="step-body">Map request paths, events, synchronous and asynchronous operations, failure scenarios, transactions and data consistency.</div></div>
+        <div class="step"><div class="step-title">Address bottlenecks and failures</div><div class="step-body">Identify failure modes and concurrency problems; add scaling, caching, replication, retry controls, rate limiting and failover as justified.</div></div>
+        <div class="step"><div class="step-title">Plan security, observability and deployment</div><div class="step-body">Define protections, telemetry, monitoring, infrastructure and release strategy.</div></div>
+        <div class="step"><div class="step-title">Evaluate trade-offs, validate and evolve</div><div class="step-body">Use load tests, fault injection, monitoring, security reviews, design reviews and actual production measurements.</div></div>
+    </div>
+    <div class="intro">
+        <p>The design process is iterative. Measurements and new requirements may require revisiting earlier decisions.</p>
+        <p class="minor-heading"><strong>Useful estimation formulas</strong></p>
+        <p class="math-display"><span class="math" data-tex="\text{Average QPS}=\frac{\text{Daily requests}}{86,400}" data-display="1">Average QPS = Daily requests / 86,400</span></p>
+        <p class="math-display"><span class="math" data-tex="\text{Storage growth}=\text{Daily records}\times\text{Average record size}" data-display="1">Storage growth = Daily records × Average record size</span></p>
+        <p class="math-display"><span class="math" data-tex="\text{Estimated concurrency}\approx\text{Throughput}\times\text{Average response time}" data-display="1">Estimated concurrency ≈ Throughput × Average response time</span></p>
+        <p>The last relationship follows Little's Law under stable system conditions and consistent measurement boundaries.</p>
+    </div>
+
+    <div class="subheading">Practical Example: E-Commerce Ordering System</div>
+    <div class="intro">
+        <p>Consider an application where users select products, place orders, pay and receive notifications.</p>
+        <p class="minor-heading"><strong>Functional requirements</strong></p>
+        <ol>
+            <li>Browse products.</li>
+            <li>Add products to a cart.</li>
+            <li>Place an order.</li>
+            <li>Reserve inventory.</li>
+            <li>Process payments.</li>
+            <li>Track order status.</li>
+            <li>Send notifications.</li>
+        </ol>
+        <p class="minor-heading"><strong>Non-functional requirements</strong></p>
+        <ul>
+            <li>Prevent overselling inventory.</li>
+            <li>Avoid charging customers twice for the same payment attempt.</li>
+            <li>Support growing traffic.</li>
+            <li>Keep order and payment records durable.</li>
+            <li>Handle failures in external payment providers.</li>
+            <li>Provide observable and auditable order processing.</li>
+        </ul>
+        <p class="minor-heading"><strong>Order placement workflow</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/systemdesign-order-flow.svg" alt="Order flow: client submits order, Order Service, Inventory Service, Payment Service, order confirmed, Notification Worker" style="width:100%;max-width:380px">
+    </div>
+    <div class="intro">
+        <p>Simplified success path; production designs also require compensation, reconciliation, retry handling and terminal failure states.</p>
+        <p class="minor-heading"><strong>Order creation: illustrative sequence</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/systemdesign-order-sequence.svg" alt="Sequence of calls between Customer, Order, Inventory, Payment, Kafka and Notification services" style="width:100%;max-width:952px">
+    </div>
+    <div class="intro">
+        <p>Illustrative success path, not a production transaction protocol. Failure handling, compensation, idempotency and reliable event publication must also be designed.</p>
+        <p class="minor-heading"><strong>Important design decisions</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Problem</th><th>Potential solution</th><th>Why</th></tr></thead>
+            <tbody>
+                <tr><td>Duplicate order submissions</td><td>Idempotency key</td><td>Avoid duplicate orders</td></tr>
+                <tr><td>Multiple buyers for last item</td><td>Atomic conditional stock update</td><td>Prevent overselling</td></tr>
+                <tr><td>Payment provider timeout</td><td>Reconciliation and idempotent payment attempts</td><td>Resolve unknown payment outcomes</td></tr>
+                <tr><td>Email service unavailable</td><td>Outbox + message broker + retries</td><td>Keep email failure from blocking order confirmation</td></tr>
+                <tr><td>High product-read traffic</td><td>Cache product data</td><td>Reduce database load</td></tr>
+                <tr><td>Order DB failure</td><td>Backups, replicas, recovery plan</td><td>Improve durability and recovery</td></tr>
+                <tr><td>Service downtime</td><td>Health checks and failover</td><td>Improve availability</td></tr>
+            </tbody>
+        </table></div>
+        <p>This simple example involves numerous System Design decisions.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Design decision</th><th>Possible solution</th></tr></thead>
+            <tbody>
+                <tr><td>How to expose APIs?</td><td>REST APIs with Spring Boot</td></tr>
+                <tr><td>How to structure business capabilities?</td><td>Order, Inventory, Payment Services</td></tr>
+                <tr><td>Where to store orders?</td><td>Relational database</td></tr>
+                <tr><td>How to reduce database reads?</td><td>Redis caching</td></tr>
+                <tr><td>How to send notifications asynchronously?</td><td>Kafka or RabbitMQ</td></tr>
+                <tr><td>How to avoid duplicate orders?</td><td>Idempotency keys and database constraints</td></tr>
+                <tr><td>How to handle payment failures?</td><td>Saga with compensation or recovery</td></tr>
+                <tr><td>How to prevent overselling?</td><td>Transactional reservations and concurrency control</td></tr>
+                <tr><td>How to scale request processing?</td><td>Stateless service replicas and load balancing</td></tr>
+                <tr><td>How to monitor failures?</td><td>Metrics, structured logs, distributed tracing</td></tr>
+            </tbody>
+        </table></div>
+        <p>Notice that technologies are selected to satisfy requirements, not because every system must use them.</p>
+        <p>For a smaller product, this workflow may be implemented in a <strong>modular monolith</strong>, rather than separate microservices. The same business guarantees still matter.</p>
+    </div>
+
+    <div class="subheading">Security and Operational Design</div>
+    <div class="intro">
+        <p>A system is not complete merely because its APIs work.</p>
+        <p><strong>Security Design</strong> covers authentication, authorization, TLS, secrets management, input validation, encryption, least-privilege access, audit logging and abuse prevention.</p>
+        <p><strong>Operational Design</strong> covers deployment automation, monitoring, incident response, capacity planning, backup restoration and disaster recovery.</p>
+        <p>Important operational measurements include:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>SLI</td><td>Service Level Indicator, such as successful request ratio</td></tr>
+                <tr><td>SLO</td><td>Service Level Objective, such as 99.9% success per month</td></tr>
+                <tr><td>SLA</td><td>Service Level Agreement, a contractual commitment</td></tr>
+                <tr><td>RTO</td><td>Maximum target time to restore service after disruption</td></tr>
+                <tr><td>RPO</td><td>Maximum acceptable amount of data loss, measured in time</td></tr>
+                <tr><td>MTTR</td><td>Mean Time to Repair/Restore</td></tr>
+                <tr><td>Error budget</td><td>Allowed unreliability relative to an SLO</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Common Trade-offs in System Design</div>
+    <div class="intro">
+        <p>System design is fundamentally about trade-offs, not universally correct technologies.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Decision</th><th>Main benefit</th><th>Trade-off</th></tr></thead>
+            <tbody>
+                <tr><td>Monolith vs microservices</td><td>Simplicity vs independent deployment</td><td>Coordination and operational overhead</td></tr>
+                <tr><td>SQL vs NoSQL</td><td>Transactional relational modeling vs alternative data models</td><td>Query flexibility, scaling and consistency semantics</td></tr>
+                <tr><td>Sync vs async processing</td><td>Immediate response vs decoupling</td><td>Latency, complexity, delivery guarantees</td></tr>
+                <tr><td>Cache vs direct database access</td><td>Faster repeated reads</td><td>Stale data, invalidation complexity</td></tr>
+                <tr><td>Replication vs sharding</td><td>Copies for resilience/read capacity vs partitioned data capacity</td><td>Replica lag vs cross-shard complexity</td></tr>
+                <tr><td>Strong vs eventual consistency</td><td>Immediate correctness guarantees vs flexibility under distribution</td><td>Latency and availability implications</td></tr>
+                <tr><td>Managed vs self-hosted infrastructure</td><td>Less operational burden vs more direct control</td><td>Cost, portability, customization</td></tr>
+            </tbody>
+        </table></div>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Trade-off</th><th>Decision</th></tr></thead>
+            <tbody>
+                <tr><td>Consistency vs availability under network partition</td><td>How to handle operations during partition failures</td></tr>
+                <tr><td>Latency vs consistency</td><td>Whether to wait for fresh or coordinated data</td></tr>
+                <tr><td>Cost vs redundancy</td><td>How much infrastructure is justified</td></tr>
+                <tr><td>Simplicity vs flexibility</td><td>Whether added abstraction delivers real value</td></tr>
+                <tr><td>Replication vs coordination overhead</td><td>Better resilience/read scale vs consistency complexity</td></tr>
+            </tbody>
+        </table></div>
+        <p>The best design is generally the <strong>simplest architecture that meets the actual requirements and expected scale</strong>, while leaving reasonable room for growth.</p>
+    </div>
+
+    <div class="subheading">System Design Learning Roadmap</div>
+    <div class="intro">
+        <p>A useful order for mastering System Design:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Stage</th><th>Topics</th></tr></thead>
+            <tbody>
+                <tr><td>Foundations</td><td>Networking, HTTP, DNS, operating systems, databases, concurrency, latency, throughput</td></tr>
+                <tr><td>Core Components</td><td>Load balancers, caches, CDNs, API gateways, relational and NoSQL databases</td></tr>
+                <tr><td>Scaling and Data</td><td>Replication, sharding, partitioning, indexing, autoscaling, capacity estimation</td></tr>
+                <tr><td>Distributed Systems</td><td>Consistency, CAP, consensus, distributed transactions, ordering, idempotency</td></tr>
+                <tr><td>Architecture and Messaging</td><td>Microservices, event-driven architecture, Kafka, CQRS, Saga, event sourcing</td></tr>
+                <tr><td>Reliability and Operations</td><td>Fault tolerance, resiliency patterns, observability, security, disaster recovery</td></tr>
+                <tr><td>Real-World Design Problems</td><td>URL shortener, notification system, chat, e-commerce, payment system, video streaming</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">System Design Checklist</div>
+    <div class="intro">
+        <p>Before finalizing a design, confirm that you can answer these questions:</p>
+        <ul>
+            <li>Are the functional and non-functional requirements clear?</li>
+            <li>Have peak traffic, latency and data growth been estimated?</li>
+            <li>Are service boundaries, APIs and data models defined?</li>
+            <li>Have concurrency and data-consistency problems been addressed?</li>
+            <li>Can the system tolerate dependency or infrastructure failures?</li>
+            <li>Are security, idempotency and retry handling covered?</li>
+            <li>Are observability, backups and recovery procedures defined?</li>
+            <li>Have major design trade-offs been documented?</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Big Picture</div>
+    <div class="intro">
+        <p>System Design can be understood through six fundamental questions:</p>
+    </div>
+    <div class="benefit-grid benefit-grid-2x2 benefit-grid-spaced">
+        <div class="benefit-card">
+            <div class="benefit-title">1. WHAT?</div>
+            <p>Requirements and capabilities</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">2. HOW?</div>
+            <p>Architecture and components</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">3. WHERE?</div>
+            <p>Storage and infrastructure</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">4. HOW MUCH?</div>
+            <p>Scale, capacity, performance</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">5. WHAT IF?</div>
+            <p>Failures, consistency, security</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">6. HOW WELL?</div>
+            <p>Monitoring, testing, optimization</p>
+        </div>
+    </div>
+    <div class="intro">
+        <p>System Design is an engineering discipline that combines requirements, architectural decisions, data management, networking, distributed computing, reliability, security, performance and operational considerations to build systems that work effectively at their intended scale.</p>
+        <p>The good system design does not mean means selecting the simplest architecture that satisfies the application's requirements today, while making deliberate provisions for future growth, failures and changing requirements.</p>
+    </div>
 </div>
 </body>
 </html>

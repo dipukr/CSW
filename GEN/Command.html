@@ -20,7 +20,7 @@
         <li>The object that encapsulates the operation &mdash; <strong>Command</strong>.</li>
     </ul></div>
     <div class="intro">
-        <p>By treating operations as first-class objects, the Command pattern provides greater flexibility in how operations are executed, scheduled, stored, and reversed.</p>
+        <p>By treating operations as first-class objects, the Command pattern provides greater flexibility in how operations are executed, scheduled, stored and reversed.</p>
     </div>
     <div class="callout callout-note"><p><strong>Key idea:</strong> Encapsulate a request as an object, thereby decoupling the sender of the request from the object responsible for executing it.</p></div>
 
@@ -61,10 +61,10 @@
         <p>This implementation has several problems.</p>
     </div>
     <div class="intro"><ul>
-        <li><strong>Tight coupling:</strong> <code>RemoteControl</code> directly depends on <code>Light</code>, <code>Fan</code>, and their methods.</li>
+        <li><strong>Tight coupling:</strong> <code>RemoteControl</code> directly depends on <code>Light</code>, <code>Fan</code> and their methods.</li>
         <li><strong>Violation of the Open/Closed Principle:</strong> Adding a new device requires modifying the remote control.</li>
         <li><strong>Difficult undo/redo:</strong> The remote control must know how to reverse every operation.</li>
-        <li><strong>Poor extensibility:</strong> Scheduling, queuing, and logging actions require additional conditional logic.</li>
+        <li><strong>Poor extensibility:</strong> Scheduling, queuing and logging actions require additional conditional logic.</li>
     </ul></div>
     <div class="intro">
         <p class="minor-heading"><strong>With the Command Pattern</strong></p>
@@ -446,7 +446,7 @@ Hello World</code></pre></div>
         <p>We didn't modify <code>CommandHistory</code> when introducing the text editor.</p>
         <p>This is one of the most important benefits of the Command pattern: the infrastructure for invoking and managing operations can be reused independently of the operations themselves.</p>
     </div>
-    <div class="callout callout-note"><p>The editor implementation assumes commands are applied sequentially and that document changes go through the command history. Collaborative editing, external modifications, and concurrent updates require additional conflict-handling logic.</p></div>
+    <div class="callout callout-note"><p>The editor implementation assumes commands are applied sequentially and that document changes go through the command history. Collaborative editing, external modifications and concurrent updates require additional conflict-handling logic.</p></div>
 
     <div class="subheading">Practical Example: Macro Commands (Executing Multiple Operations)</div>
     <div class="intro">
@@ -605,7 +605,7 @@ Generating report: 102</code></pre></div>
     </ul></div>
     <div class="callout callout-warning"><p>For production distributed applications, an in-memory Java executor is not a durable queue. If the process crashes, queued commands may be lost.</p></div>
     <div class="intro">
-        <p>You can instead store serializable command data in a database or send it to a message broker such as Kafka or Rabbit. A worker then reconstructs or dispatches the appropriate operation. Such systems also need retry handling, idempotency, and a clear acknowledgment strategy.</p>
+        <p>You can instead store serializable command data in a database or send it to a message broker such as Kafka or Rabbit. A worker then reconstructs or dispatches the appropriate operation. Such systems also need retry handling, idempotency and a clear acknowledgment strategy.</p>
         <p>Also, a simple <code>Runnable</code> or lambda can act as a command when only deferred execution is needed:</p>
     </div>
     <div class="code-block"><pre><code><span class="code-class">ActionCommand</span> command = () -&gt; reportService.generateReport(<span class="code-number">101</span>);
@@ -716,7 +716,7 @@ executor.submit(command);</code></pre></div>
     }
 }</code></pre></div>
     <div class="intro">
-        <p>CQRS commands often have no <code>execute()</code> method, and their processing logic lives in a separate handler.</p>
+        <p>CQRS commands often have no <code>execute()</code> method and their processing logic lives in a separate handler.</p>
         <p>The two ideas are related through the concept of representing operations explicitly, but CQRS is an architectural pattern that separates write operations from reads. The GoF Command pattern does not require that separation.</p>
     </div>
 
@@ -727,7 +727,7 @@ executor.submit(command);</code></pre></div>
     <div class="intro"><ul>
         <li>Decouples request senders from the receivers that execute operations.</li>
         <li>Supports undo/redo through command history and state management.</li>
-        <li>Makes deferred execution, scheduling, and queuing easier.</li>
+        <li>Makes deferred execution, scheduling and queuing easier.</li>
         <li>Allows individual commands to be combined into macro commands.</li>
         <li>Encourages the Open/Closed Principle: a generic invoker can support new commands without modification.</li>
         <li>Makes individual operations easier to test in isolation.</li>
@@ -740,13 +740,13 @@ executor.submit(command);</code></pre></div>
         <li>Undo/redo can be complicated for operations with external side effects.</li>
         <li>Command history may consume significant memory.</li>
         <li>Mutable commands can cause problems when reused, retried, or accessed concurrently.</li>
-        <li>Queuing and logging commands require additional infrastructure for durability, security, and error handling.</li>
+        <li>Queuing and logging commands require additional infrastructure for durability, security and error handling.</li>
     </ul></div>
 
     <div class="subheading">When Should You Use the Command Pattern</div>
     <div class="intro">
         <p>The Command pattern is especially useful when an application needs to treat operations as independent objects rather than execute them immediately through direct method calls.</p>
-        <p>Typical scenarios include GUI button actions, text editor history, task schedulers, background job processors, workflow engines, transactional compensation, and macro automation.</p>
+        <p>Typical scenarios include GUI button actions, text editor history, task schedulers, background job processors, workflow engines, transactional compensation and macro automation.</p>
         <p>However, if your application only needs a simple one-time method call, using the Command pattern may introduce unnecessary complexity.</p>
         <p>For instance:</p>
     </div>
@@ -759,8 +759,8 @@ executor.submit(command);</code></pre></div>
     <div class="subheading">Interview Summary</div>
     <div class="intro">
         <p>The <strong>Command Design Pattern</strong> is a behavioral design pattern that encapsulates a request or operation as an object, thereby decoupling the object that initiates the request from the object that performs it.</p>
-        <p>The pattern introduces a common <code>Command</code> interface, concrete command implementations, a receiver containing the actual business logic, and an invoker responsible for triggering command execution.</p>
-        <p>By encapsulating operations as objects, it becomes possible to store, queue, schedule, log, combine, undo, and redo operations without tightly coupling the invoker to the receiver.</p>
+        <p>The pattern introduces a common <code>Command</code> interface, concrete command implementations, a receiver containing the actual business logic and an invoker responsible for triggering command execution.</p>
+        <p>By encapsulating operations as objects, it becomes possible to store, queue, schedule, log, combine, undo and redo operations without tightly coupling the invoker to the receiver.</p>
         <p>Remember these three fundamental ideas:</p>
     </div>
     <div class="intro"><ol>
@@ -769,14 +769,14 @@ executor.submit(command);</code></pre></div>
         <li><strong>Receiver</strong> performs the actual work.</li>
     </ol></div>
     <div class="intro">
-        <p>The most recognizable real-world applications are Undo/Redo in text editors, GUI actions, macro commands, and asynchronous task execution.</p>
+        <p>The most recognizable real-world applications are Undo/Redo in text editors, GUI actions, macro commands and asynchronous task execution.</p>
     </div>
 
     <div class="section realworld">
         <div class="section-title">Real-world example</div>
         <div class="section-content"><ul>
             <li><strong>Runnable</strong> &mdash; each Runnable wraps an action as an object that an executor invokes later without knowing its details.</li>
-            <li><strong>swing.Action</strong> &mdash; Swing binds an Action command to buttons, menu items, and key strokes as the invokers.</li>
+            <li><strong>swing.Action</strong> &mdash; Swing binds an Action command to buttons, menu items and key strokes as the invokers.</li>
             <li><strong>JdbcTemplate</strong> &mdash; StatementCallback and PreparedStatementCallback encapsulate a DB operation passed to the template.</li>
             <li><strong>java.util.concurrent Callable and Future</strong> &mdash; a Callable is a queued command whose result is retrieved through its Future.</li>
             <li><strong>Undo and redo in editors</strong> &mdash; each edit is stored as a command object so it can be reversed or replayed.</li>

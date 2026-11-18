@@ -20,7 +20,7 @@
         <li><strong>Access Control:</strong> Restrict access to certain operations based on permissions.</li>
         <li><strong>Lazy Initialization:</strong> Delay the creation of expensive objects until they are actually needed.</li>
         <li><strong>Caching:</strong> Store previously computed results to avoid repeated expensive operations.</li>
-        <li><strong>Logging and Monitoring:</strong> Record method calls, execution times, and other information.</li>
+        <li><strong>Logging and Monitoring:</strong> Record method calls, execution times and other information.</li>
         <li><strong>Remote Communication:</strong> Represent an object residing on another server or process.</li>
         <li><strong>Resource Management:</strong> Manage the lifecycle of an object or its associated resources.</li>
     </ul></div>
@@ -30,7 +30,7 @@
     <div class="intro">
         <p>Consider a video streaming application such as YouTube.</p>
         <p>When a user opens a page containing 100 videos, displaying their titles and thumbnails does not require downloading all 100 video files immediately.</p>
-        <p>If the application eagerly downloads every video, it wastes network bandwidth, memory, and processing time.</p>
+        <p>If the application eagerly downloads every video, it wastes network bandwidth, memory and processing time.</p>
         <p>Instead, we can introduce a proxy:</p>
     </div>
     <div class="intro"><ol>
@@ -68,7 +68,7 @@
             <tbody>
                 <tr><td>Subject</td><td>Defines the common interface used by both proxy and real object.</td></tr>
                 <tr><td>RealSubject</td><td>Performs the actual business operation.</td></tr>
-                <tr><td>Proxy</td><td>Implements the Subject interface, controls access, and delegates to the RealSubject.</td></tr>
+                <tr><td>Proxy</td><td>Implements the Subject interface, controls access and delegates to the RealSubject.</td></tr>
                 <tr><td>Client</td><td>Uses the Subject interface without depending on the concrete implementation.</td></tr>
             </tbody>
         </table>
@@ -219,7 +219,7 @@ Displaying: photo.jpg</code></pre></div>
         <p>The proxy holds a reference to <code>RealImage</code>, but it doesn't initialize that reference until the first call to <code>display</code>.</p>
         <p><code>Synchronized</code> keyword prevents concurrent callers from initializing multiple real images in this simple implementation.</p>
     </div>
-    <div class="callout callout-note"><p><strong>Real-world applications:</strong> Image galleries, video players, large document viewers, ORM lazy loading, and expensive service clients.</p></div>
+    <div class="callout callout-note"><p><strong>Real-world applications:</strong> Image galleries, video players, large document viewers, ORM lazy loading and expensive service clients.</p></div>
     <div class="intro">
         <p>An important distinction: lazy loading is about <strong>when</strong> the object is initialized. Caching is about <strong>whether previously computed results can be reused</strong>. A virtual proxy may retain its loaded object, but that is different from caching the result of arbitrary operations.</p>
     </div>
@@ -320,7 +320,7 @@ Document deleted</code></pre></div>
     </ul></div>
     <div class="callout callout-warning"><p>For a production system, the proxy should obtain identity and permissions from a trusted, authenticated security context, not an unverified role supplied by the client. All protected entry points must enforce authorization.</p></div>
     <div class="intro">
-        <p><strong>Real-world applications:</strong> Role-based APIs, administrative operations, file access permissions, and method-level security in Spring applications.</p>
+        <p><strong>Real-world applications:</strong> Role-based APIs, administrative operations, file access permissions and method-level security in Spring applications.</p>
     </div>
 
     <div class="subheading">Practical Example: Caching Proxy with Logging</div>
@@ -420,7 +420,7 @@ Response: Optional[Product[id=102, name=Keyboard]]</code></pre></div>
     </div>
     <div class="intro">
         <p>This demonstrates an important property of proxies: <strong>multiple proxies can be chained</strong> because they implement the same interface.</p>
-        <p>The client only needs the <code>ProductService</code> interface, and each proxy introduces an independent behavior.</p>
+        <p>The client only needs the <code>ProductService</code> interface and each proxy introduces an independent behavior.</p>
         <p>In this example, <code>computeIfAbsent</code> gives an atomic per-key computation with <code>ConcurrentHashMap</code>, avoiding duplicate cache initialization for the same key under normal concurrent access. The <code>Optional</code> wrapper allows missing products<br> to be cached as well.</p>
         <p class="minor-heading"><strong>Production considerations</strong></p>
         <p>The example intentionally keeps caching simple. A production caching proxy should usually handle:</p>
@@ -500,10 +500,10 @@ Response: Optional[Product[id=102, name=Keyboard]]</code></pre></div>
         <p class="minor-heading"><strong>Why is this a Proxy?</strong></p>
         <p>Because <code>RemoteOrderServiceProxy</code> implements the same <code>OrderService</code> interface expected by the client, while performing the actual operation by communicating with a remote service.</p>
     </div>
-    <div class="callout callout-warning"><p>Unlike a local object, a remote service can have network latency, timeouts, partial failures, and independent availability. A remote proxy hides communication mechanics, but callers still need to handle those failure conditions.</p></div>
+    <div class="callout callout-warning"><p>Unlike a local object, a remote service can have network latency, timeouts, partial failures and independent availability. A remote proxy hides communication mechanics, but callers still need to handle those failure conditions.</p></div>
     <div class="intro">
-        <p>In real-world systems, remote proxies may additionally provide retries, authentication, load balancing, circuit breaking, tracing, and response serialization. Retries must be designed carefully, especially for operations that change data.</p>
-        <p><strong>Framework examples:</strong> Java RMI, gRPC clients, Spring HTTP Service Clients, Spring Cloud OpenFeign, and other RPC client stubs.</p>
+        <p>In real-world systems, remote proxies may additionally provide retries, authentication, load balancing, circuit breaking, tracing and response serialization. Retries must be designed carefully, especially for operations that change data.</p>
+        <p><strong>Framework examples:</strong> Java RMI, gRPC clients, Spring HTTP Service Clients, Spring Cloud OpenFeign and other RPC client stubs.</p>
     </div>
 
     <div class="subheading">Practical Example: Dynamic Proxy in Java</div>
@@ -599,12 +599,12 @@ After: pay</code></pre></div>
             </tbody>
         </table>
     </div></div>
-    <div class="callout callout-note"><p>Java's built-in JDK dynamic proxies operate through interfaces. Frameworks can also create subclass-based proxies using code-generation techniques, subject to limitations around final classes, final methods, and other language constraints.</p></div>
+    <div class="callout callout-note"><p>Java's built-in JDK dynamic proxies operate through interfaces. Frameworks can also create subclass-based proxies using code-generation techniques, subject to limitations around final classes, final methods and other language constraints.</p></div>
 
     <div class="subheading">Practical Example: Dynamic Proxy Using Annotations</div>
     <div class="intro">
         <p>The previous dynamic proxy logged <strong>every</strong> method. Real frameworks are more selective: they add behavior only to methods marked with an annotation, such as Spring's <code>@Transactional</code> or <code>@Cacheable</code>.</p>
-        <p>We can build the same idea ourselves. A custom <code>@Timed</code> annotation marks the methods whose execution time should be measured, and an <code>InvocationHandler</code> reads that annotation at runtime to decide whether to add timing or simply pass the call through.</p>
+        <p>We can build the same idea ourselves. A custom <code>@Timed</code> annotation marks the methods whose execution time should be measured and an <code>InvocationHandler</code> reads that annotation at runtime to decide whether to add timing or simply pass the call through.</p>
         <p class="minor-heading"><strong>Define the Annotation</strong></p>
     </div>
     <div class="code-block"><pre><code><span class="code-annotation">@Retention</span>(<span class="code-class">RetentionPolicy</span>.RUNTIME)
@@ -722,7 +722,7 @@ Status: SHIPPED</code></pre></div>
         <li><strong>Self-invocation bypasses the proxy:</strong> if <code>placeOrder</code> called another <code>@Timed</code> method on <code>this</code>, that inner call would not be timed, for the same reason as the Spring self-invocation problem.</li>
         <li><strong>Reflection cost:</strong> every call goes through reflection. Production code usually caches the annotation lookup per <code>Method</code> instead of repeating <code>getMethod</code> on each call.</li>
     </ul></div>
-    <div class="callout callout-note"><p>This is the same mechanism behind Spring annotations such as <code>@Transactional</code>, <code>@Cacheable</code> and <code>@Async</code>: a proxy intercepts the call, inspects the method's annotations, and decides what extra behavior to apply around the real method.</p></div>
+    <div class="callout callout-note"><p>This is the same mechanism behind Spring annotations such as <code>@Transactional</code>, <code>@Cacheable</code> and <code>@Async</code>: a proxy intercepts the call, inspects the method's annotations and decides what extra behavior to apply around the real method.</p></div>
 
     <div class="subheading">Proxy Pattern in Spring Boot</div>
     <div class="intro">
@@ -840,7 +840,7 @@ Status: SHIPPED</code></pre></div>
     <span class="code-comment">Adds encryption-related behavior</span>
 }</code></pre></div>
     <div class="intro">
-        <p>Both implement <code>DataService</code>, both wrap another object, and both can intercept method calls.</p>
+        <p>Both implement <code>DataService</code>, both wrap another object and both can intercept method calls.</p>
         <p>The difference is the <strong>intention</strong>:</p>
     </div>
     <div class="intro"><ul>
@@ -922,12 +922,12 @@ Status: SHIPPED</code></pre></div>
         <li>The Proxy Pattern is a structural design pattern that introduces a substitute object to control access to a real object.</li>
         <li>The proxy and the real object generally implement the same interface, allowing the client to interact with either one.</li>
         <li>A proxy may execute additional operations before or after delegating to the real object, or it may avoid delegation entirely.</li>
-        <li>Common types include Virtual, Protection, Caching, Logging, and Remote proxies.</li>
+        <li>Common types include Virtual, Protection, Caching, Logging and Remote proxies.</li>
         <li>Java supports both manually implemented static proxies and runtime-generated dynamic proxies.</li>
         <li>Spring AOP is a major practical application of proxy-based interception in Java.</li>
         <li>Proxy and Decorator may share the same structure, but Proxy emphasizes controlled access while Decorator emphasizes extending responsibilities.</li>
     </ul></div>
-    <div class="callout callout-note"><p><strong>In one sentence:</strong> The Proxy Pattern provides a controlled intermediary between the client and the real object, allowing us to introduce behaviors such as lazy loading, caching, security, logging, and remote communication without substantially changing how clients interact with the object.</p></div>
+    <div class="callout callout-note"><p><strong>In one sentence:</strong> The Proxy Pattern provides a controlled intermediary between the client and the real object, allowing us to introduce behaviors such as lazy loading, caching, security, logging and remote communication without substantially changing how clients interact with the object.</p></div>
 </div>
 </body>
 </html>

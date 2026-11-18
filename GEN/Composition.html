@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="intro">
         <p><strong>Composition is one of the most important principles in Object-Oriented Programming (OOP).</strong> It allows you to build complex objects by combining smaller, independent objects rather than inheriting their implementations.</p>
         <p>The principle <strong>"Favor Composition Over Inheritance"</strong>, popularized by the Gang of Four design patterns book, is fundamental to designing flexible, maintainable, testable software.</p>
-        <p>We will cover composition from basic Java examples through real-world designs, runtime behavior changes, design patterns, and Spring Boot.</p>
+        <p>We will cover composition from basic Java examples through real-world designs, runtime behavior changes, design patterns and Spring Boot.</p>
     </div>
 
     <div class="subheading">1. What is composition?</div>
@@ -215,7 +215,7 @@ Engine stopped</code></pre>
             <li>Plain-text and HTML formatting.</li>
             <li>Different retry behaviors.</li>
         </ul>
-        <p>Let&rsquo;s implement this first with inheritance, identify its limitations, and then redesign it using composition.</p>
+        <p>Let&rsquo;s implement this first with inheritance, identify its limitations and then redesign it using composition.</p>
     </div>
 
     <div class="subheading">3. The problem with inheritance — practical example</div>
@@ -270,7 +270,7 @@ notification.send(<span class="code-string">"Order shipped"</span>);</code></pre
     <div class="intro">
         <p>This works, but there are problems.</p>
         <p class="minor-heading"><strong>Problem 1: Subclass explosion</strong></p>
-        <p>Suppose we support three delivery channels, three formatting strategies, and two retry policies.</p>
+        <p>Suppose we support three delivery channels, three formatting strategies and two retry policies.</p>
     </div>
     <div class="gw-card gw-vflow">
         <div class="gw-cols3">
@@ -625,7 +625,7 @@ Paying by UPI: 2000.0</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>The <code>Checkout</code> class does not implement card or UPI payment algorithms. It composes a <code>PaymentStrategy</code>, and the chosen strategy performs the work.</p>
+        <p>The <code>Checkout</code> class does not implement card or UPI payment algorithms. It composes a <code>PaymentStrategy</code> and the chosen strategy performs the work.</p>
         <p>For financial applications, use <code>BigDecimal</code> or an appropriate money type instead of <code>double</code>; the example above uses <code>double</code> only to keep the design demonstration short.</p>
     </div>
 
@@ -633,7 +633,7 @@ Paying by UPI: 2000.0</code></pre>
     <div class="intro">
         <p>Composition also enables us to add functionality around existing implementations without modifying them.</p>
         <p>Suppose every notification must be logged.</p>
-        <p>With inheritance, we might create <code>LoggingEmailSender</code>, <code>LoggingSmsSender</code>, and more subclasses for every existing sender.</p>
+        <p>With inheritance, we might create <code>LoggingEmailSender</code>, <code>LoggingSmsSender</code> and more subclasses for every existing sender.</p>
         <p>With composition, one reusable wrapper is enough.</p>
     </div>
     <div class="section code-section">
@@ -925,7 +925,7 @@ penguin.move(); <span class="code-comment">Walking</span></code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>Here, <code>Circle</code> and <code>Rectangle</code> are both shapes, and both honor the <code>area()</code> contract.</p>
+        <p>Here, <code>Circle</code> and <code>Rectangle</code> are both shapes and both honor the <code>area()</code> contract.</p>
         <p>Inheritance is reasonable because the types are genuine specializations with a consistent abstraction.</p>
         <p>Even here, Java interfaces could also express the common capability. The choice between an interface and an abstract base class depends on whether shared implementation or state is genuinely useful.</p>
     </div>
@@ -964,7 +964,7 @@ penguin.move(); <span class="code-comment">Walking</span></code></pre>
     <div class="subheading">14. Final takeaway</div>
     <div class="intro">
         <p>The goal of composition is not simply to avoid the <code>extends</code> keyword.</p>
-        <p>Its real value is to <strong>separate responsibilities, isolate changes, and assemble behavior from independent components</strong>.</p>
+        <p>Its real value is to <strong>separate responsibilities, isolate changes and assemble behavior from independent components</strong>.</p>
         <p>Think of it this way:</p>
     </div>
     <div class="section code-section">

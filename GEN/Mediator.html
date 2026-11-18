@@ -13,7 +13,7 @@
     <div class="intro">
         <p>Mediator is a behavioral design pattern that promotes loose coupling between objects by centralizing communication between them.</p>
         <p>Instead of objects referring to each other directly, they communicate through a mediator object.</p>
-        <p>This makes the system easier to maintain, modify, and scale, especially as the number of objects increases.</p>
+        <p>This makes the system easier to maintain, modify and scale, especially as the number of objects increases.</p>
         <p>Mediator pattern focuses on simplifying communication between objects by managing and coordinating their interations through a mediator.</p>
         <p>Mediator pattern is used for coordinating communication while the proxy pattern is used for controlling access.</p>
     </div>
@@ -63,7 +63,7 @@
             <li><strong>JMS message broker</strong> &mdash; producers and consumers exchange messages via the broker rather than point-to-point links.</li>
             <li><strong>Air traffic control tower</strong> &mdash; pilots coordinate takeoffs and landings through the tower instead of talking to each other.</li>
             <li><strong>Chat room server</strong> &mdash; users send messages to the server, which relays them to the other participants.</li>
-            <li><strong>GUI dialog controller</strong> &mdash; a form controller mediates between buttons, text fields, and checkboxes to enable or disable them.</li>
+            <li><strong>GUI dialog controller</strong> &mdash; a form controller mediates between buttons, text fields and checkboxes to enable or disable them.</li>
             <li><strong>Enterprise Service Bus</strong> &mdash; services integrate through the bus, which routes and transforms messages between them.</li>
         </ul></div>
     </div>
@@ -73,14 +73,14 @@
     <div class="intro">
         <p>The <strong>Mediator Pattern</strong> is a behavioral design pattern that defines a central object (called the <strong>Mediator</strong>) to manage and coordinate communication between multiple objects without requiring those objects to communicate directly with one another.</p>
         <p>Instead of objects referencing and interacting with each other directly, they communicate through a mediator, which encapsulates the rules and logic governing their interactions.</p>
-        <p>This promotes <strong>loose coupling</strong>, reduces dependencies between objects, and makes complex interactions easier to manage, modify, and maintain.</p>
+        <p>This promotes <strong>loose coupling</strong>, reduces dependencies between objects and makes complex interactions easier to manage, modify and maintain.</p>
         <p>The main idea is:</p>
     </div>
     <div class="callout callout-note"><p>Objects should not need to know how to communicate with every other object. Instead, they communicate through a mediator that coordinates their interactions.</p></div>
     <div class="intro">
         <p class="minor-heading"><strong>Real-world analogy: Air Traffic Control</strong></p>
         <p>Consider an airport with multiple airplanes.</p>
-        <p>Without a mediator, each airplane would have to communicate directly with other airplanes to coordinate takeoffs, landings, runway availability, and collision avoidance.</p>
+        <p>Without a mediator, each airplane would have to communicate directly with other airplanes to coordinate takeoffs, landings, runway availability and collision avoidance.</p>
         <p>With a mediator, an <strong>Air Traffic Control (ATC) Tower</strong> coordinates these activities.</p>
     </div>
     <div class="intro"><ul>
@@ -185,7 +185,7 @@
     <div class="intro">
         <p>Let's implement a chat application using the Mediator Pattern.</p>
         <p class="minor-heading"><strong>Requirements</strong></p>
-        <p>Our application has multiple users: Alice, Bob, and Charlie.</p>
+        <p>Our application has multiple users: Alice, Bob and Charlie.</p>
         <p>Each user should be able to:</p>
     </div>
     <div class="intro"><ul>
@@ -354,7 +354,7 @@ Alice received from Bob: Can we review the code?</code></pre></div>
         <p>If we introduce new rules, such as blocking users, muting participants, or restricting private messages, we can implement the coordination logic inside the mediator without changing how <code>ChatUser</code> sends messages.</p>
         <p>This is the main benefit of the Mediator Pattern: <strong>the communication policy can evolve independently of the participants</strong>.</p>
     </div>
-    <div class="callout callout-note"><p>Note that this implementation is an in-memory, synchronous demonstration. A production chat application would also need to handle concurrency, persistence, authentication, and network delivery.</p></div>
+    <div class="callout callout-note"><p>Note that this implementation is an in-memory, synchronous demonstration. A production chat application would also need to handle concurrency, persistence, authentication and network delivery.</p></div>
 
     <div class="subheading">Practical Example 2: Registration Form Using Mediator</div>
     <div class="intro">
@@ -569,17 +569,17 @@ Register button disabled</code></pre></div>
         <p class="minor-heading"><strong>Understanding the execution</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/mediator-registration-sequence.svg" alt="Sequence: the user sets the password; the password field notifies the RegistrationDialog, which validates all fields and enables the Register button; the user clicks it, the button calls submit(), and the dialog revalidates and submits" style="width:100%;max-width:840px">
+        <img src="../static/mediator-registration-sequence.svg" alt="Sequence: the user sets the password; the password field notifies the RegistrationDialog, which validates all fields and enables the Register button; the user clicks it, the button calls submit() and the dialog revalidates and submits" style="width:100%;max-width:840px">
     </div>
     <div class="intro">
-        <p>Without Mediator, a password field might have to know about the username field, checkbox, and Register button.</p>
+        <p>Without Mediator, a password field might have to know about the username field, checkbox and Register button.</p>
         <p>With Mediator, the password field only says:</p>
     </div>
     <div class="code-block"><pre><code>notifyChanged();</code></pre></div>
     <div class="intro">
         <p>It doesn't need to understand what happens afterward.</p>
         <p>The mediator decides what should happen.</p>
-        <p>This approach is particularly useful in complex GUI forms involving dynamic visibility, conditional controls, dependent dropdowns, multi-step workflows, and validation rules.</p>
+        <p>This approach is particularly useful in complex GUI forms involving dynamic visibility, conditional controls, dependent dropdowns, multi-step workflows and validation rules.</p>
     </div>
     <div class="callout callout-note"><p><strong>Note:</strong> This example simulates UI controls. In an actual registration application, form validation must also happen on the server. The submission method would normally call an application service instead of printing a message.</p></div>
 
@@ -650,7 +650,7 @@ Register button disabled</code></pre></div>
     </div>
     <div class="code-block"><pre><code>order.notifyObservers();</code></pre></div>
     <div class="intro">
-        <p>Observers such as <code>EmailNotifier</code>, <code>SmsNotifier</code>, and <code>AuditLogger</code> are notified.</p>
+        <p>Observers such as <code>EmailNotifier</code>, <code>SmsNotifier</code> and <code>AuditLogger</code> are notified.</p>
         <p>They independently react to the event.</p>
         <p>The order does not coordinate the behavior of these observers.</p>
         <p class="minor-heading"><strong>Mediator example</strong></p>
@@ -708,7 +708,7 @@ Confirm order</div>
 }</code></pre></div>
     <div class="intro">
         <p>Here, a client uses one simple method instead of interacting with several subsystem components.</p>
-        <p>The CPU, Memory, and HardDrive do not necessarily communicate back through the facade or treat it as their coordinator.</p>
+        <p>The CPU, Memory and HardDrive do not necessarily communicate back through the facade or treat it as their coordinator.</p>
         <p class="minor-heading"><strong>Mediator</strong></p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ComputerMediator</span> {
@@ -814,7 +814,7 @@ Confirm order</div>
 }</code></pre></div>
     <div class="intro">
         <p>This class is handling too many unrelated concerns.</p>
-        <p>It becomes difficult to understand, maintain, and test.</p>
+        <p>It becomes difficult to understand, maintain and test.</p>
         <p>A better solution is to introduce smaller mediators with clearly defined responsibilities.</p>
         <p>For example:</p>
     </div>
@@ -835,12 +835,12 @@ NotificationMediator</code></pre></div>
         <p>Although this simplifies the individual colleagues, an overly complex mediator may become a maintenance bottleneck.</p>
         <p class="minor-heading"><strong>Potential runtime bottleneck</strong></p>
         <p>In a concurrent or distributed implementation, a single mediator instance or service may become a throughput bottleneck if all requests are serialized through it.</p>
-        <p>The design pattern itself doesn't require a single-threaded implementation or even a network service. Thread safety, concurrency, and availability need separate consideration.</p>
+        <p>The design pattern itself doesn't require a single-threaded implementation or even a network service. Thread safety, concurrency and availability need separate consideration.</p>
     </div>
 
     <div class="subheading">When should you use Mediator?</div>
     <div class="intro">
-        <p>The Mediator Pattern is especially appropriate when several objects interact in complex ways, and those interactions are difficult to maintain because of direct dependencies.</p>
+        <p>The Mediator Pattern is especially appropriate when several objects interact in complex ways and those interactions are difficult to maintain because of direct dependencies.</p>
         <p>Examples include:</p>
     </div>
     <div class="section cmp"><div class="section-content">
@@ -848,7 +848,7 @@ NotificationMediator</code></pre></div>
             <thead><tr><th>Scenario</th><th>Mediator's responsibility</th></tr></thead>
             <tbody>
                 <tr><td>Chat application</td><td>Route messages and enforce communication rules</td></tr>
-                <tr><td>GUI form</td><td>Coordinate dependent fields, buttons, and validation</td></tr>
+                <tr><td>GUI form</td><td>Coordinate dependent fields, buttons and validation</td></tr>
                 <tr><td>Air traffic control simulation</td><td>Coordinate runway access between aircraft</td></tr>
                 <tr><td>Multiplayer game lobby</td><td>Coordinate player readiness and game start</td></tr>
                 <tr><td>Workflow engine</td><td>Coordinate transitions between participating workflow steps</td></tr>
@@ -922,8 +922,8 @@ NotificationMediator</code></pre></div>
         <li>Mediator is a <strong>behavioral</strong> design pattern.</li>
         <li>It centralizes interaction and communication rules.</li>
         <li>Colleagues communicate through the mediator instead of directly depending on one another.</li>
-        <li>It improves loose coupling, reusability, and maintainability when object interactions are complex.</li>
-        <li>It is particularly useful in GUIs, chat systems, and multi-object coordination.</li>
+        <li>It improves loose coupling, reusability and maintainability when object interactions are complex.</li>
+        <li>It is particularly useful in GUIs, chat systems and multi-object coordination.</li>
         <li>Its major drawback is the risk of creating an overly complex mediator.</li>
     </ul></div>
     <div class="callout callout-note"><p><strong>In one sentence:</strong> The Mediator Pattern encapsulates how a group of objects interact, allowing those objects to collaborate without being tightly coupled to one another.</p></div>

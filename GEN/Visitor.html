@@ -385,7 +385,7 @@ Grand Total: 4722.0</code></pre></div>
         <img src="../static/visitor-ast.svg" alt="Expression tree for (2 + 3) * 4: a multiplication node with an addition node (2 and 3) on the left and the number 4 on the right" style="width:100%;max-width:360px">
     </div>
     <div class="intro">
-        <p>An expression tree containing Number, Addition, and Multiplication nodes.</p>
+        <p>An expression tree containing Number, Addition and Multiplication nodes.</p>
         <p>Now imagine that our compiler needs to perform several operations on this tree:</p>
     </div>
     <div class="intro"><ul>
@@ -398,7 +398,7 @@ Grand Total: 4722.0</code></pre></div>
     <div class="intro">
         <p>We could implement all these operations directly inside each AST node.</p>
         <p>However, that would tightly couple the AST structure with compiler operations.</p>
-        <p>With the Visitor Pattern, we can create separate visitors for evaluation, printing, validation, and optimization.</p>
+        <p>With the Visitor Pattern, we can create separate visitors for evaluation, printing, validation and optimization.</p>
         <p class="minor-heading"><strong>Complete Java implementation</strong></p>
     </div>
     <div class="section code-section">
@@ -452,7 +452,7 @@ Grand Total: 4722.0</code></pre></div>
         <div class="code-explanation">
             <div class="code-explanation-title">How the Visitor works</div>
             <p>The expression nodes &mdash; <code>Num</code>, <code>Add</code> and <code>Mul</code> &mdash; form a stable object structure. Each one implements a single <code>accept()</code> method and nothing else about the operations.<br><br>
-                When <code>accept()</code> runs, it calls the <code>visit</code> overload that matches its own node type. This two-step call (client &rarr; <code>accept</code>, then <code>accept</code> &rarr; <code>visit</code>) is <strong>double dispatch</strong>: it picks the right method based on both the node type and the visitor type, and it makes the tree walk itself recursively.<br><br>
+                When <code>accept()</code> runs, it calls the <code>visit</code> overload that matches its own node type. This two-step call (client &rarr; <code>accept</code>, then <code>accept</code> &rarr; <code>visit</code>) is <strong>double dispatch</strong>: it picks the right method based on both the node type and the visitor type and it makes the tree walk itself recursively.<br><br>
                 Each operation lives in its own visitor &mdash; <code>EvalVisitor</code> computes a value, <code>PrintVisitor</code> renders a string &mdash; so the algorithms stay out of the node classes.<br><br>
                 Adding a new operation (an optimizer, a type checker) means writing one new visitor and touching none of the existing nodes, which is exactly the open-closed benefit of the pattern.</p>
         </div>
@@ -550,7 +550,7 @@ Result: 20</code></pre></div>
         <li><code>NodeCountVisitor</code></li>
     </ul></div>
     <div class="intro">
-        <p>Otherwise, the new <code>DivideExpr.accept</code> won't compile, and concrete visitors will fail to implement the expanded interface. 
+        <p>Otherwise, the new <code>DivideExpr.accept</code> won't compile and concrete visitors will fail to implement the expanded interface. 
             This reveals the Visitor Pattern's fundamental tradeoff:</p>
     </div>
     <div class="section cmp"><div class="section-content">
@@ -586,8 +586,8 @@ Result: 20</code></pre></div>
         <p>For example, in an e-commerce system:</p>
     </div>
     <div class="intro"><ul>
-        <li><strong>Strategy Pattern:</strong> Choose between UPI, credit card, and PayPal as payment algorithms at runtime.</li>
-        <li><strong>Visitor Pattern:</strong> Apply tax calculation, shipping calculation, and reporting operations across multiple product types.</li>
+        <li><strong>Strategy Pattern:</strong> Choose between UPI, credit card and PayPal as payment algorithms at runtime.</li>
+        <li><strong>Visitor Pattern:</strong> Apply tax calculation, shipping calculation and reporting operations across multiple product types.</li>
     </ul></div>
     <div class="intro">
         <p>A Strategy focuses on <strong>which algorithm</strong> should be used.</p>
@@ -604,14 +604,14 @@ Result: 20</code></pre></div>
         <li><strong>Single Responsibility Principle:</strong> each visitor can focus on one operation, such as pricing or reporting.</li>
         <li><strong>Type-specific processing:</strong> Visitors directly target concrete types, bypassing instanceof checks and casts.</li>
         <li><strong>Centralized operations:</strong> related logic for multiple element types can be maintained within one visitor.</li>
-        <li><strong>Works well with hierarchical structures:</strong> particularly ASTs, document models, and composite object trees.</li>
+        <li><strong>Works well with hierarchical structures:</strong> particularly ASTs, document models and composite object trees.</li>
     </ul></div>
     <div class="intro">
         <p class="minor-heading"><strong>Disadvantages</strong></p>
     </div>
     <div class="intro"><ul>
         <li><strong>Difficult to add new element types:</strong> the visitor interface and its concrete impls typically require modification.</li>
-        <li><strong>Increased boilerplate:</strong> requires interfaces, visitor classes, and <code>accept</code> methods.</li>
+        <li><strong>Increased boilerplate:</strong> requires interfaces, visitor classes and <code>accept</code> methods.</li>
         <li><strong>Potential encapsulation concerns:</strong> visitors may need access to element data that would otherwise remain private.</li>
         <li><strong>Tight coupling to concrete types:</strong> the visitor interface depends on concrete element classes.</li>
         <li><strong>Can be excessive for simple applications:</strong> straightforward polymorphism or a service class may be clearer.</li>
@@ -626,10 +626,10 @@ Result: 20</code></pre></div>
         <table class="cmp-table centered cmp-peer">
             <thead><tr><th>Scenario</th><th>Why Visitor fits</th></tr></thead>
             <tbody>
-                <tr><td>Compiler AST</td><td>Perform interpretation, validation, printing, and code generation on the same syntax tree</td></tr>
-                <tr><td>Document processing</td><td>Render, export, validate, or analyze paragraphs, tables, and images</td></tr>
+                <tr><td>Compiler AST</td><td>Perform interpretation, validation, printing and code generation on the same syntax tree</td></tr>
+                <tr><td>Document processing</td><td>Render, export, validate, or analyze paragraphs, tables and images</td></tr>
                 <tr><td>File system representation</td><td>Calculate size, collect statistics, or build reports for file and directory objects</td></tr>
-                <tr><td>E-commerce</td><td>Apply specialized pricing, tax, shipping, and reporting logic across stable product types</td></tr>
+                <tr><td>E-commerce</td><td>Apply specialized pricing, tax, shipping and reporting logic across stable product types</td></tr>
                 <tr><td>UI component trees</td><td>Perform inspections or analysis across different component types</td></tr>
                 <tr><td>Data transformation</td><td>Convert structured objects into multiple output formats</td></tr>
             </tbody>

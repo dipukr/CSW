@@ -53,7 +53,7 @@
     <div class="title">Deadlock Avoidance</div>
 
     <div class="intro">
-        <p>Avoidance breaks one of the four Coffman conditions that deadlock requires: mutual exclusion, hold-and-wait, no preemption, and circular wait.</p>
+        <p>Avoidance breaks one of the four Coffman conditions that deadlock requires: mutual exclusion, hold-and-wait, no preemption and circular wait.</p>
         <p>The most practical technique is imposing a consistent global lock ordering; another is using <code>tryLock</code> with a timeout so a thread backs off and retries instead of blocking forever.</p>
     </div>
 

@@ -11,7 +11,7 @@
     <div class="title">RabbitMQ</div>
 
     <div class="intro">
-        <p>RabbitMQ is message-queueing software, also called a message broker or queue manager. Simply it is software where queues are defined, and applications connect to those queues to send messages to each other.</p>
+        <p>RabbitMQ is message-queueing software, also called a message broker or queue manager. Simply it is software where queues are defined and applications connect to those queues to send messages to each other.</p>
         <p>A message can carry many kinds of information &mdash; for example, details of a task that should run on another application (possibly on another server) or just a simple text message.</p>
         <p>The broker stores messages until a receiving application connects to the queue and takes them off for processing.</p>
         <p>The queue-manager software (message broker) stores messages until a receiving application connects to the queue and takes the messages off the queue for processing.</p>
@@ -63,7 +63,7 @@
     </div>
     <div class="section-diagram">
         <div class="diagram-panel">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 280" style="width:100%;max-width:700px;height:auto" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" role="img" aria-label="A producer publishes to an exchange; bindings connect the exchange to two queues, and each queue is read by its own consumer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 280" style="width:100%;max-width:700px;height:auto" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" role="img" aria-label="A producer publishes to an exchange; bindings connect the exchange to two queues and each queue is read by its own consumer">
             <defs><marker id="rm2-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#5b6b7b"/></marker></defs>
             <path d="M176 146 H216" fill="none" stroke="#5b6b7b" stroke-width="1.8" marker-end="url(#rm2-arrow)"/>
             <path d="M362 128 C404 98 414 76 448 70" fill="none" stroke="#5b6b7b" stroke-width="1.8" marker-end="url(#rm2-arrow)"/>
@@ -124,14 +124,14 @@
                 <tr><td>Binding</td><td>A link between a queue and an exchange.</td></tr>
                 <tr><td>Routing key</td><td>A key the exchange uses to decide how to route a message &mdash; like an address.</td></tr>
                 <tr><td>AMQP</td><td>Advanced Message Queuing Protocol, the core protocol RabbitMQ uses for messaging.</td></tr>
-                <tr><td>Users</td><td>Connect with a username and password; each user can have read, write, and configure permissions.</td></tr>
+                <tr><td>Users</td><td>Connect with a username and password; each user can have read, write and configure permissions.</td></tr>
                 <tr><td>Vhost (virtual host)</td><td>Segregates applications using the same RabbitMQ instance; queues and exchanges can exist in only one vhost.</td></tr>
             </tbody>
         </table>
     </div></div>
     <div class="subheading">Publishing and subscribing</div>
     <div class="intro">
-        <p>RabbitMQ uses AMQP by default, so your application needs a client library that speaks the same protocol. A client library is an API with methods for connecting to the broker, declaring queues and exchanges, and publishing or consuming messages; libraries exist for almost every language. A typical sequence is:</p>
+        <p>RabbitMQ uses AMQP by default, so your application needs a client library that speaks the same protocol. A client library is an API with methods for connecting to the broker, declaring queues and exchanges and publishing or consuming messages; libraries exist for almost every language. A typical sequence is:</p>
         <ol>
             <li>Create a connection object (host, port, username, password, so on).</li>
             <li>A TCP connection opens when the connection starts.</li>
@@ -145,10 +145,10 @@
 
     <div class="subheading">Exchanges, routing keys and bindings</div>
     <div class="intro">
-        <p>Messages are not published directly to a queue. Instead, the producer sends messages to an exchange. Exchanges are message-routing agents defined by the virtual host in RabbitMQ. An exchange is responsible for routing messages to different queues using header attributes, bindings, and routing keys.</p>
+        <p>Messages are not published directly to a queue. Instead, the producer sends messages to an exchange. Exchanges are message-routing agents defined by the virtual host in RabbitMQ. An exchange is responsible for routing messages to different queues using header attributes, bindings and routing keys.</p>
         <p>A <strong>binding</strong> is a <strong>link</strong> that you set up to bind a queue to an exchange.</p>
         <p>The <strong>routing key</strong> is a message attribute that the exchange uses to determine how to route the message to queues (depending on exchange type).</p>
-        <p>Exchanges, connections, and queues can be configured with parameters such as durable, temporary, and auto-delete upon creation. Durable exchanges survive server restarts and last until they are explicitly deleted. Temporary exchanges exist until RabbitMQ is shut down. Auto-deleted exchanges are removed once the last bound object is unbound from the exchange.</p>
+        <p>Exchanges, connections and queues can be configured with parameters such as durable, temporary and auto-delete upon creation. Durable exchanges survive server restarts and last until they are explicitly deleted. Temporary exchanges exist until RabbitMQ is shut down. Auto-deleted exchanges are removed once the last bound object is unbound from the exchange.</p>
         <p>There are four different types of exchanges that route the message differently using different parameters and binding setups. Clients can create their own exchanges or use the predefined default exchanges created when the server starts for the first time.</p>
     </div>
     <div class="section cmp"><div class="section-content">
@@ -220,7 +220,7 @@
             <li><code>#</code> matches zero or more words. <code>agreements.eu.berlin.#</code> matches every key that starts with <code>agreements.eu.berlin</code>.</li>
         </ul>
         <p>Consumers indicate which topics they are interested in (e.g., subscribing to a feed for a specific tag). The consumer creates a queue and binds it to the exchange using a specified routing pattern. All messages with a routing key that matches the routing pattern are routed to the queue and remain there until the consumer consumes them.</p>
-        <p>A consumer subscribes to the topics it cares about by creating a queue and binding it with a pattern. Every matching message is routed to that queue and waits there until the consumer reads it. In the example, a company with offices in several cities publishes agreements to the <code>agreements</code> exchange, and the message <code>agreements.eu.berlin</code> is routed to two of the three queues.</p>
+        <p>A consumer subscribes to the topics it cares about by creating a queue and binding it with a pattern. Every matching message is routed to that queue and waits there until the consumer reads it. In the example, a company with offices in several cities publishes agreements to the <code>agreements</code> exchange and the message <code>agreements.eu.berlin</code> is routed to two of the three queues.</p>
     </div>
     <div class="scenario-layout">
         <div class="scenario-text">
@@ -290,7 +290,7 @@
     <div class="subheading">Headers exchange</div>
     <div class="intro">
         <p>A header exchange routes messages based on arguments containing headers and optional values. Header exchanges are very similar to topic exchanges, but route messages based on header values rather than routing keys. A message matches if the value of the header equals the value specified upon binding.</p>
-        <p>A headers exchange works much like a topic exchange, but it routes on <strong>message header values</strong> instead of the routing key. Each binding carries a set of key/value arguments, and a message matches when its headers carry the same values.</p>
+        <p>A headers exchange works much like a topic exchange, but it routes on <strong>message header values</strong> instead of the routing key. Each binding carries a set of key/value arguments and a message matches when its headers carry the same values.</p>
         <p>A special argument named "x-match", added in the binding between exchange and queue, specifies if all headers must match or just one. Either any common header between the message and the binding counts as a match, or all the headers referenced in the binding need to be present in the message for it to match. The "x-match" property can have two different values: "any" or "all", where "all" is the default value. A value of "all" means all header pairs (key, value) must match, while a value of "any" means at least one of the header pairs must match. Headers can be constructed using a wider range of data types, integer or hash, for example, instead of a string. The headers exchange type (used with the binding argument "any") is useful for directing messages that contain a subset of known (unordered) criteria.</p>
     </div>
     <div class="scenario-layout">
@@ -303,7 +303,7 @@
             </ul>
             <div class="scenario-title">Scenario 1</div>
             <p>Message 1 is published to the exchange with header arguments (key = value): "format = pdf", "type = report".</p>
-            <p>Message 1 is delivered to Queue A because all key/value pairs match, and Queue B since "format = pdf" is a match (binding rule set to "x-match =any").</p>
+            <p>Message 1 is delivered to Queue A because all key/value pairs match and Queue B since "format = pdf" is a match (binding rule set to "x-match =any").</p>
             <div class="scenario-title">Scenario 2</div>
             <p>Message 2 is published to the exchange with header arguments of (key = value): "format = pdf".</p>
             <p>Message 2 is only delivered to Queue B. Because the binding of Queue A requires both "format = pdf" and "type = report" while Queue B is configured to match any key-value pair (x-match = any) as long as either "format = pdf" or "type = log" is present.</p>

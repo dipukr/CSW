@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="title">Network Address Translation (NAT) — Complete Guide</div>
 
     <div class="intro">
-        <p>NAT is one of the most important networking concepts for backend engineers, system designers, DevOps engineers, and anyone working with routers, firewalls, Docker, Kubernetes, or cloud infrastructure.</p>
-        <p>In this guide, we&rsquo;ll cover how NAT works internally, its different types, how packets are modified, how connection tracking works, and how to implement and debug NAT using Linux commands.</p>
+        <p>NAT is one of the most important networking concepts for backend engineers, system designers, DevOps engineers and anyone working with routers, firewalls, Docker, Kubernetes, or cloud infrastructure.</p>
+        <p>In this guide, we&rsquo;ll cover how NAT works internally, its different types, how packets are modified, how connection tracking works and how to implement and debug NAT using Linux commands.</p>
     </div>
 
     <div class="subheading">1. What is NAT?</div>
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="intro"><p class="math-display"><span class="math" data-tex="2^{32}=4,294,967,296" data-display="1">2<sup>32</sup> = 4,294,967,296</span></p></div>
     <div class="intro">
         <p>That gives approximately 4.3 billion possible IPv4 addresses, many of which are reserved or otherwise not globally available.</p>
-        <p>Without address sharing, providing a dedicated public IPv4 address to every phone, laptop, smart TV, server, and IoT device would be impractical.</p>
+        <p>Without address sharing, providing a dedicated public IPv4 address to every phone, laptop, smart TV, server and IoT device would be impractical.</p>
         <p>NAT enables address reuse across private networks.</p>
         <p>Other important motivations include:</p>
         <ul>
@@ -172,7 +172,7 @@ TCP Header:
         <p class="minor-heading"><strong>Step 2 — The packet reaches the router</strong></p>
         <p>The laptop discovers that <code>198.51.100.80</code> is outside its local subnet.</p>
         <p>It forwards the packet to its default gateway, <code>192.168.1.1</code>.</p>
-        <p>The router examines the packet, applies relevant forwarding and NAT rules, and establishes a translation mapping.</p>
+        <p>The router examines the packet, applies relevant forwarding and NAT rules and establishes a translation mapping.</p>
         <p>Suppose the NAT router selects public TCP port <code>61001</code>.</p>
         <p>The mapping is:</p>
     </div>
@@ -264,7 +264,7 @@ AFTER REVERSE TRANSLATION
 )</code></pre></div>
     <div class="intro">
         <p>This combination is called the <strong>5-tuple</strong>.</p>
-        <p>A stateful NAT implementation uses packet identifiers, flow state, mappings, and filtering rules to determine the correct translation. The precise mapping keys depend on the NAT implementation and its mapping behavior.</p>
+        <p>A stateful NAT implementation uses packet identifiers, flow state, mappings and filtering rules to determine the correct translation. The precise mapping keys depend on the NAT implementation and its mapping behavior.</p>
         <p class="minor-heading"><strong>NAT is stateful in typical home-router usage</strong></p>
         <p>A dynamic NAT mapping has a lifecycle:</p>
     </div>
@@ -296,7 +296,7 @@ After SNAT:
     203.0.113.10:53000 → 198.51.100.80:443</code></pre></div>
     <div class="intro">
         <p>Here, only the source IP changes. In actual deployments, the router may change the source port as well.</p>
-        <p>Common use cases include outbound Internet access, private cloud subnets connecting to external services, and network migrations.</p>
+        <p>Common use cases include outbound Internet access, private cloud subnets connecting to external services and network migrations.</p>
         <p class="minor-heading"><strong>5.2 Destination NAT (DNAT)</strong></p>
         <p>DNAT changes the <strong>destination IP address</strong> of a packet.</p>
         <p>It is commonly used to forward incoming requests to an internal server.</p>
@@ -562,7 +562,7 @@ Linux NAT Router
       v
 Spring Boot Application</code></pre></div>
     <div class="intro">
-        <p>You still need IP forwarding, suitable firewall permissions, and a return route through the NAT device.</p>
+        <p>You still need IP forwarding, suitable firewall permissions and a return route through the NAT device.</p>
         <p class="minor-heading"><strong>Example C — Inspect NAT rules</strong></p>
     </div>
     <div class="code-block"><pre><code><span class="code-comment">Show all nftables rules</span>
@@ -577,13 +577,13 @@ Spring Boot Application</code></pre></div>
 <span class="code-comment">Monitor new connection tracking events</span>
 <span class="code-keyword">sudo</span> conntrack -E</code></pre></div>
     <div class="intro">
-        <p>The <code>nftables</code> manual covers the supported SNAT, DNAT, masquerade, and redirect statements.</p>
+        <p>The <code>nftables</code> manual covers the supported SNAT, DNAT, masquerade and redirect statements.</p>
     </div>
 
     <div class="subheading">10. Complete practical lab: build a NAT router from scratch</div>
     <div class="intro">
         <p>You can demonstrate real packet translation on a single Linux machine using <strong>network namespaces</strong>.</p>
-        <p>A network namespace has its own network interfaces, IP addresses, routing tables, and network configuration.</p>
+        <p>A network namespace has its own network interfaces, IP addresses, routing tables and network configuration.</p>
         <p>We&rsquo;ll create three isolated environments:</p>
     </div>
     <div class="svg-diagram">
@@ -708,7 +708,7 @@ dst=198.51.100.1</code></pre></div>
     <div class="subheading">11. Implement NAT with iptables</div>
     <div class="intro">
         <p>Many Linux tutorials and existing systems use <code>iptables</code>.</p>
-        <p>For a router with WAN interface <code>eth0</code>, LAN interface <code>eth1</code>, and private subnet <code>192.168.1.0/24</code>:</p>
+        <p>For a router with WAN interface <code>eth0</code>, LAN interface <code>eth1</code> and private subnet <code>192.168.1.0/24</code>:</p>
     </div>
     <div class="code-block"><pre><code><span class="code-comment">Enable packet forwarding</span>
 <span class="code-keyword">sudo</span> sysctl -w net.ipv4.ip_forward=1
@@ -752,7 +752,7 @@ dst=198.51.100.1</code></pre></div>
 
     <div class="subheading">12. Understand NAT implementation with Java</div>
     <div class="intro">
-        <p>A normal Java application using <code>java.net.Socket</code> does not implement router-level NAT. The operating system handles packets, and a NAT-capable network device modifies them.</p>
+        <p>A normal Java application using <code>java.net.Socket</code> does not implement router-level NAT. The operating system handles packets and a NAT-capable network device modifies them.</p>
         <p>However, we can simulate a NAT mapping table using Java to understand the algorithm.</p>
         <p>The downloadable <code>NatTableSimulator.java</code> implements a simplified version of TCP PAT.</p>
         <p>The basic data structures are:</p>
@@ -951,7 +951,7 @@ NAT translates to:
         <p>Two NATs can translate the same type of traffic differently.</p>
         <p><strong>Mapping behavior</strong> determines whether the same internal IP/port is assigned the same external IP/port when communicating with different remote endpoints.</p>
         <p><strong>Filtering behavior</strong> determines which external endpoints are permitted to send packets back through an existing mapping.</p>
-        <p>RFC 4787 describes endpoint-independent, address-dependent, and address-and-port-dependent behaviors. This is more precise than the often-used but ambiguous informal categories such as "symmetric NAT."</p>
+        <p>RFC 4787 describes endpoint-independent, address-dependent and address-and-port-dependent behaviors. This is more precise than the often-used but ambiguous informal categories such as "symmetric NAT."</p>
         <p class="minor-heading"><strong>15.6 NAT64</strong></p>
         <p>NAT64 allows IPv6-only clients to communicate with IPv4-only services.</p>
         <p>In a typical DNS64 + NAT64 setup:</p>
@@ -985,14 +985,14 @@ NAT translates to:
         </table></div>
         <p class="minor-heading"><strong>Can one public IP support only 65,535 connections?</strong></p>
         <p>Not necessarily.</p>
-        <p>A TCP or UDP port is 16 bits, giving 65,536 possible port numbers. Some ports are reserved or otherwise unavailable for allocation, and practical port allocation policies further limit capacity.</p>
+        <p>A TCP or UDP port is 16 bits, giving 65,536 possible port numbers. Some ports are reserved or otherwise unavailable for allocation and practical port allocation policies further limit capacity.</p>
         <p>However, NAT connection capacity is not always simply the number of available external ports. Some implementations can reuse translated ports for different remote destinations while still uniquely identifying flows.</p>
-        <p>The actual limit depends on the mapping policy, protocol, available public IP addresses, destination distribution, NAT state capacity, and resource limits.</p>
+        <p>The actual limit depends on the mapping policy, protocol, available public IP addresses, destination distribution, NAT state capacity and resource limits.</p>
         <p class="minor-heading"><strong>Why a backend engineer should care</strong></p>
         <p>Consider a Spring Boot service using an HTTP client to call an external payment API.</p>
         <p>If hundreds of service instances are behind a shared NAT gateway, the external provider may see requests from the same public IP.</p>
         <p>Heavy connection churn could contribute to port exhaustion or NAT table pressure.</p>
-        <p>The usual improvements include connection pooling, keep-alive, bounded concurrency, reasonable timeouts, and appropriately sized egress infrastructure.</p>
+        <p>The usual improvements include connection pooling, keep-alive, bounded concurrency, reasonable timeouts and appropriately sized egress infrastructure.</p>
         <p>This is one reason proper HTTP client reuse matters in distributed systems.</p>
     </div>
 
@@ -1034,7 +1034,7 @@ NAT translates to:
         <p class="minor-heading"><strong>Why does a server see my router&rsquo;s public IP rather than my laptop&rsquo;s IP?</strong></p>
         <p>Because source NAT replaces the private source endpoint before the packet reaches the server.</p>
         <p class="minor-heading"><strong>Does NAT hide the identity of individual users?</strong></p>
-        <p>It can hide their private network addresses from the destination, but it does not provide anonymity. Applications, cookies, authentication, traffic analysis, and network logs can still identify or distinguish users.</p>
+        <p>It can hide their private network addresses from the destination, but it does not provide anonymity. Applications, cookies, authentication, traffic analysis and network logs can still identify or distinguish users.</p>
     </div>
 
     <div class="subheading">Final mental model</div>
@@ -1060,7 +1060,7 @@ Routing
 Firewall
     Decides whether traffic is permitted.</code></pre></div>
     <div class="intro">
-        <p>For backend engineering, the most important things to master are <strong>SNAT, DNAT, PAT, connection tracking, the Netfilter packet path, port forwarding, and NAT behavior in container and cloud networks</strong>. These concepts explain a large number of real production connectivity problems.</p>
+        <p>For backend engineering, the most important things to master are <strong>SNAT, DNAT, PAT, connection tracking, the Netfilter packet path, port forwarding and NAT behavior in container and cloud networks</strong>. These concepts explain a large number of real production connectivity problems.</p>
     </div>
 </div>
 </body>

@@ -23,8 +23,8 @@
         <li>IP hash: Using the hash of the client IP to map to an instance</li>
     </ul></div>
     <div class="intro">
-        <p>A <strong>load balancer</strong> is the component that does this work. It sits between the callers and a pool of identical instances, receives every request, picks one healthy instance using its algorithm, and forwards the request there. Callers only know the balancer&rsquo;s address, so instances can be added, removed, or replaced without the callers noticing.</p>
-        <p>Because no single instance has to absorb all the traffic, the system can scale horizontally by adding instances, and it keeps serving requests when one instance crashes, since the balancer simply stops sending traffic to it.</p>
+        <p>A <strong>load balancer</strong> is the component that does this work. It sits between the callers and a pool of identical instances, receives every request, picks one healthy instance using its algorithm and forwards the request there. Callers only know the balancer&rsquo;s address, so instances can be added, removed, or replaced without the callers noticing.</p>
+        <p>Because no single instance has to absorb all the traffic, the system can scale horizontally by adding instances and it keeps serving requests when one instance crashes, since the balancer simply stops sending traffic to it.</p>
     </div>
 
     <div class="section-diagram">
@@ -39,7 +39,7 @@
                     <tr><td>Receive</td><td>The client sends its request to the balancer&rsquo;s single address (a virtual IP or DNS name) instead of to any one instance.</td></tr>
                     <tr><td>Health Check</td><td>The balancer continuously probes each instance (a TCP connect or an HTTP endpoint such as <code>/health</code>) and keeps only the healthy ones in the pool.</td></tr>
                     <tr><td>Choose</td><td>It applies the configured algorithm to the healthy instances to pick the target for this request.</td></tr>
-                    <tr><td>Forward</td><td>The request is sent to the chosen instance, and the response travels back to the client through the balancer.</td></tr>
+                    <tr><td>Forward</td><td>The request is sent to the chosen instance and the response travels back to the client through the balancer.</td></tr>
                     <tr><td>Adapt</td><td>When an instance fails its checks it is taken out of rotation; when it recovers, or a new one is added, it starts receiving traffic again.</td></tr>
                 </tbody>
             </table>
@@ -53,7 +53,7 @@
                 <tbody>
                     <tr><td>Round Robin</td><td>Sends each new request to the next instance in a fixed order, wrapping back to the first. Simple and fair when instances are identical and requests cost about the same.</td></tr>
                     <tr><td>Weighted Round Robin</td><td>Round robin where each instance has a weight; an instance with weight 3 gets three requests for every one sent to an instance with weight 1. Useful when machines have different capacity.</td></tr>
-                    <tr><td>Random</td><td>Picks an instance at random. Needs no shared state, and over many requests it spreads load evenly.</td></tr>
+                    <tr><td>Random</td><td>Picks an instance at random. Needs no shared state and over many requests it spreads load evenly.</td></tr>
                     <tr><td>Least Connections</td><td>Picks the instance with the fewest active connections. Works well when request durations vary a lot, such as long-lived or streaming connections.</td></tr>
                     <tr><td>Weighted Least Connections</td><td>Compares active connections divided by weight, so bigger instances are allowed proportionally more open connections.</td></tr>
                     <tr><td>Least Response Time</td><td>Picks the instance with the lowest recent response time (often combined with fewest connections), steering traffic away from slow instances.</td></tr>
@@ -71,7 +71,7 @@
             <table class="cmp-table">
                 <tbody>
                     <tr><td>Layer 4 (Transport)</td><td>Routes on IP address and TCP/UDP port without reading the request content. Very fast, but cannot route by URL, header, or cookie.</td></tr>
-                    <tr><td>Layer 7 (Application)</td><td>Reads the HTTP request and can route by path, host, header, or cookie, terminate TLS, and rewrite requests. More flexible, slightly more work per request.</td></tr>
+                    <tr><td>Layer 7 (Application)</td><td>Reads the HTTP request and can route by path, host, header, or cookie, terminate TLS and rewrite requests. More flexible, slightly more work per request.</td></tr>
                     <tr><td>Hardware</td><td>Dedicated appliances (for example F5 BIG-IP) with high throughput; expensive and less flexible to scale.</td></tr>
                     <tr><td>Software</td><td>Runs on ordinary servers or containers, such as NGINX, HAProxy, or Envoy; cheap and easy to automate.</td></tr>
                     <tr><td>Cloud Managed</td><td>Provided as a service, such as AWS ELB/ALB/NLB, Azure Load Balancer, or Google Cloud Load Balancing; scales and stays available without servers to manage.</td></tr>
@@ -106,8 +106,8 @@
         <li><strong>High Availability</strong><br>When an instance fails its health checks, traffic goes to the remaining instances, so a single crash does not take the service down.</li>
         <li><strong>Horizontal Scalability</strong><br>Capacity grows by adding instances behind the balancer instead of buying a bigger machine.</li>
         <li><strong>Even Resource Use</strong><br>Spreading requests prevents one instance from overloading while others sit idle, keeping latency steady.</li>
-        <li><strong>Zero-Downtime Deployments</strong><br>Instances can be drained, updated, and returned one at a time (rolling, blue-green, or canary releases) while users keep being served.</li>
-        <li><strong>Single Entry Point</strong><br>Clients use one stable address; TLS, rate limiting, and routing rules can be applied in one place.</li>
+        <li><strong>Zero-Downtime Deployments</strong><br>Instances can be drained, updated and returned one at a time (rolling, blue-green, or canary releases) while users keep being served.</li>
+        <li><strong>Single Entry Point</strong><br>Clients use one stable address; TLS, rate limiting and routing rules can be applied in one place.</li>
         <li><strong>Flexibility</strong><br>Instances can be moved, resized, or replaced without changing any client configuration.</li>
     </ul></div>
     <div class="intro">
@@ -117,8 +117,8 @@
         <li><strong>Single Point of Failure</strong><br>A lone balancer can itself go down; it needs a redundant pair or a managed service to avoid becoming the weakest link.</li>
         <li><strong>Extra Hop and Latency</strong><br>Every request passes through one more network component, adding a little latency and another place to troubleshoot.</li>
         <li><strong>Session State Problems</strong><br>If instances keep user sessions in memory, requests landing on a different instance lose that state unless sessions are sticky or shared.</li>
-        <li><strong>Configuration Complexity</strong><br>Algorithms, health checks, timeouts, and TLS settings must be tuned correctly; mistakes can send traffic to broken instances or reject good ones.</li>
-        <li><strong>Cost</strong><br>Hardware appliances and managed balancers add licensing or usage costs, and redundancy doubles them.</li>
+        <li><strong>Configuration Complexity</strong><br>Algorithms, health checks, timeouts and TLS settings must be tuned correctly; mistakes can send traffic to broken instances or reject good ones.</li>
+        <li><strong>Cost</strong><br>Hardware appliances and managed balancers add licensing or usage costs and redundancy doubles them.</li>
         <li><strong>Uneven Load with Simple Algorithms</strong><br>Round robin or random can still overload an instance when some requests are much heavier than others.</li>
     </ul></div>
 

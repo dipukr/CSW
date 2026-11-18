@@ -207,7 +207,7 @@
     }
 }</code></pre></div>
     <div class="intro">
-        <p>The <code>Forest</code> manages all the trees, and each <code>Tree</code> refers to a cached <code>TreeType</code>.</p>
+        <p>The <code>Forest</code> manages all the trees and each <code>Tree</code> refers to a cached <code>TreeType</code>.</p>
         <p class="minor-heading"><strong>Main Application</strong></p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
@@ -459,7 +459,7 @@ sharedTreeType.draw();</code></pre></div>
     <div class="intro">
         <p>Each operation supplies its own context without modifying the shared Flyweight.</p>
         <p class="minor-heading"><strong>Sharing introduces indirection</strong></p>
-        <p>Flyweight makes object creation and memory management more complex because you must maintain factories, keys, and references. It is not necessarily useful for a small number of inexpensive objects.</p>
+        <p>Flyweight makes object creation and memory management more complex because you must maintain factories, keys and references. It is not necessarily useful for a small number of inexpensive objects.</p>
     </div>
 
     <div class="subheading">Where Is Flyweight Used in Real Applications</div>

@@ -78,7 +78,7 @@
     <div class="title">Thread Priority</div>
 
     <div class="intro">
-        <p>Each thread has a priority, and the thread scheduler uses priority to decide which Runnable thread should be allowed to execute next.</p>
+        <p>Each thread has a priority and the thread scheduler uses priority to decide which Runnable thread should be allowed to execute next.</p>
         <p>Threads with higher priority are executed in preference to threads with lower priority; when two threads share the same priority, the JVM runs them in FIFO order. Priorities range from <code>Thread.MIN_PRIORITY</code> (1) to <code>Thread.MAX_PRIORITY</code> (10), with <code>Thread.NORM_PRIORITY</code> (5) as the default.</p>
     </div>
 
@@ -125,7 +125,7 @@
 
     <div class="intro">
         <p>A thread moves through a defined set of states during its life: New, Runnable, Blocked, Waiting, Timed-Waiting and Terminated.</p>
-        <p>A thread enters Waiting via <code>wait()</code> or <code>join()</code>, and Blocked when contending for a monitor lock. Once <code>run()</code> completes, the thread reaches Terminated and cannot be restarted.</p>
+        <p>A thread enters Waiting via <code>wait()</code> or <code>join()</code> and Blocked when contending for a monitor lock. Once <code>run()</code> completes, the thread reaches Terminated and cannot be restarted.</p>
     </div>
 
     <div class="section-diagram">

@@ -11,13 +11,13 @@
     <div class="title">Software Design</div>
 
     <div class="intro">
-        <p><strong>Software design</strong> is the tactical, implementation-focused process of determining <strong>how</strong> software should be structured and built to satisfy its <strong>functional and non-functional requirements</strong>. It translates high-level requirements and <strong>architectural decisions</strong> into concrete classes, interfaces, methods, data structures, algorithms, responsibilities, and interactions between components.</p>
+        <p><strong>Software design</strong> is the tactical, implementation-focused process of determining <strong>how</strong> software should be structured and built to satisfy its <strong>functional and non-functional requirements</strong>. It translates high-level requirements and <strong>architectural decisions</strong> into concrete classes, interfaces, methods, data structures, algorithms, responsibilities and interactions between components.</p>
         <p>While <strong>software architecture</strong> focuses on the system's <strong>big-picture structure</strong> &mdash; identifying major components, defining their boundaries, selecting architectural styles and establishing how they communicate&mdash;<strong>software design</strong> focuses on the <strong>internal organization and implementation</strong> of those components.</p>
     </div>
     <div class="benefit-grid benefit-grid-2x2 benefit-grid-spaced">
         <div class="benefit-card">
             <div class="benefit-title">Software Design</div>
-            <p>Defines how individual components are organized internally, how responsibilities are distributed, and how classes and objects<br> collaborate to implement the required behavior.</p>
+            <p>Defines how individual components are organized internally, how responsibilities are distributed and how classes and objects<br> collaborate to implement the required behavior.</p>
         </div>
         <div class="benefit-card">
             <div class="benefit-title">Software Architecture</div>
@@ -41,25 +41,25 @@
             <li><strong>Extensibility</strong><br>Allow new functionality to be introduced with minimal changes to existing code.</li>
             <li><strong>Reusability</strong><br>Design components that can be reused where it provides genuine value.</li>
             <li><strong>Testability</strong><br>Make components easy to verify independently.</li>
-            <li><strong>Simplicity</strong><br>Avoid unnecessary complexity, premature abstractions, and overengineering.</li>
+            <li><strong>Simplicity</strong><br>Avoid unnecessary complexity, premature abstractions and overengineering.</li>
         </ul>
-        <p>These qualities are supported by established <a href="GEN/DesignPrinciples.html" target="_blank" rel="noopener">software design principles</a> such as <strong><a href="GEN/SOLID.html" target="_blank" rel="noopener">SOLID</a>, DRY, KISS, YAGNI, GRASP</strong>, and <strong>composition over inheritance</strong>, along with proven <strong>design patterns</strong> that address recurring software design problems.</p>
+        <p>These qualities are supported by established <a href="GEN/DesignPrinciples.html" target="_blank" rel="noopener">software design principles</a> such as <strong><a href="GEN/SOLID.html" target="_blank" rel="noopener">SOLID</a>, DRY, KISS, YAGNI, GRASP</strong> and <strong>composition over inheritance</strong>, along with proven <strong>design patterns</strong> that address recurring software design problems.</p>
     </div>
 
     <div class="subheading">Primary Goal</div>
     <div class="intro stretch">
-        <p>The ultimate goal of software design is not to produce clever or highly abstract code, but to <strong>manage complexity</strong> and make software easier to understand, maintain, test, extend, and evolve.</p>
-        <p>A well-designed system accommodates <strong>changing requirements</strong> without requiring widespread modifications, minimizes the risk of <strong>unintended side effects</strong>, and allows developers to <strong>reason about individual components</strong> without understanding the entire codebase.</p>
-        <p><strong>In essence:</strong> Architecture establishes the system's <strong>structural foundation</strong>; software design transforms that foundation into a <strong>clear, maintainable, and executable implementation</strong>.</p>
+        <p>The ultimate goal of software design is not to produce clever or highly abstract code, but to <strong>manage complexity</strong> and make software easier to understand, maintain, test, extend and evolve.</p>
+        <p>A well-designed system accommodates <strong>changing requirements</strong> without requiring widespread modifications, minimizes the risk of <strong>unintended side effects</strong> and allows developers to <strong>reason about individual components</strong> without understanding the entire codebase.</p>
+        <p><strong>In essence:</strong> Architecture establishes the system's <strong>structural foundation</strong>; software design transforms that foundation into a <strong>clear, maintainable and executable implementation</strong>.</p>
     </div>
 
     <div class="section when-use">
         <div class="section-content"><ol class="kp-list">
             <li><span class="kp-label">Scope</span><span>Applies <strong>within a single component or service</strong>, after the architecture is set.</span></li>
             <li><span class="kp-label">Patterns</span><span>Chooses concrete <strong>design patterns</strong> (<a href="GEN/Strategy.html" target="_blank" rel="noopener">Strategy</a>, <a href="GEN/FactoryMethod.html" target="_blank" rel="noopener">Factory</a>, <a href="GEN/Observer.html" target="_blank" rel="noopener">Observer</a>, ...) to solve local problems.</span></li>
-            <li><span class="kp-label">Responsibilities</span><span>Defines class <strong>responsibilities, boundaries, and interactions</strong>.</span></li>
+            <li><span class="kp-label">Responsibilities</span><span>Defines class <strong>responsibilities, boundaries and interactions</strong>.</span></li>
             <li><span class="kp-label">Cohesion and Coupling</span><span>Aims for <strong>high cohesion and low coupling</strong> so parts can change independently.</span></li>
-            <li><span class="kp-label">Principles</span><span>Guided by <strong><a href="GEN/SOLID.html" target="_blank" rel="noopener">SOLID</a>, DRY, KISS, YAGNI</strong>, and separation of concerns.</span></li>
+            <li><span class="kp-label">Principles</span><span>Guided by <strong><a href="GEN/SOLID.html" target="_blank" rel="noopener">SOLID</a>, DRY, KISS, YAGNI</strong> and separation of concerns.</span></li>
             <li><span class="kp-label">Abstractions</span><span>Favors <strong>programming to <a href="GEN/Interface.html" target="_blank" rel="noopener">interfaces</a></strong> over concrete implementations.</span></li>
         </ol></div>
     </div>
@@ -181,7 +181,7 @@
     <div class="intro">
         <p>Object-oriented programming is a programming paradigm that organizes code around data, which are self-contained units that bundle data and functions together.
             Object-oriented programming uses concepts like <a href="GEN/Class.html" target="_blank" rel="noopener">classes</a> (templates for objects), encapsulation (bundling data and methods), inheritance (reusing properties from other classes),
-            and polymorphism (objects taking on many forms) to create modular, reusable, and maintainable code.</p> <br>
+            and polymorphism (objects taking on many forms) to create modular, reusable and maintainable code.</p> <br>
         <p>An object oriented program is basically a collection of objects and relationships among them and they communicate<br> or interact with each other using message passing.</p>
         <p>Four main concept of OOPs are abstraction, encapsulation, inheritance and polymorphism which help us to write modular, reusable, extensible and generic software system.</p>
     </div>
@@ -194,7 +194,7 @@
         </div>
         <div class="benefit-card">
             <div class="benefit-title"><a href="GEN/Encapsulation.html" target="_blank" rel="noopener">Encapsulation</a></div>
-            <p>Bundle data and the methods that operate on it inside a single unit, and restrict direct access to the internal state. Fields stay private and are reached only through controlled getters and setters, protecting an object's invariants.</p>
+            <p>Bundle data and the methods that operate on it inside a single unit and restrict direct access to the internal state. Fields stay private and are reached only through controlled getters and setters, protecting an object's invariants.</p>
         </div>
         <div class="benefit-card">
             <div class="benefit-title"><a href="GEN/Inheritance.html" target="_blank" rel="noopener">Inheritance</a></div>
@@ -235,7 +235,7 @@
 
     <div class="subheading">Object-Oriented Software Design Principles</div>
     <div class="intro">
-        <p>Object-Oriented Software Design (OOD) is the process of designing software using <strong>objects, classes, interfaces, relationships, and design principles</strong> to build systems that are maintainable, extensible, reusable, testable and flexible.</p>
+        <p>Object-Oriented Software Design (OOD) is the process of designing software using <strong>objects, classes, interfaces, relationships and design principles</strong> to build systems that are maintainable, extensible, reusable, testable and flexible.</p>
         <p>Following is a structured roadmap of the major topics, from foundational concepts to advanced object-oriented design.</p>
     </div>
 
@@ -308,7 +308,7 @@
                 <tr><td>Principle of Explicit Dependencies</td><td>Make component dependencies visible</td></tr>
                 <tr><td>Don't Repeat Abstractions Prematurely</td><td>Avoid creating unnecessary abstractions</td></tr>
                 <tr><td>Fail Fast</td><td>Detect and report invalid conditions early</td></tr>
-                <tr><td>Design by Contract</td><td>Define preconditions, postconditions, and invariants</td></tr>
+                <tr><td>Design by Contract</td><td>Define preconditions, postconditions and invariants</td></tr>
                 <tr><td>Orthogonality</td><td>Keep independent concerns independent</td></tr>
             </tbody>
         </table></div>
@@ -383,7 +383,7 @@
                 <tr><td>Use Case Modeling</td><td>Define interactions with the system</td></tr>
                 <tr><td>Object Identification</td><td>Discover domain objects and responsibilities</td></tr>
                 <tr><td>Responsibility Assignment</td><td>Decide which class performs which action</td></tr>
-                <tr><td>Class Diagram</td><td>Model classes, properties, methods, and relationships</td></tr>
+                <tr><td>Class Diagram</td><td>Model classes, properties, methods and relationships</td></tr>
                 <tr><td>Sequence Diagram</td><td>Model interactions over time</td></tr>
                 <tr><td>Activity Diagram</td><td>Model workflows</td></tr>
                 <tr><td>State Machine Diagram</td><td>Model states and transitions</td></tr>

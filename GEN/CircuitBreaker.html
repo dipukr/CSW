@@ -12,8 +12,8 @@
 
     <div class="intro">
         <p>The Circuit Breaker is a resilience pattern that wraps a call to a remote or otherwise unreliable dependency and watches how it behaves. When the dependency starts failing or slowing down, the breaker stops sending it traffic for a while &mdash; giving it room to recover and shielding the caller from the cost of waiting on a service that cannot answer.</p>
-        <p>The name comes from an electrical breaker: instead of letting a fault burn through the whole circuit, it <i>trips</i> and cuts the connection. In software the fault is a failing dependency, and the damage it prevents is a pile-up of blocked threads, exhausted connection pools, and timeouts that cascade upstream to every service that depends on the caller.</p>
-        <p>The breaker is a small state machine with three states. In <i>closed</i> it lets calls through and counts failures. Once failures cross a threshold it flips to <i>open</i> and rejects calls immediately, usually returning a cached value or a default fallback. After a cooldown it moves to <i>half-open</i> and allows a small number of trial calls: if they succeed it closes again, and<br> if they fail it re-opens and waits longer.</p>
+        <p>The name comes from an electrical breaker: instead of letting a fault burn through the whole circuit, it <i>trips</i> and cuts the connection. In software the fault is a failing dependency and the damage it prevents is a pile-up of blocked threads, exhausted connection pools and timeouts that cascade upstream to every service that depends on the caller.</p>
+        <p>The breaker is a small state machine with three states. In <i>closed</i> it lets calls through and counts failures. Once failures cross a threshold it flips to <i>open</i> and rejects calls immediately, usually returning a cached value or a default fallback. After a cooldown it moves to <i>half-open</i> and allows a small number of trial calls: if they succeed it closes again and<br> if they fail it re-opens and waits longer.</p>
         <p>Because it short-circuits instead of blocking, the caller gets an instant, predictable response even while the dependency is down &mdash; which is what keeps a single struggling service from dragging down the rest of the system.</p>
     </div>
 
@@ -40,10 +40,10 @@
             <table class="cmp-table">
                 <tbody>
                     <tr><td>Where to Use</td><td>Wrap it around calls that cross a boundary you don't control: remote HTTP/RPC, database or cache access, message brokers, or any dependency that can fail or slow down.</td></tr>
-                    <tr><td>What to Tune</td><td>Match three knobs to your traffic: the failure threshold that trips it, the retry timeout it stays open for, and what the fallback returns.</td></tr>
+                    <tr><td>What to Tune</td><td>Match three knobs to your traffic: the failure threshold that trips it, the retry timeout it stays open for and what the fallback returns.</td></tr>
                     <tr><td>Watch Slowness</td><td>Trigger on latency, not just errors; a slow dependency is often more dangerous than a failing one, so count timeouts as failures.</td></tr>
-                    <tr><td>Combine Patterns</td><td>Pair it with timeouts, retries with backoff, and bulkheads; the breaker decides <em>whether</em> to call, those decide <em>how</em> each call behaves.</td></tr>
-                    <tr><td>Per-Dependency and Metrics</td><td>Keep breaker state per dependency (often per instance), and expose its state and trip events as metrics so you can alert on them.</td></tr>
+                    <tr><td>Combine Patterns</td><td>Pair it with timeouts, retries with backoff and bulkheads; the breaker decides <em>whether</em> to call, those decide <em>how</em> each call behaves.</td></tr>
+                    <tr><td>Per-Dependency and Metrics</td><td>Keep breaker state per dependency (often per instance) and expose its state and trip events as metrics so you can alert on them.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -83,7 +83,7 @@
 
         <div class="pc-card con">
             <div class="pc-title">Hard to Tune</div>
-            <p>Thresholds, windows, and timeouts that are too sensitive cause needless trips, while lax ones let failures through; getting them right takes real traffic data.</p>
+            <p>Thresholds, windows and timeouts that are too sensitive cause needless trips, while lax ones let failures through; getting them right takes real traffic data.</p>
         </div>
         <div class="pc-card con">
             <div class="pc-title">Can Reject Good Calls</div>
@@ -91,11 +91,11 @@
         </div>
         <div class="pc-card con">
             <div class="pc-title">Fallback Complexity</div>
-            <p>A meaningful fallback (stale cache, default, degraded response) has to be designed, tested, and kept correct; a bad one can hide real problems.</p>
+            <p>A meaningful fallback (stale cache, default, degraded response) has to be designed, tested and kept correct; a bad one can hide real problems.</p>
         </div>
         <div class="pc-card con">
             <div class="pc-title">Added Moving Parts</div>
-            <p>It introduces extra state and a library/dependency that must be configured, monitored, and reasoned about during incidents.</p>
+            <p>It introduces extra state and a library/dependency that must be configured, monitored and reasoned about during incidents.</p>
         </div>
         <div class="pc-card con">
             <div class="pc-title">Distributed State</div>
@@ -296,7 +296,7 @@ resilience4j.circuitbreaker.instances.pricing.wait-duration-in-open-state=<span 
                 <code>@TimeLimiter</code> aborts any call that exceeds 2s, turning a silent hang into a fast, countable failure.<br><br>
                 <code>@Retry</code> re-attempts transient failures with exponential backoff (200ms, 400ms, 800ms) before giving up, so brief blips self-heal.<br><br>
                 <code>@CircuitBreaker</code> watches the outcomes; once the failure rate crosses 50% it trips open and short-circuits to <code>cachedPrice</code>.<br><br>
-                Order matters: the breaker sees the result of the retries, and <code>cachedPrice</code> runs when retries are exhausted or the breaker is open &mdash; the breaker decides <em>whether</em> to call, the others decide <em>how</em> each call behaves.</p>
+                Order matters: the breaker sees the result of the retries and <code>cachedPrice</code> runs when retries are exhausted or the breaker is open &mdash; the breaker decides <em>whether</em> to call, the others decide <em>how</em> each call behaves.</p>
             </div>
         </div>
     </div>

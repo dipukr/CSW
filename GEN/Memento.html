@@ -23,7 +23,7 @@
                 <li>When you need to produce snapshots of an object's state to restore later.</li>
                 <li>When you want undo/redo or rollback functionality.</li>
                 <li>When directly exposing an object's fields would break encapsulation.</li>
-                <li>Typical uses: text editors, transactions, game save points, and checkpoints.</li>
+                <li>Typical uses: text editors, transactions, game save points and checkpoints.</li>
             </ul>
         </div>
     </div>
@@ -40,7 +40,7 @@
         </div>
         <div class="pc-card pro">
             <div class="pc-title">Easy Undo and Redo</div>
-            <p>Undo, redo, and state restoration become straightforward to implement.</p>
+            <p>Undo, redo and state restoration become straightforward to implement.</p>
         </div>
         <div class="pc-card pro">
             <div class="pc-title">Simple Caretaker</div>
@@ -79,7 +79,7 @@
     <div class="subheading">What is the Memento Design Pattern?</div>
     <div class="intro">
         <p>The <strong>Memento Pattern</strong> is a behavioral design pattern that allows an object to capture and save its internal state at a particular point in time so that it can be restored to that state later, <strong>without exposing the object's internal implementation details</strong>.</p>
-        <p>It provides a way to implement functionality such as Undo, Redo, Save, Restore, Checkpoints, and Rollback while preserving encapsulation.</p>
+        <p>It provides a way to implement functionality such as Undo, Redo, Save, Restore, Checkpoints and Rollback while preserving encapsulation.</p>
         <p>The basic idea is:</p>
     </div>
     <div class="intro"><ol>
@@ -169,10 +169,10 @@
         <p class="minor-heading"><strong>Originator</strong></p>
         <p>The Originator is the actual object whose state is changing.</p>
         <p>For example, in a text editor, the <code>TextEditor</code> class is the Originator.</p>
-        <p>Its responsibilities include capturing its current state, creating a Memento containing that state, and restoring its internal fields using an existing Memento.</p>
+        <p>Its responsibilities include capturing its current state, creating a Memento containing that state and restoring its internal fields using an existing Memento.</p>
         <p class="minor-heading"><strong>Memento</strong></p>
         <p>A Memento is a snapshot of the Originator's internal state.</p>
-        <p>Ideally, a Memento should be immutable, and its internal fields should not be accessible to the Caretaker.</p>
+        <p>Ideally, a Memento should be immutable and its internal fields should not be accessible to the Caretaker.</p>
         <p>For example, a snapshot could contain:</p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">private</span> <span class="code-keyword">record</span> <span class="code-class">Snapshot</span>(<span class="code-class">String</span> text, <span class="code-keyword">int</span> cursorPosition) <span class="code-keyword">implements</span> <span class="code-class">Memento</span> {}</code></pre></div>
@@ -400,7 +400,7 @@ Hello Java</div>
         <li>Inventory: Sword</li>
     </ul></div>
     <div class="intro">
-        <p>Before entering a dangerous area, the game saves a checkpoint. The player then takes damage, collects additional items, and advances to the next level.</p>
+        <p>Before entering a dangerous area, the game saves a checkpoint. The player then takes damage, collects additional items and advances to the next level.</p>
         <p>If the player wants to restart from the checkpoint, the entire previous state should be restored.</p>
         <p class="minor-heading"><strong>Java implementation</strong></p>
     </div>
@@ -521,7 +521,7 @@ Inventory: [Sword]</code></pre></div>
     <div class="code-block"><pre><code>snapshot.text();           <span class="code-comment">Not accessible</span>
 snapshot.cursorPosition(); <span class="code-comment">Not accessible</span></code></pre></div>
     <div class="intro">
-        <p>Why? Because the public <code>Memento</code> interface exposes no operations, and <code>Snapshot</code> is private to <code>TextEditor</code>.</p>
+        <p>Why? Because the public <code>Memento</code> interface exposes no operations and <code>Snapshot</code> is private to <code>TextEditor</code>.</p>
         <p>Only <code>TextEditor</code> knows how to interpret its internal snapshot representation.</p>
         <p>This ensures that if the editor later adds new fields, such as text alignment, font properties, or selection information, the Caretaker does not need to change.</p>
     </div>
@@ -626,7 +626,7 @@ editor.restore(before); <span class="code-comment">Undo</span></code></pre></div
                 <tr><td>Restores an object from a snapshot</td><td>Reconstructs state by replaying events</td></tr>
                 <tr><td>Usually focused on local object restoration</td><td>Often used for business state history and auditability</td></tr>
                 <tr><td>Doesn't explain why state changed</td><td>Events describe what happened</td></tr>
-                <tr><td>Can support undo and checkpoints</td><td>Supports reconstruction, projections, and audit trails</td></tr>
+                <tr><td>Can support undo and checkpoints</td><td>Supports reconstruction, projections and audit trails</td></tr>
             </tbody>
         </table>
     </div></div>
@@ -666,7 +666,7 @@ MoneyWithdrawn(amount=30)</code></pre></div>
         <p class="minor-heading"><strong>Performance considerations</strong></p>
         <p>Suppose a document contains 10 MB of text and we save a complete snapshot after every keystroke.</p>
         <p>If we retain 100 snapshots, we could consume approximately 1 GB just for the saved text copies, depending on representation and sharing.</p>
-        <p>For large objects, possible optimizations include incremental snapshots, structural sharing, storing only changed portions, limiting undo history, and periodically consolidating old history.</p>
+        <p>For large objects, possible optimizations include incremental snapshots, structural sharing, storing only changed portions, limiting undo history and periodically consolidating old history.</p>
         <p>For example, a sophisticated text editor may use a persistent data structure or piece table instead of copying the complete document after every keystroke.</p>
     </div>
     <div class="callout callout-note"><p>The Memento Pattern does not require full copying; it requires that each saved state can be used to restore the intended earlier state correctly.</p></div>
@@ -675,7 +675,7 @@ MoneyWithdrawn(amount=30)</code></pre></div>
     <div class="intro"><ol>
         <li><strong>Prefer immutable snapshots.</strong> Once captured, the saved state should not change. Java records work well when their components are immutable or defensively copied.</li>
         <li><strong>Do not expose snapshot internals to the Caretaker.</strong> Use an opaque interface or another visibility mechanism that lets the Originator control state access.</li>
-        <li><strong>Capture all relevant state.</strong> If the editor stores content, cursor position, and formatting, restoring only content may result in inconsistent behavior.</li>
+        <li><strong>Capture all relevant state.</strong> If the editor stores content, cursor position and formatting, restoring only content may result in inconsistent behavior.</li>
         <li><strong>Manage history size.</strong> An unbounded undo stack can lead to excessive memory consumption. Use history limits or more efficient representations where necessary.</li>
         <li><strong>Treat multi-threaded access carefully.</strong> If several threads can modify an Originator, saving and restoring snapshots must be coordinated so that a snapshot represents a consistent state.</li>
         <li><strong>Distinguish in-memory undo from durable persistence.</strong> A Memento object held in memory disappears when the process terminates. For crash recovery, snapshots need durable storage and potentially schema-versioning support.</li>
@@ -684,7 +684,7 @@ MoneyWithdrawn(amount=30)</code></pre></div>
 
     <div class="subheading">When should you use the Memento Pattern?</div>
     <div class="intro">
-        <p>Memento is particularly suitable when an object's state must be restored later, the state is complicated, and external components should not manipulate its internal representation directly.</p>
+        <p>Memento is particularly suitable when an object's state must be restored later, the state is complicated and external components should not manipulate its internal representation directly.</p>
         <p>Common applications include:</p>
     </div>
     <div class="section cmp"><div class="section-content">
@@ -694,7 +694,7 @@ MoneyWithdrawn(amount=30)</code></pre></div>
                 <tr><td>Text editors and IDEs</td><td>Restore previous document states</td></tr>
                 <tr><td>Image editing software</td><td>Undo previous editing states</td></tr>
                 <tr><td>Video games</td><td>Save and restore checkpoints</td></tr>
-                <tr><td>Drawing applications</td><td>Restore shapes, positions, and styles</td></tr>
+                <tr><td>Drawing applications</td><td>Restore shapes, positions and styles</td></tr>
                 <tr><td>Multi-step forms</td><td>Preserve draft states or restore earlier input</td></tr>
                 <tr><td>Configuration editors</td><td>Revert to previously saved configuration</td></tr>
                 <tr><td>Simulations</td><td>Return to an earlier simulation state</td></tr>
@@ -711,7 +711,7 @@ MoneyWithdrawn(amount=30)</code></pre></div>
         <img src="../static/memento-summary.svg" alt="The Originator owns and saves its state into a Memento; the Caretaker stores the snapshots and restores a snapshot through the Originator" style="width:100%;max-width:760px">
     </div>
     <div class="intro">
-        <p>The Memento Design Pattern separates state ownership, state representation, and state history management into three responsibilities:</p>
+        <p>The Memento Design Pattern separates state ownership, state representation and state history management into three responsibilities:</p>
     </div>
     <div class="intro"><ul>
         <li><strong>Originator:</strong> Creates snapshots of its internal state and knows how to restore them.</li>
@@ -721,7 +721,7 @@ MoneyWithdrawn(amount=30)</code></pre></div>
     <div class="intro">
         <p>The most important concept is that the Caretaker does not need to understand the Originator's internal state.</p>
     </div>
-    <div class="callout callout-note"><p><strong>Remember:</strong> Memento is about restoring an earlier state, whereas Command is primarily about encapsulating an operation. Both can support undo/redo, and they can work together.</p></div>
+    <div class="callout callout-note"><p><strong>Remember:</strong> Memento is about restoring an earlier state, whereas Command is primarily about encapsulating an operation. Both can support undo/redo and they can work together.</p></div>
 
     <div class="section code-section">
         <div class="section-title">Code</div>

@@ -348,7 +348,7 @@ public interface ProductViewRepository
 <section id="commands">
   <h2>Command Side <span class="pill cmd">WRITE</span></h2>
   <p>Commands are immutable, intent-revealing records. Each has exactly one handler that loads the
-  aggregate, applies the change, persists it, and publishes a domain event.</p>
+  aggregate, applies the change, persists it and publishes a domain event.</p>
 
   <h3>Command definitions</h3>
   <span class="file">command/ProductCommands.java</span>
@@ -445,7 +445,7 @@ public class ProductNotFoundException extends RuntimeException {
 
 <section id="queries">
   <h2>Query Side <span class="pill qry">READ</span></h2>
-  <p>Queries return DTOs straight from the read model — no domain entities cross the boundary, and
+  <p>Queries return DTOs straight from the read model — no domain entities cross the boundary and
   there are no side effects. Note the <code>@Transactional(readOnly = true)</code>.</p>
 
   <h3>Query &amp; DTO definitions</h3>
@@ -713,7 +713,7 @@ public class CatalogApplication {
     <li><b>CQRS ≠ Event Sourcing.</b> They pair well but are independent. You can do CQRS with plain
         JPA, as shown here.</li>
     <li><b>For heavy lifting</b> consider the <code>Axon Framework</code>, which provides a command bus,
-        query bus, event store, and sagas out of the box.</li>
+        query bus, event store and sagas out of the box.</li>
   </ul>
 </section>
 

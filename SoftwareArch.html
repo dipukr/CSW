@@ -9,7 +9,392 @@
 <body>
 <div class="note plain-links">
     <div class="title">Software Architecture</div>
+    <div class="intro">
+        <p>Software Architecture is the high-level structure of a software system, including its major components, their responsibilities, their relationships and the fundamental decisions governing how the system operates and evolves.</p>
+        <p>Software Architecture defines how a software system is organized, how its components interact and how the system achieves qualities such as <strong>scalability, maintainability, performance, security and reliability</strong>.</p>
+        <p>For example, when designing an e-commerce application, architecture addresses questions such as:</p>
+        <ul>
+            <li>Should the application be a monolith or microservices?</li>
+            <li>Should business logic follow Layered or Hexagonal Architecture?</li>
+            <li>How should Order, Payment and Inventory components communicate?</li>
+            <li>Should communication be synchronous or asynchronous?</li>
+            <li>Should services share a database or own their data?</li>
+            <li>How should failures and distributed transactions be handled?</li>
+            <li>Which responsibilities should be isolated so the application can evolve?</li>
+        </ul>
+    </div>
 
+    <div class="subheading">Software Architecture Classification — The Big Picture</div>
+    <div class="intro">
+        <p>There is <strong>no single universally accepted classification</strong> of all software architectures. Different terms describe different dimensions of the same system.</p>
+        <p>The following is a practical classification rather than a rigid industry standard.</p>
+        <p class="minor-heading"><strong>Software Architecture Taxonomy</strong></p>
+        <p><strong>Software Architecture</strong>: multiple complementary classification dimensions.</p>
+    </div>
+    <div class="section when-use key-points">
+        <div class="section-content"><ol class="kp-list">
+            <li><span class="kp-label">Structural styles</span><span>How code and components are organized<br><em>Layered, Hexagonal, Microkernel</em></span></li>
+            <li><span class="kp-label">Service decomposition</span><span>How applications are divided<br><em>Monolith, Modular Monolith, SOA, Microservices</em></span></li>
+            <li><span class="kp-label">Distribution</span><span>Where and how components run<br><em>Centralized, Distributed, P2P</em></span></li>
+            <li><span class="kp-label">Communication</span><span>How components interact<br><em>Synchronous, Asynchronous, Event-Driven</em></span></li>
+            <li><span class="kp-label">Execution and deployment</span><span>How software is hosted<br><em>Server-based, Containers, Serverless, Edge</em></span></li>
+            <li><span class="kp-label">Architectural patterns</span><span>Reusable solutions to problems<br><em>Saga, CQRS, Outbox, API Gateway</em></span></li>
+            <li><span class="kp-label">Data architecture</span><span>How information is stored and processed<br><em>Centralized, Federated, Streaming, Event Sourcing</em></span></li>
+            <li><span class="kp-label">Architectural scope</span><span>Which level is being designed<br><em>Enterprise, Solution, Application, Infrastructure</em></span></li>
+        </ol></div>
+    </div>
+    <div class="intro">
+        <p>An important consequence is that a single application may simultaneously use:</p>
+        <p><strong>Microservices</strong> + <strong>Hexagonal</strong> + <strong>Event-Driven</strong> + <strong>Distributed</strong></p>
+        <p>For example, a Spring Boot e-commerce platform can consist of independently deployed microservices, each internally organized using Hexagonal Architecture, exchanging events through Kafka and running across multiple servers.</p>
+        <p>These classifications are <strong>not mutually exclusive</strong>.</p>
+    </div>
+
+    <div class="subheading">Major Software Architecture Styles</div>
+    <div class="intro">
+        <p>An <em>architecture style</em> describes a recurring way of organizing system elements, responsibilities, dependencies and interactions.</p>
+        <p class="minor-heading"><strong>Structural and application organization styles</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Architecture</th><th>Main idea</th><th>Typical use</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Layered (N-layer)</strong></td><td>Code is organized into logical layers</td><td>Enterprise CRUD applications</td></tr>
+                <tr><td><strong>N-tier</strong></td><td>Application parts are separated into physical or logical tiers</td><td>Traditional enterprise applications</td></tr>
+                <tr><td><strong>Hexagonal (Ports and Adapters)</strong></td><td>Domain logic is isolated from external technologies</td><td>Testable, domain-focused applications</td></tr>
+                <tr><td><strong>Clean Architecture</strong></td><td>Dependencies point toward business rules</td><td>Large applications with evolving requirements</td></tr>
+                <tr><td><strong>Onion Architecture</strong></td><td>Domain model at center, infrastructure outside</td><td>Domain-driven applications</td></tr>
+                <tr><td><strong>Microkernel / Plug-in</strong></td><td>Small core extended through plug-ins</td><td>IDEs, extensible platforms</td></tr>
+                <tr><td><strong>Pipe-and-Filter</strong></td><td>Data passes through independent processing stages</td><td>ETL, compilers, data pipelines</td></tr>
+                <tr><td><strong>MVC / MVVM</strong></td><td>Separates UI responsibilities</td><td>Web, desktop and mobile interfaces</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Layered Architecture Example — Spring Boot</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/softwarearch-layered.svg" alt="Four stacked layers, each pointing down to the next: Controller Layer (REST endpoints and HTTP handling), Service Layer (application and business operations), Repository Layer (database access), Database (persistent storage)" style="width:100%;max-width:360px">
+    </div>
+    <div class="intro">
+        <p><strong>Advantages:</strong> Simple organization, separation of concerns, familiar development model.</p>
+        <p><strong>Limitations:</strong> Business logic may become tightly coupled to framework and persistence details; changes can propagate across layers.</p>
+        <p>Layered Architecture describes logical dependencies. N-tier Architecture additionally emphasizes physical deployment boundaries, so the two terms should not always be treated as identical.</p>
+        <p class="minor-heading"><strong>Application decomposition and service styles</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Architecture</th><th>Main idea</th><th>Advantages</th><th>Challenges</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Monolithic</strong></td><td>Application deployed as one unit</td><td>Easy initial development and operations</td><td>Large deployments may become difficult</td></tr>
+                <tr><td><strong>Modular Monolith</strong></td><td>One deployment with strongly separated internal modules</td><td>Simpler operations, strong module boundaries</td><td>Modules can become coupled if boundaries are not enforced</td></tr>
+                <tr><td><strong>Client–Server</strong></td><td>Clients request capabilities from servers</td><td>Clear separation of clients and providers</td><td>Server dependency and network overhead</td></tr>
+                <tr><td><strong>Service-Oriented Architecture</strong></td><td>Business capabilities exposed as reusable services</td><td>Enterprise integration and reuse</td><td>Governance and integration complexity</td></tr>
+                <tr><td><strong>Microservices</strong></td><td>Independently deployable business services</td><td>Independent releases and scaling</td><td>Distributed transactions, operational overhead</td></tr>
+                <tr><td><strong>Service-based Architecture</strong></td><td>Coarser-grained services, sometimes with shared infrastructure or data</td><td>Pragmatic middle ground</td><td>Shared dependencies can limit autonomy</td></tr>
+            </tbody>
+        </table></div>
+        <p>Microservices are not simply a monolith split into multiple Spring Boot projects. Their key characteristics include business-oriented boundaries, independent deployment and ownership of service data.</p>
+        <p class="minor-heading"><strong>Communication and processing styles</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Architecture</th><th>Main idea</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Event-Driven</strong></td><td>Components react to published events</td><td>Kafka <code>OrderPlaced</code> event</td></tr>
+                <tr><td><strong>Message-Oriented</strong></td><td>Components exchange messages through middleware</td><td>RabbitMQ task processing</td></tr>
+                <tr><td><strong>Request–Response</strong></td><td>Requester expects a response from another component</td><td>REST/gRPC APIs</td></tr>
+                <tr><td><strong>Web-Queue-Worker</strong></td><td>Web application queues work for background workers</td><td>Video processing service</td></tr>
+                <tr><td><strong>Batch Processing</strong></td><td>Data is processed in bounded batches</td><td>Nightly report generation</td></tr>
+                <tr><td><strong>Stream Processing</strong></td><td>Continuous input is processed as it arrives</td><td>Real-time fraud analytics</td></tr>
+                <tr><td><strong>Reactive Architecture</strong></td><td>Non-blocking, asynchronous processing with attention to responsiveness and resilience</td><td>High-concurrency event processing</td></tr>
+            </tbody>
+        </table></div>
+        <p>A subtle distinction: <strong>asynchronous communication is a communication mechanism, while Event-Driven Architecture is a broader organizing style</strong>. An asynchronous task queue does not automatically make a system event-driven.</p>
+        <p class="minor-heading"><strong>Distributed and infrastructure-oriented styles</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Architecture</th><th>Main idea</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Centralized</strong></td><td>Primary processing controlled from a central system</td><td>Traditional application server</td></tr>
+                <tr><td><strong>Distributed</strong></td><td>Components execute on different networked nodes</td><td>Multi-node banking platform</td></tr>
+                <tr><td><strong>Peer-to-Peer (P2P)</strong></td><td>Nodes act as both clients and servers</td><td>BitTorrent</td></tr>
+                <tr><td><strong>Space-Based</strong></td><td>Processing and distributed in-memory data reduce central database bottlenecks</td><td>High-throughput transactional workloads</td></tr>
+                <tr><td><strong>Serverless</strong></td><td>Application executes on managed runtime services</td><td>AWS Lambda-based workflow</td></tr>
+                <tr><td><strong>Cloud-Native</strong></td><td>Built for automation, elasticity, resilience and managed/cloud platforms</td><td>Containerized applications on Kubernetes</td></tr>
+                <tr><td><strong>Edge Architecture</strong></td><td>Processing occurs nearer to devices or users</td><td>IoT gateways, edge inference</td></tr>
+                <tr><td><strong>High-Performance / Parallel</strong></td><td>Tasks divided across processors or compute nodes</td><td>Scientific simulations</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Where does Distributed Architecture belong?</strong></p>
+        <p>It is a major architectural classification describing the physical and runtime distribution of components.</p>
+        <ul>
+            <li>A monolith can run as multiple replicated instances across different machines.</li>
+            <li>Microservices usually form a distributed system.</li>
+            <li>Event-driven applications can be distributed or run within a single process.</li>
+            <li>Distributed Architecture is not synonymous with Microservices.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Software Architecture Patterns</div>
+    <div class="intro">
+        <p>A <strong>Software Architecture Pattern</strong> is a reusable solution to a recurring architectural problem.</p>
+        <p>There is some overlap between architecture styles and patterns in industry terminology. For example, Layered Architecture and Hexagonal Architecture may be called either a style or a pattern.</p>
+        <p>A useful working distinction:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Meaning</th><th>Examples</th></tr></thead>
+            <tbody>
+                <tr><td>Architecture style</td><td>Overall organization of a system</td><td>Layered, Microservices, Event-Driven</td></tr>
+                <tr><td>Architecture pattern</td><td>Reusable architectural solution</td><td>API Gateway, Saga, CQRS</td></tr>
+                <tr><td>Design pattern</td><td>Reusable solution to a code-level design problem</td><td>Strategy, Observer, Factory</td></tr>
+                <tr><td>Architecture principle</td><td>Rule guiding architectural decisions</td><td>Loose coupling, high cohesion</td></tr>
+                <tr><td>Architecture framework</td><td>Structured guidance for architecture work</td><td>TOGAF</td></tr>
+                <tr><td>Modeling approach</td><td>Method to describe architecture</td><td>C4 Model, UML</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Major Architectural Patterns by Category</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Application structure patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>MVC / MVVM</td><td>Separate interface responsibilities</td></tr>
+                <tr><td>Hexagonal</td><td>Separate business logic from external adapters</td></tr>
+                <tr><td>Backend for Frontend (BFF)</td><td>Dedicated backend for each client experience</td></tr>
+                <tr><td>API Gateway</td><td>Centralize API entry and routing</td></tr>
+                <tr><td>Strangler Fig</td><td>Incrementally replace legacy applications</td></tr>
+                <tr><td>Anti-Corruption Layer</td><td>Protect domain models from external or legacy models</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Distributed transaction and data patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Saga</td><td>Coordinate a multi-service business txn using local transactions and compensations</td></tr>
+                <tr><td>CQRS</td><td>Separate command/write models from query/read models</td></tr>
+                <tr><td>Event Sourcing</td><td>Store state-changing events as the authoritative history</td></tr>
+                <tr><td>Transactional Outbox</td><td>Reliably coordinate database changes with event publication</td></tr>
+                <tr><td>Database Per Service</td><td>Maintain service-level data ownership</td></tr>
+                <tr><td>Change Data Capture (CDC)</td><td>Propagate database changes to downstream systems</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Communication and integration patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Publish–Subscribe</td><td>Distribute events to interested consumers</td></tr>
+                <tr><td>Request–Reply</td><td>Obtain a response to a request, synchronously or asynchronously</td></tr>
+                <tr><td>Competing Consumers</td><td>Distribute queue work across multiple workers</td></tr>
+                <tr><td>Scatter–Gather</td><td>Query multiple systems and aggregate responses</td></tr>
+                <tr><td>Choreography</td><td>Coordinate processes through events without a central coordinator</td></tr>
+                <tr><td>Orchestration</td><td>Coordinate a workflow using an explicit controller</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Reliability and resilience patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Circuit Breaker</td><td>Stop repeatedly calling an unhealthy dependency</td></tr>
+                <tr><td>Bulkhead</td><td>Isolate failures and resource exhaustion</td></tr>
+                <tr><td>Retry with Backoff</td><td>Recover from transient failures</td></tr>
+                <tr><td>Timeout</td><td>Limit waiting for slow dependencies</td></tr>
+                <tr><td>Rate Limiting</td><td>Protect services from excessive traffic</td></tr>
+                <tr><td>Idempotent Consumer</td><td>Handle duplicate message deliveries safely</td></tr>
+                <tr><td>Dead Letter Queue</td><td>Isolate messages that cannot be processed</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Data and performance patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Cache-Aside</td><td>Load missing cache entries from persistent storage</td></tr>
+                <tr><td>Read-Through / Write-Through</td><td>Coordinate cache access with data storage</td></tr>
+                <tr><td>Sharding</td><td>Partition data across database nodes</td></tr>
+                <tr><td>Replication</td><td>Maintain copies for availability or read scaling</td></tr>
+                <tr><td>Materialized View</td><td>Precompute views for efficient queries</td></tr>
+                <tr><td>Eventual Consistency</td><td>Allow distributed copies to converge asynchronously</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Deployment and infrastructure patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Sidecar</td><td>Run supporting functionality beside an application</td></tr>
+                <tr><td>Blue–Green Deployment</td><td>Switch traffic between two environments</td></tr>
+                <tr><td>Canary Deployment</td><td>Gradually release changes to a traffic subset</td></tr>
+                <tr><td>Rolling Deployment</td><td>Update instances incrementally</td></tr>
+                <tr><td>Leader Election</td><td>Select a coordinator among distributed nodes</td></tr>
+            </tbody>
+        </table></div>
+        <p>These patterns are extensively used in cloud and distributed systems. AWS's Prescriptive Guidance covers many of them, including Saga, Transactional Outbox, Circuit Breaker, Hexagonal Architecture and Strangler Fig.</p>
+    </div>
+
+    <div class="subheading">Software Architecture vs System Design</div>
+    <div class="intro">
+        <p>This is the most important distinction.</p>
+    </div>
+    <div class="benefit-grid benefit-grid-2x2 benefit-grid-spaced">
+        <div class="benefit-card">
+            <div class="benefit-title">Software Architecture</div>
+            <p>Defines the fundamental organization and architectural decisions of a software solution.</p>
+            <p><strong>Primary question</strong><br>How should the software be structured to achieve its requirements and quality goals?</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-title">System Design</div>
+            <p>Designs how an entire system is built and operated to meet functional and nonfunctional requirements.</p>
+            <p><strong>Primary question</strong><br>How will the complete system work and meet its functional and operational targets?</p>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Detailed comparison</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Aspect</th><th>Software Architecture</th><th>System Design</th></tr></thead>
+            <tbody>
+                <tr><td>Primary focus</td><td>Fundamental software structures and decisions</td><td>Complete system design</td></tr>
+                <tr><td>Main concern</td><td>Components, boundaries, dependencies, evolution</td><td>Functionality, capacity, data flow, performance, operations</td></tr>
+                <tr><td>Scope</td><td>Software architecture across relevant views</td><td>End-to-end system, including software and infrastructure</td></tr>
+                <tr><td>Architecture style</td><td>Major consideration</td><td>Used as part of the solution</td></tr>
+                <tr><td>Components</td><td>Defines responsibilities and interfaces</td><td>Selects, configures and connects concrete components</td></tr>
+                <tr><td>Database</td><td>Defines ownership and data interaction boundaries</td><td>Designs schemas, indexes, partitioning, replication and capacity</td></tr>
+                <tr><td>Communication</td><td>Determines interaction principles and protocols</td><td>Defines API contracts, message flows, timeouts and throughput</td></tr>
+                <tr><td>Scalability</td><td>Defines scalability strategy and constraints</td><td>Designs and sizes the scaling mechanisms</td></tr>
+                <tr><td>Reliability</td><td>Defines fault boundaries and resilience principles</td><td>Designs failure handling, recovery, redundancy and monitoring</td></tr>
+                <tr><td>Infrastructure</td><td>Defines deployment constraints and topology</td><td>Specifies infrastructure and operational configurations</td></tr>
+                <tr><td>Typical artifacts</td><td>Architecture diagrams, viewpoints, ADRs</td><td>HLD, LLD, data models, sequence diagrams, capacity estimates</td></tr>
+                <tr><td>Main output</td><td>Architectural blueprint and rationale</td><td>Implementable system design</td></tr>
+            </tbody>
+        </table></div>
+        <p>These are differences in emphasis, <strong>not exclusive responsibilities</strong>. Software architects often make database, infrastructure and capacity decisions, while system designers make architectural decisions.</p>
+        <p>Architecture and HL System Design are frequently used almost interchangeably in software engineering interviews.</p>
+    </div>
+
+    <div class="subheading">Their Relationship</div>
+    <div class="intro">
+        <p>A practical way to organize the work is:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/softwarearch-relationship.svg" alt="Four stages from top to bottom: Business and technical requirements (features, users, scale, security, availability, constraints); Software Architecture Decisions (component boundaries, architectural styles, dependencies and interfaces, quality attribute strategies); System Design (API and data design, scaling and capacity, infrastructure topology, failure and recovery flows); Detailed Design and Implementation (classes, methods, SQL, configuration, tests, deployment)" style="width:100%;max-width:480px">
+    </div>
+    <div class="subheading">Real-World Example: E-Commerce System</div>
+    <div class="intro">
+        <p>Suppose you are building an e-commerce platform using <strong>Java, Spring Boot, PostgreSQL, Redis and Kafka</strong>.</p>
+        <p>Assume the requirements include 2,000 requests/second at peak, 99.95% monthly availability and p95 read latency below 300 ms. These are hypothetical design targets.</p>
+        <p class="minor-heading"><strong>Step 1 — Software Architecture decisions</strong></p>
+        <p>An architect might select:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Decision</th><th>Selected approach</th><th>Why</th></tr></thead>
+            <tbody>
+                <tr><td>Application decomposition</td><td>Microservices</td><td>Independently evolving business capabilities</td></tr>
+                <tr><td>Internal service architecture</td><td>Hexagonal</td><td>Isolate domain logic from infrastructure</td></tr>
+                <tr><td>Communication</td><td>REST + Kafka</td><td>Combine synchronous queries with asynchronous events</td></tr>
+                <tr><td>Data ownership</td><td>Database per service</td><td>Maintain boundaries and autonomy</td></tr>
+                <tr><td>Cross-service transactions</td><td>Saga</td><td>Coordinate distributed business workflows</td></tr>
+                <tr><td>Event publication</td><td>Transactional Outbox</td><td>Avoid losing events after database commits</td></tr>
+                <tr><td>Data access models</td><td>CQRS where justified</td><td>Optimize read and write workloads separately</td></tr>
+                <tr><td>External access</td><td>API Gateway</td><td>Route APIs and enforce common controls</td></tr>
+            </tbody>
+        </table></div>
+        <p>These are architectural choices. No server counts, replica settings, or exact database indexes have been determined yet.</p>
+        <p class="minor-heading"><strong>Step 2 — System Design elaboration</strong></p>
+        <p><strong>E-Commerce System — High-Level Design</strong>: illustrative service boundaries and request/event paths.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/softwarearch-ecommerce-hld.svg" alt="Web and mobile clients call a load balancer and API gateway, which routes to Catalog, Order and Payment Spring Boot services, each with its own database. The services publish events to a Kafka event bus through a transactional outbox and relay and an Inventory consumer and a Notification consumer read from it" style="width:100%;max-width:600px">
+    </div>
+    <div class="intro">
+        <p>Simplified conceptual diagram. Actual designs also specify authentication, inventory data ownership, service-to-service calls, failure flows and observability.</p>
+        <p>The system designer now determines the operational details.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Area</th><th>System Design decisions</th></tr></thead>
+            <tbody>
+                <tr><td>Load balancing</td><td>How traffic is distributed between application replicas</td></tr>
+                <tr><td>Caching</td><td>Redis cache keys, TTL, invalidation and cache-stampede protection</td></tr>
+                <tr><td>Database</td><td>Tables, indexes, connection pools, replicas and partitioning</td></tr>
+                <tr><td>Kafka</td><td>Topic partition counts, consumer groups, retry topics, delivery guarantees</td></tr>
+                <tr><td>Performance</td><td>Throughput budgets, p95/p99 latency targets and load testing</td></tr>
+                <tr><td>Reliability</td><td>Health checks, retries, circuit breakers, recovery objectives</td></tr>
+                <tr><td>Security</td><td>JWT validation, OAuth2/OIDC, service authorization, encryption</td></tr>
+                <tr><td>Monitoring</td><td>Logs, distributed traces, metrics, alerts and dashboards</td></tr>
+                <tr><td>Deployment</td><td>Containers, cluster sizing, autoscaling, rollout strategy</td></tr>
+            </tbody>
+        </table></div>
+        <p>The architecture defines the fundamental boundaries and strategies. System Design turns those choices and requirements into an implementable end-to-end solution.</p>
+    </div>
+    <div class="intro">
+        <p>This is an example of Hexagonal Architecture implemented inside a Spring Boot microservice.</p>
+        <p>Notice the different levels:</p>
+        <ul>
+            <li><strong>Software Architecture</strong><br>Use Microservices and Hexagonal Architecture.</li>
+            <li><strong>System Design</strong><br>Define service interactions, persistence, transactions, resource sizing and deployment.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">HLD vs LLD vs Software Architecture</div>
+    <div class="intro">
+        <p>These concepts are closely connected.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Category</th><th>HLD (High-Level Design)</th><th>LLD (Low-Level Design)</th></tr></thead>
+            <tbody>
+                <tr><td>Abstraction</td><td>System components and interactions</td><td>Internal class and module details</td></tr>
+                <tr><td>Main questions</td><td>What are the major parts and how do they communicate?</td><td>How exactly are the parts implemented?</td></tr>
+                <tr><td>Architecture styles</td><td>Central concern</td><td>Applied within components</td></tr>
+                <tr><td>Diagrams</td><td>Architecture, C4, deployment, sequence</td><td>UML class, state and detailed sequence</td></tr>
+                <tr><td>Database</td><td>Storage strategy and ownership</td><td>Tables, constraints, queries and indexes</td></tr>
+                <tr><td>Algorithms</td><td>Selection of major approaches</td><td>Detailed implementation</td></tr>
+                <tr><td>Examples</td><td>API Gateway, Kafka, service decomposition</td><td>Java classes, interfaces, repository methods</td></tr>
+            </tbody>
+        </table></div>
+        <p>Software Architecture heavily overlaps HLD, while LLD elaborates architecture into implementable designs. The exact division depends on the organization.</p>
+        <p class="minor-heading"><strong>Common documentation approaches</strong></p>
+        <p>The C4 Model is especially useful for documenting these levels.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>C4 Level</th><th>Shows</th></tr></thead>
+            <tbody>
+                <tr><td>Level 1 — System Context</td><td>Users, external systems, system boundary</td></tr>
+                <tr><td>Level 2 — Containers</td><td>Applications, services, databases and communication</td></tr>
+                <tr><td>Level 3 — Components</td><td>Internals of an application or service</td></tr>
+                <tr><td>Level 4 — Code</td><td>Classes and implementation details</td></tr>
+            </tbody>
+        </table></div>
+        <p>Other useful documentation includes Architecture Decision Records (ADRs), sequence diagrams, deployment diagrams, data-flow diagrams and quality-attribute scenarios.</p>
+    </div>
+
+    <div class="subheading">Choosing an Architecture: Practical Guidance</div>
+    <div class="intro">
+        <p>Architecture should be driven by requirements, constraints and trade-offs rather than popularity.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Scenario</th><th>Reasonable starting point</th><th>Important consideration</th></tr></thead>
+            <tbody>
+                <tr><td>Small CRUD application</td><td>Layered Monolith</td><td>Keep implementation simple</td></tr>
+                <tr><td>Medium business application</td><td>Modular Monolith</td><td>Enforce strong module boundaries</td></tr>
+                <tr><td>Large system with independently evolving domains</td><td>Microservices</td><td>Requires mature operations</td></tr>
+                <tr><td>Complex domain rules</td><td>Hexagonal / Clean + DDD</td><td>Focus on domain boundaries</td></tr>
+                <tr><td>High-volume asynchronous processing</td><td>Event-Driven / Queue-Worker</td><td>Handle duplicates, ordering and failures</td></tr>
+                <tr><td>Streaming analytics</td><td>Stream Processing Architecture</td><td>Plan state, replay and processing guarantees</td></tr>
+                <tr><td>Enterprise application integration</td><td>SOA / API-based integration</td><td>Governance and interoperability</td></tr>
+                <tr><td>Extensible software platform</td><td>Microkernel</td><td>Stable plug-in contracts</td></tr>
+                <tr><td>Event audit and replay requirements</td><td>Event Sourcing, where justified</td><td>Event schema evolution and operational complexity</td></tr>
+                <tr><td>Globally distributed workload</td><td>Distributed, replicated, geo-aware architecture</td><td>Consistency, latency and failure trade-offs</td></tr>
+            </tbody>
+        </table></div>
+        <p>Before choosing an architecture, evaluate five areas:</p>
+        <ol>
+            <li><strong>Business and domain complexity</strong><br>How many distinct capabilities and teams exist?</li>
+            <li><strong>Quality attributes</strong><br>What availability, latency, scalability, security and maintainability are required?</li>
+            <li><strong>Operational maturity</strong><br>Can the team support distributed tracing, deployment automation and incident response?</li>
+            <li><strong>Data consistency</strong><br>Where are ACID transactions necessary and where is asynchronous convergence acceptable?</li>
+            <li><strong>Cost and future changes</strong><br>What complexity is justified now versus later?</li>
+        </ol>
+        <p>Microsoft's architecture guidance similarly emphasizes choosing architectural styles based on workload characteristics, expected change frequency and the organization's operational capabilities.</p>
+    </div>
+
+    <div class="subheading">Key Takeaways</div>
+    <div class="intro">
+        <ul>
+            <li><strong>Software Architecture</strong> defines fundamental software structures, boundaries, relationships and architectural decisions.</li>
+            <li><strong>System Design</strong> develops the complete solution, including architecture, interfaces, data, infrastructure, scalability and operational behavior.</li>
+            <li><strong>Software Design</strong> is the broader activity of designing software at multiple abstraction levels, including detailed implementation.</li>
+            <li><strong>Architecture styles</strong> describe overall structural or interaction approaches.</li>
+            <li><strong>Architectural patterns</strong> provide reusable solutions to recurring architectural problems.</li>
+            <li><strong>Architecture principles</strong> guide decisions, while frameworks and modeling approaches help document or govern them.</li>
+            <li><strong>Distributed Architecture, Microservices, Event-Driven Architecture and Hexagonal Architecture can coexist</strong> because they address different dimensions.</li>
+        </ul>
+        <p><strong>Software Architecture focuses on the fundamental structural and behavioral choices of a software system.<br> System Design develops those choices into a complete, workable system that satisfies its requirements.</strong></p>
+        <p>Both are essential and in real software engineering they are deeply intertwined.</p>
+    </div>
 </div>
 </body>
 </html>

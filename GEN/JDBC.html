@@ -31,13 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div class="intro">
         <p>Core Java • SQL • JDBC 4.5 • Database Connections • Transactions • Performance • Spring Boot</p>
-        <p><strong>JDBC (Java Database Connectivity)</strong> is the standard Java API used to connect to databases, execute SQL statements, retrieve and manipulate data, manage transactions, and interact with database-specific functionality through a common programming interface.</p>
-        <p>This guide covers JDBC from beginner to advanced level, including the major interfaces, classes, methods, and practical Java implementations.</p>
+        <p><strong>JDBC (Java Database Connectivity)</strong> is the standard Java API used to connect to databases, execute SQL statements, retrieve and manipulate data, manage transactions and interact with database-specific functionality through a common programming interface.</p>
+        <p>This guide covers JDBC from beginner to advanced level, including the major interfaces, classes, methods and practical Java implementations.</p>
     </div>
 
     <div class="subheading">1. What is JDBC?</div>
     <div class="intro">
-        <p>JDBC defines a standard set of interfaces and classes that allow a Java application to communicate with relational databases such as PostgreSQL, MySQL, Oracle, SQL Server, and H2.</p>
+        <p>JDBC defines a standard set of interfaces and classes that allow a Java application to communicate with relational databases such as PostgreSQL, MySQL, Oracle, SQL Server and H2.</p>
         <p>Instead of writing database-specific networking code, applications interact with JDBC APIs. A database-specific <strong>JDBC Driver</strong> implements those APIs and translates the application&rsquo;s operations into the database&rsquo;s communication protocol.</p>
     </div>
     <div class="svg-diagram">
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     </div>
     <div class="intro">
-        <p>The database-specific driver provides the implementations behind <code>Connection</code>, <code>PreparedStatement</code>, and <code>ResultSet</code>.</p>
+        <p>The database-specific driver provides the implementations behind <code>Connection</code>, <code>PreparedStatement</code> and <code>ResultSet</code>.</p>
         <p><strong>Important:</strong> JDBC standardizes database access, but it does not make all SQL dialects, database features, or data types identical.</p>
     </div>
 
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <tr><td><code>javax.transaction.xa</code></td><td>XA distributed transaction interfaces</td></tr>
             </tbody>
         </table></div>
-        <p>The Java module system contains <code>java.sql</code>, <code>java.sql.rowset</code>, and <code>java.transaction.xa</code>.</p>
+        <p>The Java module system contains <code>java.sql</code>, <code>java.sql.rowset</code> and <code>java.transaction.xa</code>.</p>
         <p>As of Java 27 (September 2026), the JDBC specification exposed by Java SE is JDBC 4.5. Its recent additions include <code>JSON</code> and <code>DECFLOAT</code> SQL type constants and <code>AutoCloseable</code> support for SQL LOB and related objects. Individual drivers may support different subsets of the specification.</p>
         <p class="minor-heading"><strong>Main JDBC API hierarchy</strong></p>
     </div>
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <li><code>Connection.prepareStatement()</code> — create an SQL command.</li>
             <li><code>PreparedStatement.executeQuery()</code> — execute the query and return a <code>ResultSet</code>.</li>
         </ol>
-        <p><code>ResultSet.next()</code> moves the cursor forward, and the getter methods retrieve values from its current row.</p>
+        <p><code>ResultSet.next()</code> moves the cursor forward and the getter methods retrieve values from its current row.</p>
         <p>For financial values such as salaries, use <code>BigDecimal</code> rather than <code>double</code> in production code to preserve decimal precision.</p>
     </div>
 
@@ -318,7 +318,7 @@ com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre>
                 <tr><td>H2 memory</td><td><code>jdbc:h2:mem:testdb</code></td></tr>
             </tbody>
         </table></div>
-        <p>These are illustrative connection strings. Production deployments require the appropriate authentication, TLS, and driver configuration.</p>
+        <p>These are illustrative connection strings. Production deployments require the appropriate authentication, TLS and driver configuration.</p>
     </div>
 
     <div class="subheading">6. <code>Connection</code> interface — complete explanation</div>
@@ -381,7 +381,7 @@ com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre>
                 <tr><td><code>setTypeMap(map)</code></td><td>Sets custom type mappings</td></tr>
             </tbody>
         </table></div>
-        <p>Additional APIs include <code>beginRequest()</code>, <code>endRequest()</code>, sharding-key methods, and identifier-quoting methods.</p>
+        <p>Additional APIs include <code>beginRequest()</code>, <code>endRequest()</code>, sharding-key methods and identifier-quoting methods.</p>
         <p class="minor-heading"><strong>6.2 Example: configuring a connection</strong></p>
     </div>
     <div class="section code-section">
@@ -413,7 +413,7 @@ com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre>
     </div>
     <div class="intro">
         <p>Because <code>Connection</code> implements <code>AutoCloseable</code>, Java closes it when the scope ends, even when an exception is thrown.</p>
-        <p>The same applies to <code>Statement</code>, <code>PreparedStatement</code>, and <code>ResultSet</code>.</p>
+        <p>The same applies to <code>Statement</code>, <code>PreparedStatement</code> and <code>ResultSet</code>.</p>
         <p>Always keep resource ownership clear. Do not close a framework-managed connection behind Spring&rsquo;s transaction manager.</p>
     </div>
 
@@ -576,7 +576,7 @@ ps.setBigDecimal(<span class="code-number">2</span>, <span class="code-keyword">
     </div>
     <div class="intro">
         <p>Parameter numbering starts at <strong>1</strong>, not 0.</p>
-        <p>The driver binds the parameters with their SQL values and types. Depending on the driver, database, and configuration, the statement may be prepared on the server, on the client, or through a combination of both. Preparation does not universally guarantee server-side execution-plan reuse.</p>
+        <p>The driver binds the parameters with their SQL values and types. Depending on the driver, database and configuration, the statement may be prepared on the server, on the client, or through a combination of both. Preparation does not universally guarantee server-side execution-plan reuse.</p>
         <p class="minor-heading"><strong>8.2 Important <code>PreparedStatement</code> methods</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Method</th><th>Purpose</th></tr></thead>
@@ -779,7 +779,7 @@ ps.setBigDecimal(<span class="code-number">2</span>, <span class="code-keyword">
         </div>
     </div>
     <div class="intro">
-        <p>PostgreSQL functions, PostgreSQL procedures, SQL Server procedures, and Oracle stored routines have different invocation rules. Use the syntax and driver configuration appropriate to your database.</p>
+        <p>PostgreSQL functions, PostgreSQL procedures, SQL Server procedures and Oracle stored routines have different invocation rules. Use the syntax and driver configuration appropriate to your database.</p>
     </div>
 
     <div class="subheading">10. <code>ResultSet</code> interface — complete explanation</div>
@@ -993,7 +993,7 @@ rs.refreshRow();</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>Whether a query produces an updatable ResultSet depends on driver support and query structure. Complex joins, aggregations, and some projections may not be updatable.</p>
+        <p>Whether a query produces an updatable ResultSet depends on driver support and query structure. Complex joins, aggregations and some projections may not be updatable.</p>
         <p>For typical application CRUD, explicit SQL through <code>PreparedStatement</code> is easier to reason about.</p>
         <p class="minor-heading"><strong>10.7 ResultSet holdability</strong></p>
         <p>These constants control cursor behavior across commits:</p>
@@ -1044,7 +1044,7 @@ rs.refreshRow();</code></pre>
                 <tr><td><code>XML</code></td><td><code>SQLXML</code></td></tr>
             </tbody>
         </table></div>
-        <p>Driver and database conversions may vary, particularly for timezone, JSON, UUID, and vendor-specific types.</p>
+        <p>Driver and database conversions may vary, particularly for timezone, JSON, UUID and vendor-specific types.</p>
         <p class="minor-heading"><strong>11.2 <code>java.sql.Types</code> vs <code>java.sql.JDBCType</code></strong></p>
         <p><code>Types</code> provides integer constants representing standard JDBC SQL types.</p>
     </div>
@@ -1076,7 +1076,7 @@ rs.refreshRow();</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>Java 26 introduced <code>Types.JSON</code>, <code>Types.DECFLOAT</code>, <code>JDBCType.JSON</code>, and <code>JDBCType.DECFLOAT</code>. Their availability in a specific driver is a separate question. Oracle</p>
+        <p>Java 26 introduced <code>Types.JSON</code>, <code>Types.DECFLOAT</code>, <code>JDBCType.JSON</code> and <code>JDBCType.DECFLOAT</code>. Their availability in a specific driver is a separate question. Oracle</p>
         <p class="minor-heading"><strong>11.3 Modern Java date/time mapping</strong></p>
         <p>Prefer <code>java.time</code> APIs in modern applications.</p>
     </div>
@@ -1336,7 +1336,7 @@ con.rollback(); <span class="code-comment">Undo transaction</span></code></pre>
     </div>
     <div class="intro">
         <p>The conditional debit prevents a negative balance even when multiple transactions compete to debit the same account, assuming the database enforces the update atomically.</p>
-        <p>For a production transfer service, additionally consider deadlock retries, fixed currency scales, idempotency keys, transfer records, reconciliation, authorization, and a consistent account-locking order.</p>
+        <p>For a production transfer service, additionally consider deadlock retries, fixed currency scales, idempotency keys, transfer records, reconciliation, authorization and a consistent account-locking order.</p>
         <p class="minor-heading"><strong>13.4 Transaction isolation levels</strong></p>
         <p>JDBC defines these isolation constants:</p>
     </div>
@@ -1407,7 +1407,7 @@ con.releaseSavepoint(named);</code></pre>
 
     <div class="subheading">14. JDBC metadata APIs</div>
     <div class="intro">
-        <p>JDBC metadata APIs allow applications to inspect the database, query structure, and statement parameters dynamically.</p>
+        <p>JDBC metadata APIs allow applications to inspect the database, query structure and statement parameters dynamically.</p>
         <p>There are three key interfaces.</p>
         <p class="minor-heading"><strong>14.1 <code>DatabaseMetaData</code></strong></p>
         <p>Package: <code>java.sql.DatabaseMetaData</code></p>
@@ -1465,7 +1465,7 @@ con.releaseSavepoint(named);</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>This is useful for database explorers, schema migration tools, query generators, and database introspection utilities.</p>
+        <p>This is useful for database explorers, schema migration tools, query generators and database introspection utilities.</p>
         <p class="minor-heading"><strong>14.2 <code>ResultSetMetaData</code></strong></p>
         <p>Package: <code>java.sql.ResultSetMetaData</code></p>
         <p>Provides information about the columns returned by a query.</p>
@@ -1646,7 +1646,7 @@ isSigned(index)</code></pre>
         <p class="minor-heading"><strong>15.4 Retry handling</strong></p>
         <p>Some failures, such as serialization conflicts or deadlocks, may be recoverable by retrying an entire transaction.</p>
         <p>Do not simply retry every <code>SQLException</code>.</p>
-        <p>Retries must account for whether the previous transaction committed, whether the operation is idempotent, and whether external side effects have already happened. For transient contention, bounded retries with backoff are common.</p>
+        <p>Retries must account for whether the previous transaction committed, whether the operation is idempotent and whether external side effects have already happened. For transient contention, bounded retries with backoff are common.</p>
         <p class="minor-heading"><strong>15.5 <code>SQLWarning</code></strong></p>
         <p>Warnings are nonfatal diagnostics.</p>
     </div>
@@ -1678,7 +1678,7 @@ con.clearWarnings();</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>Additional inherited or related APIs provide login timeouts, logging, connection builders, and driver-specific access.</p>
+        <p>Additional inherited or related APIs provide login timeouts, logging, connection builders and driver-specific access.</p>
         <p>Application code:</p>
     </div>
     <div class="section code-section">
@@ -1769,7 +1769,7 @@ con.clearWarnings();</code></pre>
                 <tr><td><code>CommonDataSource</code></td><td>Common data-source configuration interface</td></tr>
             </tbody>
         </table></div>
-        <p>These are mainly used by drivers, pools, containers, and transaction managers. Most application developers work directly with the <code>DataSource</code> interface.</p>
+        <p>These are mainly used by drivers, pools, containers and transaction managers. Most application developers work directly with the <code>DataSource</code> interface.</p>
         <p class="minor-heading"><strong>16.5 JDBC connection lifecycle</strong></p>
         <p>An application usually acquires and releases a logical connection:</p>
     </div>
@@ -1794,7 +1794,7 @@ setCatalog(...)</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>Pools commonly restore standard JDBC properties when connections are returned, but application-managed session changes, temporary tables, vendor variables, and uncommitted transactions require careful handling.</p>
+        <p>Pools commonly restore standard JDBC properties when connections are returned, but application-managed session changes, temporary tables, vendor variables and uncommitted transactions require careful handling.</p>
     </div>
 
     <div class="subheading">17. Advanced JDBC APIs</div>
@@ -1867,7 +1867,7 @@ clob.free();</code></pre>
     </div>
     <div class="intro">
         <p><code>NClob</code> represents national-character-set large objects.</p>
-        <p>As of JDBC 4.5, <code>Blob</code>, <code>Clob</code>, <code>NClob</code>, <code>Array</code>, and <code>SQLXML</code> implement <code>AutoCloseable</code> with <code>close()</code> delegating to <code>free()</code>. This enables try-with-resources on Java 26+, subject to driver support. Oracle</p>
+        <p>As of JDBC 4.5, <code>Blob</code>, <code>Clob</code>, <code>NClob</code>, <code>Array</code> and <code>SQLXML</code> implement <code>AutoCloseable</code> with <code>close()</code> delegating to <code>free()</code>. This enables try-with-resources on Java 26+, subject to driver support. Oracle</p>
         <p class="minor-heading"><strong>17.3 <code>Array</code> — SQL array</strong></p>
         <p>An SQL array is not exactly the same as a Java array.</p>
         <p>Example with PostgreSQL:</p>
@@ -2037,7 +2037,7 @@ con.setTypeMap(mappings);</code></pre>
 
     <div class="subheading">18. JDBC RowSet APIs</div>
     <div class="intro">
-        <p>A <code>RowSet</code> extends the <code>ResultSet</code> interface with JavaBeans-style properties, event support, and additional capabilities.</p>
+        <p>A <code>RowSet</code> extends the <code>ResultSet</code> interface with JavaBeans-style properties, event support and additional capabilities.</p>
         <p>The Java RowSet framework supplies five main interfaces. Oracle Docs</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>RowSet type</th><th>Description</th></tr></thead>
@@ -2082,8 +2082,8 @@ con.setTypeMap(mappings);</code></pre>
             <li><code>Joinable</code> for joining RowSets.</li>
             <li><code>Predicate</code> for filtering.</li>
         </ul>
-        <p><code>javax.sql.rowset.spi</code> includes synchronization-provider APIs such as <code>SyncProvider</code>, <code>SyncFactory</code>, and <code>SyncResolver</code>. These support writing disconnected RowSet changes back to a data source and resolving conflicts.</p>
-        <p>The <code>javax.sql.rowset.serial</code> package provides classes such as <code>SerialBlob</code>, <code>SerialClob</code>, <code>SerialArray</code>, <code>SerialStruct</code>, and <code>SerialRef</code> for serialized SQL value representations.</p>
+        <p><code>javax.sql.rowset.spi</code> includes synchronization-provider APIs such as <code>SyncProvider</code>, <code>SyncFactory</code> and <code>SyncResolver</code>. These support writing disconnected RowSet changes back to a data source and resolving conflicts.</p>
+        <p>The <code>javax.sql.rowset.serial</code> package provides classes such as <code>SerialBlob</code>, <code>SerialClob</code>, <code>SerialArray</code>, <code>SerialStruct</code> and <code>SerialRef</code> for serialized SQL value representations.</p>
     </div>
 
     <div class="subheading">19. JDBC distributed transactions (XA)</div>
@@ -2133,12 +2133,12 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
     </div>
     <div class="intro">
         <p>In Java applications, developers usually rely on a JTA-compatible transaction manager rather than manually implementing the XA protocol.</p>
-        <p>XA is not automatically provided by ordinary JDBC <code>commit()</code> and <code>rollback()</code>, and it does not make arbitrary external HTTP APIs transactional.</p>
+        <p>XA is not automatically provided by ordinary JDBC <code>commit()</code> and <code>rollback()</code> and it does not make arbitrary external HTTP APIs transactional.</p>
     </div>
 
     <div class="subheading">20. JDBC performance optimization</div>
     <div class="intro">
-        <p>JDBC performance depends on the driver, database server, connection pool, SQL execution plan, network latency, and how results are processed.</p>
+        <p>JDBC performance depends on the driver, database server, connection pool, SQL execution plan, network latency and how results are processed.</p>
         <p class="minor-heading"><strong>20.1 Important performance APIs</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>API</th><th>Use</th></tr></thead>
@@ -2199,7 +2199,7 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
     <div class="intro">
         <p>For PostgreSQL, the driver can fetch rows in groups instead of buffering the entire result set. For other drivers, fetch-size behavior differs.</p>
         <p class="minor-heading"><strong>20.4 Timeouts</strong></p>
-        <p>Several timeout types exist, and they solve different problems.</p>
+        <p>Several timeout types exist and they solve different problems.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Timeout</th><th>Purpose</th></tr></thead>
             <tbody>
@@ -2229,7 +2229,7 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
             <li>Keep transactions short.</li>
             <li>Close JDBC resources promptly.</li>
             <li>Avoid sharing mutable JDBC connections between concurrent requests.</li>
-            <li>Measure pool wait time, query latency, lock contention, and server resource utilization.</li>
+            <li>Measure pool wait time, query latency, lock contention and server resource utilization.</li>
         </ol>
         <p>A connection pool that is too large can worsen database throughput by increasing contention and exhausting server-side resources.</p>
     </div>
@@ -2374,7 +2374,7 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
                 <tr><td>Spring JDBC</td><td><code>JdbcClient</code></td><td>Fluent query API</td></tr>
             </tbody>
         </table></div>
-        <p>Spring also integrates JDBC access with connection pooling, exception translation, and declarative transaction management.</p>
+        <p>Spring also integrates JDBC access with connection pooling, exception translation and declarative transaction management.</p>
         <p class="minor-heading"><strong>22.1 Maven dependencies</strong></p>
     </div>
     <div class="section code-section">
@@ -2408,7 +2408,7 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>The Hikari values are illustrative; tune them for the database&rsquo;s connection capacity, application concurrency, and workload.</p>
+        <p>The Hikari values are illustrative; tune them for the database&rsquo;s connection capacity, application concurrency and workload.</p>
         <p class="minor-heading"><strong>22.3 Using <code>JdbcTemplate</code></strong></p>
         <p>Spring&rsquo;s <code>JdbcTemplate</code> removes much of the repetitive resource management code.</p>
     </div>
@@ -2438,7 +2438,7 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
         </div>
     </div>
     <div class="intro">
-        <p><code>JdbcTemplate</code> handles acquiring and releasing connections, creating statements, executing SQL, traversing results through callbacks, and translating many SQL exceptions into Spring&rsquo;s <code>DataAccessException</code> hierarchy.</p>
+        <p><code>JdbcTemplate</code> handles acquiring and releasing connections, creating statements, executing SQL, traversing results through callbacks and translating many SQL exceptions into Spring&rsquo;s <code>DataAccessException</code> hierarchy.</p>
         <p class="minor-heading"><strong>22.4 Using <code>JdbcClient</code></strong></p>
         <p><code>JdbcClient</code> offers a fluent API.</p>
     </div>
@@ -2476,7 +2476,7 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
         </div>
     </div>
     <div class="intro">
-        <p><code>JdbcClient</code> supports positional and named parameters, row mapping, and update operations.</p>
+        <p><code>JdbcClient</code> supports positional and named parameters, row mapping and update operations.</p>
         <p class="minor-heading"><strong>22.5 Spring Boot transactions</strong></p>
         <p>Instead of manually calling:</p>
     </div>
@@ -2601,8 +2601,8 @@ con.rollback();</code></pre>
             <li><strong>Database introspection:</strong> <code>DatabaseMetaData</code>, <code>ResultSetMetaData</code>, <code>ParameterMetaData</code></li>
             <li><strong>Production reliability:</strong> SQLState handling, transient failures, deadlocks, retries, timeouts</li>
             <li><strong>Performance:</strong> fetch size, batch sizes, pooling, efficient large-result processing</li>
-            <li><strong>Framework integration:</strong> Spring <code>JdbcTemplate</code>, <code>JdbcClient</code>, and <code>@Transactional</code></li>
-            <li><strong>Specialized JDBC:</strong> stored routines, SQL large objects, RowSets, sharding, and XA transactions</li>
+            <li><strong>Framework integration:</strong> Spring <code>JdbcTemplate</code>, <code>JdbcClient</code> and <code>@Transactional</code></li>
+            <li><strong>Specialized JDBC:</strong> stored routines, SQL large objects, RowSets, sharding and XA transactions</li>
         </ol>
         <p class="minor-heading"><strong>Official references</strong></p>
         <ul>
@@ -2612,7 +2612,7 @@ con.rollback();</code></pre>
             <li>PostgreSQL JDBC Driver Documentation</li>
             <li>Spring JDBC Documentation</li>
         </ul>
-        <p><strong>Key takeaway:</strong> The five most important JDBC interfaces for everyday backend development are <code>DataSource</code>, <code>Connection</code>, <code>PreparedStatement</code>, <code>ResultSet</code>, and <code>DatabaseMetaData</code>. Understanding their resource lifecycles, transaction boundaries, and driver-specific behavior is foundational for developing reliable, performant Java database applications.</p>
+        <p><strong>Key takeaway:</strong> The five most important JDBC interfaces for everyday backend development are <code>DataSource</code>, <code>Connection</code>, <code>PreparedStatement</code>, <code>ResultSet</code> and <code>DatabaseMetaData</code>. Understanding their resource lifecycles, transaction boundaries and driver-specific behavior is foundational for developing reliable, performant Java database applications.</p>
     </div>
 </div>
 </body>

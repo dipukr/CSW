@@ -14,7 +14,7 @@
         <p><strong>Iterator pattern</strong> is a behavioral design pattern that provides a way to access and traverse the elements of a collection<br> or aggregate object sequentially without exposing its underlying data structure or internal representation.</p>
         <p>Intent is to provide a standard way to traverse through a collection of objects without exposing its internal structure.</p>
         <p>Iterator pattern separates the responsibility of <strong>traversing elements</strong> from the collection that <strong>stores them</strong>.<br> Instead of requiring clients to understand how elements are organized internally, the collection provides an iterator object that encapsulates the traversal logic and maintains the current position.</p>
-        <p>The Iterator pattern allows different traversal algorithms to be implemented for the same collection, supports multiple independent traversals, and lets the internal representation of a collection change without affecting client code.</p>
+        <p>The Iterator pattern allows different traversal algorithms to be implemented for the same collection, supports multiple independent traversals and lets the internal representation of a collection change without affecting client code.</p>
     </div>
     <div class="callout callout-note"><p><strong>In simple terms:</strong> The Iterator pattern tells us <strong>how to visit elements</strong> without needing to know <strong>how they are stored</strong>.</p></div>
 
@@ -168,7 +168,7 @@ songs.add(<span class="code-string">"Song C"</span>);
     <div class="intro">
         <p>This example demonstrates the real power of the Iterator pattern.</p>
         <p>Unlike an <code>ArrayList</code>, a binary tree does not store elements in a simple sequential order. Its nodes are connected through left and right references.</p>
-        <p>A tree can be traversed using several algorithms, including <strong>in-order</strong>, <strong>pre-order</strong>, <strong>post-order</strong>, and <strong>level-order</strong>.</p>
+        <p>A tree can be traversed using several algorithms, including <strong>in-order</strong>, <strong>pre-order</strong>, <strong>post-order</strong> and <strong>level-order</strong>.</p>
         <p>Iterator pattern allows us to encapsulate these traversal algorithms so that the client does not need to implement them.</p>
         <p class="minor-heading"><strong>Binary tree structure</strong></p>
     </div>
@@ -320,7 +320,7 @@ Pre-order:
         </table>
     </div></div>
     <div class="intro">
-        <p>Here, <code>n</code> is the number of nodes, and <code>h</code> is the tree height.</p>
+        <p>Here, <code>n</code> is the number of nodes and <code>h</code> is the tree height.</p>
         <p>These iterators assume the tree is not structurally modified during traversal.</p>
     </div>
     <div class="callout callout-note"><p>This example illustrates an important benefit: <strong>The same object structure can support multiple traversal strategies without changing how clients consume its elements.</strong></p></div>
@@ -329,7 +329,7 @@ Pre-order:
     <div class="intro">
         <p>A particularly useful application of the Iterator pattern is retrieving large datasets from a paginated REST API, database, or remote service.</p>
         <p>Suppose an API contains one million users but returns only 100 users per request.</p>
-        <p>Without the Iterator pattern, the client might have to manage page numbers, cursors, and network requests.</p>
+        <p>Without the Iterator pattern, the client might have to manage page numbers, cursors and network requests.</p>
         <p>With an iterator, the client can simply write:</p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">for</span> (<span class="code-class">User</span> user : paginatedUsers) {
@@ -420,7 +420,7 @@ User: David</code></pre></div>
         <p>The iterator encapsulates the pagination cursor, current page and fetching logic.</p>
         <p>This is valuable for REST API pagination, large database result sets, cloud storage object listings and other sources that produce data incrementally.</p>
     </div>
-    <div class="callout callout-warning"><p>For production use, a paginated iterator also needs appropriate error handling, retry policies, resource cleanup when applicable, and protection against an API returning a non-progressing cursor. In this implementation, calling <code>hasNext</code> can perform network IO.</p></div>
+    <div class="callout callout-warning"><p>For production use, a paginated iterator also needs appropriate error handling, retry policies, resource cleanup when applicable and protection against an API returning a non-progressing cursor. In this implementation, calling <code>hasNext</code> can perform network IO.</p></div>
 
     <div class="subheading">Iterator vs Iterable</div>
     <div class="intro">
@@ -471,7 +471,7 @@ User: David</code></pre></div>
     </div>
     <div class="intro"><ul>
         <li><strong>Iterator uses external iteration:</strong> The client explicitly requests each next element and controls when to stop.</li>
-        <li><strong>Stream uses internal iteration:</strong> The client specifies operations, and the stream implementation manages traversal and processing.</li>
+        <li><strong>Stream uses internal iteration:</strong> The client specifies operations and the stream implementation manages traversal and processing.</li>
     </ul></div>
     <div class="intro">
         <p>Streams generally build on <code>Spliterator</code>, not directly on the traditional <code>Iterator</code> interface.</p>
@@ -505,9 +505,9 @@ User: David</code></pre></div>
     <div class="subheading">When should you use the Iterator pattern</div>
     <div class="intro">
         <p>Use it when clients should traverse a structure without depending on its implementation, when multiple traversal algorithms are needed, or when results must be retrieved incrementally.</p>
-        <p>It is particularly appropriate for custom trees, graphs, hierarchical structures, paginated APIs, database cursors, and<br> file-system traversals.</p>
+        <p>It is particularly appropriate for custom trees, graphs, hierarchical structures, paginated APIs, database cursors and<br> file-system traversals.</p>
     </div>
-    <div class="callout callout-note"><p>For ordinary Java collections, you generally do not need to implement your own iterator. Java already provides suitable implementations for <code>ArrayList</code>, <code>LinkedList</code>, <code>HashSet</code>, <code>TreeSet</code>, and other standard collections.</p></div>
+    <div class="callout callout-note"><p>For ordinary Java collections, you generally do not need to implement your own iterator. Java already provides suitable implementations for <code>ArrayList</code>, <code>LinkedList</code>, <code>HashSet</code>, <code>TreeSet</code> and other standard collections.</p></div>
 
     <div class="subheading">Interview perspective: Iterator vs Composite vs Visitor</div>
     <div class="intro">

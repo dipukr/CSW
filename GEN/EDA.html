@@ -11,8 +11,8 @@
     <div class="title">Event-Driven Architecture</div>
 
     <div class="intro">
-        <p>An event-driven system (EDA) is <strong>a software design pattern where components communicate by producing and reacting to &ldquo;events,&rdquo; which are notifications about something that happened</strong> (like a user clicking a button or an order being placed), promoting loose coupling, scalability, and real-time responsiveness, unlike traditional request/response models. These systems use producers (generating events), consumers (reacting to events), and often an event broker to manage communication, making them ideal for modern, distributed applications like microservices and IoT.</p>
-        <p>An event-driven system (EDA) is <strong>a software design pattern where components communicate by producing, detecting, and reacting to &ldquo;events&rdquo;&mdash;significant occurrences like a user action or state change&mdash;without direct coupling, using message brokers for asynchronous flow</strong>. It's highly scalable and responsive, ideal for real-time processing, microservices, and handling large data streams by allowing producers to broadcast events and consumers to subscribe and act independently. Key elements include producers, consumers, and routers/brokers (like Kafka or RabbitMQ) that manage event distribution.</p>
+        <p>An event-driven system (EDA) is <strong>a software design pattern where components communicate by producing and reacting to &ldquo;events,&rdquo; which are notifications about something that happened</strong> (like a user clicking a button or an order being placed), promoting loose coupling, scalability and real-time responsiveness, unlike traditional request/response models. These systems use producers (generating events), consumers (reacting to events) and often an event broker to manage communication, making them ideal for modern, distributed applications like microservices and IoT.</p>
+        <p>An event-driven system (EDA) is <strong>a software design pattern where components communicate by producing, detecting and reacting to &ldquo;events&rdquo;&mdash;significant occurrences like a user action or state change&mdash;without direct coupling, using message brokers for asynchronous flow</strong>. It's highly scalable and responsive, ideal for real-time processing, microservices and handling large data streams by allowing producers to broadcast events and consumers to subscribe and act independently. Key elements include producers, consumers and routers/brokers (like Kafka or RabbitMQ) that manage event distribution.</p>
         <p>Event-driven architecture (EDA) is an integration model that detects important &ldquo;events&rdquo; in a business &ndash; such as a transaction or an abandoned shopping cart &ndash; and acts on them in real time.</p>
     </div>
 
@@ -27,7 +27,7 @@
         <li><strong>Event Producer:</strong> A component that generates and sends an event.</li>
         <li><strong>Event Consumer:</strong> A component that listens for and processes specific events.</li>
         <li><strong>Event Broker/Middleware:</strong> An intermediary (like a message queue) that receives events and routes them to interested consumers, ensuring producers and consumers don't need to know each other.</li>
-        <li><strong>Loose Coupling:</strong> Producers don't know which consumers are listening, and vice versa, allowing independent updates and scaling.</li>
+        <li><strong>Loose Coupling:</strong> Producers don't know which consumers are listening and vice versa, allowing independent updates and scaling.</li>
     </ul></div>
 
     <div class="subheading">How It Works</div>

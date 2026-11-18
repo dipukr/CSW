@@ -21,14 +21,14 @@
         <p class="minor-heading"><strong>JVM Memory (Runtime Data Areas)</strong></p>
         <p>The memory the JVM uses while a program runs. The method area and the heap are created once when the JVM starts and are shared by all threads. The JVM language stacks, PC registers and native method stacks are created per thread.</p>
         <p class="minor-heading"><strong>Execution Engine</strong></p>
-        <p>Executes the loaded bytecode. It interprets bytecode, compiles frequently used code to native machine code with the JIT compiler, and frees unused objects with the garbage collector.</p>
+        <p>Executes the loaded bytecode. It interprets bytecode, compiles frequently used code to native machine code with the JIT compiler and frees unused objects with the garbage collector.</p>
         <p class="minor-heading"><strong>Native Method Interface and Native Method Libraries</strong></p>
-        <p>The Java Native Interface (JNI) lets Java code call native code written in C or C++, and lets native code call back into Java. The native method libraries are the compiled native libraries (<code>.dll</code> or <code>.so</code> files) that hold those native methods.</p>
+        <p>The Java Native Interface (JNI) lets Java code call native code written in C or C++ and lets native code call back into Java. The native method libraries are the compiled native libraries (<code>.dll</code> or <code>.so</code> files) that hold those native methods.</p>
     </div>
 
     <div class="subheading">JVM Architecture in Detail</div>
     <div class="section-diagram">
-        <img src="../static/jvm-architecture-detailed.svg" alt="Class loader subsystem (loading by bootstrap, extension and application class loaders; linking by verify, prepare and resolve; initialization), runtime data areas (method area, heap, per-thread stacks with stack frames, PC registers, native method stack), and the execution engine (interpreter, JIT compiler with intermediate code generator, code optimizer, target code generator and profiler, garbage collection) connected to native method libraries through JNI" style="width:100%;max-width:860px">
+        <img src="../static/jvm-architecture-detailed.svg" alt="Class loader subsystem (loading by bootstrap, extension and application class loaders; linking by verify, prepare and resolve; initialization), runtime data areas (method area, heap, per-thread stacks with stack frames, PC registers, native method stack) and the execution engine (interpreter, JIT compiler with intermediate code generator, code optimizer, target code generator and profiler, garbage collection) connected to native method libraries through JNI" style="width:100%;max-width:860px">
     </div>
     <div class="intro">
         <p class="minor-heading"><strong>1. Class Loader Subsystem</strong></p>
@@ -50,9 +50,9 @@
 
         <p class="minor-heading"><strong>2. Runtime Data Areas</strong></p>
         <ul>
-            <li><strong>Method Area:</strong> One per JVM, shared by all threads. Stores class-level data: the runtime constant pool, field and method data, and method bytecode. In HotSpot it is implemented as the Metaspace since Java 8.</li>
-            <li><strong>Heap Area:</strong> One per JVM, shared by all threads. All objects and arrays are allocated here, and the garbage collector manages it.</li>
-            <li><strong>Stack Area:</strong> One stack per thread. Each method call pushes a <strong>stack frame</strong>, which is popped when the method returns. A frame holds the <strong>local variable array (LVA)</strong>, the <strong>operand stack (OS)</strong> used as a workspace for bytecode instructions, and <strong>frame data (FD)</strong>, such as the reference to the constant pool and exception-handling information. Too deep recursion causes a <code>StackOverflowError</code>.</li>
+            <li><strong>Method Area:</strong> One per JVM, shared by all threads. Stores class-level data: the runtime constant pool, field and method data and method bytecode. In HotSpot it is implemented as the Metaspace since Java 8.</li>
+            <li><strong>Heap Area:</strong> One per JVM, shared by all threads. All objects and arrays are allocated here and the garbage collector manages it.</li>
+            <li><strong>Stack Area:</strong> One stack per thread. Each method call pushes a <strong>stack frame</strong>, which is popped when the method returns. A frame holds the <strong>local variable array (LVA)</strong>, the <strong>operand stack (OS)</strong> used as a workspace for bytecode instructions and <strong>frame data (FD)</strong>, such as the reference to the constant pool and exception-handling information. Too deep recursion causes a <code>StackOverflowError</code>.</li>
             <li><strong>PC Registers:</strong> One per thread. Holds the address of the bytecode instruction the thread is currently executing. It is undefined while a native method runs.</li>
             <li><strong>Native Method Stack:</strong> One per thread. Used for native (C or C++) method calls, the same way the Java stack is used for Java methods.</li>
         </ul>
@@ -91,7 +91,7 @@
             <li><strong>Code Cache:</strong> Stores the native machine code produced by the JIT compiler. If it fills up, the JIT stops compiling and the application slows down.</li>
             <li><strong>Permanent Generation:</strong> Holds the method area, with the <strong>class data</strong> of every loaded class: the <strong>run-time constant pool</strong> (string and numeric constants, class, field and method references, name-and-type entries and <code>invokedynamic</code> entries) and the <strong>method code</strong> (bytecode). Older JVMs also kept <strong>interned strings</strong> here.</li>
         </ul>
-        <p>The diagram shows the classic layout from before Java 8. In Java 7 interned strings moved to the heap, and in Java 8 the permanent generation was replaced by <strong>Metaspace</strong>, which lives in native memory and grows as needed. Its size can be capped with <code>-XX:MaxMetaspaceSize</code>.</p>
+        <p>The diagram shows the classic layout from before Java 8. In Java 7 interned strings moved to the heap and in Java 8 the permanent generation was replaced by <strong>Metaspace</strong>, which lives in native memory and grows as needed. Its size can be capped with <code>-XX:MaxMetaspaceSize</code>.</p>
 
         <p class="minor-heading"><strong>Heap</strong></p>
         <p>All objects live on the heap, which is shared by all threads and managed by the garbage collector. It is split into generations, because most objects die young.</p>

@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     <div class="intro">
         <p>The <strong>Saga Orchestration Pattern</strong> is a distributed transaction management pattern used in microservices where a single business operation spans multiple independently deployed services, each owning its own database.</p>
-        <p>Instead of using one large database transaction, Saga breaks the business operation into multiple smaller, locally committed transactions. A central component called the <strong>Saga Orchestrator</strong> coordinates these transactions, determines their execution order, handles failures, and initiates compensating transactions when necessary.</p>
+        <p>Instead of using one large database transaction, Saga breaks the business operation into multiple smaller, locally committed transactions. A central component called the <strong>Saga Orchestrator</strong> coordinates these transactions, determines their execution order, handles failures and initiates compensating transactions when necessary.</p>
         <p>We will cover the architecture, internal working, state management, failure scenarios and a practical implementation using <strong>Java, Spring Boot, Spring Data JPA, REST APIs and separate databases</strong>.</p>
     </div>
 
@@ -334,7 +334,7 @@ flowchart TD
         <p class="minor-heading"><strong>Failure during shipment creation</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/orchestration-sequence-failure.svg" alt="Failure during shipment creation: inventory and payment succeed, shipping fails permanently, compensation cancels the shipment, refunds the payment and releases the inventory, and the order ends CANCELLED" style="width:100%;max-width:536px">
+        <img src="../static/orchestration-sequence-failure.svg" alt="Failure during shipment creation: inventory and payment succeed, shipping fails permanently, compensation cancels the shipment, refunds the payment and releases the inventory and the order ends CANCELLED" style="width:100%;max-width:536px">
     </div>
     <div class="intro">
         <p>The order cannot be considered cancelled merely because shipment creation failed.</p>
@@ -384,7 +384,7 @@ flowchart TD
         <li>A background worker for retrying and recovering incomplete Sagas</li>
     </ul></div>
     <div class="intro">
-        <p>The code focuses on the distributed transaction mechanics. Authentication, full payment-provider integration, deployment configuration, and operational infrastructure are intentionally outside the runnable core.</p>
+        <p>The code focuses on the distributed transaction mechanics. Authentication, full payment-provider integration, deployment configuration and operational infrastructure are intentionally outside the runnable core.</p>
         <p>Spring Boot provides an auto-configured <code>RestClient.Builder</code>, which is well suited to synchronous REST-based orchestration.</p>
     </div>
 
@@ -562,7 +562,7 @@ spring.jpa.open-in-view=false</code></pre></div>
 }</code></pre></div>
     <div class="intro">
         <p>Our code stores the Saga state on the order itself because each order has exactly one order-creation Saga.</p>
-        <p>A larger application may instead maintain separate <code>orders</code>, <code>saga_instances</code>, and <code>saga_steps</code> tables. That is often preferable when orders participate in multiple different Saga workflows.</p>
+        <p>A larger application may instead maintain separate <code>orders</code>, <code>saga_instances</code> and <code>saga_steps</code> tables. That is often preferable when orders participate in multiple different Saga workflows.</p>
     </div>
     <div class="intro">
         <p class="minor-heading"><strong>Why do we need <code>Version</code>?</strong></p>
@@ -899,7 +899,7 @@ order-123:cancel-shipment
 order-123:refund-payment
 order-123:release-inventory</code></pre></div>
     <div class="intro">
-        <p>Such IDs make retries, deduplication, logging, and auditing easier.</p>
+        <p>Such IDs make retries, deduplication, logging and auditing easier.</p>
     </div>
 
     <div class="subheading">Implement the Saga Orchestrator</div>
@@ -1158,7 +1158,7 @@ CANCELLED</code></pre></div>
 }</code></pre></div>
     <div class="intro">
         <p>We maintain a separate <code>Reservation</code> entity because merely decrementing the stock is not enough.</p>
-        <p>The service must remember which order reserved how much inventory, whether that reservation has already been released, and whether a future duplicate reservation should be rejected.</p>
+        <p>The service must remember which order reserved how much inventory, whether that reservation has already been released and whether a future duplicate reservation should be rejected.</p>
     </div>
 
     <div class="subheading">Inventory repositories</div>
@@ -1474,7 +1474,7 @@ Second request:
   Return success without charging again</code></pre></div>
     <div class="intro">
         <p>The database's primary key gives us a durable identity for each order's payment.</p>
-        <p>The code still requires robust concurrency handling for simultaneous first requests. A production implementation should serialize state transitions per payment intent or transaction, with uniqueness constraints and transaction retries, and use a provider-supported idempotency key for actual money movements.</p>
+        <p>The code still requires robust concurrency handling for simultaneous first requests. A production implementation should serialize state transitions per payment intent or transaction, with uniqueness constraints and transaction retries and use a provider-supported idempotency key for actual money movements.</p>
     </div>
 
     <div class="subheading">Implementing the Shipping Service</div>
@@ -1658,7 +1658,7 @@ COMPLETED</code></pre></div>
   "lastError": null
 }</code></pre></div>
     <div class="intro">
-        <p>Inventory now has 8 units available, one payment record is <code>CHARGED</code>, and the shipment record is <code>CREATED</code>.</p>
+        <p>Inventory now has 8 units available, one payment record is <code>CHARGED</code> and the shipment record is <code>CREATED</code>.</p>
     </div>
 
     <div class="subheading">Test case 2: Payment declined</div>
@@ -1773,7 +1773,7 @@ Do not create a new Saga</code></pre></div>
     <div class="subheading">Failure Handling: The Most Important Part of Saga Design</div>
     <div class="intro">
         <p>Writing an orchestrator that works when all services are healthy is relatively easy.</p>
-        <p>The difficult part is making it correct when networks fail, processes crash, and requests are delivered more than once.</p>
+        <p>The difficult part is making it correct when networks fail, processes crash and requests are delivered more than once.</p>
     </div>
 
     <div class="subheading">Transient failures vs. permanent failures</div>
@@ -1797,7 +1797,7 @@ Do not create a new Saga</code></pre></div>
         </table>
     </div></div>
     <div class="intro">
-        <p>HTTP status codes alone are not a complete business error model. A production system should use explicit error codes such as <code>OUT_OF_STOCK</code>, <code>PAYMENT_DECLINED</code>, and <code>SHIPPING_UNAVAILABLE</code> to determine whether an error is retryable.</p>
+        <p>HTTP status codes alone are not a complete business error model. A production system should use explicit error codes such as <code>OUT_OF_STOCK</code>, <code>PAYMENT_DECLINED</code> and <code>SHIPPING_UNAVAILABLE</code> to determine whether an error is retryable.</p>
     </div>
 
     <div class="subheading">The uncertain-outcome problem</div>

@@ -11,7 +11,7 @@
     <div class="title">Strategy</div>
 
     <div class="intro">
-        <p>The <strong>Strategy Design Pattern</strong> is a behavioral design pattern that defines a family of algorithms, encapsulates each algorithm in a separate class, and makes them interchangeable.</p>
+        <p>The <strong>Strategy Design Pattern</strong> is a behavioral design pattern that defines a family of algorithms, encapsulates each algorithm in a separate class and makes them interchangeable.</p>
         <p>Instead of implementing multiple algorithms directly inside a class using <code>if-else</code> or <code>switch</code> statements,<br> the Strategy pattern moves each algorithm into its own class behind a common interface.</p>
         <p>The client, often called the <strong>Context</strong>, holds a reference to a strategy object and delegates the actual work to it.<br> The strategy can be selected or replaced at runtime without changing the Context's implementation.</p>
         <p><strong>Context</strong> = the object that uses an algorithm.</p>
@@ -20,7 +20,7 @@
     </div>
     <div class="callout callout-note"><p><strong>Key idea:</strong> Separate <strong>what</strong> needs to be done from <strong>how</strong> it is done.</p></div>
     <div class="intro">
-        <p>For example, consider an e-commerce application supporting multiple payment methods: UPI, credit card, and cash on delivery. Each payment method has different processing logic, but the checkout process should not need to know how each payment method works.</p>
+        <p>For example, consider an e-commerce application supporting multiple payment methods: UPI, credit card and cash on delivery. Each payment method has different processing logic, but the checkout process should not need to know how each payment method works.</p>
         <p>The Strategy pattern allows us to encapsulate each payment algorithm independently.</p>
     </div>
 
@@ -312,7 +312,7 @@ calculator.setStrategy(express); <span class="code-comment">Switch algorithm at 
     <div class="intro">
         <p>This is still the Strategy pattern because algorithms are interchangeable through the same interface.</p>
     </div>
-    <div class="callout callout-note"><p><strong>When to prefer lambdas:</strong> When algorithms are small, stateless, and do not require complex dependencies. For strategies requiring extensive processing, configuration, or injected services, separate classes usually provide better organization.</p></div>
+    <div class="callout callout-note"><p><strong>When to prefer lambdas:</strong> When algorithms are small, stateless and do not require complex dependencies. For strategies requiring extensive processing, configuration, or injected services, separate classes usually provide better organization.</p></div>
 
     <div class="subheading">Real-World Example: Strategy Pattern in Spring Boot</div>
     <div class="intro">
@@ -498,7 +498,7 @@ PREMIUM  → PremiumDiscountStrategy</code></pre></div>
 
     <div class="subheading">When Should You Use Strategy</div>
     <div class="intro">
-        <p>Strategy is especially useful when a system has multiple ways to accomplish the same task, and those ways need to evolve independently. Common real-world uses include:</p>
+        <p>Strategy is especially useful when a system has multiple ways to accomplish the same task and those ways need to evolve independently. Common real-world uses include:</p>
     </div>
     <div class="section cmp"><div class="section-content">
         <table class="cmp-table centered cmp-peer">
@@ -565,7 +565,7 @@ checkout.checkout(<span class="code-keyword">new</span> <span class="code-class"
         <li><strong>Encapsulates Algorithms</strong><br> Each concrete strategy implements a specific algorithm behind a common interface, allowing algorithms to evolve independently.</li>
         <li><strong>Composition over Inheritance</strong><br> The Context holds a reference to a Strategy interface and delegates operations to it instead of implementing algorithms itself.</li>
         <li><strong>Runtime Flexibility</strong><br> Strategies can be selected or replaced dynamically at runtime without modifying the Context's implementation.</li>
-        <li><strong>Loose Coupling</strong><br> The Context depends on the Strategy abstraction rather than concrete implementations, making the system easier to extend, maintain, and test.</li>
+        <li><strong>Loose Coupling</strong><br> The Context depends on the Strategy abstraction rather than concrete implementations, making the system easier to extend, maintain and test.</li>
         <li><strong>Open/Closed Principle</strong><br> New algorithms can be introduced by adding new Strategy implementations without changing the Context's algorithm-execution logic.</li>
         <li><strong>Eliminates Complex Conditionals</strong><br> Replaces large <code>if-else</code> or <code>switch</code> blocks containing different algorithms with polymorphic method calls.<br> Strategy selection may still require conditional logic.</li>
         <li><strong>Context vs Strategy</strong><ul>

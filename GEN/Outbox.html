@@ -49,7 +49,7 @@
 
         <div class="pc-card con">
             <div class="pc-title">More Moving Parts</div>
-            <p>An outbox table plus a relay (poller or CDC connector) to build, deploy, and monitor.</p>
+            <p>An outbox table plus a relay (poller or CDC connector) to build, deploy and monitor.</p>
         </div>
         <div class="pc-card con">
             <div class="pc-title">At-Least-Once, Not Exactly-Once</div>
@@ -89,7 +89,7 @@
             <li>You need to publish an event (<code>OrderCreated</code>) to Kafka so other services (like Inventory, Payment) know about it.</li>
             <li>If you update the DB successfully but fail to publish the Kafka message (network down, broker crash, app crash), your system becomes inconsistent.</li>
         </ul>
-        <p>This is called the <strong>Dual-write Problem</strong> the DB and Kafka are updated independently, and one might fail.</p>
+        <p>This is called the <strong>Dual-write Problem</strong> the DB and Kafka are updated independently and one might fail.</p>
     </div>
 
     <div class="subheading">Outbox pattern: solution</div>
@@ -197,7 +197,7 @@
     <div class="subheading">Scheduled relay publisher</div>
 
     <div class="intro">
-        <p>A background job polls unpublished rows, sends them to Kafka, and marks each as sent. A failed send simply stays unpublished and is retried next tick:</p>
+        <p>A background job polls unpublished rows, sends them to Kafka and marks each as sent. A failed send simply stays unpublished and is retried next tick:</p>
     </div>
 
     <div class="code-block"><pre><code><span class="code-class">@Service</span>

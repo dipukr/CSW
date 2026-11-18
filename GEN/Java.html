@@ -12,7 +12,7 @@
 
     <div class="intro">
         <p><strong>Java</strong> is a general-purpose, class-based, object-oriented programming language and computing platform. Java source code is compiled to <strong>bytecode</strong>, which runs on the <strong>Java Virtual Machine (JVM)</strong> instead of directly on the hardware. Because every operating system has its own JVM, the same compiled program runs anywhere a JVM is installed: &ldquo;write once, run anywhere&rdquo;.</p>
-        <p>Java was created by James Gosling and his team at Sun Microsystems (it was first called Oak) and released in 1995. Oracle acquired Sun in 2010 and now leads its development through the open-source OpenJDK project. Java is widely used for backend services, enterprise applications, Android apps, big data tools (Kafka, Hadoop, Spark), and desktop and embedded systems.</p>
+        <p>Java was created by James Gosling and his team at Sun Microsystems (it was first called Oak) and released in 1995. Oracle acquired Sun in 2010 and now leads its development through the open-source OpenJDK project. Java is widely used for backend services, enterprise applications, Android apps, big data tools (Kafka, Hadoop, Spark) and desktop and embedded systems.</p>
     </div>
 
     <div class="subheading">Features of Java</div>
@@ -28,7 +28,7 @@
         <p class="minor-heading"><strong>Robust</strong></p>
         <p>Strong static typing, compile-time checks, exception handling, array bounds checking and automatic garbage collection prevent many common errors, such as memory leaks from forgotten <code>free</code> calls and writes past the end of an array.</p>
         <p class="minor-heading"><strong>Secure</strong></p>
-        <p>Java has no pointer arithmetic, and the JVM verifies bytecode before running it, so code cannot read or corrupt arbitrary memory. Class loaders keep application classes separate from core library classes.</p>
+        <p>Java has no pointer arithmetic and the JVM verifies bytecode before running it, so code cannot read or corrupt arbitrary memory. Class loaders keep application classes separate from core library classes.</p>
         <p class="minor-heading"><strong>Automatic Memory Management</strong></p>
         <p>Objects are created with <code>new</code> and never freed by hand. The garbage collector finds objects that are no longer reachable and reclaims their memory.</p>
         <p class="minor-heading"><strong>Multithreaded</strong></p>
@@ -50,7 +50,7 @@
             <li><strong>Write:</strong> You write source code in a <code>.java</code> file.</li>
             <li><strong>Compile:</strong> The <code>javac</code> compiler checks the code and translates it into bytecode, stored in a <code>.class</code> file.</li>
             <li><strong>Load and verify:</strong> When you run the program, the JVM&rsquo;s class loader loads the <code>.class</code> files and the verifier checks the bytecode.</li>
-            <li><strong>Execute:</strong> The JVM&rsquo;s execution engine interprets the bytecode, and the JIT compiler turns frequently used parts into native machine code.</li>
+            <li><strong>Execute:</strong> The JVM&rsquo;s execution engine interprets the bytecode and the JIT compiler turns frequently used parts into native machine code.</li>
         </ol>
     </div>
     <div class="section code-section">
@@ -76,7 +76,7 @@ java Hello.java    <span class="code-comment">Java 11+: compile in memory and ru
     </div>
     <div class="intro">
         <p class="minor-heading"><strong>JVM (Java Virtual Machine)</strong></p>
-        <p>The JVM is the engine that runs bytecode. It loads classes, verifies them, manages memory (heap, stacks and the method area), runs the garbage collector, and executes code with an interpreter and a JIT compiler. The JVM specification is the same everywhere, but each operating system and processor has its own JVM implementation; HotSpot, used by OpenJDK, is the most common. See <a href="JMM.html">JVM Architecture and Memory</a> for details.</p>
+        <p>The JVM is the engine that runs bytecode. It loads classes, verifies them, manages memory (heap, stacks and the method area), runs the garbage collector and executes code with an interpreter and a JIT compiler. The JVM specification is the same everywhere, but each operating system and processor has its own JVM implementation; HotSpot, used by OpenJDK, is the most common. See <a href="JMM.html">JVM Architecture and Memory</a> for details.</p>
         <p class="minor-heading"><strong>JRE (Java Runtime Environment)</strong></p>
         <p>The JRE is what you need to <strong>run</strong> a Java program: the JVM plus the Java class libraries (<code>java.lang</code>, <code>java.util</code>, <code>java.io</code> and so on) and supporting files. It has no compiler, so it cannot build programs.</p>
         <p class="minor-heading"><strong>JDK (Java Development Kit)</strong></p>
@@ -91,7 +91,7 @@ java Hello.java    <span class="code-comment">Java 11+: compile in memory and ru
                 <tr><td><strong>Platform dependent</strong></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
             </tbody>
         </table></div>
-        <p>In short: <strong>JDK = JRE + development tools</strong>, and <strong>JRE = JVM + class libraries</strong>. The bytecode is platform independent, but the JDK, JRE and JVM themselves are separate downloads for each operating system.</p>
+        <p>In short: <strong>JDK = JRE + development tools</strong> and <strong>JRE = JVM + class libraries</strong>. The bytecode is platform independent, but the JDK, JRE and JVM themselves are separate downloads for each operating system.</p>
     </div>
     <div class="callout callout-note"><p>Since Java 11, Oracle and most vendors no longer ship a separate JRE; you install a JDK. To ship an application with a small runtime, use <code>jlink</code> to build a custom runtime image that contains only the modules the application needs.</p></div>
 

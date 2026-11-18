@@ -293,16 +293,16 @@ svg { display:block; width:100%; height:auto; margin:10px auto 18px; }
 <main class="note">
 <h1 class="title">Apache Kafka — Comprehensive Guide with Java APIs</h1>
 <div class="intro">
-<p><b>Purpose:</b> A deep practical reference for learning Kafka architecture, internals, delivery guarantees, Java Producer/Consumer APIs, transactions, partitioning, Kafka Streams, Connect, security, performance, and production design.</p>
+<p><b>Purpose:</b> A deep practical reference for learning Kafka architecture, internals, delivery guarantees, Java Producer/Consumer APIs, transactions, partitioning, Kafka Streams, Connect, security, performance and production design.</p>
 <p><b>Version context:</b> KRaft and current architectural notes use Kafka 4.x concepts. Always verify exact configuration and API behavior against the Kafka version used by your application.</p>
 </div>
 <section class="section index" id="contents">
 <div class="section-title">Contents</div>
-<div class="section-content"><p class="subtitle">A comprehensive study/reference note with conceptual explanations, SVG architecture diagrams, Java client examples, configuration guidance, and production patterns.</p><div class="grid"><a href="#kafka-fundamentals">Kafka Fundamentals</a><a href="#architecture">Architecture</a><a href="#topics-partitions-and-offsets">Topics, Partitions and Offsets</a><a href="#producers">Producers</a><a href="#consumers">Consumers</a><a href="#consumer-groups">Consumer Groups</a><a href="#delivery-semantics">Delivery Semantics</a><a href="#replication-and-fault-tolerance">Replication and Fault Tolerance</a><a href="#kraft">KRaft</a><a href="#serialization">Serialization</a><a href="#java-api-setup">Java API Setup</a><a href="#java-producer-api">Java Producer API</a><a href="#java-consumer-api">Java Consumer API</a><a href="#manual-offset-management">Manual Offset Management</a><a href="#transactions-and-exactly-once">Transactions and Exactly Once</a><a href="#partitioning">Partitioning</a><a href="#headers-and-metadata">Headers and Metadata</a><a href="#retry-and-dead-letter-topics">Retry and Dead Letter Topics</a><a href="#log-retention-and-compaction">Log Retention and Compaction</a><a href="#kafka-streams">Kafka Streams</a><a href="#kafka-connect">Kafka Connect</a><a href="#schema-evolution">Schema Evolution</a><a href="#security">Security</a><a href="#performance-tuning">Performance Tuning</a><a href="#monitoring">Monitoring</a><a href="#operational-design">Operational Design</a><a href="#common-pitfalls">Common Pitfalls</a><a href="#kafka-cli-cheat-sheet">Kafka CLI Cheat Sheet</a><a href="#production-checklist">Production Checklist</a></div></div>
+<div class="section-content"><p class="subtitle">A comprehensive study/reference note with conceptual explanations, SVG architecture diagrams, Java client examples, configuration guidance and production patterns.</p><div class="grid"><a href="#kafka-fundamentals">Kafka Fundamentals</a><a href="#architecture">Architecture</a><a href="#topics-partitions-and-offsets">Topics, Partitions and Offsets</a><a href="#producers">Producers</a><a href="#consumers">Consumers</a><a href="#consumer-groups">Consumer Groups</a><a href="#delivery-semantics">Delivery Semantics</a><a href="#replication-and-fault-tolerance">Replication and Fault Tolerance</a><a href="#kraft">KRaft</a><a href="#serialization">Serialization</a><a href="#java-api-setup">Java API Setup</a><a href="#java-producer-api">Java Producer API</a><a href="#java-consumer-api">Java Consumer API</a><a href="#manual-offset-management">Manual Offset Management</a><a href="#transactions-and-exactly-once">Transactions and Exactly Once</a><a href="#partitioning">Partitioning</a><a href="#headers-and-metadata">Headers and Metadata</a><a href="#retry-and-dead-letter-topics">Retry and Dead Letter Topics</a><a href="#log-retention-and-compaction">Log Retention and Compaction</a><a href="#kafka-streams">Kafka Streams</a><a href="#kafka-connect">Kafka Connect</a><a href="#schema-evolution">Schema Evolution</a><a href="#security">Security</a><a href="#performance-tuning">Performance Tuning</a><a href="#monitoring">Monitoring</a><a href="#operational-design">Operational Design</a><a href="#common-pitfalls">Common Pitfalls</a><a href="#kafka-cli-cheat-sheet">Kafka CLI Cheat Sheet</a><a href="#production-checklist">Production Checklist</a></div></div>
 </section><section class="section" id="kafka-fundamentals">
 <div class="section-title">Kafka Fundamentals</div>
 <div class="section-content">
-<p><b>Apache Kafka</b> is a distributed event-streaming platform built around partitioned append-only logs. A producer writes records to a topic, Kafka stores those records in partitions, and consumers read them by position (offset). Kafka is designed for high throughput, scalable parallelism, durable storage, and independent consumption by multiple consumer groups. citeturn0search0turn0search2</p>
+<p><b>Apache Kafka</b> is a distributed event-streaming platform built around partitioned append-only logs. A producer writes records to a topic, Kafka stores those records in partitions and consumers read them by position (offset). Kafka is designed for high throughput, scalable parallelism, durable storage and independent consumption by multiple consumer groups. citeturn0search0turn0search2</p>
 <h3>Kafka is more than a traditional message queue</h3>
 <ul>
 <li>A topic can have multiple independent subscribers.</li>
@@ -311,7 +311,7 @@ svg { display:block; width:100%; height:auto; margin:10px auto 18px; }
 <li>Consumer groups provide load balancing among consumers while different groups can independently consume the same topic.</li>
 </ul>
 <h3>Core mental model</h3>
-<p>Think of Kafka as a distributed collection of durable logs. A consumer does not remove a record from the log; it advances its position in that log. This is why replay, backfilling, and multiple independent consumers are natural Kafka operations.</p>
+<p>Think of Kafka as a distributed collection of durable logs. A consumer does not remove a record from the log; it advances its position in that log. This is why replay, backfilling and multiple independent consumers are natural Kafka operations.</p>
 </div>
 </section><section class="section" id="architecture">
 <div class="section-title">Architecture</div>
@@ -347,7 +347,7 @@ svg { display:block; width:100%; height:auto; margin:10px auto 18px; }
 
 <h3>Broker</h3><p>A broker is a Kafka server responsible for storing partitions and serving client requests. A cluster normally has multiple brokers so partitions and replicas can be distributed.</p>
 <h3>Controller</h3><p>In modern Kafka, KRaft controllers manage cluster metadata. Kafka 4.0 operates without ZooKeeper and uses KRaft. citeturn0search3turn0search5</p>
-<h3>Client communication</h3><p>Kafka clients communicate with brokers using a binary TCP protocol. Producers and consumers maintain network connections and use Kafka APIs for metadata, produce, fetch, group coordination, and related operations. citeturn0search4</p>
+<h3>Client communication</h3><p>Kafka clients communicate with brokers using a binary TCP protocol. Producers and consumers maintain network connections and use Kafka APIs for metadata, produce, fetch, group coordination and related operations. citeturn0search4</p>
 </div>
 </section><section class="section" id="topics-partitions-and-offsets">
 <div class="section-title">Topics, Partitions and Offsets</div>
@@ -556,7 +556,7 @@ props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
 // min.insync.replicas = 2</code></pre></div>
 <div class="code-explanation">
 <div class="code-explanation-title">Explanation</div>
-<p>This is a common durability-oriented pattern, but exact values should be chosen based on availability, failure tolerance, latency, and workload requirements.</p>
+<p>This is a common durability-oriented pattern, but exact values should be chosen based on availability, failure tolerance, latency and workload requirements.</p>
 </div>
 </div></div><section class="section" id="kraft">
 <div class="section-title">KRaft</div>
@@ -579,7 +579,7 @@ inter.broker.listener.name=PLAINTEXT
 log.dirs=/tmp/kafka-logs</code></pre></div>
 <div class="code-explanation">
 <div class="code-explanation-title">Explanation</div>
-<p>This is a development-oriented example. Production KRaft configurations should use appropriate listener security, stable storage paths, multiple controllers, and deployment-specific networking.</p>
+<p>This is a development-oriented example. Production KRaft configurations should use appropriate listener security, stable storage paths, multiple controllers and deployment-specific networking.</p>
 </div>
 </div></div><section class="section" id="serialization">
 <div class="section-title">Serialization</div>
@@ -683,7 +683,7 @@ ConsumerRecords&lt;String, String&gt; records =
     consumer.poll(Duration.ofSeconds(1));</code></pre></div>
 <div class="code-explanation">
 <div class="code-explanation-title">Explanation</div>
-<p>assign() bypasses normal group subscription/assignment. It is useful for specialized consumers, deterministic replay tools, and administrative workflows.</p>
+<p>assign() bypasses normal group subscription/assignment. It is useful for specialized consumers, deterministic replay tools and administrative workflows.</p>
 </div>
 </div></div><div class="code-section">
 <div class="section-title">Seek to Offset</div>
@@ -781,7 +781,7 @@ try {
 <p>A transactional.id identifies the producer instance for transactional semantics. Production deployments need carefully designed stable transactional IDs and fencing/restart behavior.</p>
 </div>
 </div></div><div class="code-section">
-<div class="section-title">Consume, Produce, and Commit Offsets Transactionally</div>
+<div class="section-title">Consume, Produce and Commit Offsets Transactionally</div>
 <div class="code-layout">
 <div class="code-wrapper"><pre><code>producer.beginTransaction();
 
@@ -856,7 +856,7 @@ record.headers()
 producer.send(record);</code></pre></div>
 <div class="code-explanation">
 <div class="code-explanation-title">Explanation</div>
-<p>Headers carry metadata alongside the key and value. They are useful for tracing, event type information, version hints, and other transport metadata.</p>
+<p>Headers carry metadata alongside the key and value. They are useful for tracing, event type information, version hints and other transport metadata.</p>
 </div>
 </div></div><div class="code-section">
 <div class="section-title">Read Headers</div>
@@ -872,10 +872,10 @@ if (header != null) {
 </div></div><section class="section" id="retry-and-dead-letter-topics">
 <div class="section-title">Retry and Dead Letter Topics</div>
 <div class="section-content">
-<p>Kafka does not require one universal retry design. Common application patterns include delayed retry topics, retry topics with increasing delay, and a dead-letter topic (DLT) for records that repeatedly fail processing.</p>
+<p>Kafka does not require one universal retry design. Common application patterns include delayed retry topics, retry topics with increasing delay and a dead-letter topic (DLT) for records that repeatedly fail processing.</p>
 <h3>Example flow</h3>
 <p><code>orders → order-service → retry-1 → retry-2 → orders.DLT</code></p>
-<p>A retry record should normally retain enough context to diagnose and safely reprocess the original event, such as original topic, partition, offset, error information, attempt count, and correlation ID.</p>
+<p>A retry record should normally retain enough context to diagnose and safely reprocess the original event, such as original topic, partition, offset, error information, attempt count and correlation ID.</p>
 </div>
 </section><div class="code-section">
 <div class="section-title">Simple Retry Metadata</div>
@@ -913,7 +913,7 @@ producer.send(retry);</code></pre></div>
 </div></div><section class="section" id="kafka-streams">
 <div class="section-title">Kafka Streams</div>
 <div class="section-content">
-<p>Kafka Streams is a Java library for building stream-processing applications on Kafka. It supports transformations, grouping, aggregation, joins, windowing, state stores, and exactly-once processing modes.</p>
+<p>Kafka Streams is a Java library for building stream-processing applications on Kafka. It supports transformations, grouping, aggregation, joins, windowing, state stores and exactly-once processing modes.</p>
 </div>
 </section><div class="code-section">
 <div class="section-title">Kafka Streams DSL</div>
@@ -950,7 +950,7 @@ KafkaStreams streams =
 streams.start();</code></pre></div>
 <div class="code-explanation">
 <div class="code-explanation-title">Explanation</div>
-<p>Streams applications maintain processing topology state and use Kafka topics as durable input/output boundaries. For production use, configure state, exception handling, replication, and processing guarantees deliberately.</p>
+<p>Streams applications maintain processing topology state and use Kafka topics as durable input/output boundaries. For production use, configure state, exception handling, replication and processing guarantees deliberately.</p>
 </div>
 </div></div><section class="section" id="kafka-connect">
 <div class="section-title">Kafka Connect</div>
@@ -979,7 +979,7 @@ streams.start();</code></pre></div>
 ) {}</code></pre></div>
 <div class="code-explanation">
 <div class="code-explanation-title">Explanation</div>
-<p>A strongly defined event contract makes compatibility, testing, observability, and consumer development easier.</p>
+<p>A strongly defined event contract makes compatibility, testing, observability and consumer development easier.</p>
 </div>
 </div></div><section class="section" id="security">
 <div class="section-title">Security</div>
@@ -1033,16 +1033,16 @@ props.put(ProducerConfig.BATCH_SIZE_CONFIG, 64 * 1024);</code></pre></div>
 </div></div><section class="section" id="monitoring">
 <div class="section-title">Monitoring</div>
 <div class="section-content">
-<h3>Producer metrics</h3><p>Watch request latency, record rate, byte rate, batch behavior, retries, errors, and buffer availability.</p>
-<h3>Consumer metrics</h3><p>Watch consumer lag, poll behavior, fetch rate, processing latency, rebalance activity, and commit failures.</p>
-<h3>Broker metrics</h3><p>Watch request latency, disk utilization, network throughput, replica health, under-replicated partitions, controller health, and JVM/system resources.</p>
+<h3>Producer metrics</h3><p>Watch request latency, record rate, byte rate, batch behavior, retries, errors and buffer availability.</p>
+<h3>Consumer metrics</h3><p>Watch consumer lag, poll behavior, fetch rate, processing latency, rebalance activity and commit failures.</p>
+<h3>Broker metrics</h3><p>Watch request latency, disk utilization, network throughput, replica health, under-replicated partitions, controller health and JVM/system resources.</p>
 <h3>Consumer lag</h3><p>Lag represents how far a consumer's position is behind the log end. Persistent increasing lag generally means consumption capacity is below production rate, though temporary spikes can be normal.</p>
 </div>
 </section><section class="section" id="operational-design">
 <div class="section-title">Operational Design</div>
 <div class="section-content">
 <h3>Capacity planning</h3>
-<p>Estimate incoming records/sec, average record bytes, peak traffic, retention duration, replication factor, consumer throughput, and required replay window.</p>
+<p>Estimate incoming records/sec, average record bytes, peak traffic, retention duration, replication factor, consumer throughput and required replay window.</p>
 <h3>Partition planning</h3>
 <p>Partition count should be driven by expected throughput and parallelism, not simply by the number of brokers.</p>
 <h3>Failure planning</h3>
@@ -1117,7 +1117,7 @@ props.put(ProducerConfig.BATCH_SIZE_CONFIG, 64 * 1024);</code></pre></div>
 <li>☐ Secure network traffic and authenticate clients.</li>
 <li>☐ Apply least-privilege authorization.</li>
 <li>☐ Monitor consumer lag and replica health.</li>
-<li>☐ Test broker, consumer, and producer failure scenarios.</li>
+<li>☐ Test broker, consumer and producer failure scenarios.</li>
 <li>☐ Document event schema compatibility rules.</li>
 <li>☐ Benchmark representative traffic before final performance tuning.</li>
 </ul>
@@ -1125,7 +1125,7 @@ props.put(ProducerConfig.BATCH_SIZE_CONFIG, 64 * 1024);</code></pre></div>
 </section><section class="section" id="reference-notes">
 <div class="section-title">Reference Notes</div>
 <div class="section-content">
-<p>This guide uses Apache Kafka's official documentation for core architecture, partitioning, replication, delivery semantics, KRaft, and protocol behavior. Kafka 4.0 is the version context used for KRaft-specific notes; client dependency examples should be adjusted to the version selected by the application.</p>
+<p>This guide uses Apache Kafka's official documentation for core architecture, partitioning, replication, delivery semantics, KRaft and protocol behavior. Kafka 4.0 is the version context used for KRaft-specific notes; client dependency examples should be adjusted to the version selected by the application.</p>
 <p>Official documentation: <a href="https://kafka.apache.org/documentation/">Apache Kafka Documentation</a></p>
 </div>
 </section>

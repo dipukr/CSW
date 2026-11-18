@@ -11,7 +11,7 @@
     <div class="title">Composite</div>
     <div class="intro">
         <p>The Composite Design Pattern is a structural design pattern that allows you to represent individual objects and groups of objects using a common interface, so that clients can treat both uniformly.</p>
-        <p>It is especially useful when your application deals with hierarchical (tree-like) structures, such as file systems, GUI components, organizational hierarchies, menus, and document structures.</p>
+        <p>It is especially useful when your application deals with hierarchical (tree-like) structures, such as file systems, GUI components, organizational hierarchies, menus and document structures.</p>
     </div>
 
     <div class="subheading">What is the Composite Design Pattern</div>
@@ -93,7 +93,7 @@
     <span class="code-keyword">long</span> getSize();
 }</code></pre></div>
     <div class="intro">
-        <p>Now both <code>File</code> and <code>Folder</code> implement it, and client code becomes:</p>
+        <p>Now both <code>File</code> and <code>Folder</code> implement it and client code becomes:</p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> printSize(<span class="code-class">FileSystemNode</span> node) {
     <span class="code-class">System</span>.out.println(node.getSize());
@@ -260,13 +260,13 @@ printDetails(root);      <span class="code-comment">Works</span></code></pre></d
         <p>Modern GUI frameworks often organize UI elements as hierarchical trees. Consider an application screen:</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/composite-gui-screen.svg" alt="User Registration screen: a Personal Information panel with name and email labels and fields, and an Action panel with Submit and Cancel buttons" style="width:100%;max-width:760px">
+        <img src="../static/composite-gui-screen.svg" alt="User Registration screen: a Personal Information panel with name and email labels and fields and an Action panel with Submit and Cancel buttons" style="width:100%;max-width:760px">
     </div>
     <div class="intro">
-        <p>A screen consists of nested panels, labels, inputs, and buttons. Here:</p>
+        <p>A screen consists of nested panels, labels, inputs and buttons. Here:</p>
     </div>
     <div class="intro"><ul>
-        <li><code>Button</code>, <code>Label</code>, and <code>TextField</code> are Leaves.</li>
+        <li><code>Button</code>, <code>Label</code> and <code>TextField</code> are Leaves.</li>
         <li><code>Panel</code> is a Composite.</li>
         <li><code>UIComponent</code> is the common abstraction.</li>
     </ul></div>
@@ -329,7 +329,7 @@ Rendering Label: Username
 Rendering Button: Login</code></pre></div>
             <div class="intro font-size-16">
                 <p><strong>Why is Composite suitable here?</strong><br> Imagine a window containing 100 individual controls and 20 nested panels. Without Composite, the window may need to understand every control type and every nesting level. With Composite, it simply calls <code>mainPanel.render.</code></p>
-                <p>Every component is responsible for rendering itself or delegating rendering to its children. Same pattern can support operations such as <code>show</code>, <code>hide</code>, <code>enable</code>, <code>disable</code>, <code>validate</code>, and <code>layout</code>.</p>
+                <p>Every component is responsible for rendering itself or delegating rendering to its children. Same pattern can support operations such as <code>show</code>, <code>hide</code>, <code>enable</code>, <code>disable</code>, <code>validate</code> and <code>layout</code>.</p>
             </div>
         </div>
     </div>
@@ -400,7 +400,7 @@ Rendering Button: Login</code></pre></div>
             </div>
             <div class="code-block"><pre><code>45000</code></pre></div>
             <div class="intro">
-                <p>In real e-commerce systems, you could extend this with discounts, taxes, and quantities.</p>
+                <p>In real e-commerce systems, you could extend this with discounts, taxes and quantities.</p>
                 <p>The important design property is that both a <code>Product</code> and a <code>ProductBundle</code> implement <code>CartItem</code>, so checkout code can price either one uniformly.</p>
             </div>
         </div>
@@ -438,7 +438,7 @@ Rendering Button: Login</code></pre></div>
 }</code></pre></div>
     </div>
     <div class="intro">
-        <p><strong>Advantages:</strong> Type-safe, clean abstractions, and Leaves don't expose meaningless operations.</p>
+        <p><strong>Advantages:</strong> Type-safe, clean abstractions and Leaves don't expose meaningless operations.</p>
         <p><strong>Disadvantage:</strong> Clients cannot call <code>add()</code> through a <code>Component</code> reference.</p>
         <p><strong>Approach B: Transparent Composite.</strong> The common Component interface declares child-management operations.</p>
     </div>
@@ -482,15 +482,15 @@ Rendering Button: Login</code></pre></div>
 }</code></pre></div>
         </div>
     </div>
-    <div class="callout callout-note"><p><strong>Recommendation:</strong> Use the Safe Composite approach when you design new Java applications. Place <code>add()</code>, <code>remove()</code>, and other child-management operations in the Composite unless your requirements genuinely justify the alternative.</p></div>
+    <div class="callout callout-note"><p><strong>Recommendation:</strong> Use the Safe Composite approach when you design new Java applications. Place <code>add()</code>, <code>remove()</code> and other child-management operations in the Composite unless your requirements genuinely justify the alternative.</p></div>
 
     <div class="subheading">When should you use Composite</div>
     <div class="intro">
         <p>Use the Composite Pattern when:</p>
     </div>
     <div class="intro"><ul>
-        <li><strong>Your domain naturally has a tree-like structure.</strong> Examples include directories, organizational units, document elements, UI containers, nested menus, and product bundles.</li>
-        <li><strong>Individual objects and collections share meaningful operations.</strong> For instance, both a file and a folder can report size, and both a product and a bundle can report price.</li>
+        <li><strong>Your domain naturally has a tree-like structure.</strong> Examples include directories, organizational units, document elements, UI containers, nested menus and product bundles.</li>
+        <li><strong>Individual objects and collections share meaningful operations.</strong> For instance, both a file and a folder can report size and both a product and a bundle can report price.</li>
         <li><strong>Clients should treat Leaves and Composites uniformly.</strong> A client should be able to call <code>operation()</code> without checking concrete types.</li>
         <li><strong>You need recursive behavior.</strong> Operations such as aggregate calculation, rendering, validation, or export can naturally propagate through nested components.</li>
         <li><strong>The hierarchy must be extensible.</strong> New Leaf or Composite implementations can generally be introduced without modifying existing client logic, provided they honor the Component contract.</li>
@@ -624,7 +624,7 @@ bundle.add(laptop);</code></pre></div>
                 <tr><td>What</td><td>A structural design pattern for treating individual objects and groups uniformly.</td></tr>
                 <tr><td>Why</td><td>To simplify client code and support recursive part-whole hierarchies.</td></tr>
                 <tr><td>When</td><td>When your system models directories, GUI components, nested menus, organizational structures, bundles or other trees.</td></tr>
-                <tr><td>How</td><td>Create a common Component abstraction, implement Leaves, and implement Composites containing other Components.</td></tr>
+                <tr><td>How</td><td>Create a common Component abstraction, implement Leaves and implement Composites containing other Components.</td></tr>
                 <tr><td>Core principle</td><td>Uniform treatment of individual and composite objects.</td></tr>
                 <tr><td>Main benefit</td><td>Client code does not need to distinguish Leaves from Composites for common operations.</td></tr>
                 <tr><td>Main trade-off</td><td>Can make component-specific constraints harder to enforce and requires careful handling of hierarchy invariants.</td></tr>
@@ -645,9 +645,9 @@ node.getSize();</code></pre></div>
     <div class="section realworld">
         <div class="section-title">Real-world example</div>
         <div class="section-content"><ul>
-            <li><strong>Java Swing</strong> &mdash; a JPanel (composite) holds buttons and other panels, and paint or layout calls recurse through the whole component tree uniformly.</li>
+            <li><strong>Java Swing</strong> &mdash; a JPanel (composite) holds buttons and other panels and paint or layout calls recurse through the whole component tree uniformly.</li>
             <li><strong>HTML DOM and the browser</strong> &mdash; every Node has children, so an element and a whole subtree are treated the same when rendering or removing.</li>
-            <li><strong>File systems</strong> &mdash; directories contain files and other directories, and operations like size or delete apply uniformly to either.</li>
+            <li><strong>File systems</strong> &mdash; directories contain files and other directories and operations like size or delete apply uniformly to either.</li>
             <li><strong>Java AWT Container</strong> &mdash; Component is the leaf base and Container is the composite that nests further components.</li>
             <li><strong>JSF and Android View hierarchies</strong> &mdash; a ViewGroup or UIComponent tree lets a container and a single widget be drawn and traversed the same way.</li>
             <li><strong>XML and JSON documents</strong> &mdash; nested elements and objects form part-whole trees that parsers walk recursively.</li>

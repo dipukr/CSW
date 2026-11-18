@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 122" font-family="'Segoe UI', Roboto, Arial, sans-serif" fill="#222">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#444"/>
+    </marker>
+    <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10" fill="none" stroke="#444" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <g fill="#fff" stroke="#222" stroke-width="1.5">
+    <rect rx="3" x="15" y="34" width="65" height="56"/>
+    <rect rx="2" x="25" y="44" width="45" height="6" stroke-width="1"/>
+    <rect rx="2" x="25" y="56" width="45" height="6" stroke-width="1"/>
+    <rect rx="2" x="25" y="68" width="45" height="6" stroke-width="1"/>
+    <rect rx="3" x="136" y="8" width="98" height="31"/>
+    <rect rx="2" x="146" y="18" width="78" height="6" stroke-width="1"/>
+    <rect rx="3" x="136" y="46" width="98" height="31"/>
+    <rect rx="2" x="146" y="56" width="78" height="6" stroke-width="1"/>
+    <rect rx="3" x="136" y="84" width="98" height="31"/>
+    <rect rx="2" x="146" y="94" width="78" height="6" stroke-width="1"/>
+  </g>
+  <g stroke="#888" stroke-width="1.5" fill="none" marker-end="url(#ah)">
+    <path d="M88 62 H126"/>
+  </g>
+</svg>

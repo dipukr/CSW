@@ -51,7 +51,7 @@
         <p>We could create subclasses for every combination.</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/decorator-inheritance-explosion.svg" alt="Coffee with subclasses MilkCoffee, CreamCoffee and ShotCoffee, and below them combination subclasses MilkCreamCoffee, MilkShotCoffee and CreamShotCoffee" style="width:100%;max-width:640px">
+        <img src="../static/decorator-inheritance-explosion.svg" alt="Coffee with subclasses MilkCoffee, CreamCoffee and ShotCoffee and below them combination subclasses MilkCreamCoffee, MilkShotCoffee and CreamShotCoffee" style="width:100%;max-width:640px">
     </div>
     <div class="intro">
         <p>Illustrative inheritance explosion: combinations require additional concrete classes.</p>
@@ -447,7 +447,7 @@ Execution time: 2.4 ms</code></pre></div>
 
     <div class="subheading">Decorator Design Pattern: ProductService Example (Spring Boot)</div>
     <div class="intro">
-        <p>Let's apply the Decorator Design Pattern to an <code>ProductService</code>, adding logging, caching, retry, and transactional behavior without modifying its core business logic.</p>
+        <p>Let's apply the Decorator Design Pattern to an <code>ProductService</code>, adding logging, caching, retry and transactional behavior without modifying its core business logic.</p>
         <p>The idea is to keep <code>ProductServiceImpl</code> responsible only for fetching a product from <code>ProductDAO</code> and mapping it to <code>ProductBO</code>. Each decorator adds one additional responsibility.</p>
     </div>
 
@@ -522,7 +522,7 @@ Execution time: 2.4 ms</code></pre></div>
 
     <div class="subheading">Logging decorator</div>
     <div class="intro">
-        <p>Logging decorator records when a product is fetched, how long the operation takes, and whether it succeeds or fails.</p>
+        <p>Logging decorator records when a product is fetched, how long the operation takes and whether it succeeds or fails.</p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LoggingProductServiceDecorator</span><span class="code-keyword">extends</span> <span class="code-class">ProductServiceDecorator</span> {
     <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">final</span> <span class="code-class">Logger</span> log = <span class="code-class">LoggerFactory</span>.getLogger(<span class="code-class">LoggingProductServiceDecorator</span>.<span class="code-keyword">class</span>);
@@ -558,7 +558,7 @@ Execution time: 2.4 ms</code></pre></div>
     </ol></div>
     <div class="callout callout-note"><p><strong>Key advantage:</strong> Neither <code>ProductServiceImpl</code> nor <code>ProductDAO</code> needs to know logging is being performed.</p></div>
     <div class="intro">
-        <p>Because logging is the outermost decorator, it measures the entire operation, including potential cache lookup, retry delays, and database access.</p>
+        <p>Because logging is the outermost decorator, it measures the entire operation, including potential cache lookup, retry delays and database access.</p>
     </div>
 
     <div class="subheading">Caching decorator</div>
@@ -614,7 +614,7 @@ productService.getProduct(<span class="code-string">"P102"</span>);</code></pre>
     <div class="intro">
         <p>If the underlying service throws an exception, the cache does not store the failed result.</p>
     </div>
-    <div class="callout callout-warning"><p><strong>Production considerations:</strong> This is an educational, in-memory cache without expiration. Real services typically use Caffeine, Redis, or Spring Cache for TTL, capacity limits, invalidation, and multi-instance behavior. Cached <code>ProductBO</code> objects should also be immutable or copied defensively to prevent callers from modifying shared cached objects.</p></div>
+    <div class="callout callout-warning"><p><strong>Production considerations:</strong> This is an educational, in-memory cache without expiration. Real services typically use Caffeine, Redis, or Spring Cache for TTL, capacity limits, invalidation and multi-instance behavior. Cached <code>ProductBO</code> objects should also be immutable or copied defensively to prevent callers from modifying shared cached objects.</p></div>
 
     <div class="subheading">Retry decorator</div>
     <div class="intro">
@@ -663,7 +663,7 @@ productService.getProduct(<span class="code-string">"P102"</span>);</code></pre>
         <p>This example uses <strong>exponential backoff</strong>: the delay doubles after each failed attempt, up to a cap.</p>
         <p>Notice that we only retry <code>TransientDataAccessException</code>. We don't retry programming errors, invalid inputs, or arbitrary runtime exceptions.</p>
     </div>
-    <div class="callout callout-note"><p>In a production application, Spring Retry or Resilience4j can provide more sophisticated retry policies, jitter, metrics, and configuration. Also, <code>Thread.sleep</code> blocks the calling thread, so this implementation is intended for synchronous services.</p></div>
+    <div class="callout callout-note"><p>In a production application, Spring Retry or Resilience4j can provide more sophisticated retry policies, jitter, metrics and configuration. Also, <code>Thread.sleep</code> blocks the calling thread, so this implementation is intended for synchronous services.</p></div>
 
     <div class="subheading">Transactional decorator</div>
     <div class="intro">
@@ -798,7 +798,7 @@ productService.getProduct(<span class="code-string">"P102"</span>);</code></pre>
     <div class="intro">
         <p>Consider two possible arrangements.</p>
     </div>
-    <div class="callout callout-note"><p><strong>Recommended order:</strong> Logging → Caching → Retry → Transaction → DAO<br>A cache hit avoids the transaction, and every retry creates a new transaction. Logging captures total response time.</p></div>
+    <div class="callout callout-note"><p><strong>Recommended order:</strong> Logging → Caching → Retry → Transaction → DAO<br>A cache hit avoids the transaction and every retry creates a new transaction. Logging captures total response time.</p></div>
     <div class="callout callout-warning"><p><strong>Potentially problematic order:</strong> Logging → Transaction → Retry → Caching → DAO<br>A transaction opens even for cache hits. Worse, retries may occur inside one transaction that has already been marked rollback-only.</p></div>
     <div class="intro">
         <p>For the original read operation, the recommended chain is a sensible default. The exact ordering may change for writes, distributed caches, or services with different transaction requirements.</p>
@@ -849,7 +849,7 @@ service = <span class="code-keyword">new</span> <span class="code-class">Authori
         <p>The decorator and proxy patterns are related, but not identical in intent: decorators explicitly compose additional behavior, whereas proxies generally control or mediate access to an object.</p>
         <p>In typical Spring Boot applications, annotations such as <code>@Transactional</code> and <code>@Cacheable</code> are often more convenient than manually implementing every decorator. Explicit decorators are particularly useful when you want transparent, testable, configurable behavior implemented as ordinary Java objects.</p>
     </div>
-    <div class="callout callout-warning"><p><strong>A few production considerations:</strong> The in-memory cache requires expiration and invalidation if products can change. Retry should use carefully selected transient exceptions, sensible backoff, and ideally jitter. For operations that modify data, retry safety and transaction boundaries need additional attention because repeating non-idempotent writes can cause duplicate effects.</p></div>
+    <div class="callout callout-warning"><p><strong>A few production considerations:</strong> The in-memory cache requires expiration and invalidation if products can change. Retry should use carefully selected transient exceptions, sensible backoff and ideally jitter. For operations that modify data, retry safety and transaction boundaries need additional attention because repeating non-idempotent writes can cause duplicate effects.</p></div>
 
     <div class="subheading">Final takeaway</div>
     <div class="intro">
@@ -873,7 +873,7 @@ service = <span class="code-keyword">new</span> <span class="code-class">Authori
     </div>
     <div class="code-block"><pre><code><span class="code-class">ProductBO</span> product = service.getProduct(<span class="code-string">"P101"</span>);</code></pre></div>
     <div class="intro">
-        <p>Each decorator decides what to do before or after delegation, and the underlying <code>ProductServiceImpl</code> remains focused on its original responsibility: retrieving and mapping a product.</p>
+        <p>Each decorator decides what to do before or after delegation and the underlying <code>ProductServiceImpl</code> remains focused on its original responsibility: retrieving and mapping a product.</p>
         <p>That is the fundamental advantage of the Decorator Pattern: extending an object's behavior dynamically through composition, without modifying its original implementation.</p>
     </div>
 

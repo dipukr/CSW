@@ -229,7 +229,7 @@ Rejected: No approver has sufficient authority</code></pre></div>
 }</code></pre></div>
     <div class="intro">
         <p>This is perfectly acceptable for a small, fixed hierarchy.</p>
-        <p>But imagine a more complex system where approvals depend on departments, expense types, regional rules, compliance checks, and different authorization limits.</p>
+        <p>But imagine a more complex system where approvals depend on departments, expense types, regional rules, compliance checks and different authorization limits.</p>
         <p>With a large conditional structure, all that logic can become tightly coupled inside one method.</p>
         <p>With Chain of Responsibility, you can introduce a new handler:</p>
     </div>
@@ -312,7 +312,7 @@ lead.setNext(manager).setNext(director).setNext(vp);</code></pre></div>
     <div class="intro">
         <p>This forwards the request to the next handler.</p>
         <p>The logging handler performs some work <strong>before</strong> forwarding the request, then performs additional work <strong>after</strong> the downstream handlers return.</p>
-        <p>This is useful for request logging, timing, tracing, and collecting performance metrics.</p>
+        <p>This is useful for request logging, timing, tracing and collecting performance metrics.</p>
         <p class="minor-heading"><strong>Authentication Handler</strong></p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">AuthenticationHandler</span> <span class="code-keyword">implements</span> <span class="code-class">HttpHandler</span> {
@@ -431,7 +431,7 @@ Successfully processed /orders</code></pre></div>
     <div class="intro"><ul>
         <li><strong>INFO:</strong> Print to console.</li>
         <li><strong>WARN:</strong> Print to console and write to a log file.</li>
-        <li><strong>ERROR:</strong> Print to console, write to a log file, and send an alert.</li>
+        <li><strong>ERROR:</strong> Print to console, write to a log file and send an alert.</li>
     </ul></div>
     <div class="intro">
         <p>Unlike the expense approval example, a request may be processed by <strong>multiple handlers</strong>, with each handler continuing to the next.</p>
@@ -521,12 +521,12 @@ Alert: Database connection failed</code></pre></div>
     <div class="intro">
         <p>This delegates the request to the next filter or, eventually, the destination servlet.</p>
         <p>If a filter does not invoke <code>chain.doFilter()</code> then normal downstream processing stops.</p>
-        <p>Other examples include Spring Security filter chains, middleware pipelines, request interceptors, and some event-processing systems.</p>
+        <p>Other examples include Spring Security filter chains, middleware pipelines, request interceptors and some event-processing systems.</p>
     </div>
 
     <div class="subheading">Chain of Responsibility vs Other Design Patterns</div>
     <div class="intro">
-        <p>Chain of Responsibility can look similar to Decorator, Strategy, and Command patterns.</p>
+        <p>Chain of Responsibility can look similar to Decorator, Strategy and Command patterns.</p>
     </div>
     <div class="section cmp"><div class="section-content">
         <table class="cmp-table centered cmp-peer">
@@ -583,7 +583,7 @@ Alert: Database connection failed</code></pre></div>
         <li>Requests need to pass through a configurable sequence of checks or operations.</li>
     </ul></div>
     <div class="intro">
-        <p>Typical applications include approval workflows, exception-handling hierarchies, help-desk escalation, authentication pipelines, logging systems, and request validation.</p>
+        <p>Typical applications include approval workflows, exception-handling hierarchies, help-desk escalation, authentication pipelines, logging systems and request validation.</p>
     </div>
     <div class="callout callout-warning"><p>However, if you only have a few simple, fixed conditions, a straightforward <code>if-else</code> or <code>switch</code> may be easier to understand and maintain.</p></div>
 
@@ -599,7 +599,7 @@ Alert: Database connection failed</code></pre></div>
     <div class="intro">
         <p>In middleware-style chains, the handler may process the request <strong>and then</strong> continue forwarding it rather than choosing between the two.</p>
         <p>The central idea is that the client sends a request to the beginning of the chain, while the handlers collectively determine how far it travels and what processing occurs.</p>
-        <p>This makes the pattern especially useful for extensible approval systems, request-processing middleware, security filters, and other workflows where responsibilities must be separated into modular stages.</p>
+        <p>This makes the pattern especially useful for extensible approval systems, request-processing middleware, security filters and other workflows where responsibilities must be separated into modular stages.</p>
     </div>
     <div class="section realworld">
         <div class="section-title">Real-world example</div>

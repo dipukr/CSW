@@ -11,7 +11,7 @@
     <div class="title">Producer-Consumer Problem</div>
 
     <div class="intro">
-        <p>The Producer-Consumer problem in operating systems is <strong>a classic synchronization challenge where a producer process creates data and places it into a shared, fixed-size buffer, while a consumer process removes and processes data from the same buffer</strong>. The core problem is to coordinate these processes, preventing the producer from adding to a full buffer, the consumer from removing from an empty buffer, and ensuring only one process accesses the buffer at a time to avoid race conditions and deadlocks. Solutions typically involve shared memory for the buffer and synchronization primitives like semaphores to manage access and buffer state.</p>
+        <p>The Producer-Consumer problem in operating systems is <strong>a classic synchronization challenge where a producer process creates data and places it into a shared, fixed-size buffer, while a consumer process removes and processes data from the same buffer</strong>. The core problem is to coordinate these processes, preventing the producer from adding to a full buffer, the consumer from removing from an empty buffer and ensuring only one process accesses the buffer at a time to avoid race conditions and deadlocks. Solutions typically involve shared memory for the buffer and synchronization primitives like semaphores to manage access and buffer state.</p>
         <p class="minor-heading"><strong>Components of the Problem</strong></p>
     </div>
     <div class="intro"><ul>
@@ -68,7 +68,6 @@
     </div>
 
     <div class="section code-section">
-        <div class="section-title">Code</div>
         <div class="code-layout code-layout-equal">
             <div class="code-wrapper">
 <pre><code><span class="code-keyword">public class</span> <span class="code-class">BoundedBuffer</span> {
@@ -110,7 +109,7 @@
     }
 }
 
-<span class="code-keyword">void</span> main() <span class="code-keyword">throws</span> <span class="code-class">Exception</span> {
+<span class="code-keyword">void</span> main(String[] args) <span class="code-keyword">throws</span> <span class="code-class">Exception</span> {
     <span class="code-class">var</span> buffer = <span class="code-keyword">new</span> <span class="code-class">BoundedBuffer</span>();
 
     <span class="code-class">Thread</span> producer = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
@@ -147,9 +146,9 @@
                     <code>lock.newCondition()</code> creates a <strong>condition variable</strong> bound to that lock. Unlike the lock itself, a condition doesn't protect data; it lets a thread that holds the lock give it up and sleep until some predicate about that data becomes true.<br><br>
                     Two separate conditions model two separate predicates on the same buffer: <code>notFull</code> means "there's room to put", <code>notEmpty</code> means "there's an item to take". Splitting them avoids waking every waiter for every change &mdash; a producer's signal only wakes consumers, not other producers.<br><br>
                     Calling <code>notFull.await()</code> atomically releases <code>lock</code> and suspends the thread. Both steps happen as one operation, so no other thread can sneak in between "check the condition" and "go to sleep" and change the buffer unseen &mdash; that gap is exactly what causes the classic lost-wakeup bug.<br><br>
-                    While a thread waits inside <code>await()</code>, the lock is free, so the other side (say, the consumer taking items) can acquire it, run, and call <code>signalAll()</code>.<br><br>
-                    <code>signalAll()</code> wakes every thread parked on that condition, but they don't resume immediately &mdash; each first re-acquires <code>lock</code> (queueing if the signaller still holds it, which it does until <code>unlock()</code> runs in <code>finally</code>), and only then returns from <code>await()</code>.<br><br>
-                    The condition is checked in a <code>while</code> loop, not an <code>if</code>. After being woken, a thread must re-verify the predicate itself: <code>signalAll()</code> can wake more threads than there is capacity for (e.g. three consumers woken by one <code>put</code>), and the JVM is also permitted to wake a waiter with no signal at all (a "spurious wakeup"). The loop re-checks <code>count</code> and calls <code>await()</code> again if the buffer isn't actually in the state this thread needs.<br><br>
+                    While a thread waits inside <code>await()</code>, the lock is free, so the other side (say, the consumer taking items) can acquire it, run and call <code>signalAll()</code>.<br><br>
+                    <code>signalAll()</code> wakes every thread parked on that condition, but they don't resume immediately &mdash; each first re-acquires <code>lock</code> (queueing if the signaller still holds it, which it does until <code>unlock()</code> runs in <code>finally</code>) and only then returns from <code>await()</code>.<br><br>
+                    The condition is checked in a <code>while</code> loop, not an <code>if</code>. After being woken, a thread must re-verify the predicate itself: <code>signalAll()</code> can wake more threads than there is capacity for (e.g. three consumers woken by one <code>put</code>) and the JVM is also permitted to wake a waiter with no signal at all (a "spurious wakeup"). The loop re-checks <code>count</code> and calls <code>await()</code> again if the buffer isn't actually in the state this thread needs.<br><br>
                     <code>putptr</code>/<code>takeptr</code> wrap around the array (circular/ring buffer) so slots are reused without shifting elements; <code>count</code> is the single source of truth both conditions are evaluated against.<br><br>
                     Each successful <code>put</code> increases <code>count</code> and calls <code>notEmpty.signalAll()</code> (data now exists); each successful <code>take</code> decreases <code>count</code> and calls <code>notFull.signalAll()</code> (space now exists) &mdash; each side only ever wakes the other.<br><br>
                     The <code>try</code>/<code>finally</code> guarantees <code>lock.unlock()</code> runs even if an exception is thrown mid-method, so the lock (and therefore the buffer) can never be left permanently stuck.<br><br>

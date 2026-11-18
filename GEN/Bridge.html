@@ -41,7 +41,7 @@
 
     <div class="subheading">Why do we need the Bridge Pattern</div>
     <div class="intro">
-        <p>Consider a remote-control application supporting different devices. Initially, we have two devices, TV and Radio, and two types of remotes, Basic Remote and Advanced Remote.</p>
+        <p>Consider a remote-control application supporting different devices. Initially, we have two devices, TV and Radio and two types of remotes, Basic Remote and Advanced Remote.</p>
         <p><strong>Without Bridge Pattern (Inheritance Approach)</strong>, we might create classes like:</p>
     </div>
     <div class="svg-diagram">
@@ -66,7 +66,7 @@
         <li><strong>Class explosion:</strong> Every new remote type potentially requires one class per device.</li>
         <li><strong>Tight coupling:</strong> Remote behavior becomes tied to a specific device type.</li>
         <li><strong>Poor extensibility:</strong> Supporting new devices requires creating new remote subclasses.</li>
-        <li><strong>Code duplication:</strong> Volume control, mute, and power operations may be repeated.</li>
+        <li><strong>Code duplication:</strong> Volume control, mute and power operations may be repeated.</li>
         <li><strong>Violation of the OCP:</strong> Adding another variation requires extending or modifying device-specific remote classes.</li>
     </ul></div>
     <div class="intro">

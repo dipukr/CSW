@@ -95,7 +95,7 @@ br {
     padding: 16px 24px 6px;
     background: #ffffff;
     border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border-radius: 5px;
     counter-reset: step;
 }
 
@@ -254,7 +254,7 @@ br {
 .benefit-card {
     background: #faf8ff;
     border: 1px solid #e9e2fb;
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 14px 18px;
 }
 
@@ -338,6 +338,8 @@ br {
     margin-top: 15px;
     background: #effcfb;
 }
+
+.when-use + .intro { margin-top: 15px; }   /* text right after a teal box gets the same gap as above it */
 
 .when-use .section-content {
     font-size: 17px;
@@ -814,7 +816,7 @@ br {
     text-align: center;
     background: #f7f8fa;
     border: 1px solid #e5e7eb;
-    border-radius: 6px;
+    border-radius: 5px;
 }
 
 .svg-diagram img {
@@ -940,7 +942,7 @@ br {
 }
 
 .code-block {
-    margin: 10px 0;
+    margin: 10px 0 20px;
     border: 0;
     border-radius: 5px;
     overflow: hidden;
@@ -979,7 +981,7 @@ br {
 }
 
 .code-section {
-    margin: 10px 0;
+    margin: 10px 0 20px;
     border: 0;
     border-radius: 5px;
     overflow: hidden;
@@ -1302,7 +1304,7 @@ strong {
 }
 
 /* bold mini-heading inside an intro block: space above separates it from the previous paragraph */
-.intro p.minor-heading { margin-top: 18px; }
+.intro p.minor-heading { margin-top: 18px; font-size: 19px; }   /* body text is 18px */
 .subheading + .intro > p.minor-heading:first-child { margin-top: 0; }
 
 /* ChatGPT-style answer widgets (cards, flow nodes, stat tiles, steppers) */

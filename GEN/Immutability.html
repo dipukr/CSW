@@ -24,7 +24,7 @@
 
     <div class="subheading">Object State</div>
     <div class="intro">
-        <p>An object&rsquo;s <strong>state</strong> is the values of its instance fields, plus any observable data reachable through them. An object is <strong>mutable</strong> if that state can change after construction, and <strong>immutable</strong> if it cannot.</p>
+        <p>An object&rsquo;s <strong>state</strong> is the values of its instance fields, plus any observable data reachable through them. An object is <strong>mutable</strong> if that state can change after construction and <strong>immutable</strong> if it cannot.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -58,7 +58,7 @@ emp.setSalary(<span class="code-number">90000</span>); <span class="code-comment
 
     <div class="subheading">Mutation vs Replacement</div>
     <div class="intro">
-        <p>The key idea behind immutability is the difference between <strong>changing an existing object</strong> and <strong>creating a new object</strong>. On the left, a mutable <code>Employee</code> is changed in place, and every reference to it sees the new salary. On the right, an immutable <code>BankAccount</code> is never changed: <code>deposit()</code> returns a second object, and the original keeps its balance.</p>
+        <p>The key idea behind immutability is the difference between <strong>changing an existing object</strong> and <strong>creating a new object</strong>. On the left, a mutable <code>Employee</code> is changed in place and every reference to it sees the new salary. On the right, an immutable <code>BankAccount</code> is never changed: <code>deposit()</code> returns a second object and the original keeps its balance.</p>
     </div>
     <div class="svg-diagram">
         <img src="../static/immutability-mutation-vs-replacement.svg" alt="Left: the variable emp refers to one Employee object whose salary changes from 50000 to 90000. Right: original refers to a BankAccount with balance 5000; deposit(2000) creates a second BankAccount with balance 7000, referred to by updated" style="width:100%;max-width:640px">
@@ -148,9 +148,9 @@ name = <span class="code-string">"Bob"</span>; <span class="code-comment">Allowe
         </div>
     </div>
     <div class="intro">
-        <p>This class is immutable because <code>String</code> is immutable, <code>int</code> is a primitive, and nothing in the class can change its fields. Code such as <code>emp.salary = 90000</code> or <code>emp.setSalary(90000)</code> does not compile.</p>
+        <p>This class is immutable because <code>String</code> is immutable, <code>int</code> is a primitive and nothing in the class can change its fields. Code such as <code>emp.salary = 90000</code> or <code>emp.setSalary(90000)</code> does not compile.</p>
     </div>
-    <div class="callout callout-note"><p>On this page the fields of immutable classes are declared <code>final</code> on purpose: <code>private final</code> fields are part of what makes the classes immutable, and the Java memory model gives <code>final</code> fields a visibility guarantee that matters for thread safety.</p></div>
+    <div class="callout callout-note"><p>On this page the fields of immutable classes are declared <code>final</code> on purpose: <code>private final</code> fields are part of what makes the classes immutable and the Java memory model gives <code>final</code> fields a visibility guarantee that matters for thread safety.</p></div>
 
     <div class="subheading">Why final Fields Are Not Enough</div>
     <div class="intro">
@@ -183,7 +183,7 @@ dept.getEmployees().add(<span class="code-string">"Charlie"</span>); <span class
 
     <div class="subheading">Defensive Copying</div>
     <div class="intro">
-        <p>A <strong>defensive copy</strong> is a new object made so that callers cannot change an object&rsquo;s internal state through a shared reference. Copy mutable inputs in the constructor, and copy or wrap mutable outputs in getters.</p>
+        <p>A <strong>defensive copy</strong> is a new object made so that callers cannot change an object&rsquo;s internal state through a shared reference. Copy mutable inputs in the constructor and copy or wrap mutable outputs in getters.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -210,7 +210,7 @@ dept.getEmployees().add(<span class="code-string">"Charlie"</span>); <span class
         </div>
     </div>
     <div class="intro">
-        <p><code>List.copyOf()</code> (Java 10) returns an unmodifiable copy, and may return its argument unchanged if that is already an unmodifiable list. An older alternative copies first and then wraps the copy:</p>
+        <p><code>List.copyOf()</code> (Java 10) returns an unmodifiable copy and may return its argument unchanged if that is already an unmodifiable list. An older alternative copies first and then wraps the copy:</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -362,7 +362,7 @@ members.get(<span class="code-number">0</span>).name = <span class="code-string"
 
     <div class="subheading">Records and Immutability</div>
     <div class="intro">
-        <p>Records (Java 16) are a concise way to declare immutable data carriers. The compiler generates <code>private final</code> fields, a canonical constructor, accessors, <code>equals()</code>, <code>hashCode()</code> and <code>toString()</code>, and records cannot be extended.</p>
+        <p>Records (Java 16) are a concise way to declare immutable data carriers. The compiler generates <code>private final</code> fields, a canonical constructor, accessors, <code>equals()</code>, <code>hashCode()</code> and <code>toString()</code> and records cannot be extended.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -525,7 +525,7 @@ dept.employees().add(<span class="code-string">"Charlie"</span>); <span class="c
 
     <div class="subheading">Immutable Keys in HashMap</div>
     <div class="intro">
-        <p>Hash-based collections such as <code>HashMap</code> and <code>HashSet</code> place an entry by the key&rsquo;s hash code when it is inserted. If a mutable key changes afterwards, its hash code changes too, and later lookups search the wrong bucket.</p>
+        <p>Hash-based collections such as <code>HashMap</code> and <code>HashSet</code> place an entry by the key&rsquo;s hash code when it is inserted. If a mutable key changes afterwards, its hash code changes too and later lookups search the wrong bucket.</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
@@ -672,10 +672,10 @@ temp.add(<span class="code-string">"Bob"</span>);
     <div class="subheading">When to Use Immutability</div>
     <div class="intro">
         <ul>
-            <li><strong>Prefer immutability</strong> for value objects such as money, coordinates, dates and identifiers, and for configuration snapshots, DTOs, event messages, map keys and data shared between threads.</li>
+            <li><strong>Prefer immutability</strong> for value objects such as money, coordinates, dates and identifiers and for configuration snapshots, DTOs, event messages, map keys and data shared between threads.</li>
             <li><strong>Prefer controlled mutability</strong> for in-memory counters, caches, long-lived stateful components, JPA entities and performance-critical algorithms where replacing whole structures is too costly.</li>
         </ul>
-        <p>Most production applications combine both: immutable values represent facts and data, mutable services coordinate change, concurrency primitives manage shared updates, and database transactions protect persisted state.</p>
+        <p>Most production applications combine both: immutable values represent facts and data, mutable services coordinate change, concurrency primitives manage shared updates and database transactions protect persisted state.</p>
     </div>
 
     <div class="subheading">Interview Questions</div>
@@ -685,7 +685,7 @@ temp.add(<span class="code-string">"Bob"</span>);
         <p class="minor-heading"><strong>Does final make an object immutable?</strong></p>
         <p>No. <code>final</code> prevents a field or variable from being reassigned; it does not stop the referenced object from changing.</p>
         <p class="minor-heading"><strong>Why is String immutable?</strong></p>
-        <p>It allows strings to be shared and interned safely, keeps hash codes stable so strings work as map keys, and makes them safe to pass between threads and to security-sensitive code.</p>
+        <p>It allows strings to be shared and interned safely, keeps hash codes stable so strings work as map keys and makes them safe to pass between threads and to security-sensitive code.</p>
         <p class="minor-heading"><strong>Are records always immutable?</strong></p>
         <p>Only shallowly. Their fields are <code>final</code>, but deep immutability depends on the component types and on defensive copying of mutable components.</p>
         <p class="minor-heading"><strong>Can an immutable class have methods that change values?</strong></p>

@@ -11,10 +11,10 @@
     <div class="title">Object-Oriented Software Design Principles — Comprehensive Guide with Java Examples</div>
 
     <div class="intro">
-        <p>Object-Oriented Software Design (OOD) is the process of designing software systems using <strong>objects, classes, interfaces, responsibilities, and relationships</strong> so that the resulting software is maintainable, extensible, testable, reusable, and easy to understand.</p>
+        <p>Object-Oriented Software Design (OOD) is the process of designing software systems using <strong>objects, classes, interfaces, responsibilities and relationships</strong> so that the resulting software is maintainable, extensible, testable, reusable and easy to understand.</p>
         <p>Writing object-oriented code does not automatically mean that the software is well-designed.</p>
-        <p>For example, a Java application can use classes, inheritance, interfaces, and polymorphism and still suffer from tight coupling, duplicated logic, poor encapsulation, and fragile dependencies.</p>
-        <p><strong>Object-oriented design principles guide us in deciding what responsibilities each class should have, how classes should collaborate, and how a system should evolve when requirements change.</strong></p>
+        <p>For example, a Java application can use classes, inheritance, interfaces and polymorphism and still suffer from tight coupling, duplicated logic, poor encapsulation and fragile dependencies.</p>
+        <p><strong>Object-oriented design principles guide us in deciding what responsibilities each class should have, how classes should collaborate and how a system should evolve when requirements change.</strong></p>
     </div>
 
     <div class="subheading">1. Overview of Object-Oriented Design Principles</div>
@@ -30,11 +30,11 @@
                 <tr><td>Object interactions</td><td>Law of Demeter, Tell Don&rsquo;t Ask, Information Hiding</td></tr>
                 <tr><td>Change management</td><td>Encapsulate What Varies, Program to Interfaces, Protected Variations</td></tr>
                 <tr><td>Behavioral design</td><td>Design by Contract, Immutability, Command–Query Separation</td></tr>
-                <tr><td>GRASP</td><td>Information Expert, Creator, Controller, Polymorphism, Indirection, Pure Fabrication, and others</td></tr>
+                <tr><td>GRASP</td><td>Information Expert, Creator, Controller, Polymorphism, Indirection, Pure Fabrication and others</td></tr>
                 <tr><td>Architectural principles</td><td>Stable Dependencies, Acyclic Dependencies, Dependency Direction</td></tr>
             </tbody>
         </table></div>
-        <p>These concepts are interconnected. SOLID provides guidance for organizing classes and dependencies, while GRASP helps assign responsibilities to objects. Other principles address simplicity, extensibility, and communication between components.</p>
+        <p>These concepts are interconnected. SOLID provides guidance for organizing classes and dependencies, while GRASP helps assign responsibilities to objects. Other principles address simplicity, extensibility and communication between components.</p>
     </div>
 
     <div class="subheading">2. OOP Foundations</div>
@@ -116,7 +116,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
     </div>
     <div class="intro">
         <p>The object&rsquo;s balance cannot be modified directly. Every balance change must go through an operation that enforces the relevant rules.</p>
-        <p>This example demonstrates encapsulation, not concurrency control. A real banking implementation would also require atomic updates, transaction boundaries, and appropriate persistence guarantees.</p>
+        <p>This example demonstrates encapsulation, not concurrency control. A real banking implementation would also require atomic updates, transaction boundaries and appropriate persistence guarantees.</p>
         <p><strong>Important distinction:</strong> Encapsulation is not simply declaring fields <code>private</code> and generating getters and setters. Providing unrestricted setters may expose essentially the same design problem.</p>
         <p>The goal is to protect behavior and invariants, not merely hide variables.</p>
         <p class="minor-heading"><strong>2.2 Abstraction</strong></p>
@@ -166,7 +166,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
     <div class="intro">
         <p>The business code can depend on <code>PaymentGateway</code> without knowing which provider implements it.</p>
         <p>The interface describes <strong>what is available</strong>, while implementations determine <strong>how it works</strong>.</p>
-        <p>In Java, abstraction can be implemented using interfaces, abstract classes, and carefully designed public APIs.</p>
+        <p>In Java, abstraction can be implemented using interfaces, abstract classes and carefully designed public APIs.</p>
         <p class="minor-heading"><strong>2.3 Inheritance</strong></p>
         <p>Inheritance allows one class to extend another class, inheriting accessible state and behavior and optionally redefining certain operations.</p>
     </div>
@@ -205,7 +205,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
         </div>
     </div>
     <div class="intro">
-        <p>A <code>SalariedEmployee</code> is an <code>Employee</code>, and it supplies a specific implementation for salary calculation.</p>
+        <p>A <code>SalariedEmployee</code> is an <code>Employee</code> and it supplies a specific implementation for salary calculation.</p>
         <p>However, inheritance introduces strong relationships between classes. A change in a superclass can affect its subclasses.</p>
         <p>Therefore:</p>
         <p><strong>Use inheritance primarily for genuine subtype relationships that preserve the superclass contract, rather than merely to reuse code.</strong></p>
@@ -274,7 +274,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
     <div class="subheading">3. SOLID Principles</div>
     <div class="intro">
         <p>SOLID is an acronym for five influential object-oriented design principles popularized by Robert C. Martin.</p>
-        <p>Its primary goal is to help developers create software that is easier to change, extend, understand, and test.</p>
+        <p>Its primary goal is to help developers create software that is easier to change, extend, understand and test.</p>
     </div>
 
     <div class="subheading">3.1 S — Single Responsibility Principle (SRP)</div>
@@ -406,7 +406,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
     </div>
     <div class="intro">
         <p class="minor-heading"><strong>Benefits</strong></p>
-        <p>SRP improves cohesion, makes tests more focused, reduces the number of unrelated changes within a class, and can make code easier to maintain.</p>
+        <p>SRP improves cohesion, makes tests more focused, reduces the number of unrelated changes within a class and can make code easier to maintain.</p>
         <p class="minor-heading"><strong>Important clarification</strong></p>
         <p>SRP does not suggest creating a separate class for every individual statement or method.</p>
         <p>For example, an <code>Order</code> class may legitimately contain:</p>
@@ -421,7 +421,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
     </div>
     <div class="intro">
         <p>All these operations can belong to the cohesive responsibility of managing an order.</p>
-        <p>The relevant question is: <strong>Do these methods belong to the same responsibility, and are they likely to change for related reasons?</strong></p>
+        <p>The relevant question is: <strong>Do these methods belong to the same responsibility and are they likely to change for related reasons?</strong></p>
     </div>
 
     <div class="subheading">3.2 O — Open/Closed Principle (OCP)</div>
@@ -550,7 +550,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
         <p>However, the application still needs to select or configure the appropriate policy. OCP does not eliminate all changes; it attempts to localize them to the relevant extension points.</p>
         <p class="minor-heading"><strong>Relationship with design patterns</strong></p>
         <p>This design uses the Strategy Design Pattern.</p>
-        <p>OCP is also commonly supported by the Factory Method, Template Method, Decorator, and other patterns.</p>
+        <p>OCP is also commonly supported by the Factory Method, Template Method, Decorator and other patterns.</p>
         <p class="minor-heading"><strong>When to apply OCP</strong></p>
         <p>OCP is especially valuable when a behavior has several known variations, when plugins or providers need to be added, or when a stable component must support new implementations.</p>
         <p>Avoid creating elaborate extension mechanisms for behavior that is unlikely to vary.</p>
@@ -883,7 +883,7 @@ account.withdraw(<span class="code-keyword">new</span> <span class="code-class">
             <li>High-level modules should not depend directly on low-level modules. Both should depend on abstractions.</li>
             <li>Abstractions should not depend on implementation details. Implementation details should depend on abstractions.</li>
         </ol>
-        <p>DIP is particularly important for enterprise Java, Spring Boot, microservices, testing, and Clean Architecture.</p>
+        <p>DIP is particularly important for enterprise Java, Spring Boot, microservices, testing and Clean Architecture.</p>
         <p class="minor-heading"><strong>Example: Order payment processing</strong></p>
         <p>A high-level checkout service contains business workflow logic.</p>
         <p>A payment provider integration is a lower-level infrastructure detail.</p>
@@ -1155,7 +1155,7 @@ checkoutService.checkout(order);</code></pre>
     </div>
     <div class="intro">
         <p>The same instance or configuration can serve multiple consumers.</p>
-        <p>For a real tax system, applicable rates may depend on jurisdiction, product, date, and other rules. The centralization should cover the actual shared policy rather than assuming one universal percentage.</p>
+        <p>For a real tax system, applicable rates may depend on jurisdiction, product, date and other rules. The centralization should cover the actual shared policy rather than assuming one universal percentage.</p>
         <p class="minor-heading"><strong>Important consideration</strong></p>
         <p>Two pieces of code that look similar may represent different business rules.</p>
         <p>If domestic shipping and international shipping happen to use the same fee calculation today, combining them into one implementation could create unnecessary coupling when the rules diverge.</p>
@@ -1165,7 +1165,7 @@ checkoutService.checkout(order);</code></pre>
     <div class="subheading">4.2 KISS — Keep It Simple, Stupid</div>
     <div class="intro">
         <p>KISS encourages developers to choose the simplest design that correctly satisfies the requirements.</p>
-        <p>Complexity makes software harder to understand, test, debug, and modify.</p>
+        <p>Complexity makes software harder to understand, test, debug and modify.</p>
         <p class="minor-heading"><strong>Example</strong></p>
         <p>Suppose we need to determine whether a list contains any active users.</p>
         <p>Overcomplicated approach:</p>
@@ -1185,9 +1185,9 @@ checkoutService.checkout(order);</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>The second implementation expresses the intention directly, avoids creating an unnecessary list, and can stop as soon as an active user is found.</p>
+        <p>The second implementation expresses the intention directly, avoids creating an unnecessary list and can stop as soon as an active user is found.</p>
         <p>KISS applies to architecture as well.</p>
-        <p>For example, a small application may not need microservices, Kafka, a distributed cache, an event-sourcing framework, and multiple database technologies.</p>
+        <p>For example, a small application may not need microservices, Kafka, a distributed cache, an event-sourcing framework and multiple database technologies.</p>
         <p>A modular monolith may be easier to operate and sufficiently scalable.</p>
         <p><strong>Simplicity is not the same as minimal code length.</strong> A longer implementation that clearly handles errors and business rules may be much simpler to maintain than a short but obscure one.</p>
     </div>
@@ -1197,7 +1197,7 @@ checkoutService.checkout(order);</code></pre>
         <p>YAGNI means:</p>
         <p><strong>Do not implement functionality merely because you think it might be required in the future.</strong></p>
         <p>Suppose your current application sends email through one provider.</p>
-        <p>You could build a sophisticated plugin framework supporting hundreds of providers, runtime module loading, plugin versioning, dynamic discovery, and fallback chains.</p>
+        <p>You could build a sophisticated plugin framework supporting hundreds of providers, runtime module loading, plugin versioning, dynamic discovery and fallback chains.</p>
         <p>But if the requirement only calls for one email provider, most of that infrastructure may be unnecessary.</p>
         <p>A simple implementation might be sufficient:</p>
     </div>
@@ -1334,7 +1334,7 @@ checkoutService.checkout(order);</code></pre>
     </div>
     <div class="intro">
         <p>Low coupling does not mean zero coupling. Collaborating objects necessarily depend on each other&rsquo;s contracts.</p>
-        <p>The objective is to make those dependencies explicit, limited, and stable.</p>
+        <p>The objective is to make those dependencies explicit, limited and stable.</p>
     </div>
 
     <div class="subheading">4.6 Composition over Inheritance</div>
@@ -1445,7 +1445,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
                 <tr><td>Useful for valid hierarchical contracts</td><td>Useful for combining independent behaviors</td></tr>
             </tbody>
         </table></div>
-        <p>Composition also supports the Strategy, Decorator, Bridge, and other patterns.</p>
+        <p>Composition also supports the Strategy, Decorator, Bridge and other patterns.</p>
     </div>
 
     <div class="subheading">4.7 Program to an Interface, Not an Implementation</div>
@@ -1494,7 +1494,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
     <div class="intro">
         <p><strong>Identify aspects of a system likely to change and isolate them behind stable boundaries.</strong></p>
         <p>Suppose an application calculates shipping charges.</p>
-        <p>Potential sources of change include the delivery provider, weight-based pricing, international shipping rules, insurance, and delivery speed.</p>
+        <p>Potential sources of change include the delivery provider, weight-based pricing, international shipping rules, insurance and delivery speed.</p>
         <p>Rather than embedding every rule inside <code>OrderService</code>, isolate the variable behavior.</p>
     </div>
     <div class="section code-section">
@@ -1543,7 +1543,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
         </div>
     </div>
     <div class="intro">
-        <p>The calling component now knows the internal navigation path through <code>Order</code>, <code>Customer</code>, and <code>Address</code>.</p>
+        <p>The calling component now knows the internal navigation path through <code>Order</code>, <code>Customer</code> and <code>Address</code>.</p>
         <p>If the customer or address model changes, the calling component may also require modification.</p>
         <p>An alternative is to expose an operation at the appropriate boundary.</p>
     </div>
@@ -1585,7 +1585,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
 
     <div class="subheading">4.10 Tell, Don&rsquo;t Ask</div>
     <div class="intro">
-        <p><strong>Prefer telling an object to perform a business operation instead of extracting its internal state, making decisions externally, and then modifying it.</strong></p>
+        <p><strong>Prefer telling an object to perform a business operation instead of extracting its internal state, making decisions externally and then modifying it.</strong></p>
         <p>This principle emphasizes behavior-rich domain objects.</p>
         <p class="minor-heading"><strong>Poor design</strong></p>
     </div>
@@ -1627,7 +1627,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
         <p>The <code>Order</code> object now owns the rules governing its status.</p>
         <p>This helps maintain invariants and reduce duplicated business decisions.</p>
         <p>Tell, Don&rsquo;t Ask is particularly valuable for domain entities and aggregates in Domain-Driven Design.</p>
-        <p>It does not mean getters or queries are forbidden. Reporting, serialization, and other operations often legitimately require reading data.</p>
+        <p>It does not mean getters or queries are forbidden. Reporting, serialization and other operations often legitimately require reading data.</p>
     </div>
 
     <div class="subheading">4.11 Separation of Concerns (SoC)</div>
@@ -1646,7 +1646,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
                 <tr><td>Infrastructure adapter</td><td>External system integration</td></tr>
             </tbody>
         </table></div>
-        <p>A controller should not usually contain all the business rules, payment API calls, SQL queries, and email delivery logic.</p>
+        <p>A controller should not usually contain all the business rules, payment API calls, SQL queries and email delivery logic.</p>
         <p>Likewise, a domain entity generally should not depend on Spring MVC request objects.</p>
         <p>Separating concerns helps establish meaningful architectural boundaries.</p>
     </div>
@@ -1694,14 +1694,14 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
         <p>The precondition requires a positive amount.</p>
         <p>A postcondition could require that the intended amount is transferred exactly once, provided the operation succeeds.</p>
         <p>An invariant might require that the total funds across the two accounts remain unchanged by the transfer, assuming there are no fees.</p>
-        <p>In distributed systems, these guarantees require more than object-level method checks. Database transactions, idempotency, recovery, and consistency mechanisms may be necessary.</p>
+        <p>In distributed systems, these guarantees require more than object-level method checks. Database transactions, idempotency, recovery and consistency mechanisms may be necessary.</p>
         <p>Design by Contract is closely related to LSP because subtype implementations must respect the contracts on which clients rely.</p>
     </div>
 
     <div class="subheading">4.14 Favor Immutability</div>
     <div class="intro">
         <p>An immutable object cannot change its observable state after construction.</p>
-        <p>Immutable objects are useful because they reduce accidental state changes, make reasoning easier, and can simplify concurrent programming.</p>
+        <p>Immutable objects are useful because they reduce accidental state changes, make reasoning easier and can simplify concurrent programming.</p>
         <p>Java records are convenient for representing immutable value objects.</p>
     </div>
     <div class="section code-section">
@@ -1738,9 +1738,9 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
     <div class="intro">
         <p>The original <code>Money</code> objects remain unchanged.</p>
         <p>Records provide shallow immutability: their component references are final, but referenced mutable objects can still change. The example is safe in that respect because <code>BigDecimal</code> and <code>String</code> are immutable.</p>
-        <p>A production money type would typically also standardize currency identifiers, precision, and rounding rules.</p>
+        <p>A production money type would typically also standardize currency identifiers, precision and rounding rules.</p>
         <p class="minor-heading"><strong>Where immutability is useful</strong></p>
-        <p>Value objects such as money, coordinates, date ranges, configuration values, and identifiers are often excellent candidates.</p>
+        <p>Value objects such as money, coordinates, date ranges, configuration values and identifiers are often excellent candidates.</p>
         <p>Mutable entities may still be appropriate when their identity persists through legitimate state transitions.</p>
     </div>
 
@@ -1786,7 +1786,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
     <div class="intro">
         <p>should not unexpectedly delete expired orders, send notifications, or initiate payments as part of its ordinary behavior.</p>
         <p>Likewise, a method named <code>calculateTotal()</code> should usually calculate and return the total rather than also persisting the result and modifying unrelated state.</p>
-        <p>Clear method names, predictable error behavior, consistent return values, and stable contracts help achieve this principle.</p>
+        <p>Clear method names, predictable error behavior, consistent return values and stable contracts help achieve this principle.</p>
     </div>
 
     <div class="subheading">5. GRASP — General Responsibility Assignment Software Patterns</div>
@@ -1829,7 +1829,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
     <div class="intro">
         <p>The order knows its contents, so calculating the total from those contents is often a natural responsibility.</p>
         <p>This is typically preferable to making an unrelated <code>UserService</code> navigate an order&rsquo;s internal data to calculate its total.</p>
-        <p>However, taxes, discounts, and other context-dependent pricing rules may belong in dedicated policy or domain services.</p>
+        <p>However, taxes, discounts and other context-dependent pricing rules may belong in dedicated policy or domain services.</p>
         <p class="minor-heading"><strong>5.2 Creator</strong></p>
         <p>GRASP&rsquo;s Creator principle helps determine which object should create another.</p>
         <p>A good creation candidate may aggregate, contain, closely use, or possess the initialization data needed for the new object.</p>
@@ -1847,7 +1847,7 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
         <p>The goal is not to create a factory for every class.</p>
         <p class="minor-heading"><strong>5.3 Controller</strong></p>
         <p>The GRASP Controller coordinates requests corresponding to system operations.</p>
-        <p>For example, placing an order involves selecting products, calculating prices, charging payment, and persisting the resulting order.</p>
+        <p>For example, placing an order involves selecting products, calculating prices, charging payment and persisting the resulting order.</p>
         <p>An application-level <code>CheckoutService</code> can coordinate these operations.</p>
     </div>
     <div class="section code-section">
@@ -1876,13 +1876,13 @@ backupService.backup(<span class="code-string">"orders.dat"</span>, fileData);</
         <p>Suppose checkout logic communicates with a third-party payment API.</p>
         <p>Directly coupling checkout logic to provider-specific requests and responses exposes the workflow to external API changes.</p>
         <p>A <code>PaymentGateway</code> abstraction introduces indirection and protects the checkout code from those variations.</p>
-        <p>The remaining GRASP principles—Low Coupling, High Cohesion, and Polymorphism—were discussed earlier and complement these responsibility-assignment decisions.</p>
+        <p>The remaining GRASP principles—Low Coupling, High Cohesion and Polymorphism—were discussed earlier and complement these responsibility-assignment decisions.</p>
     </div>
 
     <div class="subheading">6. Additional Package and Architectural Design Principles</div>
     <div class="intro">
         <p>Object-oriented design also applies beyond individual classes.</p>
-        <p>Robert C. Martin described principles for organizing packages and their dependencies, which remain useful when considering Java packages, modules, and application boundaries.</p>
+        <p>Robert C. Martin described principles for organizing packages and their dependencies, which remain useful when considering Java packages, modules and application boundaries.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Principle</th><th>Description</th></tr></thead>
             <tbody>
@@ -1906,7 +1906,7 @@ notification-module → order-module</code></pre>
     </div>
     <div class="intro">
         <p>These form a cycle.</p>
-        <p>Changes, testing, build configuration, and independent evolution become more difficult.</p>
+        <p>Changes, testing, build configuration and independent evolution become more difficult.</p>
         <p>Possible remedies include separating shared contracts, moving a responsibility to the correct module, introducing an application-level coordinator, or replacing an unnecessary dependency with an event or appropriate abstraction.</p>
         <p>The goal is not to mechanically introduce interfaces everywhere. It is to establish a coherent dependency structure.</p>
         <p class="minor-heading"><strong>Dependency direction in layered architecture</strong></p>
@@ -1924,14 +1924,14 @@ notification-module → order-module</code></pre>
     <div class="intro">
         <p>Here the arrows represent conceptual source-code dependencies, not the chronological flow of runtime calls.</p>
         <p>In a layered or hexagonal design, business rules should generally avoid depending on provider-specific infrastructure. Infrastructure can instead implement the contracts required by the business layer.</p>
-        <p>This makes it easier to replace databases, external APIs, message brokers, and other implementation details without rewriting the domain logic.</p>
+        <p>This makes it easier to replace databases, external APIs, message brokers and other implementation details without rewriting the domain logic.</p>
     </div>
 
     <div class="subheading">7. Practical Example: Applying OOD Principles in Spring Boot</div>
     <div class="intro">
         <p>Now let&rsquo;s combine these principles into an actual Spring Boot checkout application.</p>
-        <p>The application will accept an order request, look up a trusted product price, calculate a discount, create a pending order, invoke a payment gateway, and update the order status.</p>
-        <p>We will use Java 17+, Spring Boot, and an in-memory repository so that the focus remains on object-oriented design rather than database configuration.</p>
+        <p>The application will accept an order request, look up a trusted product price, calculate a discount, create a pending order, invoke a payment gateway and update the order status.</p>
+        <p>We will use Java 17+, Spring Boot and an in-memory repository so that the focus remains on object-oriented design rather than database configuration.</p>
     </div>
 
     <div class="subheading">7.1 Architecture</div>
@@ -1964,7 +1964,7 @@ notification-module → order-module</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>The example keeps related files in one package for simplicity. A larger application could separate them into <code>domain</code>, <code>application</code>, <code>ports</code>, <code>adapters</code>, and <code>api</code> packages.</p>
+        <p>The example keeps related files in one package for simplicity. A larger application could separate them into <code>domain</code>, <code>application</code>, <code>ports</code>, <code>adapters</code> and <code>api</code> packages.</p>
         <p class="minor-heading"><strong>Step 1: Create the order domain model</strong></p>
         <p><code>Order.java</code></p>
     </div>
@@ -2005,7 +2005,7 @@ notification-module → order-module</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p><strong>Principles applied:</strong> Encapsulation, immutability, Tell Don&rsquo;t Ask, Design by Contract, and Information Expert.</p>
+        <p><strong>Principles applied:</strong> Encapsulation, immutability, Tell Don&rsquo;t Ask, Design by Contract and Information Expert.</p>
         <p>The order controls which state transitions are valid. External code cannot mutate its fields directly.</p>
         <p class="minor-heading"><strong>Step 2: Define abstraction contracts</strong></p>
         <p><code>Contracts.java</code></p>
@@ -2039,7 +2039,7 @@ notification-module → order-module</code></pre>
     </div>
     <div class="intro">
         <p>Each interface describes a coherent capability.</p>
-        <p>These abstractions allow the checkout workflow to remain independent of product storage, pricing-policy implementations, payment providers, and database technology.</p>
+        <p>These abstractions allow the checkout workflow to remain independent of product storage, pricing-policy implementations, payment providers and database technology.</p>
         <p class="minor-heading"><strong>Step 3: Implement the checkout service</strong></p>
         <p><code>CheckoutService.java</code></p>
     </div>
@@ -2096,7 +2096,7 @@ notification-module → order-module</code></pre>
     <div class="intro">
         <p>This service does not know how prices are stored, how discounts are implemented, which payment provider is used, or which persistence technology saves orders.</p>
         <p>It coordinates the workflow through interfaces.</p>
-        <p>This is an application of SRP, DIP, OCP, ISP, Separation of Concerns, and composition.</p>
+        <p>This is an application of SRP, DIP, OCP, ISP, Separation of Concerns and composition.</p>
         <p class="minor-heading"><strong>Step 4: Create implementations</strong></p>
         <p><code>DemoAdapters.java</code></p>
     </div>
@@ -2156,7 +2156,7 @@ notification-module → order-module</code></pre>
     <div class="intro">
         <p>Because each implementation fulfills one contract, we can replace it without changing the checkout workflow.</p>
         <p>For example, a new discount policy can implement <code>DiscountPolicy</code>. Spring configuration would then select which implementation to inject.</p>
-        <p>A PostgreSQL repository could replace <code>InMemoryOrderRepository</code>, and a production payment adapter could replace <code>DemoPaymentGateway</code>.</p>
+        <p>A PostgreSQL repository could replace <code>InMemoryOrderRepository</code> and a production payment adapter could replace <code>DemoPaymentGateway</code>.</p>
         <p class="minor-heading"><strong>Step 5: Create the REST controller</strong></p>
         <p><code>CheckoutController.java</code></p>
     </div>
@@ -2211,7 +2211,7 @@ notification-module → order-module</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>The example needs the Spring Boot Web starter, an appropriate Spring Boot build setup, and Java 17 or newer.</p>
+        <p>The example needs the Spring Boot Web starter, an appropriate Spring Boot build setup and Java 17 or newer.</p>
         <p class="minor-heading"><strong>Step 7: Test the API</strong></p>
         <p>Start the Spring Boot application, then execute:</p>
     </div>
@@ -2313,8 +2313,8 @@ notification-module → order-module</code></pre>
         <p>The example demonstrates object-oriented design, but it is intentionally not a production-complete payment implementation.</p>
         <p>A real checkout system must address several additional concerns.</p>
         <p><strong>Payment state uncertainty:</strong> If a payment provider completes a charge but the network response is lost, the application must not automatically assume the payment was declined. An unknown state may require reconciliation.</p>
-        <p><strong>Idempotency:</strong> Retrying checkout must not create duplicate payments. The system needs a stable client request idempotency key, and the payment adapter must actually enforce or forward a suitable provider idempotency key. The demonstration does not implement these mechanisms.</p>
-        <p><strong>Persistence consistency:</strong> Saving a pending order, performing an external payment, and saving the final status are not one atomic transaction. A crash between these steps may require recovery.</p>
+        <p><strong>Idempotency:</strong> Retrying checkout must not create duplicate payments. The system needs a stable client request idempotency key and the payment adapter must actually enforce or forward a suitable provider idempotency key. The demonstration does not implement these mechanisms.</p>
+        <p><strong>Persistence consistency:</strong> Saving a pending order, performing an external payment and saving the final status are not one atomic transaction. A crash between these steps may require recovery.</p>
         <p><strong>Concurrency:</strong> A real repository may need optimistic locking or other controls to prevent competing requests from overwriting order state.</p>
         <p><strong>External side effects:</strong> Sending order-confirmation emails or publishing events should use an appropriately reliable mechanism, such as a transactional outbox with asynchronous processing, where warranted.</p>
         <p>Good object-oriented design improves separation of responsibilities, but it does not replace distributed-systems reliability patterns.</p>
@@ -2340,7 +2340,7 @@ notification-module → order-module</code></pre>
                 <tr><td>Premature Abstraction</td><td>Interfaces and frameworks are introduced without meaningful need</td><td>KISS, YAGNI</td></tr>
             </tbody>
         </table></div>
-        <p>These are diagnostic clues, not absolute rules. For example, data-transfer objects are intentionally data-oriented, and a simple conditional may be clearer than a hierarchy of strategies.</p>
+        <p>These are diagnostic clues, not absolute rules. For example, data-transfer objects are intentionally data-oriented and a simple conditional may be clearer than a hierarchy of strategies.</p>
     </div>
 
     <div class="subheading">9. How the Principles Work Together</div>
@@ -2364,7 +2364,7 @@ notification-module → order-module</code></pre>
                 <tr><td>KISS</td><td>Avoid building a complex provider framework if one simple adapter is sufficient</td></tr>
             </tbody>
         </table></div>
-        <p>This demonstrates an important point: <strong>design principles are not independent rules. They reinforce one another to solve the underlying problems of responsibility assignment, dependency management, and change.</strong></p>
+        <p>This demonstrates an important point: <strong>design principles are not independent rules. They reinforce one another to solve the underlying problems of responsibility assignment, dependency management and change.</strong></p>
     </div>
 
     <div class="subheading">10. How to Decide Which Principle to Apply</div>
@@ -2423,8 +2423,8 @@ notification-module → order-module</code></pre>
     </div>
     <div class="intro">
         <p>A useful mental model is:</p>
-        <p><strong>OOP provides the programming mechanisms. SOLID and GRASP guide how those mechanisms are used. General design principles keep the resulting system simple, cohesive, and maintainable. Design patterns provide reusable solutions for recurring problems.</strong></p>
-        <p>The ultimate goal of object-oriented design is not to maximize the number of interfaces, classes, or patterns in a codebase. It is to build software whose responsibilities are clear, whose behavior is correct, and whose inevitable changes can be made with minimal disruption.</p>
+        <p><strong>OOP provides the programming mechanisms. SOLID and GRASP guide how those mechanisms are used. General design principles keep the resulting system simple, cohesive and maintainable. Design patterns provide reusable solutions for recurring problems.</strong></p>
+        <p>The ultimate goal of object-oriented design is not to maximize the number of interfaces, classes, or patterns in a codebase. It is to build software whose responsibilities are clear, whose behavior is correct and whose inevitable changes can be made with minimal disruption.</p>
     </div>
 </div>
 </body>

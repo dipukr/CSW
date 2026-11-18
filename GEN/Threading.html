@@ -28,7 +28,7 @@
 
     <div class="subheading">Better Utilization of Multiple CPUs or Cores</div>
     <div class="intro">
-        <p>A single thread can use at most one CPU core, and as shown above it may not even keep that core fully busy. To use all the cores of a machine, an application needs several threads running in parallel.</p>
+        <p>A single thread can use at most one CPU core and as shown above it may not even keep that core fully busy. To use all the cores of a machine, an application needs several threads running in parallel.</p>
     </div>
 
     <div class="subheading">Better CPU Utilization: Example</div>
@@ -65,12 +65,12 @@
 
     <div class="subheading">Simpler Program Design</div>
     <div class="intro">
-        <p>Getting the overlapped ordering above in a single thread means tracking by hand how far each file has been read and processed. With two threads, each one simply reads and processes its own file. A thread blocks while its disk read is in progress, and the other thread uses the CPU in the meantime. The disk and the CPU both stay busy, and each thread only has to keep track of one file.</p>
+        <p>Getting the overlapped ordering above in a single thread means tracking by hand how far each file has been read and processed. With two threads, each one simply reads and processes its own file. A thread blocks while its disk read is in progress and the other thread uses the CPU in the meantime. The disk and the CPU both stay busy and each thread only has to keep track of one file.</p>
     </div>
 
     <div class="subheading">More Responsive Programs</div>
     <div class="intro">
-        <p>A single-threaded server listens on a port, handles each request completely, and only then goes back to listening:</p>
+        <p>A single-threaded server listens on a port, handles each request completely and only then goes back to listening:</p>
     </div>
     <div class="section code-section">
         <div class="section-title">Single-Threaded Server</div>
