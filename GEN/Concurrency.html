@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
-<div class="note plain-links">
+<div class="note">
     <div class="title">Concurrency</div>
 
     <div class="intro">
@@ -152,40 +152,12 @@
                 <tr><td><a href="Livelock.html">Livelock</a></td><td>Threads remain active but make no progress</td><td>Continually retrying and backing off together</td></tr>
                 <tr><td><a href="Starvation.html">Starvation</a></td><td>A thread is continually denied needed resources</td><td>Low-priority task rarely scheduled</td></tr>
                 <tr><td><a href="PriorityInversion.html">Priority Inversion</a></td><td>Lower-priority thread delays higher-priority thread</td><td>Low-priority owner holds required lock</td></tr>
-                <tr><td>Visibility Problem</td><td>Another thread does not observe a write as required</td><td>Stop flag update not seen</td></tr>
+                <tr><td>Visibility Problem</td><td>Other thread does not observe a write as required</td><td>Stop flag update not seen</td></tr>
                 <tr><td>Atomicity Violation</td><td>Multi-step operation is interrupted</td><td>Lost increment</td></tr>
                 <tr><td>Ordering Problem</td><td>Operations are observed in unexpected order</td><td>Publication without proper synchronization</td></tr>
                 <tr><td>Contention</td><td>Threads compete for the same resource</td><td>Many threads acquiring one mutex</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>Example: Race condition</strong></p>
-        <p>Suppose <code>counter = 0</code>, and two threads both execute <code>counter++</code>.</p>
-        <p>The increment comprises multiple conceptual steps:</p>
-    </div>
-    <div class="svg-diagram">
-        <img src="../static/concurrency-race-condition.svg" alt="Race condition: with counter at 0, Thread A and Thread B both read 0, both compute 1 locally, then A writes 1 and B overwrites it with 1, so the counter ends at 1 instead of the expected 2 and one increment is lost" style="width:100%;max-width:1000px">
-    </div>
-    <div class="intro">
-        <p><code>counter++</code> is not an atomic operation.</p>
-        <p class="minor-heading"><strong>Example: Java synchronized counter</strong></p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Counter</span> {
-    <span class="code-keyword">private</span> <span class="code-keyword">int</span> count = <span class="code-number">0</span>;
-
-    <span class="code-keyword">public</span> synchronized <span class="code-keyword">void</span> increment() {
-        count++;
-    }
-
-    <span class="code-keyword">public</span> synchronized <span class="code-keyword">int</span> getCount() {
-        <span class="code-keyword">return</span> count;
-    }
-}</code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p>The <a href="Synchronized.html"><code>synchronized</code></a> keyword provides mutual exclusion and establishes memory-visibility guarantees.</p>
     </div>
 
     <div class="subheading">Synchronization mechanisms</div>
@@ -206,41 +178,6 @@
                 <tr><td><a href="BlockingQueue.html">Thread-Safe Queue</a></td><td>Safely transfers data between producer and consumer threads</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>Critical section</strong></p>
-        <p>A <a href="CriticalSection.html"><strong>critical section</strong></a> is code that accesses shared state requiring controlled access.</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-class">Lock</span> lock = <span class="code-keyword">new</span> <span class="code-class">ReentrantLock</span>();
-
-<span class="code-keyword">void</span> update() {
-    lock.lock();
-    <span class="code-keyword">try</span> {
-        sharedCounter++; <span class="code-comment">Critical section</span>
-    } <span class="code-keyword">finally</span> {
-        lock.unlock();
-    }
-}</code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p class="minor-heading"><strong>Mutex vs. Semaphore</strong></p>
-        <p>A mutex provides ownership-based exclusive locking. A counting semaphore manages a number of permits and can allow multiple concurrent accesses.</p>
-        <p>For example, a semaphore with three permits can limit access to a database-dependent operation:</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-class">Semaphore</span> semaphore = <span class="code-keyword">new</span> <span class="code-class">Semaphore</span>(<span class="code-number">3</span>);
-
-<span class="code-keyword">void</span> execute() <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
-    semaphore.acquire();
-    <span class="code-keyword">try</span> {
-        callDatabase(); <span class="code-comment">At most 3 permit holders execute here</span>
-    } <span class="code-keyword">finally</span> {
-        semaphore.release();
-    }
-}</code></pre>
-        </div>
     </div>
 
     <div class="subheading">Memory model and thread communication</div>
@@ -253,34 +190,6 @@
             <li><strong>Visibility:</strong> Changes performed by one thread become observable by another under appropriate synchronization.</li>
             <li><strong>Ordering:</strong> Operations are observed according to permitted memory-model rules.</li>
         </ul>
-        <p class="minor-heading"><strong>Java example: <code>volatile</code></strong></p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Worker</span> {
-    <span class="code-keyword">private</span> volatile <span class="code-keyword">boolean</span> running = <span class="code-keyword">true</span>;
-
-    <span class="code-keyword">public</span> <span class="code-keyword">void</span> work() {
-        <span class="code-keyword">while</span> (running) {
-            doWork();
-        }
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">void</span> stop() {
-        running = <span class="code-keyword">false</span>;
-    }
-}</code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p><a href="Volatile.html"><code>volatile</code></a> ensures appropriate visibility and ordering for the flag. However, it does not make compound operations like <code>counter++</code> atomic.</p>
-        <p>For atomic increments, use <code>AtomicInteger</code> or suitable locking:</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-class">AtomicInteger</span> counter = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
-counter.incrementAndGet();</code></pre>
-        </div>
     </div>
     <div class="intro">
         <p>The <a href="MemoryModel.html">Java Memory Model</a> uses the <strong>happens-before</strong> relationship to specify when actions are ordered and writes must be visible.</p>
@@ -304,50 +213,7 @@ counter.incrementAndGet();</code></pre>
         <p>Common approaches to avoid or manage deadlocks include global lock ordering, timeouts, minimizing lock scope, deadlock detection, and avoiding nested locking where feasible.</p>
     </div>
 
-    <div class="subheading">Multithreading implementation in Java</div>
-    <div class="intro">
-        <p>Here is a small example of two threads updating shared data safely.</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
-    <span class="code-class">AtomicInteger</span> counter = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
-    <span class="code-class">Runnable</span> task = () -&gt; {
-        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">100_000</span>; i++) {
-            counter.incrementAndGet();
-        }
-    };
-    <span class="code-class">Thread</span> t1 = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"worker-1"</span>);
-    <span class="code-class">Thread</span> t2 = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"worker-2"</span>);
-    t1.start();
-    t2.start();
-    t1.join();
-    t2.join();
-    <span class="code-class">System</span>.out.println(counter.get());
-}</code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p>Output:</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code>200000</code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p>Key observations:</p>
-        <ul>
-            <li><code>start()</code> requests that the JVM start executing the thread.</li>
-            <li>The OS schedules the corresponding native platform threads.</li>
-            <li>Both threads share the same <code>AtomicInteger</code>.</li>
-            <li><code>incrementAndGet()</code> prevents lost increments.</li>
-            <li><code>join()</code> waits for both threads to finish.</li>
-            <li>Execution order is not deterministic, but the final result is correct.</li>
-        </ul>
-    </div>
-
-    <div class="subheading">Multithreading vs. Multiprocessing vs. Asynchronous Programming</div>
+    <div class="subheading">Multithreading vs Multiprocessing vs Asynchronous Programming</div>
     <div class="intro">
         <p>These are different mechanisms for organizing concurrent execution.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
@@ -372,9 +238,6 @@ counter.incrementAndGet();</code></pre>
     <div class="svg-diagram">
         <img src="../static/concurrency2-thread-pool.svg" alt="Thread pool: incoming tasks enter a task queue, the pool hands them to worker threads 1, 2 and 3, and they become completed tasks" style="width:100%;max-width:720px">
     </div>
-    <div class="intro">
-        <p>Java example:</p>
-    </div>
     <div class="section code-section">
         <div class="code-wrapper">
 <pre><code><span class="code-class">ExecutorService</span> executor = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">4</span>);
@@ -388,8 +251,8 @@ executor.shutdown();</code></pre>
         </div>
     </div>
     <div class="intro">
-        <p>Ten tasks are submitted, but at most four pool worker threads execute tasks concurrently. The executor manages queuing and scheduling work onto its workers.</p>
-        <p>For production systems, queue bounds, rejection behavior, shutdown, and workload characteristics also matter.</p>
+        <p>Ten tasks are submitted, but at most four pool worker threads execute tasks concurrently.<br> The executor manages queuing and scheduling work onto its workers.</p>
+        <p>For production systems, queue bounds, rejection behavior, shutdown and workload characteristics also matter.</p>
     </div>
 
     <div class="subheading">CPU-bound vs. I/O-bound concurrency</div>
@@ -427,7 +290,8 @@ executor.shutdown();</code></pre>
 
     <div class="subheading">Common concurrency failures and how to avoid them</div>
     <div class="intro">
-        <div class="gpt-table-wrap"><table class="gpt-table">
+        <div class="gpt-table-wrap"><table class="gpt-table" style="table-layout:fixed">
+            <colgroup><col style="width:18%"><col style="width:40%"><col style="width:42%"></colgroup>
             <thead><tr><th>Problem</th><th>Cause</th><th>Preferred mitigation</th></tr></thead>
             <tbody>
                 <tr><td>Lost update</td><td>Nonatomic read-modify-write</td><td>Atomic variable or lock</td></tr>
@@ -439,14 +303,13 @@ executor.shutdown();</code></pre>
                 <tr><td>Queue growth</td><td>Producers exceed consumption</td><td>Bounded queues, admission control</td></tr>
                 <tr><td>Lock contention</td><td>Excessive exclusive access</td><td>Reduce critical sections, partition state</td></tr>
                 <tr><td>Lost notification</td><td>Incorrect wait/notify protocol</td><td>Predicate loops, higher-level synchronizers</td></tr>
-                <tr><td>Unsafe publication</td><td>Shared object exposed without proper synchronization</td><td>Final fields, safe publication</td></tr>
-                <tr><td>False sharing</td><td>Independent hot fields occupy the same cache line</td><td>Data-layout techniques, measurement</td></tr>
                 <tr><td>ABA problem</td><td>Value changes and returns before CAS</td><td>Versioned atomic references</td></tr>
                 <tr><td>ThreadLocal leak</td><td>Pooled worker retains request state</td><td><code>remove()</code> in <code>finally</code></td></tr>
+                <tr><td>Unsafe publication</td><td>Shared object exposed without proper synchronization</td><td>Final fields, safe publication</td></tr>
+                <tr><td>False sharing</td><td>Independent hot fields occupy the same cache line</td><td>Data-layout techniques, measurement</td></tr>
                 <tr><td>Pool starvation</td><td>Tasks block awaiting other tasks in the same constrained pool</td><td>Separate pools or redesign dependencies</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>Deadlock example</strong></p>
     </div>
 
     <div class="subheading">Suggested learning roadmap</div>
@@ -464,8 +327,8 @@ executor.shutdown();</code></pre>
 
     <div class="subheading">Final mental model</div>
     <div class="intro">
-        <p>Concurrency is about <strong>managing multiple tasks that are in progress</strong>. Parallelism is about <strong>executing multiple tasks simultaneously</strong>. Multithreading is one mechanism for implementing concurrency.</p>
-        <p>The OS schedules threads, switches execution contexts, and manages resources. Applications use synchronization and memory-model guarantees to make shared-state interaction correct.</p>
+        <p>Concurrency is about <strong>managing multiple tasks that are in progress</strong>.<br> Parallelism is about <strong>executing multiple tasks simultaneously</strong>.<br> Multithreading is one mechanism for implementing concurrency.</p>
+        <p>The OS schedules threads, switches execution contexts, and manages resources.<br> Applications use synchronization and memory-model guarantees to make shared-state interaction correct.</p>
         <p>For practical systems programming, the most important chain of understanding is:</p>
         <p><strong>Threads → Scheduling → Shared Memory → Race Conditions → Synchronization → Memory Visibility → Deadlock → Thread Pools → Performance.</strong></p>
         <p>Once these concepts are clear, advanced subjects such as Java concurrency utilities, lock-free data structures, asynchronous programming, and distributed coordination become considerably easier to understand.</p>

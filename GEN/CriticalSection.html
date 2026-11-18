@@ -15,6 +15,21 @@
         <p>Only one thread should execute the critical section at a time to prevent race conditions.</p>
         <p>Access is controlled with synchronization techniques such as locks or synchronized blocks.</p>
         <p>When one thread is inside, others must wait until it exits.</p>
+        <p>A <strong>critical section</strong></a> is code that accesses shared state requiring controlled access.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Lock</span> lock = <span class="code-keyword">new</span> <span class="code-class">ReentrantLock</span>();
+
+<span class="code-keyword">void</span> update() {
+    lock.lock();
+    <span class="code-keyword">try</span> {
+        sharedCounter++; <span class="code-comment">Critical section</span>
+    } <span class="code-keyword">finally</span> {
+        lock.unlock();
+    }
+}</code></pre>
+        </div>
     </div>
 
     <div class="section when-use">

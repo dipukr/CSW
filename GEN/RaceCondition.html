@@ -28,20 +28,18 @@
             <span class="resources-label">Resources</span>
             <span class="resource-tag">Memory</span>
             <span class="resource-tag">Files</span>
-            <span class="resource-tag">Network connections</span>
+            <span class="resource-tag">Sockets</span>
         </p>
     </div>
 
-    <div class="section when-use">
-        <div class="section-title">Solutions to race condition</div>
-        <div class="section-content">
-            <ul>
-                <li>Locks-Mutexes: Ensure only one thread can access the shared data at a time, like a key to a room.</li>
-                <li>Atomic Operations: Operations that complete indivisibly, preventing interruption.</li>
-                <li>Semaphores-Monitors: Other synchronization tools to control access to resources.</li>
-            </ul>
-        </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Solutions to race condition</strong></p>
     </div>
+    <div class="folio"><ol class="ledger">
+        <li><span class="ledger-label">Locks and Mutexes</span><span>Ensure only one thread can access the shared data at a time, like a key to a room.</span></li>
+        <li><span class="ledger-label">Atomic Operations</span><span>Operations that complete indivisibly, preventing interruption.</span></li>
+        <li><span class="ledger-label">Semaphores and Monitors</span><span>Other synchronization tools to control access to resources.</span></li>
+    </ol></div>
 
     <div class="section examples">
         <div class="section-title">Examples</div>
@@ -66,10 +64,34 @@
             </div>
         </div>
     </div>
-
+    <div class="intro">
+        <p class="minor-heading"><strong>Counter example</strong></p>
+        <p>Suppose <code>counter = 0</code> and two threads both execute <code>counter++</code>.</p>
+        <p>The increment comprises multiple conceptual steps:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency-race-condition.svg" alt="Race condition: with counter at 0, Thread A and Thread B both read 0, both compute 1 locally, then A writes 1 and B overwrites it with 1, so the counter ends at 1 instead of the expected 2 and one increment is lost" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p><code>counter++</code> is not an atomic operation.</p>
+        <p class="minor-heading"><strong>Synchronized counter</strong></p>
+    </div>
     <div class="section code-section">
         <div class="code-layout code-layout-equal">
             <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Counter</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> count = <span class="code-number">0</span>;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">synchronized</span> <span class="code-keyword">void</span> increment() {
+        count++;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">synchronized</span> <span class="code-keyword">int</span> getCount() {
+        <span class="code-keyword">return</span> count;
+    }
+}</code></pre>
+            </div>
+            <div class="code-wrapper code-wrapper-right">
 <pre><code><span class="code-keyword">public class</span> <span class="code-class">Counter</span> {
     <span class="code-keyword">private</span> <span class="code-class">AtomicInteger</span> count = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
 
@@ -82,14 +104,36 @@
     }
 }</code></pre>
             </div>
-
-            <div class="code-explanation">
-                <div class="code-explanation-title">How the fix works</div>
-                <p>Plain <code>count++</code> lets two threads read the same value and overwrite each other.<br><br>
-                    <code>AtomicInteger</code> performs the update as one indivisible CAS operation.<br><br>
-                    No lock is needed, so it scales well under contention.<br><br>
-                    The final count is always correct regardless of interleaving.</p>
-            </div>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The <a href="Synchronized.html"><code>synchronized</code></a> keyword provides mutual exclusion and establishes memory-visibility guarantees.</p>
+        <p>Plain <code>count++</code> lets two threads read the same value and overwrite each other.<br>
+            <code>AtomicInteger</code> performs the update as one indivisible CAS operation.<br>
+            The final count is always correct regardless of interleaving.<br>
+            No lock is needed, so it scales well under contention.
+        </p>
+    </div>
+    <div class="intro">
+        <p>Here is a small example of two threads updating shared data safely.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
+    <span class="code-class">AtomicInteger</span> counter = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
+    <span class="code-class">Runnable</span> task = () -&gt; {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">100_000</span>; i++) {
+            counter.incrementAndGet();
+        }
+    };
+    <span class="code-class">Thread</span> t1 = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"worker-1"</span>);
+    <span class="code-class">Thread</span> t2 = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"worker-2"</span>);
+    t1.start();
+    t2.start();
+    t1.join();
+    t2.join();
+    <span class="code-class">System</span>.out.println(counter.get());
+}</code></pre>
         </div>
     </div>
 </div>

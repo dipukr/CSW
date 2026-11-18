@@ -1539,8 +1539,10 @@ strong {
 .gw-radio input { accent-color: #0d0d0d; width: 16px; height: 16px; margin: 0; }
 
 /* links that look like the surrounding text; only the hand cursor on hover shows they are clickable */
-.plain-links a { color: inherit; text-decoration: none; cursor: pointer; }
-.plain-links a:hover { color: #2563eb; }   /* blue on hover */
+/* links inside any note read as plain text and turn blue on hover; :where() keeps specificity at zero
+   so component styles such as .grid a still win. No per-page class is needed. */
+:where(.note a) { color: inherit; text-decoration: none; cursor: pointer; }
+:where(.note a:hover) { color: #2563eb; }
 
 /* three side-by-side columns listing the GoF patterns per category */
 .gof-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 16px; }

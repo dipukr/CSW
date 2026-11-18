@@ -9,6 +9,34 @@
 <body>
 <div class="note">
     <div class="title">volatile Keyword</div>
+    <p class="minor-heading"><strong>Java example: <code>volatile</code></strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Worker</span> {
+    <span class="code-keyword">private</span> volatile <span class="code-keyword">boolean</span> running = <span class="code-keyword">true</span>;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> work() {
+        <span class="code-keyword">while</span> (running) {
+            doWork();
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> stop() {
+        running = <span class="code-keyword">false</span>;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><a href="Volatile.html"><code>volatile</code></a> ensures appropriate visibility and ordering for the flag. However, it does not make compound operations like <code>counter++</code> atomic.</p>
+        <p>For atomic increments, use <code>AtomicInteger</code> or suitable locking:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">AtomicInteger</span> counter = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
+counter.incrementAndGet();</code></pre>
+        </div>
 </div>
 </body>
 </html>
