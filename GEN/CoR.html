@@ -299,9 +299,9 @@ lead.setNext(manager).setNext(director).setNext(vp);</code></pre></div>
 
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-class">HttpResponse</span> handle(<span class="code-class">HttpRequest</span> request) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Request: "</span> + request.path());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Request: {request.path()}"</span>);
         <span class="code-class">HttpResponse</span> response = next.handle(request);
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Response: "</span> + response.status());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Response: {response.status()}"</span>);
         <span class="code-keyword">return</span> response;
     }
 }</code></pre></div>
@@ -448,9 +448,9 @@ Successfully processed /orders</code></pre></div>
 }
 
 <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-    <span class="code-class">LogHandler</span> chain = <span class="code-keyword">new</span> <span class="code-class">LogHandler</span>(<span class="code-class">LogLevel</span>.INFO, msg -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Console: "</span> + msg),
-                            <span class="code-keyword">new</span> <span class="code-class">LogHandler</span>(<span class="code-class">LogLevel</span>.WARN, msg -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"File: "</span> + msg),
-                            <span class="code-keyword">new</span> <span class="code-class">LogHandler</span>(<span class="code-class">LogLevel</span>.ERROR, msg -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Alert: "</span> + msg), <span class="code-keyword">null</span>)));
+    <span class="code-class">LogHandler</span> chain = <span class="code-keyword">new</span> <span class="code-class">LogHandler</span>(<span class="code-class">LogLevel</span>.INFO, msg -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Console: {msg}"</span>),
+                            <span class="code-keyword">new</span> <span class="code-class">LogHandler</span>(<span class="code-class">LogLevel</span>.WARN, msg -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"File: {msg}"</span>),
+                            <span class="code-keyword">new</span> <span class="code-class">LogHandler</span>(<span class="code-class">LogLevel</span>.ERROR, msg -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Alert: {msg}"</span>), <span class="code-keyword">null</span>)));
     chain.log(<span class="code-class">LogLevel</span>.INFO, <span class="code-string">"Application started"</span>);
     chain.log(<span class="code-class">LogLevel</span>.ERROR, <span class="code-string">"Database connection failed"</span>);
 }</code></pre></div>

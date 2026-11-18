@@ -348,7 +348,7 @@
     <span class="code-comment">Intended for use by state implementations.</span>
     <span class="code-comment">Keep state transitions inside the order's domain logic.</span>
     <span class="code-keyword">void</span> transitionTo(<span class="code-class">OrderState</span> newState) {
-        <span class="code-class">System</span>.out.printf(<span class="code-string">"Order %s: %s -&gt; %s%n"</span>, orderId, state.name(), newState.name());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Order {orderId}: {state.name()} -&gt; {newState.name()}"</span>);
         <span class="code-keyword">this</span>.state = newState;
     }
 }</code></pre></div>
@@ -371,7 +371,7 @@
     order.pay();
     order.ship();
     order.deliver();
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Final status: "</span> + order.getStatus());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Final status: {order.getStatus()}"</span>);
     <span class="code-keyword">try</span> {
         order.cancel();
     } <span class="code-keyword">catch</span> (<span class="code-class">IllegalStateException</span> e) {
@@ -467,7 +467,7 @@ Order ORD-102: CREATED -&gt; CANCELLED</code></pre></div>
     }
 
     <span class="code-keyword">void</span> changeState(<span class="code-class">PlaybackState</span> newState) {
-        <span class="code-class">System</span>.out.println(state.name() + <span class="code-string">" -&gt; "</span> + newState.name());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{state.name()} -&gt; {newState.name()}"</span>);
         <span class="code-keyword">this</span>.state = newState;
     }
 }

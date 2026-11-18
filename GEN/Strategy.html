@@ -31,11 +31,11 @@
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PaymentService</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-class">String</span> paymentMethod, <span class="code-keyword">double</span> amount) {
         <span class="code-keyword">if</span> (paymentMethod.equals(<span class="code-string">"UPI"</span>)) {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Processing UPI payment: "</span> + amount);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Processing UPI payment: {amount}"</span>);
         } <span class="code-keyword">else</span> <span class="code-keyword">if</span> (paymentMethod.equals(<span class="code-string">"CARD"</span>)) {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Processing Card payment: "</span> + amount);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Processing Card payment: {amount}"</span>);
         } <span class="code-keyword">else</span> <span class="code-keyword">if</span> (paymentMethod.equals(<span class="code-string">"COD"</span>)) {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Processing Cash on Delivery: "</span> + amount);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Processing Cash on Delivery: {amount}"</span>);
         }
     }
 }</code></pre></div>
@@ -104,7 +104,7 @@ service.pay(<span class="code-string">"CARD"</span>, <span class="code-number">2
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-class">BigDecimal</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Processing UPI payment of Rs. "</span> + amount + <span class="code-string">" using "</span> + upiId);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Processing UPI payment of Rs. {amount} using {upiId}"</span>);
     }
 }</code></pre></div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CardPayment</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentStrategy</span> {
@@ -115,12 +115,12 @@ service.pay(<span class="code-string">"CARD"</span>, <span class="code-number">2
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-class">BigDecimal</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Processing credit card payment of Rs. "</span> + amount);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Processing credit card payment of Rs. {amount}"</span>);
     }
 }</code></pre></div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CashOnDeliveryPayment</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentStrategy</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-class">BigDecimal</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Cash on delivery selected. Amount: Rs. "</span> + amount);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Cash on delivery selected. Amount: Rs. {amount}"</span>);
     }
 }</code></pre></div>
     <div class="intro">

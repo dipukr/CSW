@@ -3,16 +3,16 @@
     <path d="M250 42 H388" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#st2-a)"/>
     <path d="M390 164 V122 H480 V72" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="miter" marker-end="url(#st2-l)"/>
     <path d="M620 164 V122 H520 V72" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="miter" marker-end="url(#st2-l)"/>
-    <rect x="30" y="14" width="220" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="30" y="14" width="220" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="140" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Context</text>
     <text x="140" y="52" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">currentState: State · request()</text>
-    <rect x="390" y="14" width="220" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="390" y="14" width="220" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="500" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">State</text>
     <text x="500" y="52" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">«interface» · handle(Context)</text>
-    <rect x="290" y="164" width="200" height="52" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="290" y="164" width="200" height="52" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="390" y="184" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">ConcreteStateA</text>
     <text x="390" y="200" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">handle(Context)</text>
-    <rect x="530" y="164" width="180" height="52" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="530" y="164" width="180" height="52" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="620" y="184" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">ConcreteStateB</text>
     <text x="620" y="200" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">handle(Context)</text>
     <text x="319" y="35" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">delegates</text>

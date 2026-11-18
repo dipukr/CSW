@@ -14,13 +14,13 @@
   </g>
 
   <g fill="#ffffff" stroke="#222" stroke-width="1.2">
-    <rect x="20" y="40" width="130" height="50" rx="6"/>
-    <rect x="20" y="115" width="130" height="50" rx="6"/>
-    <rect x="20" y="190" width="130" height="50" rx="6"/>
-    <rect x="300" y="100" width="160" height="80" rx="6"/>
-    <rect x="610" y="40" width="130" height="50" rx="6"/>
-    <rect x="610" y="115" width="130" height="50" rx="6"/>
-    <rect x="610" y="190" width="130" height="50" rx="6"/>
+    <rect x="20" y="40" width="130" height="50" rx="3"/>
+    <rect x="20" y="115" width="130" height="50" rx="3"/>
+    <rect x="20" y="190" width="130" height="50" rx="3"/>
+    <rect x="300" y="100" width="160" height="80" rx="3"/>
+    <rect x="610" y="40" width="130" height="50" rx="3"/>
+    <rect x="610" y="115" width="130" height="50" rx="3"/>
+    <rect x="610" y="190" width="130" height="50" rx="3"/>
   </g>
 
   <g fill="#111" text-anchor="middle" dominant-baseline="central">

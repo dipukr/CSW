@@ -1,0 +1,38 @@
+<svg width="720" height="366" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 366" role="img" aria-label="Linux task_struct points to mm_struct for the virtual address space, files_struct for open file descriptors and sched_entity for scheduling information; mm_struct keeps a maple tree of virtual memory regions: code, heap, stack and shared library mappings">
+    <defs><marker id="ls-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="260" y="20" width="200" height="54" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="44" text-anchor="middle" font-family="Consolas, 'Source Code Pro', monospace" font-size="13.5" font-weight="600" fill="#222222">task_struct</text>
+    <text x="360" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#555555">Task / thread</text>
+    <path d="M360 74 V96" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M130 96 H590" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M130 96 V118" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <path d="M360 96 V118" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <path d="M590 96 V118" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <rect x="30" y="120" width="200" height="54" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="130" y="144" text-anchor="middle" font-family="Consolas, 'Source Code Pro', monospace" font-size="13.5" font-weight="600" fill="#222222">mm_struct</text>
+    <text x="130" y="162" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#555555">Virtual address space</text>
+    <rect x="260" y="120" width="200" height="54" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="144" text-anchor="middle" font-family="Consolas, 'Source Code Pro', monospace" font-size="13.5" font-weight="600" fill="#222222">files_struct</text>
+    <text x="360" y="162" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#555555">Open file descriptors</text>
+    <rect x="490" y="120" width="200" height="54" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="590" y="144" text-anchor="middle" font-family="Consolas, 'Source Code Pro', monospace" font-size="13.5" font-weight="600" fill="#222222">sched_entity</text>
+    <text x="590" y="162" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#555555">Scheduling information</text>
+    <path d="M130 174 V208" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <rect x="30" y="210" width="200" height="54" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="130" y="234" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Maple tree</text>
+    <text x="130" y="250" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">Virtual memory regions</text>
+    <path d="M130 264 V286" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M105 286 H615" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M105 286 V306" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <path d="M275 286 V306" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <path d="M445 286 V306" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <path d="M615 286 V306" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ls-a)"/>
+    <rect x="30" y="308" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="105" y="334.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Code mapping</text>
+    <rect x="200" y="308" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="275" y="334.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Heap mapping</text>
+    <rect x="370" y="308" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="445" y="334.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Stack mapping</text>
+    <rect x="540" y="308" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="615" y="334.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Shared libraries</text>
+</svg>

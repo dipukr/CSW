@@ -1,0 +1,27 @@
+<svg width="720" height="290" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 290" role="img" aria-label="Process A and process B both use virtual address 0x1000, but page table A maps it to physical frame 42 and page table B maps it to physical frame 91">
+    <defs><marker id="vm-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="20" y="20" width="450" height="250" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="245" y="44" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#555555">Processes</text>
+    <rect x="500" y="20" width="200" height="250" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="600" y="44" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#555555">Physical memory</text>
+    <rect x="36" y="64" width="418" height="86" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="52" y="84" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">Process A</text>
+    <rect x="52" y="94" width="170" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="137" y="120.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#222222">Virtual address 0x1000</text>
+    <path d="M222 116 H266" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#vm-a)"/>
+    <rect x="268" y="94" width="170" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="353" y="120.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Page table A</text>
+    <path d="M438 116 H518" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#vm-a)"/>
+    <rect x="520" y="94" width="160" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="600" y="120.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Physical frame 42</text>
+    <rect x="36" y="174" width="418" height="86" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="52" y="194" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">Process B</text>
+    <rect x="52" y="204" width="170" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="137" y="230.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#222222">Virtual address 0x1000</text>
+    <path d="M222 226 H266" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#vm-a)"/>
+    <rect x="268" y="204" width="170" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="353" y="230.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Page table B</text>
+    <path d="M438 226 H518" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#vm-a)"/>
+    <rect x="520" y="204" width="160" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="600" y="230.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Physical frame 91</text>
+</svg>

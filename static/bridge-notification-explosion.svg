@@ -4,17 +4,17 @@
     <text x="453" y="26" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">SMS</text>
     <text x="675" y="26" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Push</text>
     <text x="16" y="65" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Alert</text>
-    <rect x="127" y="40" width="208" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="127" y="40" width="208" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="231" y="60.75" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#222222">EmailAlertNotification</text>
-    <rect x="349" y="40" width="208" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="349" y="40" width="208" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="453" y="60.75" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#222222">SMSAlertNotification</text>
-    <rect x="571" y="40" width="208" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="571" y="40" width="208" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="675" y="60.75" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#222222">PushAlertNotification</text>
     <text x="16" y="117" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Promotional</text>
-    <rect x="127" y="92" width="208" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="127" y="92" width="208" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="231" y="112.75" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#222222">EmailPromotionalNotification</text>
-    <rect x="349" y="92" width="208" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="349" y="92" width="208" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="453" y="112.75" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#222222">SMSPromotionalNotification</text>
-    <rect x="571" y="92" width="208" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="571" y="92" width="208" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="675" y="112.75" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#222222">PushPromotionalNotification</text>
 </svg>

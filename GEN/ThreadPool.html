@@ -66,11 +66,11 @@
 
     <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">5</span>; i++) {
         <span class="code-keyword">final int</span> id = i;
-        pool.submit(() -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"task "</span> + id));
+        pool.submit(() -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"task {id}"</span>));
     }
 
     <span class="code-class">Future</span>&lt;<span class="code-class">Integer</span>&gt; f = pool.submit(() -&gt; <span class="code-number">40</span> + <span class="code-number">2</span>);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"result: "</span> + f.get());  <span class="code-comment">// 42</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"result: {f.get()}"</span>);  <span class="code-comment">// 42</span>
 
     pool.shutdown();          <span class="code-comment">// stop accepting new tasks</span>
 }</code></pre>

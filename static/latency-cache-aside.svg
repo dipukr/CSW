@@ -12,11 +12,11 @@
   </g>
 
   <g fill="#ffffff" stroke="#222" stroke-width="1.2">
-    <rect x="175" y="10" width="170" height="46" rx="6"/>
+    <rect x="175" y="10" width="170" height="46" rx="3"/>
     <path d="M260,86 L330,135 L260,184 L190,135 Z"/>
-    <rect x="20" y="188" width="160" height="54" rx="6"/>
-    <rect x="340" y="188" width="160" height="54" rx="6"/>
-    <rect x="340" y="268" width="160" height="54" rx="6"/>
+    <rect x="20" y="188" width="160" height="54" rx="3"/>
+    <rect x="340" y="188" width="160" height="54" rx="3"/>
+    <rect x="340" y="268" width="160" height="54" rx="3"/>
   </g>
 
   <g fill="#111" text-anchor="middle" dominant-baseline="central">

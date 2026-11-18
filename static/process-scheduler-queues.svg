@@ -1,0 +1,26 @@
+<svg width="720" height="330" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 330" role="img" aria-label="A new runnable task enters the ready queue and the CPU scheduler dispatches it to a CPU core; time-slice preemption returns it to the ready queue, a blocking operation moves it to the wait queue until a wakeup event returns it, and exit ends it">
+    <defs><marker id="sq-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="20" y="110" width="120" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="80" y="138.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#222222">New runnable task</text>
+    <path d="M140 134 H178" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sq-a)"/>
+    <rect x="180" y="110" width="150" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="255" y="138.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">Ready / Run Queue</text>
+    <path d="M330 134 H368" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sq-a)"/>
+    <rect x="370" y="110" width="140" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="440" y="138.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">CPU Scheduler</text>
+    <path d="M510 134 H548" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sq-a)"/>
+    <rect x="550" y="110" width="150" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="625" y="138.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">CPU Core</text>
+    <path d="M625 110 C 625 40, 255 40, 255 108" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sq-a)"/>
+    <text x="440" y="50" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Time slice / preemption</text>
+    <rect x="300" y="262" width="150" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="375" y="290.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">Wait Queue</text>
+    <rect x="610" y="262" width="90" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="655" y="290.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">Exited</text>
+    <path d="M580 158 V286 H452" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sq-a)"/>
+    <text x="572" y="230" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Blocking operation</text>
+    <path d="M655 158 V260" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sq-a)"/>
+    <text x="663" y="214" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Exit</text>
+    <path d="M300 286 H230 V160" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sq-a)"/>
+    <text x="222" y="230" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Wakeup event</text>
+</svg>

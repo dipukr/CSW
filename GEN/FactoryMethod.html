@@ -78,7 +78,7 @@
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailNotification</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending EMAIL: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending EMAIL: {message}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -128,13 +128,13 @@
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailNotification</span> <span class="code-keyword">implements</span> <span class="code-class">Notification</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending EMAIL: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending EMAIL: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsNotification</span> <span class="code-keyword">implements</span> <span class="code-class">Notification</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending SMS: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending SMS: {message}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -196,13 +196,13 @@ Sending SMS: OTP: 123456</code></pre></div>
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PDFExporter</span> <span class="code-keyword">implements</span> <span class="code-class">DocumentExporter</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> export(<span class="code-class">String</span> data) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Exporting PDF: "</span> + data);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Exporting PDF: {data}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CSVExporter</span> <span class="code-keyword">implements</span> <span class="code-class">DocumentExporter</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> export(<span class="code-class">String</span> data) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Exporting CSV: "</span> + data);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Exporting CSV: {data}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -383,13 +383,13 @@ send receipt</div>
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">StripeGateway</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentGateway</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(double amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Paid $"</span> + amount + <span class="code-string">" using Stripe"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Paid ${amount} using Stripe"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">RazorpayGateway</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentGateway</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(double amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Paid ₹"</span> + amount + <span class="code-string">" using Razorpay"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Paid ₹{amount} using Razorpay"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -571,14 +571,14 @@ send receipt</div>
 <span class="code-annotation">@Component</span>(<span class="code-string">"email"</span>)
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailNotification</span> <span class="code-keyword">implements</span> <span class="code-class">Notification</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: {message}"</span>);
     }
 }
 
 <span class="code-annotation">@Component</span>(<span class="code-string">"sms"</span>)
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsNotification</span> <span class="code-keyword">implements</span> <span class="code-class">Notification</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: {message}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -614,7 +614,7 @@ send receipt</div>
         <span class="code-keyword">return</span> <span class="code-string">"email"</span>;
     }
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: {message}"</span>);
     }
 }
 
@@ -624,7 +624,7 @@ send receipt</div>
         <span class="code-keyword">return</span> <span class="code-string">"sms"</span>;
     }
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: {message}"</span>);
     }
 }</code></pre></div>
     <div class="intro">

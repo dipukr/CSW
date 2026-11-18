@@ -13,26 +13,26 @@
     .bs { font-size: 11px; }
     .band { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; }
   </style>
-  <rect x="0" y="0" width="860" height="480" fill="#f8fafc" rx="8"/>
+  <rect x="0" y="0" width="860" height="480" fill="#f8fafc" rx="3"/>
 
   <!-- side bands -->
-  <rect x="40" y="104" width="360" height="336" rx="10" fill="#eff6ff"/>
-  <rect x="460" y="104" width="360" height="336" rx="10" fill="#f0fdf4"/>
+  <rect x="40" y="104" width="360" height="336" rx="3" fill="#eff6ff"/>
+  <rect x="460" y="104" width="360" height="336" rx="3" fill="#f0fdf4"/>
   <text x="220" y="126" text-anchor="middle" class="band" fill="#1e40af">COMMAND &#183; WRITE SIDE</text>
   <text x="640" y="126" text-anchor="middle" class="band" fill="#166534">QUERY &#183; READ SIDE</text>
 
   <!-- Client -->
-  <rect x="340" y="24" width="180" height="56" rx="10" fill="#e5e7eb" stroke="#6b7280" stroke-width="1.6" filter="url(#cq-sh)"/>
+  <rect x="340" y="24" width="180" height="56" rx="3" fill="#e5e7eb" stroke="#6b7280" stroke-width="1.6" filter="url(#cq-sh)"/>
   <text x="430" y="49" text-anchor="middle" class="bt" fill="#374151">Client / API</text>
   <text x="430" y="67" text-anchor="middle" class="bs" fill="#6b7280">sends commands and queries</text>
 
   <!-- Command Handler -->
-  <rect x="105" y="150" width="230" height="64" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8" filter="url(#cq-sh)"/>
+  <rect x="105" y="150" width="230" height="64" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8" filter="url(#cq-sh)"/>
   <text x="220" y="178" text-anchor="middle" class="bt" fill="#1e3a8a">Command Handler</text>
   <text x="220" y="196" text-anchor="middle" class="bs" fill="#2563eb">validation + business rules</text>
 
   <!-- Query Handler -->
-  <rect x="525" y="150" width="230" height="64" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8" filter="url(#cq-sh)"/>
+  <rect x="525" y="150" width="230" height="64" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8" filter="url(#cq-sh)"/>
   <text x="640" y="178" text-anchor="middle" class="bt" fill="#166534">Query Handler</text>
   <text x="640" y="196" text-anchor="middle" class="bs" fill="#16a34a">read-optimized, no logic</text>
 
@@ -50,24 +50,24 @@
 
   <!-- Client -> Command Handler : commands -->
   <path class="edge" d="M395,80 C330,108 270,124 232,148" stroke="#2563eb" marker-end="url(#cq-b)"/>
-  <g><rect class="chip" x="282" y="98" width="74" height="20" rx="5"/><text x="319" y="112" text-anchor="middle" class="lbl" fill="#1e3a8a">commands</text></g>
+  <g><rect class="chip" x="282" y="98" width="74" height="20" rx="3"/><text x="319" y="112" text-anchor="middle" class="lbl" fill="#1e3a8a">commands</text></g>
 
   <!-- Command Handler -> Write Store : persist -->
   <path class="edge" d="M220,214 L220,297" stroke="#2563eb" marker-end="url(#cq-b)"/>
-  <g><rect class="chip" x="228" y="246" width="96" height="20" rx="5"/><text x="276" y="260" text-anchor="middle" class="lbl" fill="#1e3a8a">persist changes</text></g>
+  <g><rect class="chip" x="228" y="246" width="96" height="20" rx="3"/><text x="276" y="260" text-anchor="middle" class="lbl" fill="#1e3a8a">persist changes</text></g>
 
   <!-- Write Store -> Read Store : events / projection -->
   <path class="edge" d="M318,342 L542,342" stroke="#d97706" marker-end="url(#cq-a)"/>
-  <g><rect class="chip" x="360" y="322" width="140" height="20" rx="5"/><text x="430" y="336" text-anchor="middle" class="lbl" fill="#92400e">events / projection</text></g>
+  <g><rect class="chip" x="360" y="322" width="140" height="20" rx="3"/><text x="430" y="336" text-anchor="middle" class="lbl" fill="#92400e">events / projection</text></g>
   <text x="430" y="364" text-anchor="middle" class="lbl" fill="#b45309">(eventually consistent)</text>
 
   <!-- Read Store -> Query Handler : read model -->
   <path class="edge" d="M640,299 L640,216" stroke="#16a34a" marker-end="url(#cq-g)"/>
-  <g><rect class="chip" x="596" y="246" width="88" height="20" rx="5"/><text x="640" y="260" text-anchor="middle" class="lbl" fill="#166534">read model</text></g>
+  <g><rect class="chip" x="596" y="246" width="88" height="20" rx="3"/><text x="640" y="260" text-anchor="middle" class="lbl" fill="#166534">read model</text></g>
 
   <!-- Query Handler -> Client : results -->
   <path class="edge" d="M628,148 C590,124 530,108 465,80" stroke="#16a34a" marker-end="url(#cq-g)"/>
-  <g><rect class="chip" x="504" y="98" width="98" height="20" rx="5"/><text x="553" y="112" text-anchor="middle" class="lbl" fill="#166534">query results</text></g>
+  <g><rect class="chip" x="504" y="98" width="98" height="20" rx="3"/><text x="553" y="112" text-anchor="middle" class="lbl" fill="#166534">query results</text></g>
 
   <!-- legend -->
   <g class="lbl" fill="#475569">

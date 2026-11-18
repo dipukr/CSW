@@ -159,7 +159,7 @@
 
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> display(<span class="code-class">String</span> indentation) {
-        <span class="code-class">System</span>.out.println(indentation + <span class="code-string">"File: "</span> + name + <span class="code-string">" ("</span> + size + <span class="code-string">" KB)"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{indentation}File: {name} ({size} KB)"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -197,7 +197,7 @@
 
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> display(<span class="code-class">String</span> indentation) {
-        <span class="code-class">System</span>.out.println(indentation + <span class="code-string">"Folder: "</span> + name);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{indentation}Folder: {name}"</span>);
         for (<span class="code-class">FileSystemNode</span> child: childs)
             child.display(indentation + <span class="code-string">"    "</span>);
     }
@@ -224,7 +224,7 @@
 
     root.display(<span class="code-string">""</span>);
 
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Total size: "</span> + root.getSize() + <span class="code-string">" KB"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Total size: {root.getSize()} KB"</span>);
 }</code></pre></div>
     <div class="intro">
         <p>Output:</p>
@@ -241,8 +241,8 @@ Total size: 710 KB</code></pre></div>
         <p class="minor-heading"><strong>Client doesn't care whether it's a File or Folder</strong></p>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> printDetails(<span class="code-class">FileSystemNode</span> node) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Name: "</span> + node.getName());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Size: "</span> + node.getSize());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Name: {node.getName()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Size: {node.getSize()}"</span>);
 }</code></pre></div>
     <div class="intro">
         <p>Now:</p>
@@ -283,7 +283,7 @@ printDetails(root);      <span class="code-comment">Works</span></code></pre></d
         <span class="code-keyword">this</span>.text = text;
     }
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> render() {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Button: "</span> + text);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Button: {text}"</span>);
     }
 }
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Label</span> <span class="code-keyword">implements</span> <span class="code-class">UIComponent</span> {
@@ -292,7 +292,7 @@ printDetails(root);      <span class="code-comment">Works</span></code></pre></d
         <span class="code-keyword">this</span>.text = text;
     }
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> render() {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Label: "</span> + text);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Rendering Label: {text}"</span>);
     }
 }
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Panel</span> <span class="code-keyword">implements</span> <span class="code-class">UIComponent</span> {
@@ -608,7 +608,7 @@ bundle.add(laptop);</code></pre></div>
 
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> display(<span class="code-class">String</span> indentation) {
-        <span class="code-class">System</span>.out.println(indentation + <span class="code-string">"Cloud: "</span> + name);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{indentation}Cloud: {name}"</span>);
     }
 }</code></pre></div>
     <div class="intro">

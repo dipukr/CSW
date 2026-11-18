@@ -236,17 +236,17 @@
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(name + <span class="code-string">" broadcasts: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{name} broadcasts: {message}"</span>);
         mediator.broadcast(message, <span class="code-keyword">this</span>);
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> sendPrivate(<span class="code-class">String</span> recipient, <span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(name + <span class="code-string">" sends a private message to "</span> + recipient);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{name} sends a private message to {recipient}"</span>);
         mediator.sendPrivate(recipient, message, <span class="code-keyword">this</span>);
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> receive(<span class="code-class">String</span> sender, <span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(name + <span class="code-string">" received from "</span> + sender + <span class="code-string">": "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{name} received from {sender}: {message}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -266,7 +266,7 @@
         <span class="code-keyword">if</span> (users.putIfAbsent(user.getName(), user) != <span class="code-keyword">null</span>) {
             <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Username already exists: "</span> + user.getName());
         }
-        <span class="code-class">System</span>.out.println(user.getName() + <span class="code-string">" joined the room"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{user.getName()} joined the room"</span>);
     }
 
     <span class="code-annotation">@Override</span>
@@ -457,7 +457,7 @@ Alice received from Bob: Can we review the code?</code></pre></div>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> setEnabled(<span class="code-keyword">boolean</span> enabled) {
         <span class="code-keyword">if</span> (<span class="code-keyword">this</span>.enabled != enabled) {
             <span class="code-keyword">this</span>.enabled = enabled;
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Register button "</span> + (enabled ? <span class="code-string">"enabled"</span> : <span class="code-string">"disabled"</span>));
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Register button {enabled ? "</span>enabled<span class="code-string">" : "</span>disabled<span class="code-string">"}"</span>);
         }
     }
 
@@ -509,7 +509,7 @@ Alice received from Bob: Can we review the code?</code></pre></div>
         <span class="code-keyword">if</span> (!isFormValid()) {
             <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalStateException</span>(<span class="code-string">"Invalid form"</span>);
         }
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Registration submitted for: "</span> + username.getValue());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Registration submitted for: {username.getValue()}"</span>);
     }
 
     <span class="code-keyword">private</span> <span class="code-keyword">boolean</span> isFormValid() {
@@ -953,7 +953,7 @@ NotificationMediator</code></pre></div>
 
     <span class="code-keyword">void</span> send(String msg) { mediator.send(msg, <span class="code-keyword">this</span>); }
     <span class="code-keyword">void</span> receive(String msg) {
-        System.out.println(name + <span class="code-string">" got: "</span> + msg);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{name} got: {msg}"</span>);
     }
 }
 

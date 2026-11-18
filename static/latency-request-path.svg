@@ -13,12 +13,12 @@
   </g>
 
   <g fill="#ffffff" stroke="#222" stroke-width="1.2">
-    <rect x="30" y="10" width="340" height="46" rx="6"/>
-    <rect x="30" y="76" width="340" height="46" rx="6"/>
-    <rect x="30" y="142" width="340" height="46" rx="6"/>
-    <rect x="30" y="208" width="340" height="46" rx="6"/>
-    <rect x="30" y="274" width="340" height="46" rx="6"/>
-    <rect x="30" y="340" width="340" height="46" rx="6" stroke-dasharray="5 4"/>
+    <rect x="30" y="10" width="340" height="46" rx="3"/>
+    <rect x="30" y="76" width="340" height="46" rx="3"/>
+    <rect x="30" y="142" width="340" height="46" rx="3"/>
+    <rect x="30" y="208" width="340" height="46" rx="3"/>
+    <rect x="30" y="274" width="340" height="46" rx="3"/>
+    <rect x="30" y="340" width="340" height="46" rx="3" stroke-dasharray="5 4"/>
   </g>
 
   <g fill="#111" dominant-baseline="central">

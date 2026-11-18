@@ -3,16 +3,16 @@
     <path d="M210 56 V78" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#dc4-a)"/>
     <path d="M210 126 V148" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#dc4-a)"/>
     <path d="M210 196 V218" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#dc4-a)"/>
-    <rect x="90" y="10" width="240" height="46" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="90" y="10" width="240" height="46" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="210" y="27" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">ExtraShotDecorator</text>
     <text x="210" y="43" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">+25</text>
-    <rect x="90" y="80" width="240" height="46" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="90" y="80" width="240" height="46" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="210" y="97" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">CreamDecorator</text>
     <text x="210" y="113" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">+20</text>
-    <rect x="90" y="150" width="240" height="46" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="90" y="150" width="240" height="46" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="210" y="167" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">MilkDecorator</text>
     <text x="210" y="183" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">+15</text>
-    <rect x="90" y="220" width="240" height="46" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="90" y="220" width="240" height="46" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="210" y="237" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">SimpleCoffee</text>
     <text x="210" y="253" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">50</text>
     <text x="218" y="72" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">getCost()</text>

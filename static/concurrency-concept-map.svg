@@ -3,74 +3,74 @@
     <path d="M360 58 V80 M90 80 H630" fill="none" stroke="#555555" stroke-width="1.5"/>
     <path d="M90 80 V100" fill="none" stroke="#555555" stroke-width="1.5"/>
     <path d="M90 140 V334" fill="none" stroke="#555555" stroke-width="1.5"/>
-    <rect x="15" y="100" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="15" y="100" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="90" y="124.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Execution</text>
-    <rect x="22" y="164" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="22" y="164" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="90" y="181" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Processes</text>
-    <rect x="22" y="198" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="22" y="198" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="90" y="215" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Threads</text>
-    <rect x="22" y="232" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="22" y="232" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="90" y="249" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Task scheduling</text>
-    <rect x="22" y="266" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="22" y="266" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="90" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Thread pools</text>
-    <rect x="22" y="300" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="22" y="300" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="90" y="317" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Virtual threads</text>
-    <rect x="22" y="334" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="22" y="334" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="90" y="351" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Async tasks</text>
     <path d="M270 80 V100" fill="none" stroke="#555555" stroke-width="1.5"/>
     <path d="M270 140 V334" fill="none" stroke="#555555" stroke-width="1.5"/>
-    <rect x="195" y="100" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="195" y="100" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="270" y="124.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Correctness</text>
-    <rect x="202" y="164" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="202" y="164" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="270" y="181" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Race conditions</text>
-    <rect x="202" y="198" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="202" y="198" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="270" y="215" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Atomicity</text>
-    <rect x="202" y="232" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="202" y="232" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="270" y="249" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Visibility</text>
-    <rect x="202" y="266" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="202" y="266" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="270" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Ordering</text>
-    <rect x="202" y="300" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="202" y="300" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="270" y="317" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Happens-before</text>
-    <rect x="202" y="334" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="202" y="334" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="270" y="351" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Thread safety</text>
     <path d="M450 80 V100" fill="none" stroke="#555555" stroke-width="1.5"/>
     <path d="M450 140 V436" fill="none" stroke="#555555" stroke-width="1.5"/>
-    <rect x="375" y="100" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="375" y="100" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="450" y="124.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Coordination</text>
-    <rect x="382" y="164" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="164" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="181" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Locks</text>
-    <rect x="382" y="198" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="198" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="215" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Atomics</text>
-    <rect x="382" y="232" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="232" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="249" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Semaphores</text>
-    <rect x="382" y="266" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="266" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Conditions</text>
-    <rect x="382" y="300" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="300" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="317" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Wait / notify</text>
-    <rect x="382" y="334" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="334" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="351" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Message passing</text>
-    <rect x="382" y="368" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="368" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="385" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Executors</text>
-    <rect x="382" y="402" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="402" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="419" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Futures</text>
-    <rect x="382" y="436" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="382" y="436" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="450" y="453" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Queues</text>
     <path d="M630 80 V100" fill="none" stroke="#555555" stroke-width="1.5"/>
     <path d="M630 140 V266" fill="none" stroke="#555555" stroke-width="1.5"/>
-    <rect x="555" y="100" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="555" y="100" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="630" y="124.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Performance</text>
-    <rect x="562" y="164" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="562" y="164" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="630" y="181" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Parallelism</text>
-    <rect x="562" y="198" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="562" y="198" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="630" y="215" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Contention</text>
-    <rect x="562" y="232" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="562" y="232" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="630" y="249" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Scalability</text>
-    <rect x="562" y="266" width="136" height="26" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <rect x="562" y="266" width="136" height="26" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
     <text x="630" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Throughput</text>
-    <rect x="270" y="14" width="180" height="44" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="270" y="14" width="180" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="360" y="41.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">Concurrency</text>
     <path d="M270 360 V490" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4"/>
-    <rect x="200" y="490" width="320" height="48" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="200" y="490" width="320" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="360" y="511" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Common failure modes</text>
     <text x="360" y="527" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">races · deadlocks · starvation</text>
 </svg>

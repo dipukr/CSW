@@ -11,13 +11,13 @@
     <path d="M90 252 H747" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#md6-a)"/>
     <path d="M750 294 H533" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#md6-a)"/>
     <path d="M530 328 H564 V344 H533" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#md6-a)"/>
-    <rect x="15" y="14" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="15" y="14" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="90" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#222222">User</text>
-    <rect x="225" y="14" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="225" y="14" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="300" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#222222">PasswordField</text>
-    <rect x="455" y="14" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="455" y="14" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="530" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#222222">RegistrationDialog</text>
-    <rect x="675" y="14" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="675" y="14" width="150" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="750" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#222222">RegisterButton</text>
     <text x="195" y="78" text-anchor="middle" font-family="Consolas, 'Source Code Pro', monospace" font-size="11" font-weight="400" fill="#222222">setValue(&quot;SecurePass123&quot;)</text>
     <text x="415" y="120" text-anchor="middle" font-family="Consolas, 'Source Code Pro', monospace" font-size="11" font-weight="400" fill="#222222">componentChanged(this)</text>

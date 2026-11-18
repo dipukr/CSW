@@ -1,0 +1,25 @@
+<svg width="720" height="386" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 386" role="img" aria-label="Incoming tasks go into a task queue, a thread pool hands them to worker threads 1, 2 and 3, and they finish as completed tasks">
+    <defs><marker id="tp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="260" y="14" width="200" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="40.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Incoming Tasks</text>
+    <path d="M360 58 V84" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tp-a)"/>
+    <rect x="260" y="86" width="200" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="112.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Task Queue</text>
+    <path d="M360 130 V156" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tp-a)"/>
+    <rect x="260" y="158" width="200" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="184.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Thread Pool</text>
+    <path d="M360 202 V218 H150 V240" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tp-a)"/>
+    <rect x="60" y="242" width="180" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="150" y="268.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Worker Thread 1</text>
+    <path d="M150 286 V302 H360 V326" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M360 202 V218 H370 V240" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tp-a)"/>
+    <rect x="280" y="242" width="180" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="370" y="268.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Worker Thread 2</text>
+    <path d="M370 286 V302 H360 V326" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tp-a)"/>
+    <path d="M360 202 V218 H590 V240" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tp-a)"/>
+    <rect x="500" y="242" width="180" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="590" y="268.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Worker Thread 3</text>
+    <path d="M590 286 V302 H360 V326" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <rect x="260" y="328" width="200" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="354.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Completed Tasks</text>
+</svg>

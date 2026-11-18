@@ -51,7 +51,7 @@
 <pre><code><span class="code-keyword">var</span> names = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">String</span>&gt;(); <span class="code-comment">Inferred as ArrayList&lt;String&gt;</span>
 <span class="code-keyword">var</span> counts = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">String</span>, <span class="code-class">Integer</span>&gt;();
 <span class="code-keyword">for</span> (<span class="code-keyword">var</span> entry : counts.entrySet()) {
-    <span class="code-class">IO</span>.println(entry.getKey() + <span class="code-string">" = "</span> + entry.getValue());
+    <span class="code-class">IO</span>.println(<span class="code-string">"{entry.getKey()} = {entry.getValue()}"</span>);
 }
 <span class="code-class">BiFunction</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt; add = (<span class="code-annotation">@NonNull</span> <span class="code-keyword">var</span> a, <span class="code-annotation">@NonNull</span> <span class="code-keyword">var</span> b) -&gt; a + b; <span class="code-comment">Java 11: var in lambda parameters</span></code></pre>
         </div>
@@ -224,11 +224,11 @@
 <pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">Line</span>(<span class="code-class">Point</span> start, <span class="code-class">Point</span> end) {}
 
 <span class="code-keyword">if</span> (obj <span class="code-keyword">instanceof</span> <span class="code-class">Point</span>(<span class="code-keyword">int</span> x, <span class="code-keyword">int</span> y)) {
-    <span class="code-class">IO</span>.println(<span class="code-string">"x = "</span> + x + <span class="code-string">", y = "</span> + y);
+    <span class="code-class">IO</span>.println(<span class="code-string">"x = {x}, y = {y}"</span>);
 }
 <span class="code-class">Line</span> line = <span class="code-keyword">new</span> <span class="code-class">Line</span>(<span class="code-keyword">new</span> <span class="code-class">Point</span>(<span class="code-number">0</span>, <span class="code-number">0</span>), <span class="code-keyword">new</span> <span class="code-class">Point</span>(<span class="code-number">3</span>, <span class="code-number">4</span>));
 <span class="code-keyword">if</span> (line <span class="code-keyword">instanceof</span> <span class="code-class">Line</span>(<span class="code-class">Point</span>(<span class="code-keyword">var</span> x1, <span class="code-keyword">var</span> y1), <span class="code-class">Point</span>(<span class="code-keyword">var</span> x2, <span class="code-keyword">var</span> y2))) { <span class="code-comment">Nested record patterns</span>
-    <span class="code-class">IO</span>.println(<span class="code-string">"dx = "</span> + (x2 - x1) + <span class="code-string">", dy = "</span> + (y2 - y1));
+    <span class="code-class">IO</span>.println(<span class="code-string">"dx = {x2 - x1}, dy = {y2 - y1}"</span>);
 }</code></pre>
         </div>
     </div>
@@ -250,7 +250,7 @@
 }
 map.forEach((_, value) -&gt; <span class="code-class">IO</span>.println(value)); <span class="code-comment">Ignore the key</span>
 <span class="code-keyword">if</span> (obj <span class="code-keyword">instanceof</span> <span class="code-class">Line</span>(<span class="code-class">Point</span>(<span class="code-keyword">var</span> x, _), _)) { <span class="code-comment">Bind only the components that are used</span>
-    <span class="code-class">IO</span>.println(<span class="code-string">"start x = "</span> + x);
+    <span class="code-class">IO</span>.println(<span class="code-string">"start x = {x}"</span>);
 }</code></pre>
         </div>
     </div>
@@ -263,7 +263,7 @@ map.forEach((_, value) -&gt; <span class="code-class">IO</span>.println(value));
         <div class="code-wrapper">
 <pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
     <span class="code-class">String</span> name = <span class="code-class">IO</span>.readln(<span class="code-string">"What is your name? "</span>);
-    <span class="code-class">IO</span>.println(<span class="code-string">"Hello, "</span> + name + <span class="code-string">"!"</span>);
+    <span class="code-class">IO</span>.println(<span class="code-string">"Hello, {name}!"</span>);
 }</code></pre>
         </div>
     </div>
@@ -307,7 +307,7 @@ map.forEach((_, value) -&gt; <span class="code-class">IO</span>.println(value));
     }
 
     <span class="code-keyword">private</span> <span class="code-keyword">void</span> log(<span class="code-class">String</span> level, <span class="code-class">String</span> message) { <span class="code-comment">Shared helper, not visible to implementing classes</span>
-        <span class="code-class">IO</span>.println(<span class="code-string">"["</span> + level + <span class="code-string">"] "</span> + message);
+        <span class="code-class">IO</span>.println(<span class="code-string">"[{level}] {message}"</span>);
     }
 }</code></pre>
         </div>
@@ -448,7 +448,7 @@ scores.put(<span class="code-string">"y"</span>, <span class="code-number">2</sp
 <span class="code-class">HttpRequest</span> request = <span class="code-class">HttpRequest</span>.newBuilder(URI.create(<span class="code-string">"https://api.example.com/orders/42"</span>))
                                  .header(<span class="code-string">"Accept"</span>, <span class="code-string">"application/json"</span>).GET().build();
 <span class="code-class">HttpResponse</span>&lt;<span class="code-class">String</span>&gt; response = client.send(request, <span class="code-class">HttpResponse</span>.<span class="code-class">BodyHandlers</span>.ofString()); <span class="code-comment">Synchronous</span>
-<span class="code-class">IO</span>.println(response.statusCode() + <span class="code-string">" "</span> + response.body());
+<span class="code-class">IO</span>.println(<span class="code-string">"{response.statusCode()} {response.body()}"</span>);
 client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span class="code-class">BodyHandlers</span>.ofString())
       .thenApply(<span class="code-class">HttpResponse</span>::body).thenAccept(<span class="code-class">IO</span>::println); <span class="code-comment">Asynchronous: returns a CompletableFuture</span></code></pre>
         </div>
@@ -490,7 +490,7 @@ client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span cla
         });
     }
 } <span class="code-comment">close() waits until all tasks finish: about 1 second in total, not 10,000</span>
-<span class="code-class">Thread</span>.ofVirtual().start(() -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"Hello from "</span> + <span class="code-class">Thread</span>.currentThread()));
+<span class="code-class">Thread</span>.ofVirtual().start(() -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"Hello from {Thread.currentThread()}"</span>));
 <span class="code-class">Thread</span>.startVirtualThread(() -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"Another virtual thread"</span>));</code></pre>
         </div>
     </div>
@@ -516,7 +516,7 @@ client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span cla
 <span class="code-class">ScopedValue</span>.where(<span class="code-class">RequestContext</span>.USER, <span class="code-string">"sam"</span>).run(() -&gt; handleRequest()); <span class="code-comment">USER is bound only while run() executes</span>
 
 <span class="code-keyword">void</span> handleRequest() {
-    <span class="code-class">IO</span>.println(<span class="code-string">"Current user: "</span> + <span class="code-class">RequestContext</span>.USER.get());
+    <span class="code-class">IO</span>.println(<span class="code-string">"Current user: {RequestContext.USER.get()}"</span>);
 }</code></pre>
         </div>
     </div>
@@ -682,7 +682,7 @@ client.sendAsync(request, <span class="code-class">HttpResponse</span>.<span cla
     <span class="code-class">List</span>&lt;<span class="code-class">Answer</span>&gt; answers = <span class="code-class">List</span>.of(<span class="code-keyword">new</span> <span class="code-class">RealAnswer</span>(<span class="code-string">"Yes, absolutely"</span>), <span class="code-keyword">new</span> <span class="code-class">NoAnswer</span>(), <span class="code-keyword">new</span> <span class="code-class">RealAnswer</span>(<span class="code-string">"42"</span>), <span class="code-keyword">new</span> <span class="code-class">NoAnswer</span>());
     <span class="code-keyword">for</span> (<span class="code-class">Answer</span> a : answers) {
         <span class="code-keyword">switch</span> (a) {
-            <span class="code-keyword">case</span> <span class="code-class">RealAnswer</span> r -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"Answer: "</span> + r.value());
+            <span class="code-keyword">case</span> <span class="code-class">RealAnswer</span> r -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"Answer: {r.value()}"</span>);
             <span class="code-keyword">case</span> <span class="code-class">NoAnswer</span> _ -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"No answer provided"</span>);
         }
     }

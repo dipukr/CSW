@@ -112,7 +112,7 @@
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">TreeType</span>(<span class="code-class">String</span> name, <span class="code-class">String</span> color, <span class="code-class">String</span> texture) {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> draw(<span class="code-keyword">int</span> x, <span class="code-keyword">int</span> y) {
-        <span class="code-class">System</span>.out.printf(<span class="code-string">"Drawing %s tree at (%d, %d), color=%s, texture=%s%n"</span>, name, x, y, color, texture);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Drawing {name} tree at ({x}, {y}), color={color}, texture={texture}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -220,9 +220,9 @@
         <span class="code-keyword">else</span> forest.plantTree(i, i, <span class="code-string">"Pine"</span>, <span class="code-string">"DarkGreen"</span>, <span class="code-string">"pine.png"</span>);
     }
     forest.drawFirst(<span class="code-number">3</span>);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Total trees: "</span> + forest.getTreeCount());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Unique tree types: "</span> + forest.getUniqueTypeCount());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"First two trees share the same type: "</span> + (forest.getTree(<span class="code-number">0</span>).treeType() == forest.getTree(<span class="code-number">1</span>).treeType()));
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Total trees: {forest.getTreeCount()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Unique tree types: {forest.getUniqueTypeCount()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"First two trees share the same type: {forest.getTree(0).treeType() == forest.getTree(1).treeType()}"</span>);
 }</code></pre></div>
     <div class="intro">
         <p><strong>Output</strong> (the first three drawing lines are abbreviated):</p>
@@ -300,7 +300,7 @@ Color: Black</code></pre></div>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">record</span> <span class="code-class">StyledCharacter</span>(<span class="code-keyword">char</span> value, <span class="code-keyword">int</span> position, <span class="code-class">CharacterStyle</span> style) {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> display() {
-        <span class="code-class">System</span>.out.printf(<span class="code-string">"Character '%c' at position %d uses %s%n"</span>, value, position, style);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Character '{value}' at position {position} uses {style}"</span>);
     }
 }</code></pre></div>
     <div class="intro">

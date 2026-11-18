@@ -1,0 +1,49 @@
+<svg width="720" height="456" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 456" role="img" aria-label="Race condition: with counter at 0, Thread A and Thread B both read 0, both compute 1 locally, then A writes 1 and B overwrites it with 1, so the counter ends at 1 instead of the expected 2 and one increment is lost">
+    <defs><marker id="rc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="40" y="16" width="210" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="145" y="40.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">Thread A</text>
+    <rect x="300" y="16" width="120" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="33" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">counter</text>
+    <text x="360" y="49" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">shared</text>
+    <rect x="470" y="16" width="210" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="575" y="40.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">Thread B</text>
+    <path d="M16 76 V376" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#rc-a)"/>
+    <text transform="rotate(-90 12 226)" x="16" y="226" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#555555" font-style="italic">time</text>
+    <rect x="40" y="76" width="210" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="54" y="99" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#555555">1.</text>
+    <text x="155" y="99" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Read counter = 0</text>
+    <rect x="320" y="76" width="80" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="360" y="100" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">0</text>
+    <path d="M320 94 H252" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#rc-a)"/>
+    <rect x="470" y="126" width="210" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="484" y="149" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#555555">2.</text>
+    <text x="585" y="149" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Read counter = 0</text>
+    <rect x="320" y="126" width="80" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="360" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">0</text>
+    <path d="M400 144 H468" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#rc-a)"/>
+    <rect x="40" y="176" width="210" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="54" y="199" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#555555">3.</text>
+    <text x="155" y="199" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Increment local value to 1</text>
+    <rect x="320" y="176" width="80" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="360" y="200" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">0</text>
+    <rect x="470" y="226" width="210" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="484" y="249" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#555555">4.</text>
+    <text x="585" y="249" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Increment local value to 1</text>
+    <rect x="320" y="226" width="80" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="360" y="250" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">0</text>
+    <rect x="40" y="276" width="210" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="54" y="299" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#555555">5.</text>
+    <text x="155" y="299" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Write counter = 1</text>
+    <rect x="320" y="276" width="80" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="360" y="300" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">1</text>
+    <path d="M250 294 H318" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#rc-a)"/>
+    <rect x="470" y="326" width="210" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="484" y="349" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#555555">6.</text>
+    <text x="585" y="349" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Write counter = 1</text>
+    <rect x="320" y="326" width="80" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="360" y="350" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">1</text>
+    <path d="M470 344 H402" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#rc-a)"/>
+    <text x="575" y="380" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555" font-style="italic">overwrites Thread A&#8217;s update</text>
+    <rect x="40" y="398" width="640" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="425" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13.5" font-weight="600" fill="#222222">Expected result: 2  ·  Actual result: 1  ·  one increment is lost</text>
+</svg>

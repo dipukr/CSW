@@ -68,7 +68,7 @@
     <span class="code-keyword">public void</span> <span class="code-class">useResource</span>() <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
         permits.acquire();               <span class="code-comment">// wait for a free slot</span>
         <span class="code-keyword">try</span> {
-            <span class="code-class">System</span>.out.println(<span class="code-class">Thread</span>.currentThread().getName() + <span class="code-string">" working"</span>);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"{Thread.currentThread().getName()} working"</span>);
             <span class="code-class">Thread</span>.sleep(<span class="code-string">500</span>);
         } <span class="code-keyword">finally</span> {
             permits.release();           <span class="code-comment">// always return the permit</span>

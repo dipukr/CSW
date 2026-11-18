@@ -4,16 +4,16 @@
     <path d="M360 62 V90 H540 V118" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#fw3-a)"/>
     <path d="M180 178 V207 H330 V234" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#fw3-a)"/>
     <path d="M540 178 V207 H390 V234" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#fw3-a)"/>
-    <rect x="260" y="12" width="200" height="50" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="260" y="12" width="200" height="50" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="360" y="31" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Forest</text>
     <text x="360" y="47" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">client</text>
-    <rect x="60" y="120" width="240" height="58" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="60" y="120" width="240" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="180" y="143" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Tree</text>
     <text x="180" y="159" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">context · x, y (extrinsic) · ref to TreeType</text>
-    <rect x="420" y="120" width="240" height="58" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="420" y="120" width="240" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="540" y="143" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">TreeTypeFactory</text>
     <text x="540" y="159" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">Map&lt;Key, TreeType&gt; · getTreeType(...)</text>
-    <rect x="240" y="236" width="240" height="54" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="240" y="236" width="240" height="54" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="360" y="257" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">TreeType</text>
     <text x="360" y="273" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">flyweight · name, color, texture</text>
     <text x="186" y="109" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">holds</text>

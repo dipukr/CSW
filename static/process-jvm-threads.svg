@@ -1,0 +1,19 @@
+<svg width="720" height="320" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" role="img" aria-label="A Java payment service process, PID 4200, with one JVM address space containing a main thread, an HTTP worker and a GC thread, each with its own stack and registers, all sharing heap, code, file descriptors and sockets">
+    <defs><marker id="jt-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="10" y="10" width="700" height="300" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="30" y="26" width="660" height="62" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="52" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">Process: Java Payment Service (PID 4200)</text>
+    <text x="360" y="74" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">One JVM virtual address space</text>
+    <rect x="30" y="108" width="212" height="84" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="136" y="144" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Main Thread</text>
+    <text x="136" y="166" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#555555">Own stack + registers</text>
+    <rect x="254" y="108" width="212" height="84" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="144" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">HTTP Worker</text>
+    <text x="360" y="166" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#555555">Own stack + registers</text>
+    <rect x="478" y="108" width="212" height="84" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="584" y="144" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">GC Thread</text>
+    <text x="584" y="166" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#555555">Own stack + registers</text>
+    <path d="M30 214 H690" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <text x="360" y="246" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Shared process resources</text>
+    <text x="360" y="270" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Heap · Code · File Descriptors · Sockets</text>
+</svg>

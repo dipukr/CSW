@@ -197,7 +197,7 @@
                 <span class="code-keyword">try</span> {
                     handle(server.accept());
                 } <span class="code-keyword">catch</span> (<span class="code-class">IOException</span> e) {
-                    <span class="code-class">IO</span>.println(id + <span class="code-string">": accept failed: "</span> + e.getMessage());
+                    <span class="code-class">IO</span>.println(<span class="code-string">"{id}: accept failed: {e.getMessage()}"</span>);
                 }
             }
         });
@@ -221,7 +221,7 @@
                 <span class="code-class">String</span> line;
                 <span class="code-keyword">while</span> ((line = in.readLine()) != <span class="code-keyword">null</span>) onMessage(line, out);
             } <span class="code-keyword">catch</span> (<span class="code-class">IOException</span> e) {
-                <span class="code-class">IO</span>.println(id + <span class="code-string">": peer disconnected"</span>);
+                <span class="code-class">IO</span>.println(<span class="code-string">"{id}: peer disconnected"</span>);
             } <span class="code-keyword">finally</span> {
                 peers.remove(out);
             }
@@ -231,7 +231,7 @@
     <span class="code-keyword">private</span> <span class="code-keyword">void</span> onMessage(<span class="code-class">String</span> line, <span class="code-class">PrintWriter</span> from) {
         <span class="code-class">String</span>[] parts = line.split(<span class="code-string">" "</span>, <span class="code-number">4</span>); <span class="code-comment">MSG &lt;messageId&gt; &lt;origin&gt; &lt;text&gt;</span>
         <span class="code-keyword">if</span> (parts.length &lt; <span class="code-number">4</span> || !seen.add(parts[<span class="code-number">1</span>])) <span class="code-keyword">return</span>; <span class="code-comment">Already seen: drop it, which stops endless loops</span>
-        <span class="code-class">IO</span>.println(<span class="code-string">"["</span> + id + <span class="code-string">"] "</span> + parts[<span class="code-number">2</span>] + <span class="code-string">": "</span> + parts[<span class="code-number">3</span>]);
+        <span class="code-class">IO</span>.println(<span class="code-string">"[{id}] {parts[2]}: {parts[3]}"</span>);
         send(line, from); <span class="code-comment">Gossip: forward to every other connected peer</span>
     }
 
@@ -320,9 +320,9 @@
         <div class="code-wrapper">
 <pre><code><span class="code-class">Thread</span>.ofVirtual().start(() -&gt; {
     <span class="code-keyword">try</span> {
-        <span class="code-class">PeerDiscovery</span>.listen((peerId, address) -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"Found "</span> + peerId + <span class="code-string">" at "</span> + address));
+        <span class="code-class">PeerDiscovery</span>.listen((peerId, address) -&gt; <span class="code-class">IO</span>.println(<span class="code-string">"Found {peerId} at {address}"</span>));
     } <span class="code-keyword">catch</span> (<span class="code-class">IOException</span> e) {
-        <span class="code-class">IO</span>.println(<span class="code-string">"Discovery stopped: "</span> + e.getMessage());
+        <span class="code-class">IO</span>.println(<span class="code-string">"Discovery stopped: {e.getMessage()}"</span>);
     }
 });
 <span class="code-class">PeerDiscovery</span>.announce(<span class="code-string">"alice"</span>, <span class="code-number">7001</span>); <span class="code-comment">Tell everyone on the LAN: alice accepts peers on TCP port 7001</span></code></pre>
@@ -393,7 +393,7 @@
     <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">1000</span>; i++) table.add(<span class="code-class">NodeId</span>.of(<span class="code-string">"node-"</span> + i));
     <span class="code-class">NodeId</span> key = <span class="code-class">NodeId</span>.of(<span class="code-string">"movie.mp4"</span>); <span class="code-comment">Keys and peers share one ID space</span>
     <span class="code-keyword">for</span> (<span class="code-class">NodeId</span> node : table.closest(key, <span class="code-number">3</span>)) {
-        <span class="code-class">IO</span>.println(node.value().toString(<span class="code-number">16</span>) + <span class="code-string">" is "</span> + node.distance(key).bitLength() + <span class="code-string">" bits away from the key"</span>);
+        <span class="code-class">IO</span>.println(<span class="code-string">"{node.value().toString(16)} is {node.distance(key).bitLength()} bits away from the key"</span>);
     }
 }</code></pre>
         </div>

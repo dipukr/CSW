@@ -283,11 +283,11 @@ songs.add(<span class="code-string">"Song C"</span>);
     <span class="code-keyword">var</span> tree = <span class="code-keyword">new</span> <span class="code-class">BinaryTree</span>&lt;Integer&gt;(root);
     <span class="code-class">System</span>.out.println(<span class="code-string">"In-order:"</span>);
     <span class="code-keyword">for</span> (<span class="code-class">Integer</span> val: tree)
-        <span class="code-class">System</span>.out.print(val + <span class="code-string">" "</span>);
+        <span class="code-class">System</span>.out.print(<span class="code-string">"{val} "</span>);
     <span class="code-class">System</span>.out.println(<span class="code-string">"\nPre-order:"</span>);
     <span class="code-class">Iterator</span>&lt;<span class="code-class">Integer</span>&gt; iterator = tree.preOrderIterator();
     <span class="code-keyword">while</span> (iterator.hasNext())
-        <span class="code-class">System</span>.out.print(iterator.next() + <span class="code-string">" "</span>);
+        <span class="code-class">System</span>.out.print(<span class="code-string">"{iterator.next()} "</span>);
 }</code></pre></div>
             <div class="intro"><p class="minor-heading"><strong>Output:</strong></p></div>
             <div class="code-block" style="flex:none"><pre><code>In-order:
@@ -391,7 +391,7 @@ Pre-order:
 <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
     <span class="code-class">PageFetcher</span>&lt;<span class="code-class">String</span>&gt; api = cursor -&gt; { <span class="code-comment">Simulated REST API</span>
         <span class="code-keyword">int</span> page = cursor == <span class="code-keyword">null</span> ? <span class="code-number">0</span> : <span class="code-class">Integer</span>.parseInt(cursor);
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Fetching page "</span> + (page + <span class="code-number">1</span>));
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Fetching page {page + 1}"</span>);
         <span class="code-keyword">return</span> <span class="code-keyword">switch</span> (page) {
             <span class="code-keyword">case</span> <span class="code-number">0</span> -&gt; <span class="code-keyword">new</span> <span class="code-class">Page</span>&lt;&gt;(<span class="code-class">List</span>.of(<span class="code-string">"Alice"</span>, <span class="code-string">"Bob"</span>), <span class="code-string">"1"</span>);
             <span class="code-keyword">case</span> <span class="code-number">1</span> -&gt; <span class="code-keyword">new</span> <span class="code-class">Page</span>&lt;&gt;(<span class="code-class">List</span>.of(<span class="code-string">"Charlie"</span>, <span class="code-string">"David"</span>), <span class="code-keyword">null</span>);
@@ -400,7 +400,7 @@ Pre-order:
     };
     <span class="code-class">PaginatedItems</span>&lt;<span class="code-class">String</span>&gt; users = <span class="code-keyword">new</span> <span class="code-class">PaginatedItems</span>&lt;&gt;(api);
     <span class="code-keyword">for</span> (<span class="code-class">String</span> user: users) <span class="code-comment">Client does not manage pagination</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"User: "</span> + user);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"User: {user}"</span>);
 }</code></pre></div>
     <div class="intro">
         <p class="minor-heading"><strong>Output:</strong></p>

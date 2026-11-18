@@ -260,9 +260,9 @@ producer.send(record, (metadata, exception) -&gt; {
         exception.printStackTrace();
         <span class="code-keyword">return</span>;
     }
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Topic: "</span> + metadata.topic());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Partition: "</span> + metadata.partition());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Offset: "</span> + metadata.offset());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Topic: {metadata.topic()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Partition: {metadata.partition()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Offset: {metadata.offset()}"</span>);
 });
 
 <span class="code-comment">@ synchronous send (blocks until acknowledged)</span>
@@ -290,7 +290,7 @@ producer.send(record, (metadata, exception) -&gt; {
                 exception.printStackTrace();
                 <span class="code-keyword">return</span>;
             }
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Sent to partition "</span> + metadata.partition() + <span class="code-string">" at offset "</span> + metadata.offset());
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Sent to partition {metadata.partition()} at offset {metadata.offset()}"</span>);
         });
     }
 }</code></pre>
@@ -370,7 +370,7 @@ consumer.subscribe(<span class="code-class">List</span>.of(<span class="code-str
 
 <span class="code-class">ConsumerRecords</span>&lt;<span class="code-class">String</span>, <span class="code-class">String</span>&gt; records = consumer.poll(<span class="code-class">Duration</span>.ofMillis(<span class="code-number">1000</span>));
 <span class="code-keyword">for</span> (<span class="code-class">ConsumerRecord</span>&lt;<span class="code-class">String</span>, <span class="code-class">String</span>&gt; record : records) {
-    <span class="code-class">System</span>.out.println(record.key() + <span class="code-string">" -&gt; "</span> + record.value());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"{record.key()} -&gt; {record.value()}"</span>);
 }</code></pre></div>
 
     <div class="subheading">Complete Consumer Example</div>

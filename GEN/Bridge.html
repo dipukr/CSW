@@ -116,7 +116,7 @@
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> setVolume(<span class="code-keyword">int</span> volume) {
         <span class="code-keyword">this</span>.volume = <span class="code-class">Math</span>.max(<span class="code-number">0</span>, <span class="code-class">Math</span>.min(<span class="code-number">100</span>, volume));
-        <span class="code-class">System</span>.out.println(<span class="code-string">"TV volume: "</span> + <span class="code-keyword">this</span>.volume);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"TV volume: {this.volume}"</span>);
     }
 
     <span class="code-annotation">@Override</span>
@@ -143,7 +143,7 @@
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> setVolume(<span class="code-keyword">int</span> volume) {
         <span class="code-keyword">this</span>.volume = <span class="code-class">Math</span>.max(<span class="code-number">0</span>, <span class="code-class">Math</span>.min(<span class="code-number">100</span>, volume));
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Radio volume: "</span> + <span class="code-keyword">this</span>.volume);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Radio volume: {this.volume}"</span>);
     }
 
     <span class="code-annotation">@Override</span>
@@ -328,19 +328,19 @@ Radio turned OFF</code></pre></div>
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PushSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Push: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Push: {message}"</span>);
     }
 }</code></pre></div>
     <div class="intro">

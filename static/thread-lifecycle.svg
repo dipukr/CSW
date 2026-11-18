@@ -20,60 +20,60 @@
   <rect width="1536" height="1024" fill="#ffffff"/>
 
   <!-- ===== Title ===== -->
-  <rect x="328" y="8" width="880" height="98" rx="10" fill="#1e3352"/>
+  <rect x="328" y="8" width="880" height="98" rx="3" fill="#1e3352"/>
   <text x="768" y="52" class="h" font-size="34" fill="#ffffff">Java Thread Life Cycle</text>
   <text x="768" y="90" font-size="21" fill="#e8eef6" text-anchor="middle">A thread in Java goes through different states during its lifetime.</text>
 
   <!-- ===== State boxes ===== -->
 
   <!-- NEW -->
-  <rect class="box" x="16" y="315" width="274" height="203" rx="12" fill="#dde2e8" stroke="#9aa5b1"/>
+  <rect class="box" x="16" y="315" width="274" height="203" rx="3" fill="#dde2e8" stroke="#9aa5b1"/>
   <text x="153" y="370" class="h" fill="#1f2933">NEW</text>
   <text x="153" y="410" class="t">Thread object is created</text>
   <text x="153" y="432" class="t">but not yet started.</text>
-  <rect x="36" y="458" width="234" height="38" rx="6" fill="#eef1f4" stroke="#c3cbd4"/>
+  <rect x="36" y="458" width="234" height="38" rx="3" fill="#eef1f4" stroke="#c3cbd4"/>
   <text x="50" y="483" class="code">Thread t = new Thread();</text>
 
   <!-- RUNNABLE -->
-  <rect class="box" x="428" y="313" width="269" height="205" rx="12" fill="#d7f4e0" stroke="#37a05c"/>
+  <rect class="box" x="428" y="313" width="269" height="205" rx="3" fill="#d7f4e0" stroke="#37a05c"/>
   <text x="562" y="362" class="h" fill="#176b36">RUNNABLE</text>
   <text x="562" y="396" class="t">Thread is ready to run</text>
   <text x="562" y="418" class="t">and waiting for CPU</text>
   <text x="562" y="440" class="t">(or currently running).</text>
-  <rect x="452" y="462" width="221" height="38" rx="6" fill="#eafaf0" stroke="#a9ddbd"/>
+  <rect x="452" y="462" width="221" height="38" rx="3" fill="#eafaf0" stroke="#a9ddbd"/>
   <text x="562" y="487" class="codec">t.start();</text>
 
   <!-- BLOCKED -->
-  <rect class="box" x="770" y="126" width="282" height="142" rx="12" fill="#fdeccb" stroke="#d1941f"/>
+  <rect class="box" x="770" y="126" width="282" height="142" rx="3" fill="#fdeccb" stroke="#d1941f"/>
   <text x="911" y="172" class="h" fill="#8a5a06">BLOCKED</text>
   <text x="911" y="206" class="t">Thread is waiting to acquire</text>
   <text x="911" y="228" class="t">a monitor lock (synchronized</text>
   <text x="911" y="250" class="t">block/method).</text>
 
   <!-- WAITING -->
-  <rect class="box" x="855" y="313" width="261" height="205" rx="12" fill="#ece0fb" stroke="#8b5cf6"/>
+  <rect class="box" x="855" y="313" width="261" height="205" rx="3" fill="#ece0fb" stroke="#8b5cf6"/>
   <text x="985" y="360" class="h" fill="#5b21b6">WAITING</text>
   <text x="985" y="393" class="t">Thread is waiting</text>
   <text x="985" y="415" class="t">indefinitely for another</text>
   <text x="985" y="437" class="t">thread to perform an action.</text>
-  <rect x="877" y="452" width="217" height="58" rx="6" fill="#f6f1fd" stroke="#cbb6f2"/>
+  <rect x="877" y="452" width="217" height="58" rx="3" fill="#f6f1fd" stroke="#cbb6f2"/>
   <text x="891" y="474" class="code">t.wait();</text>
   <text x="891" y="493" class="code">t.join();</text>
 
   <!-- TERMINATED -->
-  <rect class="box" x="1250" y="313" width="270" height="205" rx="12" fill="#cfe7fa" stroke="#3b9ede"/>
+  <rect class="box" x="1250" y="313" width="270" height="205" rx="3" fill="#cfe7fa" stroke="#3b9ede"/>
   <text x="1385" y="366" class="h" fill="#0f4c75">TERMINATED</text>
   <text x="1385" y="405" class="t">Thread has completed</text>
   <text x="1385" y="427" class="t">execution or has been</text>
   <text x="1385" y="449" class="t">stopped due to an exception.</text>
 
   <!-- TIMED_WAITING -->
-  <rect class="box" x="850" y="545" width="276" height="210" rx="12" fill="#fcdfe2" stroke="#df5561"/>
+  <rect class="box" x="850" y="545" width="276" height="210" rx="3" fill="#fcdfe2" stroke="#df5561"/>
   <text x="988" y="585" class="h" fill="#9b1c28">TIMED_WAITING</text>
   <text x="988" y="617" class="t">Thread is waiting for a</text>
   <text x="988" y="639" class="t">specified time for another</text>
   <text x="988" y="661" class="t">thread to perform an action.</text>
-  <rect x="870" y="672" width="238" height="76" rx="6" fill="#fdeef0" stroke="#f3b3ba"/>
+  <rect x="870" y="672" width="238" height="76" rx="3" fill="#fdeef0" stroke="#f3b3ba"/>
   <text x="882" y="693" class="code">t.sleep(millis);</text>
   <text x="882" y="712" class="code">t.wait(millis);</text>
   <text x="882" y="731" class="code">t.join(millis);</text>
@@ -129,7 +129,7 @@
   <!-- ===== Bottom panels ===== -->
 
   <!-- State Summary -->
-  <rect x="16" y="770" width="489" height="190" rx="10" fill="#e4f5ea" stroke="#b6ddc6"/>
+  <rect x="16" y="770" width="489" height="190" rx="3" fill="#e4f5ea" stroke="#b6ddc6"/>
   <text x="42" y="800" class="ph" fill="#176b36">State Summary</text>
   <g class="li">
     <text x="42" y="828">•  <tspan class="b">NEW</tspan> – Thread object created, not started.</text>
@@ -141,7 +141,7 @@
   </g>
 
   <!-- Common Methods -->
-  <rect x="525" y="770" width="570" height="190" rx="10" fill="#dcebfc" stroke="#aacbf0"/>
+  <rect x="525" y="770" width="570" height="190" rx="3" fill="#dcebfc" stroke="#aacbf0"/>
   <text x="551" y="800" class="ph" fill="#0f4c75">Common Methods</text>
   <g class="li">
     <text x="551" y="828">•  <tspan class="b">start()</tspan> – Moves thread from NEW to RUNNABLE.</text>
@@ -153,7 +153,7 @@
   </g>
 
   <!-- Notes -->
-  <rect x="1115" y="770" width="405" height="190" rx="10" fill="#fdf3d2" stroke="#ecd48f"/>
+  <rect x="1115" y="770" width="405" height="190" rx="3" fill="#fdf3d2" stroke="#ecd48f"/>
   <text x="1139" y="800" class="ph" fill="#8a5a06">Notes</text>
   <g class="li" font-size="14.5">
     <text x="1139" y="822">•  A thread can be in only one state at a time.</text>
@@ -167,6 +167,6 @@
   </g>
 
   <!-- Quote bar -->
-  <rect x="16" y="978" width="1504" height="38" rx="8" fill="#e8e4fb" stroke="#c9c1f2"/>
+  <rect x="16" y="978" width="1504" height="38" rx="3" fill="#e8e4fb" stroke="#c9c1f2"/>
   <text x="768" y="1003" font-size="16.5" fill="#1f2933" text-anchor="middle">Thread life cycle helps in understanding thread behavior and is essential for writing correct and efficient concurrent programs in Java.</text>
 </svg>

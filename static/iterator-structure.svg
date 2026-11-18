@@ -3,16 +3,16 @@
     <path d="M170 140 V72" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="miter" marker-end="url(#it1-l)"/>
     <path d="M550 140 V72" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="miter" marker-end="url(#it1-l)"/>
     <path d="M280 168 H428" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#it1-a)"/>
-    <rect x="60" y="14" width="220" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="60" y="14" width="220" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="170" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Iterable&lt;T&gt;</text>
     <text x="170" y="52" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">«interface» · iterator()</text>
-    <rect x="430" y="14" width="240" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="430" y="14" width="240" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="550" y="36" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Iterator&lt;T&gt;</text>
     <text x="550" y="52" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">«interface» · hasNext() · next()</text>
-    <rect x="60" y="140" width="220" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="60" y="140" width="220" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="170" y="162" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Playlist</text>
     <text x="170" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">iterator()</text>
-    <rect x="430" y="140" width="240" height="56" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="430" y="140" width="240" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="550" y="162" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">PlaylistIterator</text>
     <text x="550" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">currentIndex</text>
     <text x="178" y="110" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">implements</text>

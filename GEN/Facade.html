@@ -96,7 +96,7 @@ homeTheater.endMovie();</code></pre></div>
     <div class="scenario-layout scenario-layout-tight scenario-layout-stretch" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
         <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Lights</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> dim(<span class="code-keyword">int</span> brightness) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Lights dimmed to "</span> + brightness);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Lights dimmed to {brightness}"</span>);
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> on() {
@@ -110,7 +110,7 @@ homeTheater.endMovie();</code></pre></div>
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> setVolume(<span class="code-keyword">int</span> volume) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Volume set to "</span> + volume);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Volume set to {volume}"</span>);
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> off() {
@@ -133,7 +133,7 @@ homeTheater.endMovie();</code></pre></div>
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> play(<span class="code-class">String</span> movie) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Playing: "</span> + movie);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Playing: {movie}"</span>);
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> stop() {

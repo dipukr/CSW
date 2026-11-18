@@ -1,0 +1,25 @@
+<svg width="720" height="320" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" role="img" aria-label="Five-state process model: NEW is admitted to READY, the scheduler dispatches READY to RUNNING, preemption or yield returns RUNNING to READY, waiting for I/O or an event moves RUNNING to BLOCKED or WAITING, the event completing returns it to READY, and exit moves RUNNING to TERMINATED">
+    <defs><marker id="ps-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="20" y="80" width="110" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="75" y="108.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">NEW</text>
+    <rect x="200" y="80" width="130" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="265" y="108.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">READY</text>
+    <rect x="420" y="80" width="130" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="485" y="108.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">RUNNING</text>
+    <rect x="600" y="80" width="110" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="655" y="108.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">TERMINATED</text>
+    <rect x="305" y="252" width="160" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="385" y="280.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">BLOCKED / WAITING</text>
+    <path d="M130 104 H198" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ps-a)"/>
+    <text x="164" y="95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Admission</text>
+    <path d="M305 80 C 330 36, 420 36, 445 78" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ps-a)"/>
+    <text x="375" y="38" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Scheduler dispatch</text>
+    <path d="M445 128 C 420 172, 330 172, 307 130" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ps-a)"/>
+    <text x="375" y="186" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Preemption / yield</text>
+    <path d="M515 128 V276 H467" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ps-a)"/>
+    <text x="523" y="214" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Wait for I/O or event</text>
+    <path d="M305 276 H245 V130" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ps-a)"/>
+    <text x="237" y="214" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Event completes</text>
+    <path d="M550 104 H598" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ps-a)"/>
+    <text x="574" y="95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Exit</text>
+</svg>

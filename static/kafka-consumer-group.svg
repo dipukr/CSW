@@ -3,14 +3,14 @@
     <marker id="cg-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#475569"/></marker>
     <filter id="cg-shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.12"/></filter>
   </defs>
-  <rect x="0" y="0" width="720" height="300" fill="#f8fafc" rx="8"/>
+  <rect x="0" y="0" width="720" height="300" fill="#f8fafc" rx="3"/>
   <text x="20" y="30" font-size="13.5" font-weight="700" fill="#1f2937">Topic: orders &#8212; consumer group "order-service"</text>
 
   <!-- partitions -->
   <g filter="url(#cg-shadow)">
-    <rect x="40" y="60" width="150" height="46" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
-    <rect x="40" y="130" width="150" height="46" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
-    <rect x="40" y="200" width="150" height="46" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <rect x="40" y="60" width="150" height="46" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <rect x="40" y="130" width="150" height="46" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <rect x="40" y="200" width="150" height="46" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
   </g>
   <g font-size="13" font-weight="700" fill="#5b21b6" text-anchor="middle">
     <text x="115" y="88">Partition 0</text>
@@ -20,9 +20,9 @@
 
   <!-- consumers -->
   <g filter="url(#cg-shadow)">
-    <rect x="470" y="60" width="200" height="46" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
-    <rect x="470" y="130" width="200" height="46" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
-    <rect x="470" y="200" width="200" height="46" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <rect x="470" y="60" width="200" height="46" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <rect x="470" y="130" width="200" height="46" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <rect x="470" y="200" width="200" height="46" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
   </g>
   <g font-size="13" font-weight="700" fill="#166534" text-anchor="middle">
     <text x="570" y="88">Consumer A</text>

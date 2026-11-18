@@ -222,9 +222,9 @@
     <span class="code-class">ShippingVisitor</span> shippingVisitor = <span class="code-keyword">new</span> <span class="code-class">ShippingVisitor</span>();
     <span class="code-keyword">double</span> totalPrice = cart.stream().mapToDouble(item -&gt; item.accept(priceVisitor)).sum();
     <span class="code-keyword">double</span> totalShipping = cart.stream().mapToDouble(item -&gt; item.accept(shippingVisitor)).sum();
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Total Price: "</span> + totalPrice);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Shipping: "</span> + totalShipping);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Grand Total: "</span> + (totalPrice + totalShipping));
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Total Price: {totalPrice}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Shipping: {totalShipping}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Grand Total: {totalPrice + totalShipping}"</span>);
 }</code></pre></div>
     <div class="intro">
         <p class="minor-heading"><strong>Output</strong></p>
@@ -446,8 +446,8 @@ Grand Total: 4722.0</code></pre></div>
     Expr expression = <span class="code-keyword">new</span> Mul(<span class="code-keyword">new</span> Add(<span class="code-keyword">new</span> Num(<span class="code-number">2</span>), <span class="code-keyword">new</span> Num(<span class="code-number">3</span>)), <span class="code-keyword">new</span> Num(<span class="code-number">4</span>));
     <span class="code-keyword">int</span> result = expression.accept(<span class="code-keyword">new</span> <span class="code-class">EvalVisitor</span>());
     <span class="code-class">String</span> output = expression.accept(<span class="code-keyword">new</span> <span class="code-class">PrintVisitor</span>());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Expression: "</span> + output);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Result: "</span> + result);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Expression: {output}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Result: {result}"</span>);
 }</code></pre></div>
         <div class="code-explanation">
             <div class="code-explanation-title">How the Visitor works</div>

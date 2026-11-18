@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1640" height="780" viewBox="0 0 1640 780"><title>RabbitMQ message flow</title><desc>Smooth vector reconstruction. CloudAMQP enclosure removed. Lettering converted to paths.</desc><rect width="1640" height="780" fill="white"/>
-<rect x="511.5" y="292" width="609" height="298" rx="11" fill="#dee7ee" stroke="#424143" stroke-width="4"/>
+<rect x="511.5" y="292" width="609" height="298" rx="3" fill="#dee7ee" stroke="#424143" stroke-width="4"/>
 <path d="M68 77H305V244H63V83Q63 77 68 77Z" fill="#6d6e71" stroke="#424143" stroke-width="2.5"/><path d="M75 91H297V235H75Z" fill="white"/><path d="M51 244H163L168 250H199L204 244H322L319 254Q316 264 307 264H65Q54 264 53 254Z" fill="white" stroke="#424143" stroke-width="3"/>
 <path d="M181 327V433M157 416L181 436L205 416" fill="none" stroke="#cacacb" stroke-width="13"/>
 <path d="M315 490H531M509 466L533 490L509 514" fill="none" stroke="white" stroke-width="25" stroke-linejoin="round"/><path d="M315 490H531M509 466L533 490L509 514" fill="none" stroke="#cacacb" stroke-width="13"/>
 <path d="M1099 490H1318M1301 466L1321 490L1301 514" fill="none" stroke="white" stroke-width="25" stroke-linejoin="round"/><path d="M1099 490H1318M1301 466L1321 490L1301 514" fill="none" stroke="#cacacb" stroke-width="13"/>
 <path d="M732 490H877M859 466L879 490L859 514" fill="none" stroke="#b2b8be" stroke-width="13"/>
-<rect x="57" y="459" width="248" height="62" rx="11" fill="#fcb835" stroke="#424143" stroke-width="4"/>
-<rect x="1341" y="459" width="248" height="62" rx="11" fill="#8dc73f" stroke="#424143" stroke-width="4"/>
+<rect x="57" y="459" width="248" height="62" rx="3" fill="#fcb835" stroke="#424143" stroke-width="4"/>
+<rect x="1341" y="459" width="248" height="62" rx="3" fill="#8dc73f" stroke="#424143" stroke-width="4"/>
 <circle cx="631.5" cy="490" r="64" fill="#7fcce0" stroke="#424143" stroke-width="4"/><path d="M596 472H651V463L667 477L651 491V482H596Z M666 497H611V487L595 502L611 516V507H666Z" fill="#007d98"/>
-<rect x="909.5" y="425" width="157.5" height="132" rx="11" fill="#7fcce0" stroke="#424143" stroke-width="4"/>
-<rect x="924" y="437" width="132" height="19" rx="4" fill="white"/>
-<rect x="924" y="466" width="132" height="19" rx="4" fill="white"/>
-<rect x="924" y="496" width="132" height="19" rx="4" fill="white"/>
+<rect x="909.5" y="425" width="157.5" height="132" rx="3" fill="#7fcce0" stroke="#424143" stroke-width="4"/>
+<rect x="924" y="437" width="132" height="19" rx="3" fill="white"/>
+<rect x="924" y="466" width="132" height="19" rx="3" fill="white"/>
+<rect x="924" y="496" width="132" height="19" rx="3" fill="white"/>
 <rect x="925.5" y="525" width="129" height="19" rx="2" fill="#fcb835" stroke="#6d6e71" stroke-width="4"/>
 <path d="M706 303H711Q713 303 713 305V321H720V305Q720 303 722 303H727Q729 303 729 305V321H744Q747 321 747 324V347Q747 349 744 349H706Q704 349 704 347V305Q704 303 706 303Z M732 331Q730 331 730 333V338Q730 340 732 340H737Q739 340 739 338V333Q739 331 737 331Z" fill="#ff932b" fill-rule="evenodd" stroke="#424143" stroke-width="2.5"/>
 <rect x="358.5" y="465.5" width="80" height="47" rx="2" fill="#f8cc71" stroke="#424143" stroke-width="2.2"/><path d="M359 467L399 494L438 467M359 512L386 491M438 512L412 491" fill="none" stroke="#424143" stroke-width="2.2"/>

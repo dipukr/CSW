@@ -3,19 +3,19 @@
     <path d="M255 125 H360 V43 H473" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#sg7-a)"/>
     <path d="M255 125 H360 V125 H473" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#sg7-a)"/>
     <path d="M255 125 H360 V207 H473" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#sg7-a)"/>
-    <rect x="25" y="92" width="230" height="66" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="25" y="92" width="230" height="66" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="140" y="114" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Order Service</text>
     <text x="140" y="131" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">port 8080 · orders_db</text>
     <text x="140" y="146" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">contains the Saga Orchestrator</text>
-    <rect x="475" y="10" width="250" height="66" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="475" y="10" width="250" height="66" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="600" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Inventory Service</text>
     <text x="600" y="49" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">port 8081 · inventory_db</text>
     <text x="600" y="64" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">reserves and releases stock</text>
-    <rect x="475" y="92" width="250" height="66" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="475" y="92" width="250" height="66" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="600" y="114" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Payment Service</text>
     <text x="600" y="131" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">port 8082 · payments_db</text>
     <text x="600" y="146" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">charges and refunds</text>
-    <rect x="475" y="174" width="250" height="66" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="475" y="174" width="250" height="66" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="600" y="196" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Shipping Service</text>
     <text x="600" y="213" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">port 8083 · shipping_db</text>
     <text x="600" y="228" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">creates and cancels shipments</text>

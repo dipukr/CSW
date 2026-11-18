@@ -1,0 +1,25 @@
+<svg width="720" height="474" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 474" role="img" aria-label="Process memory layout from higher to lower virtual addresses: stack, memory-mapped region, heap, BSS, data, and text or code">
+    <defs><marker id="ml-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <text x="20" y="26" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#555555">Higher virtual addresses</text>
+    <path d="M690 34 V14" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ml-a)"/>
+    <rect x="20" y="44" width="680" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="40" y="69" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">Stack</text>
+    <text x="40" y="89" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Function calls, local variables, return addresses</text>
+    <rect x="20" y="110" width="680" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="40" y="135" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">Memory-mapped region</text>
+    <text x="40" y="155" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Shared libraries, file mappings, anonymous mappings</text>
+    <rect x="20" y="176" width="680" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="40" y="201" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">Heap</text>
+    <text x="40" y="221" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Dynamic allocations: malloc, new</text>
+    <rect x="20" y="242" width="680" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="40" y="267" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">BSS</text>
+    <text x="40" y="287" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Zero-initialized global/static variables</text>
+    <rect x="20" y="308" width="680" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="40" y="333" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">Data</text>
+    <text x="40" y="353" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Initialized global/static variables</text>
+    <rect x="20" y="374" width="680" height="58" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="40" y="399" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">Text / Code</text>
+    <text x="40" y="419" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Executable machine instructions</text>
+    <text x="20" y="460" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#555555">Lower virtual addresses</text>
+    <path d="M690 444 V464" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ml-a)"/>
+</svg>

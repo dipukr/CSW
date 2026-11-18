@@ -1,31 +1,31 @@
 <svg width="820" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 300" role="img" aria-label="Outbox pattern flow: the order service saves the order and the outbox event in one local transaction; a relay (poller or Debezium CDC) reads unsent outbox rows and publishes them to Kafka, from which consumers read">
     <defs><marker id="obx-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="obx-l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#9A9A9A"/></marker></defs>
-    <rect x="220" y="10" width="190" height="194" rx="10" fill="none" stroke="#9A9A9A" stroke-width="1.2" stroke-dasharray="6 5"/>
+    <rect x="220" y="10" width="190" height="194" rx="3" fill="none" stroke="#9A9A9A" stroke-width="1.2" stroke-dasharray="6 5"/>
     <path d="M165 100 H198 V67 H233" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#obx-a)"/>
     <path d="M165 116 H198 V151 H233" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#obx-a)"/>
     <path d="M315 174 V238" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#obx-a)"/>
     <path d="M400 265 H468" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#obx-a)"/>
     <path d="M590 265 H638" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#obx-a)"/>
-    <rect x="15" y="82" width="150" height="52" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="15" y="82" width="150" height="52" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="90" y="102" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Order Service</text>
     <text x="90" y="118" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">createOrder()</text>
     <text x="315" y="30" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#555555" letter-spacing="0.8">ONE LOCAL TRANSACTION</text>
-    <rect x="235" y="44" width="160" height="46" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="235" y="44" width="160" height="46" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="315" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">orders</text>
     <text x="315" y="77" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">table</text>
-    <rect x="235" y="128" width="160" height="46" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="235" y="128" width="160" height="46" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="315" y="145" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">outbox_event</text>
     <text x="315" y="161" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">table</text>
     <text x="190" y="58" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">save order</text>
     <text x="190" y="174" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">save event</text>
-    <rect x="230" y="240" width="170" height="50" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="230" y="240" width="170" height="50" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="315" y="259" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Relay</text>
     <text x="315" y="275" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">poller / Debezium CDC</text>
     <text x="323" y="226" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">read unsent</text>
-    <rect x="470" y="240" width="120" height="50" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="470" y="240" width="120" height="50" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="530" y="259" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Kafka</text>
     <text x="530" y="275" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">broker</text>
-    <rect x="640" y="240" width="160" height="50" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="640" y="240" width="160" height="50" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="720" y="259" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Consumers</text>
     <text x="720" y="275" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#555555">inventory, payment…</text>
     <text x="434" y="258" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555" font-style="italic">publish</text>

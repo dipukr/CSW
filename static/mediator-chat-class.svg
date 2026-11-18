@@ -3,20 +3,20 @@
     <path d="M190 170 V109" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="miter" marker-end="url(#md4-l)"/>
     <path d="M460 80 H352" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#md4-a)"/>
     <path d="M350 196 H458" fill="none" stroke="#555555" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#md4-a)"/>
-    <rect x="30" y="10" width="320" height="97" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="30" y="10" width="320" height="97" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="190" y="31" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">ChatMediator «interface»</text>
     <line x1="30" y1="41" x2="350" y2="41" stroke="#222222" stroke-width="1"/>
     <text x="44" y="60" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">+register(ChatUser)</text>
     <text x="44" y="79" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">+broadcast(String, ChatUser)</text>
     <text x="44" y="98" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">+sendPrivate(String, String, ChatUser)</text>
-    <rect x="30" y="170" width="320" height="116" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="30" y="170" width="320" height="116" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="190" y="191" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">ChatRoom</text>
     <line x1="30" y1="201" x2="350" y2="201" stroke="#222222" stroke-width="1"/>
     <text x="44" y="220" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">-users: Map&lt;String, ChatUser&gt;</text>
     <text x="44" y="239" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">+register(ChatUser)</text>
     <text x="44" y="258" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">+broadcast(String, ChatUser)</text>
     <text x="44" y="277" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">+sendPrivate(String, String, ChatUser)</text>
-    <rect x="460" y="50" width="300" height="154" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="460" y="50" width="300" height="154" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="610" y="71" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">ChatUser</text>
     <line x1="460" y1="81" x2="760" y2="81" stroke="#222222" stroke-width="1"/>
     <text x="474" y="100" text-anchor="start" font-family="Consolas, 'Source Code Pro', monospace" font-size="11.5" font-weight="400" fill="#222222">-name: String</text>

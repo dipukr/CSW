@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <span class="code-keyword">long</span> id = rs.getLong(<span class="code-string">"id"</span>);
                 <span class="code-class">String</span> name = rs.getString(<span class="code-string">"name"</span>);
                 <span class="code-keyword">double</span> salary = rs.getDouble(<span class="code-string">"salary"</span>);
-                <span class="code-class">System</span>.out.printf(<span class="code-string">"%d | %s | %.2f%n"</span>, id, name, salary);
+                <span class="code-class">System</span>.out.println(<span class="code-string">"{id} | {name} | {salary:.2f}"</span>);
             }
         }
     }
@@ -389,10 +389,10 @@ com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre>
 <pre><code><span class="code-keyword">try</span> (<span class="code-class">Connection</span> con = <span class="code-class">DriverManager</span>.getConnection(url, username, password)) {
     con.setReadOnly(<span class="code-keyword">true</span>);
     con.setTransactionIsolation(<span class="code-class">Connection</span>.TRANSACTION_READ_COMMITTED);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Auto commit: "</span> + con.getAutoCommit());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Read only: "</span> + con.isReadOnly());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Schema: "</span> + con.getSchema());
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Valid: "</span> + con.isValid(<span class="code-number">5</span>));
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Auto commit: {con.getAutoCommit()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Read only: {con.isReadOnly()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Schema: {con.getSchema()}"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Valid: {con.isValid(5)}"</span>);
 }</code></pre>
         </div>
     </div>
@@ -462,7 +462,7 @@ com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre>
         <div class="code-wrapper">
 <pre><code><span class="code-keyword">try</span> (<span class="code-class">Statement</span> stmt = con.createStatement(); <span class="code-class">ResultSet</span> rs = stmt.executeQuery(<span class="code-string">"SELECT id, name FROM employees"</span>)) {
     <span class="code-keyword">while</span> (rs.next()) {
-        <span class="code-class">System</span>.out.println(rs.getLong(<span class="code-string">"id"</span>) + <span class="code-string">" "</span> + rs.getString(<span class="code-string">"name"</span>));
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{rs.getLong("</span>id<span class="code-string">")} {rs.getString("</span>name<span class="code-string">")}"</span>);
     }
 }</code></pre>
         </div>
@@ -478,7 +478,7 @@ com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre>
         SET salary = salary + 1000
         WHERE id = 10
         """</span>);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Updated rows: "</span> + affectedRows);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Updated rows: {affectedRows}"</span>);
 }</code></pre>
         </div>
     </div>
@@ -526,7 +526,7 @@ com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre>
         <span class="code-keyword">if</span> (count == -<span class="code-number">1</span>) {
             <span class="code-keyword">break</span>;
         }
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Affected rows: "</span> + count);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Affected rows: {count}"</span>);
     }
     hasResultSet = stmt.getMoreResults();
 }</code></pre>
@@ -642,7 +642,7 @@ ps.setBigDecimal(<span class="code-number">2</span>, <span class="code-keyword">
     ps.setString(<span class="code-number">2</span>, <span class="code-string">"rahul@example.com"</span>);
     ps.setBigDecimal(<span class="code-number">3</span>, <span class="code-keyword">new</span> <span class="code-class">BigDecimal</span>(<span class="code-string">"75000.00"</span>));
     <span class="code-keyword">int</span> rows = ps.executeUpdate();
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Inserted: "</span> + rows);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Inserted: {rows}"</span>);
 }</code></pre>
         </div>
     </div>
@@ -709,7 +709,7 @@ ps.setBigDecimal(<span class="code-number">2</span>, <span class="code-keyword">
     <span class="code-keyword">try</span> (<span class="code-class">ResultSet</span> keys = ps.getGeneratedKeys()) {
         <span class="code-keyword">if</span> (keys.next()) {
             <span class="code-keyword">long</span> id = keys.getLong(<span class="code-number">1</span>);
-            <span class="code-class">System</span>.out.println(<span class="code-string">"New ID: "</span> + id);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"New ID: {id}"</span>);
         }
     }
 }</code></pre>
@@ -1459,7 +1459,7 @@ con.releaseSavepoint(named);</code></pre>
     <span class="code-keyword">while</span> (columns.next()) {
         <span class="code-class">String</span> name = columns.getString(<span class="code-string">"COLUMN_NAME"</span>);
         <span class="code-class">String</span> type = columns.getString(<span class="code-string">"TYPE_NAME"</span>);
-        <span class="code-class">System</span>.out.println(name + <span class="code-string">" : "</span> + type);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{name} : {type}"</span>);
     }
 }</code></pre>
         </div>
@@ -1475,7 +1475,7 @@ con.releaseSavepoint(named);</code></pre>
 <pre><code><span class="code-class">ResultSetMetaData</span> meta = rs.getMetaData();
 <span class="code-keyword">int</span> count = meta.getColumnCount();
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= count; i++) {
-    <span class="code-class">System</span>.out.println(meta.getColumnLabel(i) + <span class="code-string">" : "</span> + meta.getColumnTypeName(i));
+    <span class="code-class">System</span>.out.println(<span class="code-string">"{meta.getColumnLabel(i)} : {meta.getColumnTypeName(i)}"</span>);
 }</code></pre>
         </div>
     </div>
@@ -1509,7 +1509,7 @@ con.releaseSavepoint(named);</code></pre>
     <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= columnCount; i++) {
         <span class="code-class">Object</span> value = rs.getObject(i);
         <span class="code-class">String</span> name = meta.getColumnLabel(i);
-        <span class="code-class">System</span>.out.printf(<span class="code-string">"%s=%s "</span>, name, value);
+        <span class="code-class">System</span>.out.print(<span class="code-string">"{name}={value} "</span>);
     }
     <span class="code-class">System</span>.out.println();
 }</code></pre>
@@ -2344,16 +2344,16 @@ javax.transaction.xa.<span class="code-class">XAException</span></code></pre>
 
     <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">SQLException</span> {
         <span class="code-keyword">long</span> id = createEmployee(<span class="code-string">"Rahul"</span>, <span class="code-string">"rahul.demo@example.com"</span>, <span class="code-keyword">new</span> <span class="code-class">BigDecimal</span>(<span class="code-string">"55000.00"</span>)); <span class="code-comment">1. Insert</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Created ID: "</span> + id);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Created ID: {id}"</span>);
         <span class="code-class">Optional</span>&lt;<span class="code-class">Employee</span>&gt; employee = findById(id); <span class="code-comment">2. Find</span>
         employee.ifPresent(<span class="code-class">System</span>.out::println);
         <span class="code-keyword">boolean</span> updated = updateSalary(id, <span class="code-keyword">new</span> <span class="code-class">BigDecimal</span>(<span class="code-string">"70000.00"</span>)); <span class="code-comment">3. Update</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Updated: "</span> + updated);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Updated: {updated}"</span>);
         <span class="code-keyword">for</span> (<span class="code-class">Employee</span> e : findAll()) { <span class="code-comment">4. List</span>
             <span class="code-class">System</span>.out.println(e);
         }
         <span class="code-keyword">boolean</span> deleted = deleteEmployee(id); <span class="code-comment">5. Delete</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Deleted: "</span> + deleted);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Deleted: {deleted}"</span>);
     }
 }</code></pre>
         </div>

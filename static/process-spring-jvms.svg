@@ -1,0 +1,29 @@
+<svg width="720" height="342" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 342" role="img" aria-label="Three Spring Boot JVM processes on one Linux system, an API gateway (1001), an order service (1002) and a payment service (1003), each with threads scheduled by the Linux CPU scheduler; the gateway calls the order service and the order service calls the payment service over HTTP/TCP">
+    <defs><marker id="sj-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="8" y="8" width="704" height="326" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13.5" font-weight="600" fill="#555555">Linux Operating System</text>
+    <rect x="25" y="50" width="180" height="126" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="115" y="74" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Process 1001</text>
+    <text x="115" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">API Gateway JVM</text>
+    <rect x="45" y="108" width="140" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="115" y="136.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">HTTP Threads</text>
+    <path d="M205 113 H268" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sj-a)"/>
+    <text x="237" y="105" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">HTTP/TCP</text>
+    <rect x="270" y="50" width="180" height="126" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="74" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Process 1002</text>
+    <text x="360" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Order Service JVM</text>
+    <rect x="290" y="108" width="140" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="136.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Worker Threads</text>
+    <path d="M450 113 H513" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sj-a)"/>
+    <text x="482" y="105" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">HTTP/TCP</text>
+    <rect x="515" y="50" width="180" height="126" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="605" y="74" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Process 1003</text>
+    <text x="605" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">Payment Service JVM</text>
+    <rect x="535" y="108" width="140" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="605" y="136.375" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Worker Threads</text>
+    <rect x="250" y="262" width="220" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="290.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Linux CPU Scheduler</text>
+    <path d="M115 156 V216 H340 V260" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sj-a)"/>
+    <path d="M360 156 V260" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sj-a)"/>
+    <path d="M605 156 V216 H380 V260" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#sj-a)"/>
+</svg>

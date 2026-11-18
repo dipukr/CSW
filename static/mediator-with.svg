@@ -10,6 +10,6 @@
     <circle cx="184.1" cy="194.4" r="16" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <circle cx="75.9" cy="194.4" r="16" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <circle cx="42.5" cy="91.6" r="16" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <rect x="82" y="102" width="96" height="36" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="82" y="102" width="96" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="130" y="122" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#222222">Mediator</text>
 </svg>

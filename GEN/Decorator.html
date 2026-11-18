@@ -371,7 +371,7 @@ Compressed file</div>
 
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> processPayment(<span class="code-class">String</span> paymentId, <span class="code-keyword">double</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Processing payment: "</span> + paymentId);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Processing payment: {paymentId}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -386,12 +386,12 @@ Compressed file</div>
 
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> processPayment(<span class="code-class">String</span> paymentId, <span class="code-keyword">double</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Payment started: "</span> + paymentId);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Payment started: {paymentId}"</span>);
         <span class="code-keyword">try</span> {
             delegate.processPayment(paymentId, amount);
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Payment completed: "</span> + paymentId);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Payment completed: {paymentId}"</span>);
         } <span class="code-keyword">catch</span> (<span class="code-class">RuntimeException</span> e) {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Payment failed: "</span> + paymentId);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Payment failed: {paymentId}"</span>);
             <span class="code-keyword">throw</span> e;
         }
     }
@@ -413,7 +413,7 @@ Compressed file</div>
             delegate.processPayment(paymentId, amount);
         } <span class="code-keyword">finally</span> {
             <span class="code-keyword">long</span> elapsed = <span class="code-class">System</span>.nanoTime() - start;
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Execution time: "</span> + elapsed / 1_000_000.<span class="code-number">0</span> + <span class="code-string">" ms"</span>);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Execution time: {elapsed / 1_000_000.0} ms"</span>);
         }
     }
 }</code></pre></div>

@@ -1,0 +1,17 @@
+<svg width="720" height="210" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 210" role="img" aria-label="One CPU core runs threads A, B and C in turn, so only one executes at any instant">
+    <defs><marker id="ci-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <text x="20" y="44" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Thread A</text>
+    <text x="20" y="94" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Thread B</text>
+    <text x="20" y="144" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Thread C</text>
+    <rect x="110" y="20" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="174" y="70" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="238" y="120" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="302" y="20" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="366" y="70" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="430" y="120" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="494" y="20" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="558" y="70" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="622" y="120" width="56" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <path d="M110 176 H692" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ci-a)"/>
+    <text x="692" y="196" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#555555" font-style="italic">time</text>
+</svg>

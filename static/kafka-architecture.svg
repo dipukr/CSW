@@ -3,16 +3,16 @@
     <marker id="ar-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#475569"/></marker>
     <filter id="ar-shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.12"/></filter>
   </defs>
-  <rect x="0" y="0" width="820" height="340" fill="#f8fafc" rx="8"/>
+  <rect x="0" y="0" width="820" height="340" fill="#f8fafc" rx="3"/>
 
   <!-- cluster -->
-  <rect x="120" y="96" width="580" height="150" rx="12" fill="none" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <rect x="120" y="96" width="580" height="150" rx="3" fill="none" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="6 5"/>
   <text x="140" y="120" font-size="13" font-weight="700" fill="#0f172a">Kafka Cluster</text>
 
   <g filter="url(#ar-shadow)">
-    <rect x="150" y="132" width="150" height="86" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
-    <rect x="335" y="132" width="150" height="86" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
-    <rect x="520" y="132" width="150" height="86" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
+    <rect x="150" y="132" width="150" height="86" rx="3" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
+    <rect x="335" y="132" width="150" height="86" rx="3" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
+    <rect x="520" y="132" width="150" height="86" rx="3" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
   </g>
   <g text-anchor="middle">
     <text x="225" y="158" font-size="13" font-weight="700" fill="#3730a3">Broker 1</text>
@@ -26,12 +26,12 @@
   </g>
 
   <!-- producers -->
-  <rect x="60" y="28" width="150" height="46" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5" filter="url(#ar-shadow)"/>
+  <rect x="60" y="28" width="150" height="46" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5" filter="url(#ar-shadow)"/>
   <text x="135" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Producers</text>
   <path d="M150,74 L200,128" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#ar-arrow)"/>
 
   <!-- consumers -->
-  <rect x="610" y="28" width="150" height="46" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" filter="url(#ar-shadow)"/>
+  <rect x="610" y="28" width="150" height="46" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" filter="url(#ar-shadow)"/>
   <text x="685" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">Consumers</text>
   <path d="M620,128 L662,74" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#ar-arrow)"/>
 

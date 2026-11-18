@@ -1,0 +1,39 @@
+<svg width="720" height="578" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 578" role="img" aria-label="The shell calls fork, the kernel allocates the child and returns its PID to the parent and 0 to the child; the child calls execve to run ls and later exits; the shell calls waitpid to collect the status and reap the child, then continues">
+    <defs><marker id="fe-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <rect x="35" y="16" width="170" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="120" y="42.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Shell (Parent)</text>
+    <rect x="275" y="16" width="170" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="42.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Linux Kernel</text>
+    <rect x="515" y="16" width="170" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="600" y="42.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Child Process</text>
+    <path d="M120 60 V570" fill="none" stroke="#AAAAAA" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <path d="M360 60 V570" fill="none" stroke="#AAAAAA" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <path d="M600 60 V570" fill="none" stroke="#AAAAAA" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <path d="M120 92 H357" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#fe-a)"/>
+    <text x="240" y="85" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">fork()</text>
+    <path d="M360 130 H404 V150 H363" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#fe-a)"/>
+    <rect x="408" y="131" width="232" height="18" fill="#FFFFFF"/>
+    <text x="412" y="144" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Allocate task and process resources</text>
+    <path d="M360 176 H123" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#fe-a)"/>
+    <text x="240" y="169" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Return child PID</text>
+    <path d="M360 214 H597" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#fe-a)"/>
+    <text x="480" y="207" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Return 0</text>
+    <path d="M600 252 H363" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#fe-a)"/>
+    <text x="480" y="245" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">execve("/usr/bin/ls", ...)</text>
+    <path d="M360 290 H404 V310 H363" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#fe-a)"/>
+    <rect x="408" y="291" width="180.8" height="18" fill="#FFFFFF"/>
+    <text x="412" y="304" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Replace child program image</text>
+    <path d="M360 336 H597" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#fe-a)"/>
+    <text x="480" y="329" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Begin executing ls</text>
+    <path d="M600 374 H363" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#fe-a)"/>
+    <text x="480" y="367" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">exit(status)</text>
+    <path d="M360 412 H123" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#fe-a)"/>
+    <text x="240" y="405" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Child termination available</text>
+    <path d="M120 450 H357" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#fe-a)"/>
+    <text x="240" y="443" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">waitpid(child_pid, ...)</text>
+    <path d="M360 488 H123" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#fe-a)"/>
+    <text x="240" y="481" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Return child status and reap</text>
+    <path d="M120 526 H164 V546 H123" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#fe-a)"/>
+    <rect x="168" y="527" width="161.6" height="18" fill="#FFFFFF"/>
+    <text x="172" y="540" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Continue shell execution</text>
+</svg>

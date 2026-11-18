@@ -116,7 +116,7 @@
         <span class="code-keyword">try</span> {
             <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">10</span>; i++) {
                 buffer.put(<span class="code-string">"item-"</span> + i);
-                <span class="code-class">System</span>.out.println(<span class="code-string">"Produced item-"</span> + i);
+                <span class="code-class">System</span>.out.println(<span class="code-string">"Produced item-{i}"</span>);
             }
         } <span class="code-keyword">catch</span> (<span class="code-class">Exception</span> e) {
             <span class="code-class">Thread</span>.currentThread().interrupt();
@@ -127,7 +127,7 @@
         <span class="code-keyword">try</span> {
             <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">10</span>; i++) {
                 <span class="code-class">Object</span> item = buffer.take();
-                <span class="code-class">System</span>.out.println(<span class="code-string">"Consumed "</span> + item);
+                <span class="code-class">System</span>.out.println(<span class="code-string">"Consumed {item}"</span>);
             }
         } <span class="code-keyword">catch</span> (<span class="code-class">Exception</span> e) {
             <span class="code-class">Thread</span>.currentThread().interrupt();

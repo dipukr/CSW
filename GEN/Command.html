@@ -165,7 +165,7 @@
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> setOn(<span class="code-keyword">boolean</span> on) {
         <span class="code-keyword">this</span>.on = on;
-        <span class="code-class">System</span>.out.println(name + <span class="code-string">" -&gt; "</span> + (on ? <span class="code-string">"ON"</span> : <span class="code-string">"OFF"</span>));
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{name} -&gt; {on ? "</span><span class="code-class">ON</span><span class="code-string">" : "</span>OFF<span class="code-string">"}"</span>);
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isOn() {
@@ -538,7 +538,7 @@ Living Room -&gt; ON</code></pre></div>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ReportService</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> generateReport(<span class="code-keyword">long</span> reportId) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Generating report: "</span> + reportId);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Generating report: {reportId}"</span>);
         <span class="code-comment">Actual PDF generation logic</span>
     }
 }</code></pre></div>
@@ -666,7 +666,7 @@ executor.submit(command);</code></pre></div>
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CardPayment</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentStrategy</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-keyword">double</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by card: "</span> + amount);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by card: {amount}"</span>);
     }
 }</code></pre></div>
     <div class="intro">

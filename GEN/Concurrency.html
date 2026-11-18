@@ -7,112 +7,487 @@
 <link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
-<div class="note">
+<div class="note plain-links">
     <div class="title">Concurrency</div>
 
     <div class="intro">
-        <p><strong>Concurrency</strong> and <strong>multithreading</strong> are fundamental concepts in software development that allow applications to manage multiple tasks efficiently, improve responsiveness and utilize system resources effectively.</p>
+        <p><strong>Concurrency</strong> and <strong>multithreading</strong> are fundamental concepts in software development that allow programs to manage multiple tasks efficiently, improve responsiveness and utilize system resources effectively.</p>
         <p>Java multithreading and concurrency are fundamental concepts for building efficient and responsive applications, especially in modern multi-core environments.</p>
-        <p><strong>Multithreading</strong> refers to the ability of a program to execute multiple parts of its code (called threads) concurrently within a single process. This allows a program to perform multiple tasks seemingly simultaneously, improving responsiveness and resource utilization. In Java, threads can be created by extending the <code>Thread</code> class or by implementing the <code>Runnable</code> interface.</p>
-        <p><strong>Concurrency</strong> is the ability of multiple threads to access and operate on shared resources (like data or objects) at the same time. While multithreading enables the execution of multiple threads, concurrency addresses the challenges that arise when these threads interact with shared resources. Without proper handling, concurrent access can lead to issues such as:</p>
+    </div>
+    <div class="intro">
+        <p><strong>Multithreading</strong> refers to the ability of a program to execute multiple parts of its code (called threads) concurrently within a single process. Which allows a program to perform multiple tasks seemingly simultaneously, improving responsiveness and resource utilization.</p>
     </div>
     <div class="intro"><ul>
-        <li><strong>Race Conditions:</strong> When the outcome of a program depends on the unpredictable timing of operations by multiple threads accessing shared data.</li>
-        <li><strong>Deadlocks:</strong> When two or more threads are blocked indefinitely, waiting for each other to release resources.</li>
-        <li><strong>Data Inconsistency:</strong> When shared data is modified by multiple threads in an uncoordinated manner, leading to incorrect or unexpected values.</li>
+        <li><strong>Better use of a single CPU</strong></li>
+        <li><strong>Better use of multiple CPUs or cores</strong></li>
+        <li><strong>Responsiveness</strong> - Long tasks run in the background, so the UI or the request listener never freezes.</li>
+        <li><strong>Fairness</strong> - Each client gets its own thread, so one slow request cannot hold up everyone else.</li>
     </ul></div>
+    <div class="intro">
+        <p><strong>Concurrency</strong> is the ability of multiple threads to access and operate on shared resources (memory or files) at the same time. While multithreading enables the execution of multiple threads, concurrency addresses the challenges that arise when these threads interact with shared resources.<br> Without proper handling, concurrent access can lead to issues such as:</p>
+    </div>
+    <div class="folio"><ol class="ledger">
+            <li><span class="ledger-label">Race Conditions</span><span>When the outcome of a program depends on the unpredictable timing of operations by multiple threads accessing shared data.</span></li>
+            <li><span class="ledger-label">Deadlocks</span><span>When two or more threads are blocked indefinitely, waiting for each other to release resources.</span></li>
+            <li><span class="ledger-label">Data Inconsistency</span><span>When shared data is modified by multiple threads in an uncoordinated manner, leading<br> to incorrect or unexpected values.</span></li>
+        </ol>
+    </div>
+
+    <div class="subheading">Fundamental concepts</div>
+    <div class="intro">
+        <p>The following concepts are closely related but are not interchangeable.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Definition</th></tr></thead>
+            <tbody>
+                <tr><td><a href="Process.html"><strong>Process</strong></a></td><td>A program in execution, with its own virtual address space and OS-managed resources</td></tr>
+                <tr><td><a href="Thread.html"><strong>Thread</strong></a></td><td>A schedulable execution path within a process</td></tr>
+                <tr><td><a href="Concurrency.html"><strong>Concurrency</strong></a></td><td>Multiple tasks make progress during overlapping time periods</td></tr>
+                <tr><td><a href="Parallelism.html"><strong>Parallelism</strong></a></td><td>Multiple tasks execute at exactly the same time</td></tr>
+                <tr><td><a href="Threading.html"><strong>Multithreading</strong></a></td><td>Using multiple threads within a process</td></tr>
+                <tr><td><a href="Multiprocessing.html"><strong>Multiprocessing</strong></a></td><td>Using multiple processes to perform work</td></tr>
+                <tr><td><a href="Synchronization.html"><strong>Synchronization</strong></a></td><td>Coordinating concurrent execution and access to shared resources</td></tr>
+                <tr><td><a href="ContextSwitch.html"><strong>Context Switching</strong></a></td><td>Suspending one execution context and resuming another</td></tr>
+                <tr><td><a href="Scheduling.html"><strong>CPU Scheduling</strong></a></td><td>Deciding which runnable thread or task receives CPU time</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Concurrency vs. Parallelism vs. Multithreading</div>
+    <div class="intro">
+        <p><strong>Concurrency</strong> is about <em>structure</em>: several tasks are in progress during the same period and their steps may interleave, even on a single CPU core. <strong>Parallelism</strong> is about <em>execution</em>: several tasks literally run at the same instant on different cores.</p>
+        <p>A program can be concurrent without being parallel (one core switching between threads) and parallel without much concurrency design (splitting one big computation across cores). Java&rsquo;s concurrency tools make the first safe and the second practical.</p>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Concurrency</strong></p>
+        <p>Concurrency means multiple tasks are in progress during overlapping periods. They do not necessarily execute simultaneously.</p>
+        <p>For example, a single CPU core can execute three threads by rapidly switching between them.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-interleaved.svg" alt="Concurrency on a single CPU core: threads A, B and C take turns, so only one executes at any instant" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Only one thread executes at any instant, but all three make progress through interleaving.</p>
+        <p class="minor-heading"><strong>Parallelism</strong></p>
+        <p>Parallelism means two or more tasks execute simultaneously, usually on different CPU cores.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-parallel.svg" alt="Parallelism on three CPU cores: threads A, B and C run at the same time, each on its own core" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>All three threads execute at the same time on separate cores.</p>
+        <p class="minor-heading"><strong>Differences</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Aspect</th><th>Concurrency</th><th>Parallelism</th></tr></thead>
+            <tbody>
+                <tr><td>Goal</td><td>Manage multiple tasks in progress</td><td>Execute tasks simultaneously</td></tr>
+                <tr><td>CPU cores</td><td>One is sufficient</td><td>Multiple execution resources needed</td></tr>
+                <tr><td>Execution</td><td>Interleaved or simultaneous</td><td>Simultaneous</td></tr>
+                <tr><td>Main benefit</td><td>Responsiveness, efficient waiting</td><td>Throughput, faster computation</td></tr>
+                <tr><td>Main challenge</td><td>Coordination and correctness</td><td>Coordination, load distribution</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important:</strong> Multithreading enables concurrency, but it does not guarantee parallelism. Whether threads run in parallel depends on available CPU cores, scheduling, and resource constraints.</p>
+    </div>
+
+    <div class="subheading">Advantages and Disadvantages</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages</strong></p>
+    </div>
+    <div class="folio"><ol class="ledger">
+        <li><span class="ledger-label">Responsiveness</span><span>Long-running work runs on background threads, so the user interface or request handler is never frozen.</span></li>
+        <li><span class="ledger-label">Better CPU Utilization</span><span>Work spreads across all cores instead of leaving most of them idle.</span></li>
+        <li><span class="ledger-label">Higher Throughput</span><span>While one thread waits on I/O, others keep doing useful work.</span></li>
+        <li><span class="ledger-label">Natural Modelling</span><span>Independent activities, such as serving many clients, map directly to independent threads or tasks.</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Disadvantages</strong></p>
+    </div>
+    <div class="folio"><ol class="ledger">
+        <li><span class="ledger-label">Hard to Reason About</span><span>The number of possible interleavings explodes, so correctness can no longer be checked by reading the code top to bottom.</span></li>
+        <li><span class="ledger-label">Non-Deterministic Bugs</span><span>Race conditions and deadlocks may appear only under load or on certain machines and are hard to reproduce and test.</span></li>
+        <li><span class="ledger-label">Overhead</span><span>Thread creation, context switching and lock contention cost time and memory; too many threads can make a program slower.</span></li>
+        <li><span class="ledger-label">Shared-State Complexity</span><span>Every piece of shared mutable data needs a clear protection strategy, which adds design and review effort.</span></li>
+    </ol></div>
+
+    <div class="subheading">CPU scheduling and context switching</div>
+    <div class="intro">
+        <p>The operating system schedules runnable threads across available CPU cores.</p>
+        <p class="minor-heading"><strong>CPU scheduler</strong></p>
+        <p>Its responsibilities include selecting runnable threads, assigning CPU time, enforcing priorities and scheduling policies, and balancing tasks across cores.</p>
+        <p>Common scheduling algorithms include:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Algorithm</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>FCFS</td><td>First-Come, First-Served</td></tr>
+                <tr><td>SJF</td><td>Shortest Job First</td></tr>
+                <tr><td>SRTF</td><td>Preemptive Shortest Remaining Time First</td></tr>
+                <tr><td>Round Robin</td><td>Each task receives a CPU time quantum</td></tr>
+                <tr><td>Priority Scheduling</td><td>Higher-priority tasks are favored</td></tr>
+                <tr><td>Multilevel Feedback Queue</td><td>Dynamically adjusts task scheduling queues/priorities</td></tr>
+                <tr><td>Fair Scheduling</td><td>Attempts to distribute CPU time fairly</td></tr>
+            </tbody>
+        </table></div>
+        <p>Real operating systems use more sophisticated scheduling policies, including fairness and real-time mechanisms.</p>
+        <p class="minor-heading"><strong>Context switching</strong></p>
+        <p>Context switching is the process of suspending one thread and resuming another.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-context-switch.svg" alt="Context switch: Thread A runs until preempted, yields to the OS scheduler, which preserves its state and dispatches Thread B; when B yields, the scheduler resumes A from its saved context" style="width:100%;max-width:620px">
+    </div>
+    <div class="intro">
+        <p>The OS typically needs to preserve and restore thread execution state such as registers, stack pointer, and program counter. Switching between processes may also require changing address-space context.</p>
+        <p>Context switching has overhead, including scheduler work, cache disruption, and possible translation lookaside buffer (TLB) effects.</p>
+        <p>Too many runnable threads can therefore degrade performance rather than improve it.</p>
+    </div>
+
+    <div class="subheading">Core concurrency problems</div>
+    <div class="intro">
+        <p>Concurrency introduces correctness and progress problems when threads interact.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Problem</th><th>Explanation</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td><a href="RaceCondition.html">Race Condition</a></td><td>Outcome depends on execution order</td><td>Two threads updating a balance</td></tr>
+                <tr><td><a href="DataRace.html">Data Race</a></td><td>Conflicting unsynchronized memory accesses</td><td>One thread reads while another writes</td></tr>
+                <tr><td><a href="Deadlock.html">Deadlock</a></td><td>Threads wait indefinitely for each other</td><td>Opposite lock acquisition order</td></tr>
+                <tr><td><a href="Livelock.html">Livelock</a></td><td>Threads remain active but make no progress</td><td>Continually retrying and backing off together</td></tr>
+                <tr><td><a href="Starvation.html">Starvation</a></td><td>A thread is continually denied needed resources</td><td>Low-priority task rarely scheduled</td></tr>
+                <tr><td><a href="PriorityInversion.html">Priority Inversion</a></td><td>Lower-priority thread delays higher-priority thread</td><td>Low-priority owner holds required lock</td></tr>
+                <tr><td>Visibility Problem</td><td>Another thread does not observe a write as required</td><td>Stop flag update not seen</td></tr>
+                <tr><td>Atomicity Violation</td><td>Multi-step operation is interrupted</td><td>Lost increment</td></tr>
+                <tr><td>Ordering Problem</td><td>Operations are observed in unexpected order</td><td>Publication without proper synchronization</td></tr>
+                <tr><td>Contention</td><td>Threads compete for the same resource</td><td>Many threads acquiring one mutex</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Example: Race condition</strong></p>
+        <p>Suppose <code>counter = 0</code>, and two threads both execute <code>counter++</code>.</p>
+        <p>The increment comprises multiple conceptual steps:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency-race-condition.svg" alt="Race condition: with counter at 0, Thread A and Thread B both read 0, both compute 1 locally, then A writes 1 and B overwrites it with 1, so the counter ends at 1 instead of the expected 2 and one increment is lost" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p><code>counter++</code> is not an atomic operation.</p>
+        <p class="minor-heading"><strong>Example: Java synchronized counter</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Counter</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> count = <span class="code-number">0</span>;
+
+    <span class="code-keyword">public</span> synchronized <span class="code-keyword">void</span> increment() {
+        count++;
+    }
+
+    <span class="code-keyword">public</span> synchronized <span class="code-keyword">int</span> getCount() {
+        <span class="code-keyword">return</span> count;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The <a href="Synchronized.html"><code>synchronized</code></a> keyword provides mutual exclusion and establishes memory-visibility guarantees.</p>
+    </div>
+
+    <div class="subheading">Synchronization mechanisms</div>
+    <div class="intro">
+        <p>Synchronization coordinates concurrent threads to preserve correctness.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Mechanism</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><a href="MutualExclusion.html">Mutex</a> / <a href="Locks.html">Lock</a></td><td>Allows exclusive access to a critical section</td></tr>
+                <tr><td><a href="Semaphores.html">Semaphore</a></td><td>Controls access using a permit count</td></tr>
+                <tr><td><a href="Monitor.html">Monitor</a></td><td>Combines mutual exclusion with condition waiting</td></tr>
+                <tr><td><a href="ConditionVariable.html">Condition Variable</a></td><td>Enables threads to wait for a state change</td></tr>
+                <tr><td><a href="ReaderWriter.html">Read-Write Lock</a></td><td>Allows concurrent readers, exclusive writers</td></tr>
+                <tr><td><a href="Spinlock.html">Spinlock</a></td><td>Repeatedly checks lock availability without sleeping</td></tr>
+                <tr><td><a href="Atomic.html">Atomic Operation</a></td><td>Performs certain operations indivisibly</td></tr>
+                <tr><td><a href="Barrier.html">Barrier</a></td><td>Waits until participating threads reach a common point</td></tr>
+                <tr><td><a href="CountDownLatch.html">CountDown Latch</a></td><td>Waits for a specified number of completion signals</td></tr>
+                <tr><td><a href="BlockingQueue.html">Thread-Safe Queue</a></td><td>Safely transfers data between producer and consumer threads</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Critical section</strong></p>
+        <p>A <a href="CriticalSection.html"><strong>critical section</strong></a> is code that accesses shared state requiring controlled access.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Lock</span> lock = <span class="code-keyword">new</span> <span class="code-class">ReentrantLock</span>();
+
+<span class="code-keyword">void</span> update() {
+    lock.lock();
+    <span class="code-keyword">try</span> {
+        sharedCounter++; <span class="code-comment">Critical section</span>
+    } <span class="code-keyword">finally</span> {
+        lock.unlock();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Mutex vs. Semaphore</strong></p>
+        <p>A mutex provides ownership-based exclusive locking. A counting semaphore manages a number of permits and can allow multiple concurrent accesses.</p>
+        <p>For example, a semaphore with three permits can limit access to a database-dependent operation:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Semaphore</span> semaphore = <span class="code-keyword">new</span> <span class="code-class">Semaphore</span>(<span class="code-number">3</span>);
+
+<span class="code-keyword">void</span> execute() <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
+    semaphore.acquire();
+    <span class="code-keyword">try</span> {
+        callDatabase(); <span class="code-comment">At most 3 permit holders execute here</span>
+    } <span class="code-keyword">finally</span> {
+        semaphore.release();
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Memory model and thread communication</div>
+    <div class="intro">
+        <p>Multithreading requires understanding how writes become visible to other threads.</p>
+        <p>Modern CPUs use registers, caches, and memory-ordering optimizations. Compilers and runtimes can also reorder operations within the guarantees of their language memory models.</p>
+        <p>Three important properties are:</p>
+        <ul>
+            <li><strong>Atomicity:</strong> An operation cannot be observed partially.</li>
+            <li><strong>Visibility:</strong> Changes performed by one thread become observable by another under appropriate synchronization.</li>
+            <li><strong>Ordering:</strong> Operations are observed according to permitted memory-model rules.</li>
+        </ul>
+        <p class="minor-heading"><strong>Java example: <code>volatile</code></strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Worker</span> {
+    <span class="code-keyword">private</span> volatile <span class="code-keyword">boolean</span> running = <span class="code-keyword">true</span>;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> work() {
+        <span class="code-keyword">while</span> (running) {
+            doWork();
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> stop() {
+        running = <span class="code-keyword">false</span>;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><a href="Volatile.html"><code>volatile</code></a> ensures appropriate visibility and ordering for the flag. However, it does not make compound operations like <code>counter++</code> atomic.</p>
+        <p>For atomic increments, use <code>AtomicInteger</code> or suitable locking:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">AtomicInteger</span> counter = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
+counter.incrementAndGet();</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The <a href="MemoryModel.html">Java Memory Model</a> uses the <strong>happens-before</strong> relationship to specify when actions are ordered and writes must be visible.</p>
+    </div>
+
+    <div class="subheading">Deadlock and its conditions</div>
+    <div class="intro">
+        <p>Deadlock occurs when threads cannot proceed because they are waiting for resources held by each other.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-deadlock.svg" alt="Deadlock: Thread A holds Lock 1 and waits for Lock 2, while Thread B holds Lock 2 and waits for Lock 1" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Four necessary conditions for classical resource deadlock (Coffman conditions):</p>
+        <ol>
+            <li><strong>Mutual Exclusion:</strong> A resource cannot be used simultaneously by multiple owners.</li>
+            <li><strong>Hold and Wait:</strong> A task holds resources while waiting for others.</li>
+            <li><strong>No Preemption:</strong> Resources cannot be forcibly taken away.</li>
+            <li><strong>Circular Wait:</strong> A cycle of tasks waits on one another.</li>
+        </ol>
+        <p>Common approaches to avoid or manage deadlocks include global lock ordering, timeouts, minimizing lock scope, deadlock detection, and avoiding nested locking where feasible.</p>
+    </div>
+
+    <div class="subheading">Multithreading implementation in Java</div>
+    <div class="intro">
+        <p>Here is a small example of two threads updating shared data safely.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
+    <span class="code-class">AtomicInteger</span> counter = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
+    <span class="code-class">Runnable</span> task = () -&gt; {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">100_000</span>; i++) {
+            counter.incrementAndGet();
+        }
+    };
+    <span class="code-class">Thread</span> t1 = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"worker-1"</span>);
+    <span class="code-class">Thread</span> t2 = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task, <span class="code-string">"worker-2"</span>);
+    t1.start();
+    t2.start();
+    t1.join();
+    t2.join();
+    <span class="code-class">System</span>.out.println(counter.get());
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>200000</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Key observations:</p>
+        <ul>
+            <li><code>start()</code> requests that the JVM start executing the thread.</li>
+            <li>The OS schedules the corresponding native platform threads.</li>
+            <li>Both threads share the same <code>AtomicInteger</code>.</li>
+            <li><code>incrementAndGet()</code> prevents lost increments.</li>
+            <li><code>join()</code> waits for both threads to finish.</li>
+            <li>Execution order is not deterministic, but the final result is correct.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Multithreading vs. Multiprocessing vs. Asynchronous Programming</div>
+    <div class="intro">
+        <p>These are different mechanisms for organizing concurrent execution.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Aspect</th><th>Multithreading</th><th>Multiprocessing</th><th>Asynchronous / Event-driven</th></tr></thead>
+            <tbody>
+                <tr><td>Execution units</td><td>Threads</td><td>Processes</td><td>Tasks and callbacks</td></tr>
+                <tr><td>Memory</td><td>Shared process memory</td><td>Usually isolated address spaces</td><td>Depends on runtime</td></tr>
+                <tr><td>Communication</td><td>Shared objects, queues</td><td>IPC, sockets, shared memory</td><td>Futures, events, channels</td></tr>
+                <tr><td>Scheduling</td><td>OS or runtime</td><td>OS</td><td>Event loop or runtime</td></tr>
+                <tr><td>Parallel CPU execution</td><td>Possible</td><td>Possible</td><td>Depends on execution resources</td></tr>
+                <tr><td>Major advantage</td><td>Efficient shared-state collaboration</td><td>Isolation and fault containment</td><td>Efficient handling of many waiting operations</td></tr>
+                <tr><td>Major challenge</td><td>Races and synchronization</td><td>IPC overhead and coordination</td><td>State management and blocking operations</td></tr>
+            </tbody>
+        </table></div>
+        <p><a href="Asynchronous.html">Asynchronous programming</a> does not necessarily require multiple threads, although the implementation may use them.</p>
+    </div>
+
+    <div class="subheading">Thread pools and task execution</div>
+    <div class="intro">
+        <p>Creating a new OS thread for every task can be expensive. <a href="ThreadPool.html">Thread pools</a> reuse worker threads.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-thread-pool.svg" alt="Thread pool: incoming tasks enter a task queue, the pool hands them to worker threads 1, 2 and 3, and they become completed tasks" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Java example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">ExecutorService</span> executor = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">4</span>);
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">10</span>; i++) {
+    <span class="code-keyword">int</span> taskId = i;
+    executor.submit(() -&gt; {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Task {taskId} executed by {Thread.currentThread().getName()}"</span>);
+    });
+}
+executor.shutdown();</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Ten tasks are submitted, but at most four pool worker threads execute tasks concurrently. The executor manages queuing and scheduling work onto its workers.</p>
+        <p>For production systems, queue bounds, rejection behavior, shutdown, and workload characteristics also matter.</p>
+    </div>
+
+    <div class="subheading">CPU-bound vs. I/O-bound concurrency</div>
+    <div class="intro">
+        <p>Understanding workload type is essential when choosing a threading model.</p>
+    </div>
+    <div class="intro"><ul>
+        <li><strong>CPU-bound</strong><br>Tasks spend most of their time executing computations.<br>Examples: image processing, compression, numerical calculations.<br>Often benefits from parallel execution across CPU cores.</li>
+        <li><strong>I/O-bound</strong><br>Tasks spend substantial time waiting for external operations.<br>Examples: network requests, database queries, file I/O.<br>Often benefits from asynchronous I/O or lightweight concurrency.</li>
+    </ul></div>
+    <div class="intro">
+        <p>For CPU-bound tasks, more runnable threads than available CPU execution capacity can increase contention and context switching without improving throughput.</p>
+        <p>For I/O-bound tasks, a higher number of concurrent operations can improve resource utilization because some tasks are waiting while others run.</p>
+    </div>
+
+    <div class="subheading">Advanced concepts worth learning</div>
+    <div class="intro">
+        <p>These topics become especially important when designing high-performance concurrent systems.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Area</th><th>Concepts</th></tr></thead>
+            <tbody>
+                <tr><td>Scheduling</td><td>Preemption, time quantum, fairness, CPU affinity, work stealing</td></tr>
+                <tr><td>Thread coordination</td><td>Mutexes, semaphores, barriers, monitors, condition variables</td></tr>
+                <tr><td>Lock-free programming</td><td><a href="CAS.html">Compare-and-Swap (CAS)</a>, lock-free queues, ABA problem</td></tr>
+                <tr><td>Memory architecture</td><td>CPU caches, cache coherence, memory barriers, <a href="FalseSharing.html">false sharing</a></td></tr>
+                <tr><td>Concurrent data structures</td><td>Concurrent hash maps, blocking queues, ring buffers</td></tr>
+                <tr><td>Progress guarantees</td><td>Blocking, lock-free, wait-free algorithms</td></tr>
+                <tr><td>Thread management</td><td>Thread pools, <a href="VirtualThreads.html">virtual threads</a>, <a href="ThreadLocal.html">thread-local storage</a></td></tr>
+                <tr><td>Communication patterns</td><td><a href="Producer.html">Producer–consumer</a>, pipeline, <a href="ForkJoin.html">fork–join</a>, actor model</td></tr>
+                <tr><td>Performance</td><td>Contention, context-switch overhead, <a href="AmdahlsLaw.html">Amdahl&rsquo;s Law</a></td></tr>
+                <tr><td>Correctness</td><td>Safety, liveness, linearizability, happens-before</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Common concurrency failures and how to avoid them</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Problem</th><th>Cause</th><th>Preferred mitigation</th></tr></thead>
+            <tbody>
+                <tr><td>Lost update</td><td>Nonatomic read-modify-write</td><td>Atomic variable or lock</td></tr>
+                <tr><td>Visibility bug</td><td>Missing happens-before relationship</td><td>Volatile, locks, or atomics</td></tr>
+                <tr><td>Deadlock</td><td>Circular lock dependencies</td><td>Consistent lock ordering, bounded acquisition</td></tr>
+                <tr><td>Starvation</td><td>Repeated scheduling or lock denial</td><td>Fairness where appropriate, bounded workloads</td></tr>
+                <tr><td>Livelock</td><td>Threads repeatedly react without progress</td><td>Backoff and bounded retries</td></tr>
+                <tr><td>Thread leak</td><td>Unbounded creation or missing shutdown</td><td>Structured executor lifecycle</td></tr>
+                <tr><td>Queue growth</td><td>Producers exceed consumption</td><td>Bounded queues, admission control</td></tr>
+                <tr><td>Lock contention</td><td>Excessive exclusive access</td><td>Reduce critical sections, partition state</td></tr>
+                <tr><td>Lost notification</td><td>Incorrect wait/notify protocol</td><td>Predicate loops, higher-level synchronizers</td></tr>
+                <tr><td>Unsafe publication</td><td>Shared object exposed without proper synchronization</td><td>Final fields, safe publication</td></tr>
+                <tr><td>False sharing</td><td>Independent hot fields occupy the same cache line</td><td>Data-layout techniques, measurement</td></tr>
+                <tr><td>ABA problem</td><td>Value changes and returns before CAS</td><td>Versioned atomic references</td></tr>
+                <tr><td>ThreadLocal leak</td><td>Pooled worker retains request state</td><td><code>remove()</code> in <code>finally</code></td></tr>
+                <tr><td>Pool starvation</td><td>Tasks block awaiting other tasks in the same constrained pool</td><td>Separate pools or redesign dependencies</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Deadlock example</strong></p>
+    </div>
+
+    <div class="subheading">Suggested learning roadmap</div>
+    <div class="intro">
+        <ol>
+            <li><strong>Foundation:</strong> Process vs. Thread → Concurrency vs. Parallelism → Thread Lifecycle</li>
+            <li><strong>Operating System Internals:</strong> CPU Scheduling → Context Switching → Preemption → Kernel/User Threads</li>
+            <li><strong>Shared-Memory Concurrency:</strong> Race Conditions → Critical Sections → Mutex → Semaphore → Monitors</li>
+            <li><strong>Correctness and Memory:</strong> Atomicity → Visibility → Ordering → Memory Models → Deadlock</li>
+            <li><strong>Advanced Synchronization:</strong> CAS → Atomic Variables → Lock-Free Algorithms → Concurrent Data Structures</li>
+            <li><strong>Practical Multithreading:</strong> Thread Pools → Executor Framework → Future → CompletableFuture → Fork/Join → Virtual Threads</li>
+            <li><strong>Performance and Architecture:</strong> CPU-bound vs. I/O-bound → Contention → Thread Pool Sizing → Asynchronous Architecture</li>
+        </ol>
+    </div>
+
+    <div class="subheading">Final mental model</div>
+    <div class="intro">
+        <p>Concurrency is about <strong>managing multiple tasks that are in progress</strong>. Parallelism is about <strong>executing multiple tasks simultaneously</strong>. Multithreading is one mechanism for implementing concurrency.</p>
+        <p>The OS schedules threads, switches execution contexts, and manages resources. Applications use synchronization and memory-model guarantees to make shared-state interaction correct.</p>
+        <p>For practical systems programming, the most important chain of understanding is:</p>
+        <p><strong>Threads → Scheduling → Shared Memory → Race Conditions → Synchronization → Memory Visibility → Deadlock → Thread Pools → Performance.</strong></p>
+        <p>Once these concepts are clear, advanced subjects such as Java concurrency utilities, lock-free data structures, asynchronous programming, and distributed coordination become considerably easier to understand.</p>
+    </div>
+
+    <div class="subheading">Java Concurrency</div>
+
     <div class="intro">
         <p>To manage concurrency and prevent these issues, Java provides various synchronization mechanisms:</p>
     </div>
     <div class="intro"><ul>
         <li><strong><code>synchronized</code> keyword:</strong> Used to create synchronized blocks or methods, ensuring that only one thread can execute a critical section of code at a time.</li>
-        <li><strong><code>Lock</code> interface (from <code>java.util.concurrent.locks</code>):</strong> Offers more flexible and powerful locking mechanisms than <code>synchronized</code> blocks, including reentrant locks, read-write locks and condition variables.</li>
-        <li><strong><code>Semaphore</code> (from <code>java.util.concurrent</code>):</strong> Controls access to a limited number of resources.</li>
-        <li><strong><code>Atomic</code> classes (from <code>java.util.concurrent.atomic</code>):</strong> Provide atomic operations on single variables, ensuring thread-safe updates without explicit locking.</li>
+        <li><strong><code>Lock</code> interface:</strong> Offers more flexible and powerful locking mechanisms than <code>synchronized</code> blocks, including reentrant locks, read-write locks and condition variables.</li>
+        <li><strong><code>Semaphore</code>:</strong> Controls access to a limited number of resources.</li>
+        <li><strong><code>Atomic</code> classes:</strong> Provide atomic operations on single variables, ensuring thread-safe updates without explicit locking.</li>
         <li><strong><code>java.util.concurrent</code> package:</strong> Offers a rich set of high-level concurrency utilities, including <code>ExecutorService</code> for managing thread pools, <code>CountDownLatch</code>, <code>CyclicBarrier</code> and <code>BlockingQueue</code> for inter-thread communication and coordination.</li>
     </ul></div>
 
-    <div class="subheading">Best Practices for Java Concurrency</div>
-    <div class="intro"><ul>
-        <li><strong>Minimize shared mutable state:</strong> Design classes to be immutable or minimize the amount of mutable data shared between threads.</li>
-        <li><strong>Use appropriate synchronization:</strong> Choose the right synchronization mechanism based on the specific needs of the application.</li>
-        <li><strong>Avoid deadlocks:</strong> Implement careful resource ordering and timeout mechanisms to prevent deadlocks.</li>
-        <li><strong>Test thoroughly:</strong> Concurrent programs can be complex and require extensive testing to ensure correctness and performance.</li>
-    </ul></div>
-
-    <div class="subheading">Concurrency vs Parallelism</div>
-    <div class="intro">
-        <p>The two words are often used interchangeably, but they describe different things. <strong>Concurrency</strong> is about <em>structure</em>: several tasks are in progress during the same period and their steps may interleave, even on a single CPU core. <strong>Parallelism</strong> is about <em>execution</em>: several tasks literally run at the same instant on different cores.</p>
-        <p>A program can be concurrent without being parallel (one core switching between threads) and parallel without much concurrency design (splitting one big computation across cores). Java&rsquo;s concurrency tools make the first safe and the second practical.</p>
-    </div>
-
-    <div class="subheading">Process vs Thread</div>
-    <div class="intro"><ul>
-        <li><strong>Process</strong><br>An independent running program with its own memory space; processes communicate only through the operating system (files, sockets, pipes).</li>
-        <li><strong>Thread</strong><br>A path of execution inside a process; all threads of a process share its heap memory, but each has its own stack and program counter.</li>
-        <li><strong>Why threads are cheaper</strong><br>Creating and switching threads costs less than processes because there is no separate memory space to set up, which is also why shared data needs protection.</li>
-    </ul></div>
-
-    <div class="subheading">Pros and Cons</div>
-    <div class="intro">
-        <p class="minor-heading"><strong>Pros</strong></p>
-    </div>
-    <div class="intro"><ul>
-        <li><strong>Responsiveness</strong><br>Long-running work runs on background threads, so the user interface or request handler is never frozen.</li>
-        <li><strong>Better CPU Utilization</strong><br>Work spreads across all cores instead of leaving most of them idle.</li>
-        <li><strong>Higher Throughput</strong><br>While one thread waits on I/O, others keep doing useful work.</li>
-        <li><strong>Natural Modelling</strong><br>Independent activities, such as serving many clients, map directly to independent threads or tasks.</li>
-    </ul></div>
-    <div class="intro">
-        <p class="minor-heading"><strong>Cons</strong></p>
-    </div>
-    <div class="intro"><ul>
-        <li><strong>Hard to Reason About</strong><br>The number of possible interleavings explodes, so correctness can no longer be checked by reading the code top to bottom.</li>
-        <li><strong>Non-Deterministic Bugs</strong><br>Race conditions and deadlocks may appear only under load or on certain machines and are hard to reproduce and test.</li>
-        <li><strong>Overhead</strong><br>Thread creation, context switching and lock contention cost time and memory; too many threads can make a program slower.</li>
-        <li><strong>Shared-State Complexity</strong><br>Every piece of shared mutable data needs a clear protection strategy, which adds design and review effort.</li>
-    </ul></div>
-
-    <div class="section code-section">
-        <div class="section-title">Creating Threads</div>
-        <div class="code-layout">
-            <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Worker</span> <span class="code-keyword">extends</span> <span class="code-class">Thread</span> {
-
-    <span class="code-class">@Override</span>
-    <span class="code-keyword">public</span> <span class="code-keyword">void</span> run() {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Extending Thread: "</span> + getName());
-    }
-}
-
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Main</span> {
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
-        <span class="code-class">Thread</span> first = <span class="code-keyword">new</span> <span class="code-class">Worker</span>();
-        <span class="code-class">Runnable</span> task = () -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Implementing Runnable"</span>);
-        <span class="code-class">Thread</span> second = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task);
-        first.start(); <span class="code-comment">start(), not run(), creates a new thread</span>
-        second.start();
-        first.join(); <span class="code-comment">wait for both to finish</span>
-        second.join();
-    }
-}</code></pre>
-            </div>
-            <div class="code-explanation">
-                <div class="code-explanation-title">How it works</div>
-                <p>Extending <code>Thread</code> puts the work in <code>run()</code>; implementing <code>Runnable</code> keeps the task separate from the thread that runs it.<br><br>
-                    <code>Runnable</code> is usually preferred: the class can still extend something else and the same task can be handed to a thread pool.<br><br>
-                    Calling <code>run()</code> directly would execute the code on the current thread; <code>start()</code> is what creates a new one.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="section code-section">
-        <div class="section-title">Race Condition</div>
+        <div class="section code-section">
         <div class="code-layout">
             <div class="code-wrapper">
 <pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Counter</span> {
-
     <span class="code-keyword">private</span> <span class="code-keyword">int</span> count;
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> increment() {
@@ -124,21 +499,19 @@
     }
 }
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Main</span> {
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
-        <span class="code-class">Counter</span> counter = <span class="code-keyword">new</span> <span class="code-class">Counter</span>();
-        <span class="code-class">Runnable</span> task = () -&gt; {
-            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">10_000</span>; i++) counter.increment();
-        };
-        <span class="code-class">Thread</span> a = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task);
-        <span class="code-class">Thread</span> b = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task);
-        a.start();
-        b.start();
-        a.join();
-        b.join();
-        <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment">often less than 20000</span>
-    }
+<span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">Exception</span> {
+    <span class="code-class">Counter</span> counter = <span class="code-keyword">new</span> <span class="code-class">Counter</span>();
+    <span class="code-class">Runnable</span> task = () -&gt; {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">10_000</span>; i++)
+            counter.increment();
+    };
+    <span class="code-class">Thread</span> a = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task);
+    <span class="code-class">Thread</span> b = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(task);
+    a.start();
+    b.start();
+    a.join();
+    b.join();
+    <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment">often less than 20000</span>
 }</code></pre>
             </div>
             <div class="code-explanation">
@@ -151,11 +524,9 @@
     </div>
 
     <div class="section code-section">
-        <div class="section-title">Fixing It</div>
         <div class="code-layout">
             <div class="code-wrapper">
 <pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SynchronizedCounter</span> {
-
     <span class="code-keyword">private</span> <span class="code-keyword">int</span> count;
 
     <span class="code-keyword">public</span> <span class="code-keyword">synchronized</span> <span class="code-keyword">void</span> increment() {
@@ -168,7 +539,6 @@
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">AtomicCounter</span> {
-
     <span class="code-keyword">private</span> <span class="code-class">AtomicInteger</span> count = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> increment() {
@@ -190,7 +560,6 @@
     </div>
 
     <div class="section code-section">
-        <div class="section-title">Using an Executor</div>
         <div class="code-layout">
             <div class="code-wrapper">
 <pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
@@ -211,6 +580,14 @@
             </div>
         </div>
     </div>
+
+    <div class="subheading">Best Practices for Java Concurrency</div>
+    <div class="intro"><ul>
+        <li><strong>Minimize shared mutable state</strong><br>Design classes to be immutable or minimize the amount of mutable data shared between threads.</li>
+        <li><strong>Use appropriate synchronization</strong><br>Choose the right synchronization mechanism based on the specific needs of the application.</li>
+        <li><strong>Avoid deadlocks</strong><br>Implement careful resource ordering and timeout mechanisms to prevent deadlocks.</li>
+        <li><strong>Test thoroughly</strong><br>Concurrent programs can be complex and require extensive testing to ensure correctness and performance.</li>
+    </ul></div>
 </div>
 </body>
 </html>

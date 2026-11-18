@@ -232,28 +232,28 @@ Engine stopped</code></pre>
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailPlainNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsPlainNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailBrandedNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: [ACME] "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Email: [ACME] {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsBrandedNotification</span> <span class="code-keyword">extends</span> <span class="code-class">Notification</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: [ACME] "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS: [ACME] {message}"</span>);
     }
 }</code></pre>
         </div>
@@ -356,14 +356,14 @@ SmsPlainRetryNotification
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"EMAIL to "</span> + destination + <span class="code-string">": "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"EMAIL to {destination}: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SmsSender</span> <span class="code-keyword">implements</span> <span class="code-class">MessageSender</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> destination, <span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS to "</span> + destination + <span class="code-string">": "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"SMS to {destination}: {message}"</span>);
     }
 }
 
@@ -570,14 +570,14 @@ router.send(<span class="code-class">Channel</span>.SMS, <span class="code-strin
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CardPayment</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentStrategy</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-keyword">double</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by card: "</span> + amount);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by card: {amount}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">UpiPayment</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentStrategy</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> pay(<span class="code-keyword">double</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by UPI: "</span> + amount);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Paying by UPI: {amount}"</span>);
     }
 }</code></pre>
         </div>
@@ -743,7 +743,7 @@ sms.send(<span class="code-string">"+919876543210"</span>, <span class="code-str
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CardPaymentGateway</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentGateway</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> charge(<span class="code-class">BigDecimal</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Card payment: "</span> + amount);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Card payment: {amount}"</span>);
     }
 }</code></pre>
         </div>
@@ -754,7 +754,7 @@ sms.send(<span class="code-string">"+919876543210"</span>, <span class="code-str
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">UpiPaymentGateway</span> <span class="code-keyword">implements</span> <span class="code-class">PaymentGateway</span> {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> charge(<span class="code-class">BigDecimal</span> amount) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"UPI payment: "</span> + amount);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"UPI payment: {amount}"</span>);
     }
 }</code></pre>
         </div>

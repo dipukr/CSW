@@ -11,10 +11,10 @@
   </g>
 
   <g fill="#ffffff" stroke="#222" stroke-width="1.2">
-    <rect x="20" y="18" width="170" height="54" rx="6"/>
-    <rect x="240" y="18" width="160" height="54" rx="6"/>
-    <rect x="450" y="18" width="170" height="54" rx="6"/>
-    <rect x="160" y="130" width="320" height="156" rx="6"/>
+    <rect x="20" y="18" width="170" height="54" rx="3"/>
+    <rect x="240" y="18" width="160" height="54" rx="3"/>
+    <rect x="450" y="18" width="170" height="54" rx="3"/>
+    <rect x="160" y="130" width="320" height="156" rx="3"/>
   </g>
 
   <g fill="#111" text-anchor="middle" dominant-baseline="central">

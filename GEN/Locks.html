@@ -16,7 +16,6 @@
     </div>
     <div class="intro"><ul>
         <li>Allows actions to be performed on an object without interference from other threads.</li>
-        <li>Available from the <code>java.util.concurrent.locks</code> package (since Java 5).</li>
         <li>A <strong>write lock</strong> prevents other threads from concurrently reading or modifying the object.</li>
         <li>A <strong>read lock</strong> can be acquired by multiple threads at the same time if the write lock is not held by another thread, allowing concurrent read actions.</li>
     </ul></div>
@@ -25,17 +24,17 @@
     </div>
 
     <div class="section cmp">
-        <div class="section-title centered">synchronized vs Lock</div>
+        <div class="section-title centered">Synchronized vs Lock</div>
         <div class="section-content">
             <table class="cmp-table">
-                <thead><tr><th>Feature</th><th>synchronized</th><th>Lock API</th></tr></thead>
+                <thead><tr><th>Feature</th><th>Synchronized</th><th>Lock API</th></tr></thead>
                 <tbody>
                     <tr><td>Acquire and Release</td><td>Automatic, at block entry and exit</td><td>Explicit <code>lock()</code> and <code>unlock()</code> in <code>finally</code></td></tr>
                     <tr><td>Try Without Waiting</td><td>Not possible</td><td><code>tryLock()</code></td></tr>
                     <tr><td>Timeout</td><td>Not possible</td><td><code>tryLock(time, unit)</code></td></tr>
                     <tr><td>Interruptible Wait</td><td>No</td><td><code>lockInterruptibly()</code></td></tr>
                     <tr><td>Fairness</td><td>No ordering guarantee</td><td>Optional fair mode</td></tr>
-                    <tr><td>Reentrant</td><td>Yes</td><td>Yes for <code>ReentrantLock</code> and <code>ReentrantReadWriteLock</code>; no for <code>StampedLock</code></td></tr>
+                    <tr><td>Reentrant</td><td>Yes</td><td>Yes (<code>ReentrantLock</code>) No (<code>StampedLock</code>)</td></tr>
                     <tr><td>Shared Reads</td><td>No, always exclusive</td><td><code>ReentrantReadWriteLock</code>, <code>StampedLock</code></td></tr>
                     <tr><td>Wait Conditions</td><td>One per monitor (<code>wait</code>/<code>notify</code>)</td><td>Many per lock (<code>Condition</code>)</td></tr>
                     <tr><td>Span</td><td>One block or method</td><td>Can be locked in one method and unlocked in another</td></tr>
@@ -335,7 +334,7 @@ lock.unlock(); <span class="code-comment">One unlock() for every lock()</span></
         <div class="method-entry" id="reentrantlock-6">
             <div id="tab-reentrantlock-6" class="api-sig"><span class="code-keyword">int</span> getQueueLength()</div>
             <p class="api-desc">Returns an estimate of the number of threads waiting to acquire the lock. Intended for monitoring system state, not for synchronization control.</p>
-            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Waiting threads: "</span> + lock.getQueueLength());</code></pre></div>
+            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Waiting threads: {lock.getQueueLength()}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="reentrantlock-7">
             <div id="tab-reentrantlock-7" class="api-sig"><span class="code-keyword">int</span> getWaitQueueLength(<span class="code-class">Condition</span> condition)</div>
@@ -391,7 +390,7 @@ lock.unlock(); <span class="code-comment">One unlock() for every lock()</span></
         <div class="method-entry" id="reentrantreadwritelock-3">
             <div id="tab-reentrantreadwritelock-3" class="api-sig"><span class="code-keyword">int</span> getReadLockCount()</div>
             <p class="api-desc">Returns the number of read holds on this lock across all threads. Designed for monitoring, not for synchronization control.</p>
-            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Active read holds: "</span> + rw.getReadLockCount());</code></pre></div>
+            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Active read holds: {rw.getReadLockCount()}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="reentrantreadwritelock-4">
             <div id="tab-reentrantreadwritelock-4" class="api-sig"><span class="code-keyword">int</span> getReadHoldCount()</div>
@@ -847,7 +846,7 @@ worker.join(); <span class="code-comment">Wait for it to finish</span></code></p
             <p class="api-desc">Creates a platform thread with an explicit name, which then appears in thread dumps, log lines, profilers and uncaught exception messages instead of a generic <code>Thread-N</code>. Like the single-argument constructor it returns an unstarted thread in the <code>NEW</code> state and it throws <code>NullPointerException</code> if the name is <code>null</code>. Naming every thread makes production debugging far easier; when you need many numbered threads, use <code>Thread.ofPlatform().name(prefix, start)</code> instead.</p>
             <div class="code-block"><pre><code><span class="code-class">Thread</span> worker = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
     <span class="code-class">String</span> name = <span class="code-class">Thread</span>.currentThread().getName();
-    <span class="code-class">System</span>.out.println(name + <span class="code-string">" processing orders"</span>); <span class="code-comment">order-worker processing</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"{name} processing orders"</span>); <span class="code-comment">order-worker processing</span>
 }, <span class="code-string">"order-worker"</span>);
 worker.start();
 worker.join();</code></pre></div>
@@ -858,7 +857,7 @@ worker.join();</code></pre></div>
             <div class="code-block"><pre><code><span class="code-keyword">var</span> builder = <span class="code-class">Thread</span>.ofPlatform()
         .name(<span class="code-string">"io-"</span>, <span class="code-number">0</span>) <span class="code-comment">Threads are named io-0, io-1, ...</span>
         .daemon(<span class="code-keyword">true</span>) <span class="code-comment">The JVM can exit while these still run</span>
-        .uncaughtExceptionHandler((t, e) -&gt; <span class="code-class">System</span>.out.println(t + <span class="code-string">": "</span> + e));
+        .uncaughtExceptionHandler((t, e) -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"{t}: {e}"</span>));
 <span class="code-class">Thread</span> first = builder.start(task); <span class="code-comment">io-0</span>
 <span class="code-class">Thread</span> second = builder.start(task); <span class="code-comment">io-1</span>
 first.join();
@@ -993,7 +992,7 @@ t.join();</code></pre></div>
 <span class="code-class">Thread</span> t = <span class="code-class">Thread</span>.ofPlatform().start(() -&gt; result[<span class="code-number">0</span>] = <span class="code-number">6</span> * <span class="code-number">7</span>);
 <span class="code-keyword">try</span> {
     t.join(); <span class="code-comment">Blocks until t terminates</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Result "</span> + result[<span class="code-number">0</span>]); <span class="code-comment">Result 42: visible after join</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Result {result[0]}"</span>); <span class="code-comment">Result 42: visible after join</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
     <span class="code-class">Thread</span>.currentThread().interrupt(); <span class="code-comment">Restore the flag and give up</span>
 }</code></pre></div>
@@ -1072,7 +1071,7 @@ t.start();
             <div class="code-block"><pre><code><span class="code-class">Thread</span> t = <span class="code-class">Thread</span>.ofVirtual().start(task);
 <span class="code-keyword">long</span> id = t.threadId(); <span class="code-comment">Java 19+: unique, never reused</span>
 <span class="code-keyword">long</span> me = <span class="code-class">Thread</span>.currentThread().threadId();
-<span class="code-class">System</span>.out.println(<span class="code-string">"main="</span> + me + <span class="code-string">" worker="</span> + id); <span class="code-comment">e.g. main=1 worker=21</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"main={me} worker={id}"</span>); <span class="code-comment">e.g. main=1 worker=21</span>
 <span class="code-class">Map</span>&lt;<span class="code-class">Long</span>, <span class="code-class">String</span>&gt; owners = <span class="code-keyword">new</span> <span class="code-class">ConcurrentHashMap</span>&lt;&gt;();
 owners.put(me, <span class="code-string">"request-42"</span>); <span class="code-comment">Key per-thread data by id</span></code></pre></div>
         </div>
@@ -1088,8 +1087,8 @@ owners.put(me, <span class="code-string">"request-42"</span>); <span class="code
             <div id="tab-g4-11" class="api-sig"><span class="code-keyword">static</span> <span class="code-class">Thread</span> currentThread()</div>
             <p class="api-desc">Returns the <code>Thread</code> object for the thread executing the call, which may be a platform or a virtual thread and never returns <code>null</code> or blocks. Use it to read the current name or id, check or restore the interrupt status, or log where code runs. Inside a virtual thread it returns the virtual thread, not its carrier. In a thread pool the same <code>Thread</code> serves many tasks, so do not assume one thread per request.</p>
             <div class="code-block"><pre><code><span class="code-class">Thread</span> current = <span class="code-class">Thread</span>.currentThread();
-<span class="code-class">System</span>.out.println(<span class="code-string">"Running on "</span> + current.getName()); <span class="code-comment">Running on main</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Virtual? "</span> + current.isVirtual()); <span class="code-comment">Virtual? false</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Running on {current.getName()}"</span>); <span class="code-comment">Running on main</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Virtual? {current.isVirtual()}"</span>); <span class="code-comment">Virtual? false</span>
 <span class="code-keyword">try</span> {
     <span class="code-class">Thread</span>.sleep(<span class="code-number">100</span>);
 } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
@@ -1159,7 +1158,7 @@ vt.join();
 <span class="code-keyword">int</span> count = <span class="code-class">Thread</span>.enumerate(threads); <span class="code-comment">Number actually copied</span>
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; count; i++) {
     <span class="code-class">Thread</span> t = threads[i];
-    <span class="code-class">System</span>.out.println(t.getName() + <span class="code-string">" "</span> + t.getState()); <span class="code-comment">main RUNNABLE</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"{t.getName()} {t.getState()}"</span>); <span class="code-comment">main RUNNABLE</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g4-18">
@@ -1168,7 +1167,7 @@ vt.join();
             <div class="code-block"><pre><code><span class="code-class">Thread</span> worker = <span class="code-class">Thread</span>.ofPlatform().name(<span class="code-string">"worker"</span>).start(task);
 <span class="code-class">Thread</span>.sleep(<span class="code-number">200</span>); <span class="code-comment">Let it get busy</span>
 <span class="code-keyword">for</span> (<span class="code-class">StackTraceElement</span> frame : worker.getStackTrace()) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"  at "</span> + frame); <span class="code-comment">Top frame is the current method</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"  at {frame}"</span>); <span class="code-comment">Top frame is the current method</span>
 }
 worker.join();
 <span class="code-class">System</span>.out.println(worker.getStackTrace().length); <span class="code-comment">0: terminated</span></code></pre></div>
@@ -1181,7 +1180,7 @@ worker.join();
     <span class="code-class">Thread</span> t = entry.getKey();
     <span class="code-class">StackTraceElement</span>[] frames = entry.getValue();
     <span class="code-class">String</span> top = frames.length &gt; <span class="code-number">0</span> ? frames[<span class="code-number">0</span>].toString() : <span class="code-string">"no frames"</span>;
-    <span class="code-class">System</span>.out.println(t.getName() + <span class="code-string">" -&gt; "</span> + top); <span class="code-comment">main -&gt; App.main(...)</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"{t.getName()} -&gt; {top}"</span>); <span class="code-comment">main -&gt; App.main(...)</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g4-20">
@@ -1189,7 +1188,7 @@ worker.join();
             <p class="api-desc">Prints the current thread&rsquo;s stack trace to <code>System.err</code>, exactly like <code>new Exception("Stack trace").printStackTrace()</code>. It never blocks, throws nothing and only ever reports the calling thread. Use it as a quick debugging aid to see how execution reached a particular point; in production code, log a <code>Throwable</code> through your logging framework instead so the output is captured, leveled and searchable.</p>
             <div class="code-block"><pre><code><span class="code-keyword">void</span> handle(<span class="code-class">String</span> state) {
     <span class="code-keyword">if</span> (!state.equals(<span class="code-string">"READY"</span>)) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Unexpected state "</span> + state);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Unexpected state {state}"</span>);
         <span class="code-class">Thread</span>.dumpStack(); <span class="code-comment">Prints java.lang.Exception: Stack trace</span>
     }
 }</code></pre></div>
@@ -1268,7 +1267,7 @@ worker.join();
     <span class="code-class">Thread</span>.currentThread().interrupt();
 }
 <span class="code-keyword">long</span> micros = (<span class="code-class">System</span>.nanoTime() - start) / <span class="code-number">1_000</span>;
-<span class="code-class">System</span>.out.println(<span class="code-string">"Slept "</span> + micros + <span class="code-string">" us"</span>); <span class="code-comment">Often more than 500 us</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Slept {micros} us"</span>); <span class="code-comment">Often more than 500 us</span></code></pre></div>
         </div>
         <div class="method-entry" id="g6-2">
             <div id="tab-g6-2" class="api-sig"><span class="code-keyword">static</span> <span class="code-keyword">void</span> sleep(<span class="code-class">Duration</span> duration) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span></div>
@@ -1276,7 +1275,7 @@ worker.join();
             <div class="code-block"><pre><code><span class="code-class">Duration</span> delay = <span class="code-class">Duration</span>.ofMillis(<span class="code-number">100</span>);
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> attempt = <span class="code-number">1</span>; attempt &lt;= <span class="code-number">3</span>; attempt++) {
     <span class="code-keyword">if</span> (tryConnect()) <span class="code-keyword">break</span>;
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Attempt "</span> + attempt + <span class="code-string">" failed, retrying"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Attempt {attempt} failed, retrying"</span>);
     <span class="code-class">Thread</span>.sleep(delay); <span class="code-comment">Java 19+: 100 ms, then 200 ms, then 400 ms</span>
     delay = delay.multipliedBy(<span class="code-number">2</span>); <span class="code-comment">Exponential backoff</span>
 }</code></pre></div>
@@ -1302,7 +1301,7 @@ worker.join();
     <span class="code-class">Thread</span>.onSpinWait(); <span class="code-comment">CPU hint: this is a busy-wait loop</span>
     spins++;
 }
-<span class="code-class">System</span>.out.println(<span class="code-string">"Ready after "</span> + spins + <span class="code-string">" spins"</span>); <span class="code-comment">Usually small</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Ready after {spins} spins"</span>); <span class="code-comment">Usually small</span></code></pre></div>
         </div>
     </div>
     <div class="intro">
@@ -1358,7 +1357,7 @@ worker.join();</code></pre></div>
     <span class="code-keyword">while</span> (!<span class="code-class">Thread</span>.currentThread().isInterrupted()) { <span class="code-comment">Does not clear flag</span>
         count++; <span class="code-comment">CPU-bound work with no blocking calls</span>
     }
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Stopped after "</span> + count);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Stopped after {count}"</span>);
 });
 <span class="code-class">Thread</span>.sleep(<span class="code-number">100</span>);
 worker.interrupt(); <span class="code-comment">The loop sees the flag and exits</span>
@@ -1406,7 +1405,7 @@ worker.join();</code></pre></div>
     <div class="section code-section">
         <div class="code-wrapper">
 <pre><code><span class="code-class">Thread</span> worker = <span class="code-class">Thread</span>.ofPlatform().name(<span class="code-string">"payment-worker"</span>).uncaughtExceptionHandler((thread, exception) -&gt; {
-    <span class="code-class">System</span>.err.println(thread.getName() + <span class="code-string">": "</span> + exception);
+    <span class="code-class">System</span>.err.println(<span class="code-string">"{thread.getName()}: {exception}"</span>);
 }).start(() -&gt; {
     <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">RuntimeException</span>(<span class="code-string">"Processing failed"</span>);
 });
@@ -1868,7 +1867,7 @@ lock.unlock(); <span class="code-comment">Lets the worker proceed</span></code><
             <div class="code-block"><pre><code><span class="code-keyword">var</span> monitor = <span class="code-class">Executors</span>.newSingleThreadScheduledExecutor();
 monitor.scheduleAtFixedRate(() -&gt; {
     <span class="code-keyword">int</span> waiting = lock.getQueueLength(); <span class="code-comment">Estimate, not exact</span>
-    <span class="code-keyword">if</span> (waiting &gt; <span class="code-number">10</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"High contention: "</span> + waiting);
+    <span class="code-keyword">if</span> (waiting &gt; <span class="code-number">10</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"High contention: {waiting}"</span>);
 }, <span class="code-number">0</span>, <span class="code-number">1</span>, <span class="code-class">TimeUnit</span>.SECONDS);</code></pre></div>
         </div>
         <div class="method-entry" id="g10-7">
@@ -1890,7 +1889,7 @@ monitor.scheduleAtFixedRate(() -&gt; {
             <div class="code-block"><pre><code>lock.lock();
 <span class="code-keyword">try</span> {
     <span class="code-keyword">int</span> idle = lock.getWaitQueueLength(notEmpty); <span class="code-comment">Consumers waiting</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Idle consumers: "</span> + idle);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Idle consumers: {idle}"</span>);
 } <span class="code-keyword">finally</span> {
     lock.unlock();
 }</code></pre></div>
@@ -2458,9 +2457,9 @@ gate.release(batch); <span class="code-comment">Lets all 4 workers start togethe
             <p class="api-desc">Returns the current number of available permits, without blocking or changing anything. The value can change immediately after it is read, so use it for monitoring, metrics and logging, never for an "if free then acquire" check; use <code>tryAcquire()</code> for that. It can be negative if the semaphore was created with a negative count, or exceed the initial count after extra releases.</p>
             <div class="code-block"><pre><code><span class="code-keyword">var</span> pool = <span class="code-keyword">new</span> <span class="code-class">Semaphore</span>(<span class="code-number">10</span>);
 pool.acquire(<span class="code-number">3</span>);
-<span class="code-class">System</span>.out.println(<span class="code-string">"Free: "</span> + pool.availablePermits()); <span class="code-comment">Free: 7</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Free: {pool.availablePermits()}"</span>); <span class="code-comment">Free: 7</span>
 pool.release(<span class="code-number">3</span>);
-<span class="code-class">System</span>.out.println(<span class="code-string">"Free: "</span> + pool.availablePermits()); <span class="code-comment">Free: 10</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Free: {pool.availablePermits()}"</span>); <span class="code-comment">Free: 10</span></code></pre></div>
         </div>
         <div class="method-entry" id="g15-8">
             <div id="tab-g15-8" class="api-sig"><span class="code-keyword">int</span> drainPermits()</div>
@@ -2512,7 +2511,7 @@ monitor.scheduleAtFixedRate(() -&gt; {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> callRemoteApi() <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
         <span class="code-keyword">permits</span>.acquire();
         <span class="code-keyword">try</span> {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Executing: "</span> + <span class="code-class">Thread</span>.currentThread());
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Executing: {Thread.currentThread()}"</span>);
             <span class="code-class">Thread</span>.sleep(<span class="code-number">1000</span>);
         } <span class="code-keyword">finally</span> {
             <span class="code-keyword">permits</span>.release();
@@ -2555,7 +2554,7 @@ ready.await(); <span class="code-comment">Main thread waits for all three</span>
     <span class="code-keyword">try</span> {
         loadConfiguration();
     } <span class="code-keyword">catch</span> (<span class="code-class">Exception</span> e) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Config failed: "</span> + e.getMessage());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Config failed: {e.getMessage()}"</span>);
     } <span class="code-keyword">finally</span> {
         ready.countDown(); <span class="code-comment">Count down even if the task fails</span>
     }
@@ -2571,7 +2570,7 @@ ready.await(); <span class="code-comment">Main thread waits for all three</span>
     });
 }
 done.await(); <span class="code-comment">Blocks until every task has counted down</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"All "</span> + tasks.size() + <span class="code-string">" tasks finished"</span>);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"All {tasks.size()} tasks finished"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g16-3">
             <div id="tab-g16-3" class="api-sig"><span class="code-keyword">boolean</span> await(<span class="code-keyword">long</span> timeout, <span class="code-class">TimeUnit</span> unit) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span></div>
@@ -2581,7 +2580,7 @@ services.forEach(s -&gt; executor.submit(() -&gt; {
     <span class="code-keyword">try</span> { s.start(); } <span class="code-keyword">finally</span> { started.countDown(); }
 }));
 <span class="code-keyword">if</span> (!started.await(<span class="code-number">10</span>, <span class="code-class">TimeUnit</span>.SECONDS)) { <span class="code-comment">false: time ran out</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Still waiting for "</span> + started.getCount());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Still waiting for {started.getCount()}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g16-4">
@@ -2592,9 +2591,9 @@ files.forEach(f -&gt; executor.submit(() -&gt; {
     <span class="code-keyword">try</span> { upload(f); } <span class="code-keyword">finally</span> { pending.countDown(); }
 }));
 <span class="code-keyword">while</span> (!pending.await(<span class="code-number">1</span>, <span class="code-class">TimeUnit</span>.SECONDS)) { <span class="code-comment">Report once a second</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Uploads left: "</span> + pending.getCount());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Uploads left: {pending.getCount()}"</span>);
 }
-<span class="code-class">System</span>.out.println(<span class="code-string">"Remaining: "</span> + pending.getCount()); <span class="code-comment">Remaining: 0</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Remaining: {pending.getCount()}"</span>); <span class="code-comment">Remaining: 0</span></code></pre></div>
         </div>
     </div>
     <div class="section code-section">
@@ -2606,7 +2605,7 @@ files.forEach(f -&gt; executor.submit(() -&gt; {
             <span class="code-keyword">final</span> <span class="code-keyword">int</span> id = i;
             executor.submit(() -&gt; {
                 <span class="code-keyword">try</span> {
-                    <span class="code-class">System</span>.out.println(<span class="code-string">"Worker "</span> + id);
+                    <span class="code-class">System</span>.out.println(<span class="code-string">"Worker {id}"</span>);
                 } <span class="code-keyword">finally</span> {
                     latch.countDown();
                 }
@@ -2643,7 +2642,7 @@ files.forEach(f -&gt; executor.submit(() -&gt; {
             barrier.await(); <span class="code-comment">Waits for the other two workers</span>
         }
     } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> | <span class="code-class">BrokenBarrierException</span> e) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Simulation aborted: "</span> + e);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Simulation aborted: {e}"</span>);
     }
 };
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">3</span>; i++) <span class="code-class">Thread</span>.ofPlatform().start(worker);</code></pre></div>
@@ -2699,7 +2698,7 @@ coordinator.scheduleAtFixedRate(() -&gt; {
             <div class="code-block"><pre><code><span class="code-keyword">try</span> {
     barrier.await(<span class="code-number">2</span>, <span class="code-class">TimeUnit</span>.SECONDS);
 } <span class="code-keyword">catch</span> (<span class="code-class">TimeoutException</span> | <span class="code-class">BrokenBarrierException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Broken: "</span> + barrier.isBroken()); <span class="code-comment">Broken: true</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Broken: {barrier.isBroken()}"</span>); <span class="code-comment">Broken: true</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
     <span class="code-class">Thread</span>.currentThread().interrupt();
 }</code></pre></div>
@@ -2770,7 +2769,7 @@ phaser.bulkRegister(workers); <span class="code-comment">Five more parties in on
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; workers; i++) {
     <span class="code-keyword">int</span> id = i;
     <span class="code-class">Thread</span>.ofPlatform().start(() -&gt; {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Worker "</span> + id + <span class="code-string">" ready"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Worker {id} ready"</span>);
         phaser.arriveAndDeregister();
     });
 }
@@ -2784,7 +2783,7 @@ phaser.arriveAndAwaitAdvance(); <span class="code-comment">Returns once all five
 <span class="code-class">Thread</span>.ofPlatform().start(() -&gt; {
     <span class="code-class">System</span>.out.println(<span class="code-string">"Batch written"</span>);
     <span class="code-keyword">int</span> phase = phaser.arrive(); <span class="code-comment">Signals and moves on without waiting</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Producer continues after phase "</span> + phase);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Producer continues after phase {phase}"</span>);
 });
 phaser.arriveAndAwaitAdvance(); <span class="code-comment">Consumer waits for the producer</span>
 <span class="code-class">System</span>.out.println(<span class="code-string">"Batch consumed"</span>); <span class="code-comment">Always after "Batch written"</span></code></pre></div>
@@ -2797,7 +2796,7 @@ phaser.arriveAndAwaitAdvance(); <span class="code-comment">Consumer waits for th
     <span class="code-keyword">int</span> id = w;
     <span class="code-class">Thread</span>.ofPlatform().start(() -&gt; {
         <span class="code-keyword">for</span> (<span class="code-keyword">int</span> round = <span class="code-number">0</span>; round &lt; <span class="code-number">3</span>; round++) {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Worker "</span> + id + <span class="code-string">" round "</span> + round);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Worker {id} round {round}"</span>);
             phaser.arriveAndAwaitAdvance(); <span class="code-comment">Barrier between rounds</span>
         }
     });
@@ -2810,7 +2809,7 @@ phaser.arriveAndAwaitAdvance(); <span class="code-comment">Consumer waits for th
 <span class="code-keyword">for</span> (<span class="code-class">String</span> file : <span class="code-class">List</span>.of(<span class="code-string">"a.csv"</span>, <span class="code-string">"b.csv"</span>)) {
     phaser.register();
     <span class="code-class">Thread</span>.ofPlatform().start(() -&gt; {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Parsed "</span> + file);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Parsed {file}"</span>);
         phaser.arriveAndDeregister(); <span class="code-comment">Done for good: no more phases</span>
     });
 }
@@ -2829,7 +2828,7 @@ phaser.arriveAndDeregister(); <span class="code-comment">Main leaves too: zero p
 <span class="code-keyword">int</span> phase = phaser.arrive(); <span class="code-comment">Arrive now, wait later</span>
 <span class="code-class">System</span>.out.println(<span class="code-string">"Doing unrelated work"</span>); <span class="code-comment">Overlaps with the loading</span>
 phaser.awaitAdvance(phase); <span class="code-comment">Blocks until phase 0 is complete</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Cache ready, now phase "</span> + phaser.getPhase()); <span class="code-comment">1</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Cache ready, now phase {phaser.getPhase()}"</span>); <span class="code-comment">1</span></code></pre></div>
         </div>
         <div class="method-entry" id="g18-6">
             <div id="tab-g18-6" class="api-sig"><span class="code-keyword">int</span> awaitAdvanceInterruptibly(<span class="code-keyword">int</span> phase) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span>
@@ -2882,8 +2881,8 @@ phaser.arrive(); <span class="code-comment">Last arrival: the phase advances</sp
             <div class="code-block"><pre><code><span class="code-class">Phaser</span> phaser = <span class="code-keyword">new</span> <span class="code-class">Phaser</span>(<span class="code-number">4</span>);
 phaser.arrive();
 <span class="code-keyword">int</span> waiting = phaser.getUnarrivedParties();
-<span class="code-class">System</span>.out.println(waiting + <span class="code-string">" of 4 still running"</span>); <span class="code-comment">3 of 4 still running</span>
-<span class="code-keyword">if</span> (waiting &gt; <span class="code-number">0</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Phase "</span> + phaser.getPhase() + <span class="code-string">" open"</span>);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{waiting} of 4 still running"</span>); <span class="code-comment">3 of 4 still running</span>
+<span class="code-keyword">if</span> (waiting &gt; <span class="code-number">0</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Phase {phaser.getPhase()} open"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g18-11">
             <div id="tab-g18-11" class="api-sig"><span class="code-keyword">void</span> forceTermination()</div>
@@ -2891,7 +2890,7 @@ phaser.arrive();
             <div class="code-block"><pre><code><span class="code-class">Phaser</span> phaser = <span class="code-keyword">new</span> <span class="code-class">Phaser</span>(<span class="code-number">2</span>);
 <span class="code-class">Thread</span> waiter = <span class="code-class">Thread</span>.ofPlatform().start(() -&gt; {
     <span class="code-keyword">int</span> phase = phaser.arriveAndAwaitAdvance(); <span class="code-comment">Blocks: one party missing</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Released with phase "</span> + phase); <span class="code-comment">Negative</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Released with phase {phase}"</span>); <span class="code-comment">Negative</span>
 });
 phaser.forceTermination(); <span class="code-comment">Abort, for example after a failure</span>
 waiter.join();
@@ -2910,7 +2909,7 @@ waiter.join();
         phaser.register();
         workers[i] = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
             <span class="code-keyword">for</span> (<span class="code-keyword">int</span> phase = <span class="code-number">0</span>; phase &lt; <span class="code-number">2</span>; phase++) {
-                <span class="code-class">System</span>.out.println(<span class="code-string">"Working: "</span> + phase);
+                <span class="code-class">System</span>.out.println(<span class="code-string">"Working: {phase}"</span>);
                 phaser.arriveAndAwaitAdvance();
             }
             phaser.arriveAndDeregister();
@@ -2919,7 +2918,7 @@ waiter.join();
     }
     <span class="code-keyword">for</span> (<span class="code-keyword">int</span> phase = <span class="code-number">0</span>; phase &lt; <span class="code-number">2</span>; phase++) {
         phaser.arriveAndAwaitAdvance();
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Phase "</span> + phase + <span class="code-string">" done"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Phase {phase} done"</span>);
     }
     phaser.arriveAndDeregister();
     <span class="code-keyword">for</span> (<span class="code-class">Thread</span> worker : workers) {
@@ -2950,7 +2949,7 @@ waiter.join();
     <span class="code-class">Thread</span> a = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
         <span class="code-keyword">try</span> {
             <span class="code-class">String</span> received = exchanger.exchange(<span class="code-string">"From A"</span>);
-            <span class="code-class">System</span>.out.println(<span class="code-string">"A received: "</span> + received);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"A received: {received}"</span>);
         } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
             <span class="code-class">Thread</span>.currentThread().interrupt();
         }
@@ -2958,7 +2957,7 @@ waiter.join();
     <span class="code-class">Thread</span> b = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
         <span class="code-keyword">try</span> {
             <span class="code-class">String</span> received = exchanger.exchange(<span class="code-string">"From B"</span>);
-            <span class="code-class">System</span>.out.println(<span class="code-string">"B received: "</span> + received);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"B received: {received}"</span>);
         } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
             <span class="code-class">Thread</span>.currentThread().interrupt();
         }
@@ -3056,7 +3055,7 @@ executor.shutdown();
     <span class="code-class">Object</span> result = future.get(); <span class="code-comment">Blocks until the task completes</span>
     <span class="code-class">System</span>.out.println(result); <span class="code-comment">null</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Task failed: "</span> + e.getCause());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Task failed: {e.getCause()}"</span>);
 } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
     <span class="code-class">Thread</span>.currentThread().interrupt();
 }</code></pre></div>
@@ -3071,7 +3070,7 @@ executor.shutdown();
 } <span class="code-keyword">catch</span> (<span class="code-class">TimeoutException</span> e) {
     future.cancel(<span class="code-keyword">true</span>); <span class="code-comment">Give up and interrupt the task</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + e.getCause());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {e.getCause()}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g20-3">
@@ -3093,7 +3092,7 @@ executor.shutdown();
     <span class="code-keyword">try</span> {
         <span class="code-class">System</span>.out.println(f.get()); <span class="code-comment">A, B, C in input order</span>
     } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + e.getCause());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {e.getCause()}"</span>);
     }
 }</code></pre></div>
         </div>
@@ -3106,7 +3105,7 @@ executor.shutdown();
     <span class="code-keyword">switch</span> (f.state()) { <span class="code-comment">Java 19+: every future is done here</span>
         <span class="code-keyword">case</span> SUCCESS -&gt; <span class="code-class">System</span>.out.println(f.resultNow());
         <span class="code-keyword">case</span> CANCELLED -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Timed out"</span>); <span class="code-comment">Cut off at 2 s</span>
-        <span class="code-keyword">default</span> -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + f.exceptionNow());
+        <span class="code-keyword">default</span> -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {f.exceptionNow()}"</span>);
     }
 }</code></pre></div>
         </div>
@@ -3118,9 +3117,9 @@ executor.shutdown();
         () -&gt; download(<span class="code-string">"https://mirror-b.example/file"</span>));
 <span class="code-keyword">try</span> {
     <span class="code-class">String</span> body = executor.invokeAny(mirrors); <span class="code-comment">First success wins</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Got "</span> + body.length() + <span class="code-string">" bytes"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Got {body.length()} bytes"</span>);
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"All mirrors failed: "</span> + e.getCause());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"All mirrors failed: {e.getCause()}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g20-7">
@@ -3135,7 +3134,7 @@ executor.shutdown();
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
     price = <span class="code-string">"unavailable"</span>; <span class="code-comment">Every source failed</span>
 }
-<span class="code-class">System</span>.out.println(<span class="code-string">"Price: "</span> + price);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Price: {price}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g20-8">
             <div id="tab-g20-8" class="api-sig"><span class="code-keyword">void</span> shutdown()</div>
@@ -3143,7 +3142,7 @@ executor.shutdown();
             <div class="code-block"><pre><code><span class="code-class">ExecutorService</span> executor = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">4</span>);
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">10</span>; i++) {
     <span class="code-keyword">int</span> id = i;
-    executor.submit(() -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Job "</span> + id));
+    executor.submit(() -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Job {id}"</span>));
 }
 executor.shutdown(); <span class="code-comment">Returns at once; the 10 jobs still run</span>
 <span class="code-class">System</span>.out.println(executor.isShutdown()); <span class="code-comment">true</span>
@@ -3158,7 +3157,7 @@ executor.awaitTermination(<span class="code-number">1</span>, <span class="code-
     }
 });
 <span class="code-class">List</span>&lt;<span class="code-class">Runnable</span>&gt; neverRun = executor.shutdownNow(); <span class="code-comment">Interrupts the loop</span>
-<span class="code-class">System</span>.out.println(neverRun.size() + <span class="code-string">" queued tasks dropped"</span>);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{neverRun.size()} queued tasks dropped"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g20-10">
             <div id="tab-g20-10" class="api-sig"><span class="code-keyword">boolean</span> awaitTermination(<span class="code-keyword">long</span> timeout, <span class="code-class">TimeUnit</span> unit) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span></div>
@@ -3250,7 +3249,7 @@ executor.awaitTermination(<span class="code-number">5</span>, <span class="code-
             <div class="code-block"><pre><code><span class="code-keyword">try</span> (<span class="code-keyword">var</span> single = <span class="code-class">Executors</span>.newSingleThreadExecutor()) {
     <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">3</span>; i++) {
         <span class="code-keyword">int</span> id = i;
-        single.submit(() -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Write "</span> + id));
+        single.submit(() -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Write {id}"</span>));
     }
 } <span class="code-comment">Prints Write 1, Write 2, Write 3, always in that order</span></code></pre></div>
         </div>
@@ -3266,7 +3265,7 @@ executor.awaitTermination(<span class="code-number">5</span>, <span class="code-
     }
     <span class="code-keyword">long</span> total = <span class="code-number">0</span>;
     <span class="code-keyword">for</span> (<span class="code-class">Future</span>&lt;<span class="code-class">Long</span>&gt; part : parts) total += part.get(); <span class="code-comment">Waits for each</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Total: "</span> + total);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Total: {total}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g22-2">
@@ -3393,7 +3392,7 @@ readOnly.schedule(() -&gt; <span class="code-class">System</span>.out.println(<s
             <span class="code-class">Thread</span>.sleep(<span class="code-number">300</span>);
             <span class="code-keyword">return</span> <span class="code-number">20</span>;
         });
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Total = "</span> + (result1.get() + result2.get()));
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Total = {result1.get() + result2.get()}"</span>);
     }
 }</code></pre>
         </div>
@@ -3426,7 +3425,7 @@ readOnly.schedule(() -&gt; <span class="code-class">System</span>.out.println(<s
         <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">1000</span>; i++) {
             <span class="code-keyword">final</span> <span class="code-keyword">int</span> taskId = i;
             executor.execute(() -&gt; {
-                <span class="code-class">System</span>.out.println(<span class="code-string">"Task "</span> + taskId);
+                <span class="code-class">System</span>.out.println(<span class="code-string">"Task {taskId}"</span>);
                 <span class="code-keyword">try</span> {
                     <span class="code-class">Thread</span>.sleep(<span class="code-number">100</span>);
                 } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
@@ -3512,7 +3511,7 @@ pool.prestartAllCoreThreads();
 monitor.scheduleAtFixedRate(() -&gt; {
     <span class="code-keyword">int</span> active = pool.getActiveCount(); <span class="code-comment">Approximate snapshot</span>
     <span class="code-keyword">int</span> size = pool.getPoolSize();
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Busy "</span> + active + <span class="code-string">" of "</span> + size + <span class="code-string">" threads"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Busy {active} of {size} threads"</span>);
 }, <span class="code-number">0</span>, <span class="code-number">5</span>, <span class="code-class">TimeUnit</span>.SECONDS);</code></pre></div>
         </div>
         <div class="method-entry" id="g23-4">
@@ -3532,7 +3531,7 @@ monitor.scheduleAtFixedRate(() -&gt; {
             <div class="code-block"><pre><code><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">50</span>; i++) pool.execute(() -&gt; sleepMillis(<span class="code-number">100</span>));
 <span class="code-keyword">long</span> total = pool.getTaskCount(); <span class="code-comment">Completed + running + queued</span>
 <span class="code-keyword">long</span> done = pool.getCompletedTaskCount();
-<span class="code-class">System</span>.out.println(<span class="code-string">"Backlog: "</span> + (total - done)); <span class="code-comment">Close to 50 at first</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Backlog: {total - done}"</span>); <span class="code-comment">Close to 50 at first</span></code></pre></div>
         </div>
         <div class="method-entry" id="g23-6">
             <div id="tab-g23-6" class="api-sig"><span class="code-keyword">long</span> getCompletedTaskCount()</div>
@@ -3540,14 +3539,14 @@ monitor.scheduleAtFixedRate(() -&gt; {
             <div class="code-block"><pre><code><span class="code-keyword">long</span> before = pool.getCompletedTaskCount();
 <span class="code-class">Thread</span>.sleep(<span class="code-number">10_000</span>); <span class="code-comment">Sample over 10 seconds</span>
 <span class="code-keyword">long</span> after = pool.getCompletedTaskCount();
-<span class="code-class">System</span>.out.println(<span class="code-string">"Throughput: "</span> + (after - before) / <span class="code-number">10</span> + <span class="code-string">" tasks/s"</span>);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Throughput: {(after - before) / 10} tasks/s"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g23-7">
             <div id="tab-g23-7" class="api-sig"><span class="code-class">BlockingQueue</span>&lt;<span class="code-class">Runnable</span>&gt; getQueue()</div>
             <p class="api-desc">Returns the <code>BlockingQueue</code> that holds tasks waiting for a free thread, giving direct access for monitoring and debugging. Reading its <code>size()</code> or iterating over it is fine, but the Javadoc discourages any other use, since modifying the queue directly bypasses the executor. Tasks passed to <code>submit()</code> appear as <code>FutureTask</code> wrappers rather than your original objects. To drop work, prefer the pool&rsquo;s <code>remove()</code> or <code>purge()</code>.</p>
             <div class="code-block"><pre><code><span class="code-keyword">int</span> queued = pool.getQueue().size();
 <span class="code-keyword">int</span> remaining = pool.getQueue().remainingCapacity(); <span class="code-comment">MAX_VALUE if unbounded</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Queued: "</span> + queued + <span class="code-string">", free slots: "</span> + remaining);
+<span class="code-class">System</span>.out.println(<span class="code-string">"Queued: {queued}, free slots: {remaining}"</span>);
 <span class="code-keyword">if</span> (queued &gt; <span class="code-number">1_000</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Backlog alert"</span>); <span class="code-comment">Monitoring only</span></code></pre></div>
         </div>
         <div class="method-entry" id="g23-8">
@@ -3639,12 +3638,12 @@ pool.purge(); <span class="code-comment">Removes the cancelled entries now</span
 <span class="code-keyword">var</span> pool = <span class="code-keyword">new</span> <span class="code-class">ThreadPoolExecutor</span>(<span class="code-number">2</span>, <span class="code-number">4</span>, <span class="code-number">60</span>, <span class="code-class">TimeUnit</span>.SECONDS, queue) {
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">protected</span> <span class="code-keyword">void</span> beforeExecute(<span class="code-class">Thread</span> t, <span class="code-class">Runnable</span> r) {
-        <span class="code-class">System</span>.out.println(t.getName() + <span class="code-string">" starting "</span> + r); <span class="code-comment">Before each task</span>
+        <span class="code-class">System</span>.out.println(<span class="code-string">"{t.getName()} starting {r}"</span>); <span class="code-comment">Before each task</span>
     }
 
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">protected</span> <span class="code-keyword">void</span> afterExecute(<span class="code-class">Runnable</span> r, <span class="code-class">Throwable</span> t) {
-        <span class="code-keyword">if</span> (t != <span class="code-keyword">null</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Task failed: "</span> + t); <span class="code-comment">null if OK</span>
+        <span class="code-keyword">if</span> (t != <span class="code-keyword">null</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Task failed: {t}"</span>); <span class="code-comment">null if OK</span>
     }
 };</code></pre></div>
         </div>
@@ -3707,7 +3706,7 @@ pool.shutdown(); <span class="code-comment">Hook fires after "last task" complet
 <span class="code-keyword">try</span> {
     <span class="code-class">System</span>.out.println(report.get()); <span class="code-comment">Blocks about 1 minute, then prints</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Report failed: "</span> + e.getCause());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Report failed: {e.getCause()}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g25-2">
@@ -3717,7 +3716,7 @@ pool.shutdown(); <span class="code-comment">Hook fires after "last task" complet
     <span class="code-keyword">try</span> {
         sendHeartbeat();
     } <span class="code-keyword">catch</span> (<span class="code-class">RuntimeException</span> e) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Heartbeat failed: "</span> + e); <span class="code-comment">Keeps schedule alive</span>
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Heartbeat failed: {e}"</span>); <span class="code-comment">Keeps schedule alive</span>
     }
 };
 <span class="code-keyword">var</span> handle = scheduler.scheduleAtFixedRate(heartbeat,
@@ -3733,7 +3732,7 @@ handle.cancel(<span class="code-keyword">false</span>); <span class="code-commen
         <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; messages = pollQueue(); <span class="code-comment">May take 0.1 s or 5 s</span>
         messages.forEach(<span class="code-class">System</span>.out::println);
     } <span class="code-keyword">catch</span> (<span class="code-class">RuntimeException</span> e) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Poll failed: "</span> + e); <span class="code-comment">Do not kill the schedule</span>
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Poll failed: {e}"</span>); <span class="code-comment">Do not kill the schedule</span>
     }
 }, <span class="code-number">0</span>, <span class="code-number">2</span>, <span class="code-class">TimeUnit</span>.SECONDS); <span class="code-comment">2 s pause after each run ends</span>
 <span class="code-class">Thread</span>.sleep(<span class="code-number">30_000</span>);
@@ -3790,9 +3789,9 @@ poller.cancel(<span class="code-keyword">false</span>); <span class="code-commen
 <span class="code-class">Future</span>&lt;<span class="code-class">Integer</span>&gt; future = executor.submit(() -&gt; computeTotal());
 <span class="code-keyword">try</span> {
     <span class="code-class">Integer</span> total = future.get(); <span class="code-comment">Blocks until the task finishes</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Total: "</span> + total);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Total: {total}"</span>);
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Task failed: "</span> + e.getCause()); <span class="code-comment">Original exception</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Task failed: {e.getCause()}"</span>); <span class="code-comment">Original exception</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
     <span class="code-class">Thread</span>.currentThread().interrupt(); <span class="code-comment">Restore the interrupt flag</span>
 }</code></pre></div>
@@ -3808,7 +3807,7 @@ poller.cancel(<span class="code-keyword">false</span>); <span class="code-commen
     future.cancel(<span class="code-keyword">true</span>); <span class="code-comment">A timeout alone does not stop the task</span>
     <span class="code-class">System</span>.out.println(<span class="code-string">"Quote service too slow"</span>);
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> | <span class="code-class">InterruptedException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + e);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {e}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g27-2">
@@ -3850,8 +3849,8 @@ future.cancel(<span class="code-keyword">false</span>);
             <div class="code-block"><pre><code><span class="code-class">Future</span>&lt;<span class="code-class">Integer</span>&gt; future = executor.submit(() -&gt; countRows());
 <span class="code-keyword">switch</span> (future.state()) { <span class="code-comment">Never blocks</span>
     <span class="code-keyword">case</span> RUNNING -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Still running or queued"</span>);
-    <span class="code-keyword">case</span> SUCCESS -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Rows: "</span> + future.resultNow());
-    <span class="code-keyword">case</span> FAILED -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Error: "</span> + future.exceptionNow());
+    <span class="code-keyword">case</span> SUCCESS -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Rows: {future.resultNow()}"</span>);
+    <span class="code-keyword">case</span> FAILED -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Error: {future.exceptionNow()}"</span>);
     <span class="code-keyword">case</span> CANCELLED -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Cancelled"</span>);
 }</code></pre></div>
         </div>
@@ -3873,7 +3872,7 @@ future.cancel(<span class="code-keyword">false</span>);
 <span class="code-keyword">for</span> (<span class="code-class">Future</span>&lt;<span class="code-class">String</span>&gt; f : futures) {
     <span class="code-keyword">if</span> (f.state() == <span class="code-class">Future</span>.<span class="code-class">State</span>.FAILED) {
         <span class="code-class">Throwable</span> cause = f.exceptionNow(); <span class="code-comment">The original, unwrapped error</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Job failed: "</span> + cause.getMessage());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Job failed: {cause.getMessage()}"</span>);
     }
 }</code></pre></div>
         </div>
@@ -3963,7 +3962,7 @@ future.cancel(<span class="code-keyword">false</span>);
             <div class="code-block"><pre><code><span class="code-keyword">var</span> ioPool = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">8</span>);
 <span class="code-keyword">var</span> user = <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; loadUser(<span class="code-number">42</span>), ioPool); <span class="code-comment">I/O</span>
 <span class="code-keyword">var</span> score = <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; computeScore(<span class="code-number">42</span>)); <span class="code-comment">Common pool</span>
-<span class="code-class">System</span>.out.println(user.join().name() + <span class="code-string">" scored "</span> + score.join());</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{user.join().name()} scored {score.join()}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g28-1">
             <div id="tab-g28-1" class="api-sig"><span class="code-keyword">static</span> <span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Void</span>&gt; runAsync(<span class="code-class">Runnable</span> runnable)</div>
@@ -3972,7 +3971,7 @@ future.cancel(<span class="code-keyword">false</span>);
 <span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Void</span>&gt; audit =
         <span class="code-class">CompletableFuture</span>.runAsync(() -&gt; writeAuditLog(event), auditPool);
 audit.whenComplete((v, ex) -&gt; {
-    <span class="code-keyword">if</span> (ex != <span class="code-keyword">null</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Audit failed: "</span> + ex); <span class="code-comment">v is null</span>
+    <span class="code-keyword">if</span> (ex != <span class="code-keyword">null</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Audit failed: {ex}"</span>); <span class="code-comment">v is null</span>
 });</code></pre></div>
         </div>
         <div class="method-entry" id="g28-2">
@@ -4066,7 +4065,7 @@ promise.orTimeout(<span class="code-number">5</span>, <span class="code-class">T
         <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; download(url), ioPool);
 <span class="code-class">CompletableFuture</span>&lt;<span class="code-keyword">byte</span>[]&gt; thumb =
         image.thenApplyAsync(bytes -&gt; resize(bytes, <span class="code-number">128</span>), cpuPool); <span class="code-comment">CPU work</span>
-thumb.thenAccept(t -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Thumbnail: "</span> + t.length + <span class="code-string">" bytes"</span>));</code></pre></div>
+thumb.thenAccept(t -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Thumbnail: {t.length} bytes"</span>));</code></pre></div>
         </div>
         <div class="method-entry" id="g29-2">
             <div id="tab-g29-2" class="api-sig"><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Void</span>&gt; thenAccept(<span class="code-class">Consumer</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">T</span>&gt; action)</div>
@@ -4074,7 +4073,7 @@ thumb.thenAccept(t -&gt; <span class="code-class">System</span>.out.println(<spa
             <div class="code-block"><pre><code><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">User</span>&gt; userFuture =
         <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; loadUser(<span class="code-number">42</span>), executor);
 <span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Void</span>&gt; done = userFuture
-        .thenAccept(user -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Hello "</span> + user.name()));
+        .thenAccept(user -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Hello {user.name()}"</span>));
 done.join(); <span class="code-comment">Wait so the program does not exit early</span></code></pre></div>
         </div>
         <div class="method-entry" id="g29-3">
@@ -4136,7 +4135,7 @@ saveOrder.runAfterBoth(saveAudit, () -&gt; events.publish(<span class="code-stri
             <p class="api-desc">Runs a <code>Consumer</code> with the result of whichever of this stage or <code>other</code> completes first, returning a <code>CompletableFuture&lt;Void&gt;</code>. The slower stage is not cancelled and its result is ignored. As with <code>applyToEither</code>, a failure in the first stage to complete can fail the returned stage, so recover each input with <code>exceptionally</code> if a fast error should not win. Useful for showing the first available answer, such as from a cache or a remote call.</p>
             <div class="code-block"><pre><code><span class="code-keyword">var</span> cache = <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; cacheLookup(key), executor);
 <span class="code-keyword">var</span> remote = <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; remoteLookup(key), executor);
-cache.acceptEither(remote, value -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"First: "</span> + value))
+cache.acceptEither(remote, value -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"First: {value}"</span>))
         .join(); <span class="code-comment">Prints once, from the faster source</span></code></pre></div>
         </div>
         <div class="method-entry" id="g29-10">
@@ -4166,7 +4165,7 @@ taskA.runAfterEither(taskB, () -&gt; <span class="code-class">System</span>.out.
 <span class="code-keyword">var</span> mirrorB = <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; download(urlB), executor);
 <span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Object</span>&gt; first = <span class="code-class">CompletableFuture</span>.anyOf(mirrorA, mirrorB);
 <span class="code-keyword">byte</span>[] data = (<span class="code-keyword">byte</span>[]) first.join(); <span class="code-comment">Cast needed: result type is Object</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Got "</span> + data.length + <span class="code-string">" bytes from the faster mirror"</span>);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Got {data.length} bytes from the faster mirror"</span>);</code></pre></div>
         </div>
     </div>
     <div class="intro">
@@ -4190,7 +4189,7 @@ taskA.runAfterEither(taskB, () -&gt; <span class="code-class">System</span>.out.
         .supplyAsync(() -&gt; fetchPrice(<span class="code-string">"ACME"</span>), executor)
         .thenApply(p -&gt; <span class="code-string">"$"</span> + p)
         .exceptionally(ex -&gt; { <span class="code-comment">ex is usually a CompletionException</span>
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Lookup failed: "</span> + ex.getCause());
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Lookup failed: {ex.getCause()}"</span>);
             <span class="code-keyword">return</span> <span class="code-string">"unavailable"</span>; <span class="code-comment">Fallback value</span>
         });
 <span class="code-class">System</span>.out.println(price.join());</code></pre></div>
@@ -4208,7 +4207,7 @@ taskA.runAfterEither(taskB, () -&gt; <span class="code-class">System</span>.out.
             <p class="api-desc">Recovers from a failure by switching to another asynchronous operation: <code>fn</code> receives the exception and returns a <code>CompletionStage</code> whose outcome becomes the result (Java 12+). It is to <code>exceptionally</code> what <code>thenCompose</code> is to <code>thenApply</code>, so you avoid blocking or nesting futures when the fallback is itself async. On success the value passes through and <code>fn</code> is not called; <code>exceptionallyComposeAsync</code> runs <code>fn</code> in an executor.</p>
             <div class="code-block"><pre><code><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Double</span>&gt; price = fetchPriceAsync(<span class="code-string">"ACME"</span>) <span class="code-comment">Primary feed</span>
         .exceptionallyCompose(ex -&gt; {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Primary failed, trying backup: "</span> + ex);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Primary failed, trying backup: {ex}"</span>);
             <span class="code-keyword">return</span> fetchBackupPriceAsync(<span class="code-string">"ACME"</span>); <span class="code-comment">Another async call</span>
         });
 <span class="code-class">System</span>.out.println(price.join());</code></pre></div>
@@ -4228,8 +4227,8 @@ taskA.runAfterEither(taskB, () -&gt; <span class="code-class">System</span>.out.
             <p class="api-desc">Runs a <code>BiConsumer</code> with <code>(result, exception)</code> when this stage completes, for side effects only and returns a stage with the same result or exception as this one. It cannot recover: if this stage failed, the returned stage still fails and if <code>action</code> throws on a successful stage, the returned stage fails with that exception. Use it for logging, metrics or cleanup and use <code>handle</code> or <code>exceptionally</code> to recover.</p>
             <div class="code-block"><pre><code><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Double</span>&gt; price = fetchPriceAsync(<span class="code-string">"ACME"</span>)
         .whenComplete((p, ex) -&gt; {
-            <span class="code-keyword">if</span> (ex != <span class="code-keyword">null</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + ex);
-            <span class="code-keyword">else</span> <span class="code-class">System</span>.out.println(<span class="code-string">"Price: "</span> + p);
+            <span class="code-keyword">if</span> (ex != <span class="code-keyword">null</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {ex}"</span>);
+            <span class="code-keyword">else</span> <span class="code-class">System</span>.out.println(<span class="code-string">"Price: {p}"</span>);
         }); <span class="code-comment">Still fails if the fetch failed</span>
 <span class="code-keyword">double</span> value = price.exceptionally(ex -&gt; <span class="code-number">0.0</span>).join(); <span class="code-comment">Recover separately</span></code></pre></div>
         </div>
@@ -4239,7 +4238,7 @@ taskA.runAfterEither(taskB, () -&gt; <span class="code-class">System</span>.out.
             <div class="code-block"><pre><code><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Double</span>&gt; price = fetchPriceAsync(<span class="code-string">"ACME"</span>)
         .orTimeout(<span class="code-number">2</span>, <span class="code-class">TimeUnit</span>.SECONDS) <span class="code-comment">TimeoutException after 2 s</span>
         .exceptionally(ex -&gt; {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Gave up: "</span> + ex); <span class="code-comment">TimeoutException</span>
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Gave up: {ex}"</span>); <span class="code-comment">TimeoutException</span>
             <span class="code-keyword">return</span> -<span class="code-number">1.0</span>;
         });
 <span class="code-class">System</span>.out.println(price.join());</code></pre></div>
@@ -4279,10 +4278,10 @@ taskA.runAfterEither(taskB, () -&gt; <span class="code-class">System</span>.out.
             <div id="tab-g31-0" class="api-sig"><span class="code-keyword">boolean</span> complete(<span class="code-class">T</span> value)</div>
             <p class="api-desc">Completes the future normally with the given value if it is not already complete and returns <code>true</code> only if this call caused the transition. Waiting <code>get()</code> and <code>join()</code> callers wake up and pending dependent stages run, typically in the calling thread. Because only the first completion wins, it is safe to race several completers, such as a callback and a timeout; later calls simply return <code>false</code>.</p>
             <div class="code-block"><pre><code><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">String</span>&gt; promise = <span class="code-keyword">new</span> <span class="code-class">CompletableFuture</span>&lt;&gt;();
-promise.thenAccept(r -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Got "</span> + r)); <span class="code-comment">Runs on complete()</span>
+promise.thenAccept(r -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Got {r}"</span>)); <span class="code-comment">Runs on complete()</span>
 <span class="code-keyword">boolean</span> first = promise.complete(<span class="code-string">"result"</span>); <span class="code-comment">Prints "Got result"</span>
 <span class="code-keyword">boolean</span> second = promise.complete(<span class="code-string">"other"</span>); <span class="code-comment">Ignored</span>
-<span class="code-class">System</span>.out.println(first + <span class="code-string">" "</span> + second); <span class="code-comment">true false</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{first} {second}"</span>); <span class="code-comment">true false</span></code></pre></div>
         </div>
         <div class="method-entry" id="g31-1">
             <div id="tab-g31-1" class="api-sig"><span class="code-keyword">boolean</span> completeExceptionally(<span class="code-class">Throwable</span> ex)</div>
@@ -4293,7 +4292,7 @@ legacyClient.fetch(url, body -&gt; promise.complete(body),
 <span class="code-keyword">try</span> {
     <span class="code-class">System</span>.out.println(promise.join());
 } <span class="code-keyword">catch</span> (<span class="code-class">CompletionException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + e.getCause()); <span class="code-comment">The original error</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {e.getCause()}"</span>); <span class="code-comment">The original error</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g31-2">
@@ -4302,7 +4301,7 @@ legacyClient.fetch(url, body -&gt; promise.complete(body),
             <div class="code-block"><pre><code><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">Report</span>&gt; report =
         <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; buildReport(), executor);
 <span class="code-keyword">boolean</span> cancelled = report.cancel(<span class="code-keyword">true</span>); <span class="code-comment">Flag ignored, no interrupt</span>
-<span class="code-class">System</span>.out.println(cancelled + <span class="code-string">" "</span> + report.isCancelled()); <span class="code-comment">true true</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{cancelled} {report.isCancelled()}"</span>); <span class="code-comment">true true</span>
 report.join(); <span class="code-comment">Throws CancellationException</span></code></pre></div>
         </div>
         <div class="method-entry" id="g31-3">
@@ -4314,7 +4313,7 @@ report.join(); <span class="code-comment">Throws CancellationException</span></c
     <span class="code-class">String</span> profile = promise.get(); <span class="code-comment">Blocks the calling thread</span>
     <span class="code-class">System</span>.out.println(profile);
 } <span class="code-keyword">catch</span> (<span class="code-class">ExecutionException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + e.getCause()); <span class="code-comment">Unwrapped cause</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {e.getCause()}"</span>); <span class="code-comment">Unwrapped cause</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
     <span class="code-class">Thread</span>.currentThread().interrupt();
 }</code></pre></div>
@@ -4328,7 +4327,7 @@ report.join(); <span class="code-comment">Throws CancellationException</span></c
 <span class="code-keyword">int</span> total = futures.stream()
         .mapToInt(<span class="code-class">CompletableFuture</span>::join) <span class="code-comment">No try/catch needed</span>
         .sum();
-<span class="code-class">System</span>.out.println(<span class="code-string">"Total rows: "</span> + total);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Total rows: {total}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g31-5">
             <div id="tab-g31-5" class="api-sig"><span class="code-class">T</span> getNow(<span class="code-class">T</span> valueIfAbsent)</div>
@@ -4344,11 +4343,11 @@ status.join();
 <span class="code-keyword">boolean</span> isCancelled()</div>
             <p class="api-desc"><code>isDone()</code> returns <code>true</code> once the future has completed in any way: normally, exceptionally or by cancellation. <code>isCancelled()</code> returns <code>true</code> only if it completed with a <code>CancellationException</code>, for example through <code>cancel()</code>. Both are non-blocking snapshots that can change right after you read them, so prefer callbacks such as <code>thenAccept</code> or <code>whenComplete</code> over polling and use <code>state()</code> (Java 19+) for a single combined answer.</p>
             <div class="code-block"><pre><code><span class="code-keyword">var</span> f = <span class="code-keyword">new</span> <span class="code-class">CompletableFuture</span>&lt;<span class="code-class">String</span>&gt;();
-<span class="code-class">System</span>.out.println(f.isDone() + <span class="code-string">" "</span> + f.isCancelled()); <span class="code-comment">false false</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{f.isDone()} {f.isCancelled()}"</span>); <span class="code-comment">false false</span>
 f.cancel(<span class="code-keyword">false</span>);
-<span class="code-class">System</span>.out.println(f.isDone() + <span class="code-string">" "</span> + f.isCancelled()); <span class="code-comment">true true</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{f.isDone()} {f.isCancelled()}"</span>); <span class="code-comment">true true</span>
 <span class="code-keyword">var</span> ok = <span class="code-class">CompletableFuture</span>.completedFuture(<span class="code-string">"x"</span>);
-<span class="code-class">System</span>.out.println(ok.isDone() + <span class="code-string">" "</span> + ok.isCancelled()); <span class="code-comment">true false</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{ok.isDone()} {ok.isCancelled()}"</span>); <span class="code-comment">true false</span></code></pre></div>
         </div>
         <div class="method-entry" id="g31-7">
             <div id="tab-g31-7" class="api-sig"><span class="code-keyword">boolean</span> isCompletedExceptionally()</div>
@@ -4357,7 +4356,7 @@ f.cancel(<span class="code-keyword">false</span>);
         <span class="code-class">CompletableFuture</span>.supplyAsync(() -&gt; parse(<span class="code-string">"not a number"</span>), executor);
 task.exceptionally(ex -&gt; <span class="code-keyword">null</span>).join(); <span class="code-comment">Wait without throwing</span>
 <span class="code-keyword">if</span> (task.isCompletedExceptionally()) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Parse failed: "</span> + task.exceptionNow()); <span class="code-comment">Java 19+</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Parse failed: {task.exceptionNow()}"</span>); <span class="code-comment">Java 19+</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g31-8">
@@ -4375,7 +4374,7 @@ promise.complete(<span class="code-string">" done "</span>);
             <p class="api-desc">Forcibly sets or replaces the result with the given value, even if the future has already completed normally or exceptionally. Dependent stages that already ran are not re-run and keep their old outcome, so different observers can disagree about the result. It exists only for rare error-recovery situations; in normal code use <code>complete()</code>, which respects the first completion.</p>
             <div class="code-block"><pre><code><span class="code-class">CompletableFuture</span>&lt;<span class="code-class">String</span>&gt; promise = <span class="code-keyword">new</span> <span class="code-class">CompletableFuture</span>&lt;&gt;();
 promise.complete(<span class="code-string">"stale"</span>);
-promise.thenAccept(v -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Seen: "</span> + v)); <span class="code-comment">Seen: stale</span>
+promise.thenAccept(v -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Seen: {v}"</span>)); <span class="code-comment">Seen: stale</span>
 promise.obtrudeValue(<span class="code-string">"fresh"</span>); <span class="code-comment">Overwrites, does not rerun dependents</span>
 <span class="code-class">System</span>.out.println(promise.join()); <span class="code-comment">fresh</span></code></pre></div>
         </div>
@@ -4574,7 +4573,7 @@ status.set(status.get() + <span class="code-number">1</span>); <span class="code
             <p class="api-desc">Writes the new value with release semantics only (the same as <code>setRelease()</code>), so earlier reads and writes cannot be reordered after it, but the store itself may become visible to other threads slightly later than a volatile <code>set()</code>. It never blocks and is cheaper than <code>set()</code> because it avoids a full fence. Use it when a value only needs to become visible eventually, such as clearing a slot after use and never rely on it for immediate cross-thread signalling.</p>
             <div class="code-block"><pre><code><span class="code-keyword">var</span> slot = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>(<span class="code-number">42</span>);
 <span class="code-keyword">int</span> taken = slot.get(); <span class="code-comment">Consume the value first</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Processing "</span> + taken); <span class="code-comment">Processing 42</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Processing {taken}"</span>); <span class="code-comment">Processing 42</span>
 slot.lazySet(<span class="code-number">0</span>); <span class="code-comment">Release write: earlier work cannot move after it</span>
 <span class="code-class">System</span>.out.println(slot.get()); <span class="code-comment">0 here; other threads see it soon after</span></code></pre></div>
         </div>
@@ -4584,7 +4583,7 @@ slot.lazySet(<span class="code-number">0</span>); <span class="code-comment">Rel
             <div class="code-block"><pre><code><span class="code-keyword">var</span> requests = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
 requests.addAndGet(<span class="code-number">42</span>); <span class="code-comment">Traffic during the last interval</span>
 <span class="code-keyword">int</span> lastMinute = requests.getAndSet(<span class="code-number">0</span>); <span class="code-comment">Read and reset in one step</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Requests: "</span> + lastMinute); <span class="code-comment">Requests: 42</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Requests: {lastMinute}"</span>); <span class="code-comment">Requests: 42</span>
 <span class="code-class">System</span>.out.println(requests.get()); <span class="code-comment">0, ready for the next interval</span></code></pre></div>
         </div>
         <div class="method-entry" id="g34-4">
@@ -4625,7 +4624,7 @@ requests.addAndGet(<span class="code-number">42</span>); <span class="code-comme
             <div class="code-block"><pre><code><span class="code-keyword">var</span> nextId = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>(<span class="code-number">1</span>);
 <span class="code-keyword">int</span> first = nextId.getAndIncrement(); <span class="code-comment">Returns 1, value is now 2</span>
 <span class="code-keyword">int</span> second = nextId.getAndIncrement(); <span class="code-comment">Returns 2, value is now 3</span>
-<span class="code-class">System</span>.out.println(first + <span class="code-string">", "</span> + second); <span class="code-comment">1, 2</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{first}, {second}"</span>); <span class="code-comment">1, 2</span>
 <span class="code-class">System</span>.out.println(nextId.get()); <span class="code-comment">3</span></code></pre></div>
         </div>
         <div class="method-entry" id="g34-8">
@@ -4637,7 +4636,7 @@ requests.addAndGet(<span class="code-number">42</span>); <span class="code-comme
 <span class="code-keyword">if</span> (attempt &gt; maxAttempts) {
     <span class="code-class">System</span>.out.println(<span class="code-string">"Too many attempts"</span>);
 } <span class="code-keyword">else</span> {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Attempt "</span> + attempt); <span class="code-comment">Attempt 1</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Attempt {attempt}"</span>); <span class="code-comment">Attempt 1</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g34-9">
@@ -4668,7 +4667,7 @@ requests.addAndGet(<span class="code-number">42</span>); <span class="code-comme
             <div class="code-block"><pre><code><span class="code-keyword">var</span> offset = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
 <span class="code-keyword">int</span> start = offset.getAndAdd(<span class="code-number">128</span>); <span class="code-comment">Claims bytes 0 to 127</span>
 <span class="code-keyword">int</span> next = offset.getAndAdd(<span class="code-number">64</span>); <span class="code-comment">Claims bytes 128 to 191</span>
-<span class="code-class">System</span>.out.println(start + <span class="code-string">", "</span> + next); <span class="code-comment">0, 128</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{start}, {next}"</span>); <span class="code-comment">0, 128</span>
 <span class="code-class">System</span>.out.println(offset.get()); <span class="code-comment">192</span></code></pre></div>
         </div>
         <div class="method-entry" id="g34-12">
@@ -4679,7 +4678,7 @@ requests.addAndGet(<span class="code-number">42</span>); <span class="code-comme
 <span class="code-keyword">long</span> total = bytesSent.addAndGet(<span class="code-number">600</span>); <span class="code-comment">600</span>
 total = bytesSent.addAndGet(<span class="code-number">500</span>); <span class="code-comment">1100</span>
 <span class="code-keyword">if</span> (total &gt; quota) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Quota exceeded: "</span> + total); <span class="code-comment">Quota exceeded: 1100</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Quota exceeded: {total}"</span>); <span class="code-comment">Quota exceeded: 1100</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g34-13">
@@ -4697,7 +4696,7 @@ total = bytesSent.addAndGet(<span class="code-number">500</span>); <span class="
 <span class="code-keyword">int</span> max = <span class="code-number">100</span>;
 <span class="code-keyword">int</span> a = level.updateAndGet(x -&gt; <span class="code-class">Math</span>.min(x + <span class="code-number">1</span>, max)); <span class="code-comment">100</span>
 <span class="code-keyword">int</span> b = level.updateAndGet(x -&gt; <span class="code-class">Math</span>.min(x + <span class="code-number">1</span>, max)); <span class="code-comment">Still 100: capped</span>
-<span class="code-class">System</span>.out.println(a + <span class="code-string">", "</span> + b); <span class="code-comment">100, 100</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{a}, {b}"</span>); <span class="code-comment">100, 100</span></code></pre></div>
         </div>
         <div class="method-entry" id="g34-15">
             <div id="tab-g34-15" class="api-sig"><span class="code-keyword">int</span> getAndAccumulate(<span class="code-keyword">int</span> x, <span class="code-class">IntBinaryOperator</span> accumulatorFunction)</div>
@@ -5022,7 +5021,7 @@ array.compareAndSet(<span class="code-number">0</span>, <span class="code-number
                 <span class="code-keyword">if</span> (value == -<span class="code-number">1</span>) {
                     <span class="code-keyword">break</span>;
                 }
-                <span class="code-class">System</span>.out.println(<span class="code-string">"Consumed "</span> + value);
+                <span class="code-class">System</span>.out.println(<span class="code-string">"Consumed {value}"</span>);
             }
         } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
             <span class="code-class">Thread</span>.currentThread().interrupt();
@@ -5062,7 +5061,7 @@ array.compareAndSet(<span class="code-number">0</span>, <span class="code-number
             <div class="code-block"><pre><code><span class="code-keyword">var</span> sessions = <span class="code-keyword">new</span> <span class="code-class">ConcurrentHashMap</span>&lt;<span class="code-class">String</span>, <span class="code-class">String</span>&gt;();
 <span class="code-class">String</span> prev1 = sessions.putIfAbsent(<span class="code-string">"user-1"</span>, <span class="code-string">"session-A"</span>); <span class="code-comment">null: inserted</span>
 <span class="code-class">String</span> prev2 = sessions.putIfAbsent(<span class="code-string">"user-1"</span>, <span class="code-string">"session-B"</span>); <span class="code-comment">"session-A"</span>
-<span class="code-class">System</span>.out.println(prev1 + <span class="code-string">", "</span> + prev2); <span class="code-comment">null, session-A</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{prev1}, {prev2}"</span>); <span class="code-comment">null, session-A</span>
 <span class="code-class">System</span>.out.println(sessions.get(<span class="code-string">"user-1"</span>)); <span class="code-comment">session-A: first one wins</span></code></pre></div>
         </div>
         <div class="method-entry" id="g40-1">
@@ -5111,7 +5110,7 @@ totals.merge(<span class="code-string">"pears"</span>, <span class="code-number"
             <div class="code-block"><pre><code><span class="code-keyword">var</span> config = <span class="code-keyword">new</span> <span class="code-class">ConcurrentHashMap</span>&lt;<span class="code-class">String</span>, <span class="code-class">String</span>&gt;(<span class="code-class">Map</span>.of(<span class="code-string">"mode"</span>, <span class="code-string">"fast"</span>));
 <span class="code-class">String</span> old = config.replace(<span class="code-string">"mode"</span>, <span class="code-string">"safe"</span>); <span class="code-comment">"fast": key existed</span>
 <span class="code-class">String</span> none = config.replace(<span class="code-string">"timeout"</span>, <span class="code-string">"30s"</span>); <span class="code-comment">null: nothing added</span>
-<span class="code-class">System</span>.out.println(old + <span class="code-string">", "</span> + none); <span class="code-comment">fast, null</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{old}, {none}"</span>); <span class="code-comment">fast, null</span>
 <span class="code-class">System</span>.out.println(config); <span class="code-comment">{mode=safe}</span></code></pre></div>
         </div>
         <div class="method-entry" id="g40-6">
@@ -5132,7 +5131,7 @@ totals.merge(<span class="code-string">"pears"</span>, <span class="code-number"
 locks.put(<span class="code-string">"lock-1"</span>, <span class="code-string">"worker-A"</span>);
 <span class="code-keyword">boolean</span> wrong = locks.remove(<span class="code-string">"lock-1"</span>, <span class="code-string">"worker-B"</span>); <span class="code-comment">false: not the owner</span>
 <span class="code-keyword">boolean</span> right = locks.remove(<span class="code-string">"lock-1"</span>, <span class="code-string">"worker-A"</span>); <span class="code-comment">true: owner releases</span>
-<span class="code-class">System</span>.out.println(wrong + <span class="code-string">", "</span> + right); <span class="code-comment">false, true</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{wrong}, {right}"</span>); <span class="code-comment">false, true</span>
 <span class="code-class">System</span>.out.println(locks.isEmpty()); <span class="code-comment">true</span></code></pre></div>
         </div>
         <div class="method-entry" id="g40-8">
@@ -5143,9 +5142,9 @@ locks.put(<span class="code-string">"lock-1"</span>, <span class="code-string">"
             <div class="code-block"><pre><code><span class="code-keyword">var</span> stock = <span class="code-keyword">new</span> <span class="code-class">ConcurrentHashMap</span>&lt;<span class="code-class">String</span>, <span class="code-class">Integer</span>&gt;();
 stock.put(<span class="code-string">"apple"</span>, <span class="code-number">0</span>);
 stock.put(<span class="code-string">"pear"</span>, <span class="code-number">7</span>);
-stock.forEach(<span class="code-number">1_000</span>, (item, qty) -&gt; <span class="code-class">System</span>.out.println(item + <span class="code-string">"="</span> + qty));
+stock.forEach(<span class="code-number">1_000</span>, (item, qty) -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"{item}={qty}"</span>));
 stock.forEach(<span class="code-number">1</span>, (item, qty) -&gt; qty == <span class="code-number">0</span> ? item : <span class="code-keyword">null</span>, <span class="code-comment">Transform, skip nulls</span>
-        item -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Out of stock: "</span> + item)); <span class="code-comment">apple</span></code></pre></div>
+        item -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Out of stock: {item}"</span>)); <span class="code-comment">apple</span></code></pre></div>
         </div>
         <div class="method-entry" id="g40-9">
             <div id="tab-g40-9" class="api-sig">&lt;<span class="code-class">U</span>&gt; <span class="code-class">U</span> search(<span class="code-keyword">long</span> parallelismThreshold, <span class="code-class">BiFunction</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">K</span>, ? <span class="code-keyword">super</span> <span class="code-class">V</span>, ? <span class="code-keyword">extends</span> <span class="code-class">U</span>&gt; searchFunction)</div>
@@ -5168,7 +5167,7 @@ cart.put(<span class="code-string">"plum"</span>, <span class="code-number">5</s
 <span class="code-class">Integer</span> total = cart.reduce(<span class="code-number">1</span>, (item, qty) -&gt; qty, <span class="code-class">Integer</span>::sum); <span class="code-comment">Parallel</span>
 <span class="code-class">String</span> longest = cart.reduce(<span class="code-number">1</span>, (item, qty) -&gt; item,
         (a, b) -&gt; a.length() &gt;= b.length() ? a : b);
-<span class="code-class">System</span>.out.println(total + <span class="code-string">", "</span> + longest); <span class="code-comment">10, apple</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{total}, {longest}"</span>); <span class="code-comment">10, apple</span></code></pre></div>
         </div>
         <div class="method-entry" id="g40-11">
             <div id="tab-g40-11" class="api-sig"><span class="code-keyword">long</span> mappingCount()</div>
@@ -5178,7 +5177,7 @@ cart.put(<span class="code-string">"plum"</span>, <span class="code-number">5</s
     cache.put(i, <span class="code-string">"value-"</span> + i);
 }
 <span class="code-keyword">long</span> entries = cache.mappingCount(); <span class="code-comment">1000, may lag under concurrent writes</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Cache entries: "</span> + entries); <span class="code-comment">Cache entries: 1000</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Cache entries: {entries}"</span>); <span class="code-comment">Cache entries: 1000</span></code></pre></div>
         </div>
         <div class="method-entry" id="g40-12">
             <div id="tab-g40-12" class="api-sig"><span class="code-keyword">static</span> &lt;<span class="code-class">K</span>&gt; <span class="code-class">KeySetView</span>&lt;<span class="code-class">K</span>,<span class="code-class">Boolean</span>&gt; newKeySet()</div>
@@ -5186,7 +5185,7 @@ cart.put(<span class="code-string">"plum"</span>, <span class="code-number">5</s
             <div class="code-block"><pre><code><span class="code-class">Set</span>&lt;<span class="code-class">String</span>&gt; seen = <span class="code-class">ConcurrentHashMap</span>.newKeySet();
 <span class="code-keyword">for</span> (<span class="code-class">String</span> url : <span class="code-class">List</span>.of(<span class="code-string">"/a"</span>, <span class="code-string">"/b"</span>, <span class="code-string">"/a"</span>)) {
     <span class="code-keyword">if</span> (seen.add(url)) { <span class="code-comment">true only for the first thread to add it</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Crawling "</span> + url); <span class="code-comment">/a and /b, once each</span>
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Crawling {url}"</span>); <span class="code-comment">/a and /b, once each</span>
     }
 }
 <span class="code-class">System</span>.out.println(seen.size()); <span class="code-comment">2</span></code></pre></div>
@@ -5378,7 +5377,7 @@ task.completeExceptionally(<span class="code-keyword">new</span> <span class="co
 <span class="code-keyword">try</span> {
     task.join(); <span class="code-comment">Rethrows the exception</span>
 } <span class="code-keyword">catch</span> (<span class="code-class">IllegalStateException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + e.getMessage()); <span class="code-comment">Failed: Aborted</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {e.getMessage()}"</span>); <span class="code-comment">Failed: Aborted</span>
 }
 <span class="code-class">System</span>.out.println(task.isCompletedAbnormally()); <span class="code-comment">true</span></code></pre></div>
         </div>
@@ -5424,9 +5423,9 @@ tasks.forEach(<span class="code-class">ForkJoinTask</span>::fork);
 task.fork();
 task.quietlyJoin(); <span class="code-comment">Waits but does not rethrow</span>
 <span class="code-keyword">if</span> (task.isCompletedAbnormally()) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + task.getException()); <span class="code-comment">The cause</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {task.getException()}"</span>); <span class="code-comment">The cause</span>
 } <span class="code-keyword">else</span> {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Parsed: "</span> + task.join());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Parsed: {task.join()}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g42-11">
@@ -5436,9 +5435,9 @@ task.quietlyJoin(); <span class="code-comment">Waits but does not rethrow</span>
 task.quietlyInvoke(); <span class="code-comment">Runs and waits, but does not rethrow</span>
 <span class="code-class">Throwable</span> error = task.getException(); <span class="code-comment">NumberFormatException</span>
 <span class="code-keyword">if</span> (error != <span class="code-keyword">null</span>) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + error.getMessage());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {error.getMessage()}"</span>);
 } <span class="code-keyword">else</span> {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Result: "</span> + task.join());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Result: {task.join()}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g42-12">
@@ -5546,7 +5545,7 @@ pool.shutdown(); <span class="code-comment">Ignored: the common pool cannot be s
             <div class="code-block"><pre><code><span class="code-keyword">int</span> cpus = <span class="code-class">Runtime</span>.getRuntime().availableProcessors(); <span class="code-comment">8 on this machine</span>
 <span class="code-keyword">int</span> parallelism = <span class="code-class">ForkJoinPool</span>.getCommonPoolParallelism(); <span class="code-comment">7: cpus - 1</span>
 <span class="code-keyword">long</span> chunk = <span class="code-number">1_000_000</span> / parallelism; <span class="code-comment">Split work evenly across workers</span>
-<span class="code-class">System</span>.out.println(parallelism + <span class="code-string">" workers, chunk size "</span> + chunk);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{parallelism} workers, chunk size {chunk}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g43-2">
             <div id="tab-g43-2" class="api-sig"><span class="code-keyword">int</span> getParallelism()</div>
@@ -5575,7 +5574,7 @@ pool.awaitQuiescence(<span class="code-number">1</span>, <span class="code-class
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">20</span>; i++) pool.submit(() -&gt; crunchNumbers());
 <span class="code-keyword">int</span> active = pool.getActiveThreadCount(); <span class="code-comment">About 4 while busy</span>
 <span class="code-keyword">int</span> target = pool.getParallelism();
-<span class="code-keyword">if</span> (active &gt;= target) <span class="code-class">System</span>.out.println(<span class="code-string">"Pool saturated: "</span> + active);</code></pre></div>
+<span class="code-keyword">if</span> (active &gt;= target) <span class="code-class">System</span>.out.println(<span class="code-string">"Pool saturated: {active}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g43-5">
             <div id="tab-g43-5" class="api-sig"><span class="code-keyword">int</span> getRunningThreadCount()</div>
@@ -5583,15 +5582,15 @@ pool.awaitQuiescence(<span class="code-number">1</span>, <span class="code-class
             <div class="code-block"><pre><code><span class="code-keyword">int</span> active = pool.getActiveThreadCount(); <span class="code-comment">Busy workers: 6</span>
 <span class="code-keyword">int</span> running = pool.getRunningThreadCount(); <span class="code-comment">Actually computing: 2</span>
 <span class="code-keyword">int</span> waiting = active - running; <span class="code-comment">4 blocked in join() or managedBlock</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Workers waiting on others: "</span> + waiting);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Workers waiting on others: {waiting}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g43-6">
             <div id="tab-g43-6" class="api-sig"><span class="code-keyword">long</span> getStealCount()</div>
             <p class="api-desc">Returns an estimate of the total number of completed tasks that were executed by a worker other than the thread that submitted or forked them, accumulated over the pool&rsquo;s lifetime. The call does not block and it underestimates the real count while the pool is still busy. Use it to tune splitting thresholds: steals should be high enough to keep all workers busy, but a count close to the total number of tasks means tasks are too fine-grained.</p>
             <div class="code-block"><pre><code><span class="code-keyword">var</span> pool = <span class="code-keyword">new</span> <span class="code-class">ForkJoinPool</span>(<span class="code-number">4</span>);
 <span class="code-keyword">long</span> sum = pool.invoke(<span class="code-keyword">new</span> <span class="code-class">SumTask</span>(numbers, <span class="code-number">0</span>, numbers.length));
-<span class="code-class">System</span>.out.println(<span class="code-string">"Sum: "</span> + sum);
-<span class="code-class">System</span>.out.println(<span class="code-string">"Steals: "</span> + pool.getStealCount()); <span class="code-comment">e.g. 37</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Sum: {sum}"</span>);
+<span class="code-class">System</span>.out.println(<span class="code-string">"Steals: {pool.getStealCount()}"</span>); <span class="code-comment">e.g. 37</span></code></pre></div>
         </div>
         <div class="method-entry" id="g43-7">
             <div id="tab-g43-7" class="api-sig"><span class="code-keyword">long</span> getQueuedTaskCount()</div>
@@ -5599,8 +5598,8 @@ pool.awaitQuiescence(<span class="code-number">1</span>, <span class="code-class
             <div class="code-block"><pre><code><span class="code-keyword">var</span> pool = <span class="code-keyword">new</span> <span class="code-class">ForkJoinPool</span>(<span class="code-number">4</span>);
 <span class="code-keyword">var</span> result = pool.submit(<span class="code-keyword">new</span> <span class="code-class">SumTask</span>(numbers, <span class="code-number">0</span>, numbers.length));
 <span class="code-keyword">long</span> queued = pool.getQueuedTaskCount(); <span class="code-comment">Forked subtasks waiting</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Pending subtasks: "</span> + queued);
-<span class="code-class">System</span>.out.println(<span class="code-string">"Sum: "</span> + result.join());</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Pending subtasks: {queued}"</span>);
+<span class="code-class">System</span>.out.println(<span class="code-string">"Sum: {result.join()}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g43-8">
             <div id="tab-g43-8" class="api-sig"><span class="code-keyword">int</span> getQueuedSubmissionCount()</div>
@@ -5609,7 +5608,7 @@ pool.awaitQuiescence(<span class="code-number">1</span>, <span class="code-class
 <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">100</span>; i++) pool.execute(() -&gt; processOrder());
 <span class="code-keyword">int</span> waiting = pool.getQueuedSubmissionCount(); <span class="code-comment">About 98 not started</span>
 <span class="code-keyword">long</span> internal = pool.getQueuedTaskCount(); <span class="code-comment">Forked subtasks</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Backlog: "</span> + (waiting + internal));</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Backlog: {waiting + internal}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g43-9">
             <div id="tab-g43-9" class="api-sig"><span class="code-keyword">boolean</span> getAsyncMode()</div>
@@ -5693,17 +5692,17 @@ pool.execute(() -&gt; index(extraFile)); <span class="code-comment">Pool is stil
 second.start();
 first.join();
 second.join();
-<span class="code-class">System</span>.out.println(first.getName() + <span class="code-string">" done, virtual="</span> + first.isVirtual());</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{first.getName()} done, virtual={first.isVirtual()}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g44-1">
             <div id="tab-g44-1" class="api-sig"><span class="code-keyword">static</span> <span class="code-class">Thread</span> startVirtualThread(<span class="code-class">Runnable</span> task)</div>
             <p class="api-desc">Creates a new unnamed virtual thread for the given <code>Runnable</code>, starts it immediately and returns the <code>Thread</code>. It is equivalent to <code>Thread.ofVirtual().start(task)</code> and is the shortest way to launch one virtual thread; the call does not block and the returned thread can be joined, interrupted or inspected like any other. Use the builder instead when you need a name or an uncaught exception handler and an executor when you manage many tasks or need their results.</p>
             <div class="code-block"><pre><code><span class="code-class">Thread</span> vt = <span class="code-class">Thread</span>.startVirtualThread(() -&gt; {
     <span class="code-class">String</span> body = fetchPage(url); <span class="code-comment">Blocking I/O is cheap here</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Fetched "</span> + body.length() + <span class="code-string">" chars"</span>);
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Fetched {body.length()} chars"</span>);
 });
 vt.join(); <span class="code-comment">Wait for the virtual thread to finish</span>
-<span class="code-class">System</span>.out.println(vt.isVirtual() + <span class="code-string">" "</span> + vt.getName().isEmpty()); <span class="code-comment">true true</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{vt.isVirtual()} {vt.getName().isEmpty()}"</span>); <span class="code-comment">true true</span></code></pre></div>
         </div>
         <div class="method-entry" id="g44-2">
             <div id="tab-g44-2" class="api-sig"><span class="code-keyword">sealed</span> <span class="code-keyword">interface</span> <span class="code-class">Thread</span>.<span class="code-class">Builder</span>.<span class="code-class">OfVirtual</span> <span class="code-keyword">extends</span> <span class="code-class">Thread</span>.<span class="code-class">Builder</span></div>
@@ -5852,7 +5851,7 @@ pool.submit(() -&gt; {
         <span class="code-class">ThreadLocal</span>.withInitial(() -&gt; <span class="code-keyword">new</span> <span class="code-class">SimpleDateFormat</span>(<span class="code-string">"yyyy-MM-dd"</span>));
 <span class="code-class">String</span> today = FORMAT.get().format(<span class="code-keyword">new</span> <span class="code-class">Date</span>()); <span class="code-comment">Supplier runs once here</span>
 <span class="code-class">String</span> again = FORMAT.get().format(<span class="code-keyword">new</span> <span class="code-class">Date</span>()); <span class="code-comment">Same instance reused</span>
-<span class="code-class">System</span>.out.println(today + <span class="code-string">" "</span> + again); <span class="code-comment">2026-11-14 2026-11-14</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{today} {again}"</span>); <span class="code-comment">2026-11-14 2026-11-14</span></code></pre></div>
         </div>
         <div class="method-entry" id="g46-4">
             <div id="tab-g46-4" class="api-sig"><span class="code-class">T</span> initialValue()</div>
@@ -5965,7 +5964,7 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
     scope.fork(() -&gt; queryMirror(<span class="code-string">"eu.mirror.example"</span>));
     scope.fork(() -&gt; queryMirror(<span class="code-string">"us.mirror.example"</span>));
     <span class="code-class">String</span> first = scope.join(); <span class="code-comment">The fastest successful result</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Using "</span> + first); <span class="code-comment">The slower query was cancelled</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Using {first}"</span>); <span class="code-comment">The slower query was cancelled</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g47-2">
@@ -5990,7 +5989,7 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
     <span class="code-class">Subtask</span>&lt;<span class="code-class">Integer</span>&gt; credit = scope.fork(() -&gt; fetchCreditLimit(accountId));
     scope.join(); <span class="code-comment">Both ran concurrently in virtual threads</span>
     <span class="code-keyword">int</span> available = balance.get() + credit.get();
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Available: "</span> + available); <span class="code-comment">e.g. Available: 1500</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Available: {available}"</span>); <span class="code-comment">e.g. Available: 1500</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g47-4">
@@ -6012,9 +6011,9 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
     <span class="code-keyword">for</span> (<span class="code-keyword">var</span> shop : shops) scope.fork(() -&gt; quote(shop));
     <span class="code-class">Stream</span>&lt;<span class="code-class">Subtask</span>&lt;<span class="code-class">Price</span>&gt;&gt; done = scope.join(); <span class="code-comment">Blocks until all succeed</span>
     <span class="code-keyword">var</span> prices = done.map(<span class="code-class">Subtask</span>::get).toList();
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Quotes: "</span> + prices.size());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Quotes: {prices.size()}"</span>);
 } <span class="code-keyword">catch</span> (<span class="code-class">StructuredTaskScope</span>.<span class="code-class">FailedException</span> e) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"A quote failed: "</span> + e.getCause());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"A quote failed: {e.getCause()}"</span>);
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g47-6">
@@ -6047,7 +6046,7 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
     scope.fork(() -&gt; searchIndex(<span class="code-string">"a-m"</span>));
     scope.fork(() -&gt; searchIndex(<span class="code-string">"n-z"</span>));
     <span class="code-class">String</span> hit = scope.join(); <span class="code-comment">First success cancels the other search</span>
-    <span class="code-class">System</span>.out.println(hit + <span class="code-string">", cancelled="</span> + scope.isCancelled()); <span class="code-comment">true</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"{hit}, cancelled={scope.isCancelled()}"</span>); <span class="code-comment">true</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g47-9">
@@ -6058,7 +6057,7 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
     <span class="code-class">Subtask</span>&lt;<span class="code-class">Integer</span>&gt; scoreTask = scope.fork(() -&gt; fetchScore(userId));
     scope.join(); <span class="code-comment">Must come before get()</span>
     <span class="code-class">String</span> user = userTask.get(); <span class="code-comment">Safe: join() succeeded, so all succeeded</span>
-    <span class="code-class">System</span>.out.println(user + <span class="code-string">" scored "</span> + scoreTask.get()); <span class="code-comment">user-7 scored 42</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"{user} scored {scoreTask.get()}"</span>); <span class="code-comment">user-7 scored 42</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g47-10">
@@ -6070,8 +6069,8 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
     scope.join(); <span class="code-comment">awaitAll(): never throws for subtask failures</span>
     <span class="code-keyword">for</span> (<span class="code-keyword">var</span> task : <span class="code-class">List</span>.of(primary, backup)) {
         <span class="code-keyword">switch</span> (task.state()) {
-            <span class="code-keyword">case</span> SUCCESS -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Got "</span> + task.get());
-            <span class="code-keyword">case</span> FAILED -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Error: "</span> + task.exception());
+            <span class="code-keyword">case</span> SUCCESS -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Got {task.get()}"</span>);
+            <span class="code-keyword">case</span> FAILED -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Error: {task.exception()}"</span>);
             <span class="code-keyword">case</span> UNAVAILABLE -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"Not completed"</span>);
         }
     }
@@ -6160,7 +6159,7 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
 
             <span class="code-annotation">@Override</span>
             <span class="code-keyword">public</span> <span class="code-keyword">void</span> onNext(<span class="code-class">Integer</span> item) {
-                <span class="code-class">System</span>.out.println(<span class="code-string">"Received: "</span> + item);
+                <span class="code-class">System</span>.out.println(<span class="code-string">"Received: {item}"</span>);
                 subscription.request(<span class="code-number">1</span>);
             }
 
@@ -6370,7 +6369,7 @@ BUFFER.get().add(<span class="code-string">"second"</span>); <span class="code-c
     inventory.reserve(item); <span class="code-comment">Critical section</span>
 } <span class="code-keyword">finally</span> {
     <span class="code-keyword">boolean</span> free = sync.release(<span class="code-number">1</span>); <span class="code-comment">Calls tryRelease, then unparks a waiter</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Fully released: "</span> + free); <span class="code-comment">true for a mutex</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Fully released: {free}"</span>); <span class="code-comment">true for a mutex</span>
 }</code></pre></div>
         </div>
         <div class="method-entry" id="g50-11">
@@ -6427,7 +6426,7 @@ sync.release(<span class="code-number">1</span>); <span class="code-comment">The
 <span class="code-class">Thread</span>.ofVirtual().name(<span class="code-string">"second"</span>).start(() -&gt; sync.acquire(<span class="code-number">1</span>));
 <span class="code-class">Thread</span>.sleep(<span class="code-number">50</span>);
 <span class="code-class">Thread</span> next = sync.getFirstQueuedThread(); <span class="code-comment">Longest-waiting thread</span>
-<span class="code-class">System</span>.out.println(next.getName() + <span class="code-string">" "</span> + (next == first)); <span class="code-comment">first true</span></code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{next.getName()} {next == first}"</span>); <span class="code-comment">first true</span></code></pre></div>
         </div>
     </div>
     <div class="intro">
@@ -6563,7 +6562,7 @@ pool.execute(() -&gt; <span class="code-class">System</span>.out.println(<span c
         executor.submit(() -&gt; {
             <span class="code-keyword">int</span> dice = <span class="code-class">ThreadLocalRandom</span>.current().nextInt(<span class="code-number">1</span>, <span class="code-number">7</span>); <span class="code-comment">1 to 6</span>
             <span class="code-keyword">long</span> delay = <span class="code-class">ThreadLocalRandom</span>.current().nextLong(<span class="code-number">100</span>, <span class="code-number">500</span>);
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Rolled "</span> + dice + <span class="code-string">" after "</span> + delay + <span class="code-string">" ms"</span>);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Rolled {dice} after {delay} ms"</span>);
         });
     }
 }</code></pre></div>
@@ -6586,7 +6585,7 @@ pool.execute(() -&gt; <span class="code-class">System</span>.out.println(<span c
 <span class="code-keyword">long</span> seconds = <span class="code-class">TimeUnit</span>.MILLISECONDS.toSeconds(<span class="code-number">1_999</span>); <span class="code-comment">1: truncates</span>
 <span class="code-keyword">long</span> perMinute = <span class="code-class">TimeUnit</span>.SECONDS.convert(<span class="code-class">Duration</span>.ofMinutes(<span class="code-number">1</span>)); <span class="code-comment">60</span>
 <span class="code-keyword">boolean</span> done = executor.awaitTermination(<span class="code-number">30</span>, <span class="code-class">TimeUnit</span>.SECONDS);
-<span class="code-class">System</span>.out.println(millis + <span class="code-string">" "</span> + seconds + <span class="code-string">" "</span> + perMinute + <span class="code-string">" "</span> + done);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{millis} {seconds} {perMinute} {done}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g51-4">
             <div id="tab-g51-4" class="api-sig"><span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">Duration</span></div>
@@ -6597,7 +6596,7 @@ pool.execute(() -&gt; <span class="code-class">System</span>.out.println(<span c
 <span class="code-keyword">boolean</span> finished = worker.join(<span class="code-class">Duration</span>.ofSeconds(<span class="code-number">2</span>)); <span class="code-comment">false if still alive</span>
 <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">LinkedBlockingQueue</span>&lt;<span class="code-class">String</span>&gt;();
 <span class="code-class">String</span> msg = queue.poll(timeout.toMillis(), <span class="code-class">TimeUnit</span>.MILLISECONDS); <span class="code-comment">null</span>
-<span class="code-class">System</span>.out.println(finished + <span class="code-string">" "</span> + msg);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{finished} {msg}"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g51-5">
             <div id="tab-g51-5" class="api-sig"><span class="code-keyword">class</span> <span class="code-class">ThreadGroup</span></div>
@@ -6609,7 +6608,7 @@ pool.execute(() -&gt; <span class="code-class">System</span>.out.println(<span c
 <span class="code-class">System</span>.out.println(vt.getThreadGroup().getName()); <span class="code-comment">VirtualThreads</span>
 <span class="code-keyword">var</span> threads = <span class="code-keyword">new</span> <span class="code-class">Thread</span>[group.activeCount() * <span class="code-number">2</span>]; <span class="code-comment">Extra room</span>
 <span class="code-keyword">int</span> n = group.enumerate(threads); <span class="code-comment">Copies at most threads.length</span>
-<span class="code-class">System</span>.out.println(n + <span class="code-string">" platform threads found"</span>);</code></pre></div>
+<span class="code-class">System</span>.out.println(<span class="code-string">"{n} platform threads found"</span>);</code></pre></div>
         </div>
         <div class="method-entry" id="g51-6">
             <div id="tab-g51-6" class="api-sig"><span class="code-keyword">class</span> <span class="code-class">Timer</span></div>
@@ -6631,7 +6630,7 @@ modern.scheduleAtFixedRate(() -&gt; sendHeartbeat(), <span class="code-number">0
         <span class="code-keyword">try</span> {
             sendHeartbeat();
         } <span class="code-keyword">catch</span> (<span class="code-class">RuntimeException</span> e) {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: "</span> + e); <span class="code-comment">Keeps the Timer alive</span>
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Failed: {e}"</span>); <span class="code-comment">Keeps the Timer alive</span>
         }
     }
 };
@@ -6642,8 +6641,8 @@ heartbeat.cancel(); <span class="code-comment">Later: stops future runs, returns
             <div id="tab-g51-8" class="api-sig"><span class="code-keyword">interface</span> <span class="code-class">ThreadMXBean</span></div>
             <p class="api-desc">The management interface for the JVM&rsquo;s thread system, obtained with <code>ManagementFactory.getThreadMXBean()</code>. It reports live, peak, daemon and total started thread counts, per-thread CPU time, contention statistics and <code>ThreadInfo</code> snapshots and <code>findDeadlockedThreads()</code> returns the IDs of threads deadlocked on monitors or ownable synchronizers, or <code>null</code> if there are none. Calls do not block application threads but some, such as full dumps, are expensive. It covers platform threads only; virtual threads are not included.</p>
             <div class="code-block"><pre><code><span class="code-class">ThreadMXBean</span> bean = <span class="code-class">ManagementFactory</span>.getThreadMXBean();
-<span class="code-class">System</span>.out.println(<span class="code-string">"Live: "</span> + bean.getThreadCount()); <span class="code-comment">e.g. 23</span>
-<span class="code-class">System</span>.out.println(<span class="code-string">"Peak: "</span> + bean.getPeakThreadCount());
+<span class="code-class">System</span>.out.println(<span class="code-string">"Live: {bean.getThreadCount()}"</span>); <span class="code-comment">e.g. 23</span>
+<span class="code-class">System</span>.out.println(<span class="code-string">"Peak: {bean.getPeakThreadCount()}"</span>);
 <span class="code-keyword">long</span>[] deadlocked = bean.findDeadlockedThreads(); <span class="code-comment">null if no deadlock</span>
 <span class="code-keyword">if</span> (deadlocked != <span class="code-keyword">null</span>) {
     <span class="code-keyword">for</span> (<span class="code-class">ThreadInfo</span> info : bean.getThreadInfo(deadlocked)) {
@@ -6658,10 +6657,10 @@ heartbeat.cancel(); <span class="code-comment">Later: stops future runs, returns
             <div class="code-block"><pre><code><span class="code-class">ThreadMXBean</span> bean = <span class="code-class">ManagementFactory</span>.getThreadMXBean();
 <span class="code-class">ThreadInfo</span> info = bean.getThreadInfo(worker.threadId(), <span class="code-number">10</span>); <span class="code-comment">10 frames</span>
 <span class="code-keyword">if</span> (info != <span class="code-keyword">null</span> &amp;&amp; info.getThreadState() == <span class="code-class">Thread</span>.<span class="code-class">State</span>.BLOCKED) {
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Blocked on "</span> + info.getLockName()); <span class="code-comment">Lock class@hash</span>
-    <span class="code-class">System</span>.out.println(<span class="code-string">"Owned by "</span> + info.getLockOwnerName());
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Blocked on {info.getLockName()}"</span>); <span class="code-comment">Lock class@hash</span>
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Owned by {info.getLockOwnerName()}"</span>);
     <span class="code-keyword">for</span> (<span class="code-class">StackTraceElement</span> frame : info.getStackTrace()) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"  at "</span> + frame);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"  at {frame}"</span>);
     }
 }</code></pre></div>
         </div>
@@ -6774,29 +6773,6 @@ heartbeat.cancel(); <span class="code-comment">Later: stops future runs, returns
         </table></div>
     </div>
 
-    <div class="subheading">21. Common concurrency failures and how to avoid them</div>
-    <div class="intro">
-        <div class="gpt-table-wrap"><table class="gpt-table">
-            <thead><tr><th>Problem</th><th>Cause</th><th>Preferred mitigation</th></tr></thead>
-            <tbody>
-                <tr><td>Lost update</td><td>Nonatomic read-modify-write</td><td>Atomic variable or lock</td></tr>
-                <tr><td>Visibility bug</td><td>Missing happens-before relationship</td><td>Volatile, locks, or atomics</td></tr>
-                <tr><td>Deadlock</td><td>Circular lock dependencies</td><td>Consistent lock ordering, bounded acquisition</td></tr>
-                <tr><td>Starvation</td><td>Repeated scheduling or lock denial</td><td>Fairness where appropriate, bounded workloads</td></tr>
-                <tr><td>Livelock</td><td>Threads repeatedly react without progress</td><td>Backoff and bounded retries</td></tr>
-                <tr><td>Thread leak</td><td>Unbounded creation or missing shutdown</td><td>Structured executor lifecycle</td></tr>
-                <tr><td>Queue growth</td><td>Producers exceed consumption</td><td>Bounded queues, admission control</td></tr>
-                <tr><td>Lock contention</td><td>Excessive exclusive access</td><td>Reduce critical sections, partition state</td></tr>
-                <tr><td>Lost notification</td><td>Incorrect wait/notify protocol</td><td>Predicate loops, higher-level synchronizers</td></tr>
-                <tr><td>Unsafe publication</td><td>Shared object exposed without proper synchronization</td><td>Final fields, safe publication</td></tr>
-                <tr><td>False sharing</td><td>Independent hot fields occupy the same cache line</td><td>Data-layout techniques, measurement</td></tr>
-                <tr><td>ABA problem</td><td>Value changes and returns before CAS</td><td>Versioned atomic references</td></tr>
-                <tr><td>ThreadLocal leak</td><td>Pooled worker retains request state</td><td><code>remove()</code> in <code>finally</code></td></tr>
-                <tr><td>Pool starvation</td><td>Tasks block awaiting other tasks in the same constrained pool</td><td>Separate pools or redesign dependencies</td></tr>
-            </tbody>
-        </table></div>
-        <p class="minor-heading"><strong>21.1 Deadlock example</strong></p>
-    </div>
     <div class="section code-section">
         <div class="code-wrapper">
 <pre><code><span class="code-class">Object</span> lockA = <span class="code-keyword">new</span> <span class="code-class">Object</span>();

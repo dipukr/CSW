@@ -4,24 +4,24 @@
     <text x="420" y="26" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Radio</text>
     <text x="620" y="26" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Projector</text>
     <text x="16" y="65" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Basic</text>
-    <rect x="127" y="40" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="127" y="40" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="220" y="61.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">BasicTVRemote</text>
-    <rect x="327" y="40" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="327" y="40" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="420" y="61.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">BasicRadioRemote</text>
-    <rect x="527" y="40" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="527" y="40" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="620" y="61.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">BasicProjectorRemote</text>
     <text x="16" y="117" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Advanced</text>
-    <rect x="127" y="92" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="127" y="92" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="220" y="113.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">AdvancedTVRemote</text>
-    <rect x="327" y="92" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="327" y="92" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="420" y="113.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">AdvancedRadioRemote</text>
-    <rect x="527" y="92" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="527" y="92" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="620" y="113.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">AdvancedProjectorRemote</text>
     <text x="16" y="169" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">Smart</text>
-    <rect x="127" y="144" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="127" y="144" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="220" y="165.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">SmartTVRemote</text>
-    <rect x="327" y="144" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="327" y="144" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="420" y="165.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">SmartRadioRemote</text>
-    <rect x="527" y="144" width="186" height="38" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <rect x="527" y="144" width="186" height="38" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
     <text x="620" y="165.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#222222">SmartProjectorRemote</text>
 </svg>

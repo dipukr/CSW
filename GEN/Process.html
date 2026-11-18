@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note plain-links">
+    <div class="title">Processes in Operating Systems</div>
+
+<!-- chatgpt-guide:start -->
+    <div class="intro">
+        <p>A process is one of the most fundamental concepts in Operating Systems. Understanding processes is essential for understanding CPU scheduling, multithreading, concurrency, memory management, system calls, inter-process communication (IPC), and how Linux actually executes applications.</p>
+        <p>We will cover the concepts from both an <strong>Operating System design perspective</strong> and an <strong>implementation perspective</strong>, using Java-style pseudocode, Java, algorithms, data structures, and diagrams.</p>
+    </div>
+
+    <div class="subheading">What is a Process?</div>
+    <div class="intro">
+        <p>A <strong>process is an instance of a program in execution</strong>, managed by the Operating System.</p>
+        <p>For example, suppose you run:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">java</span> -jar payment-service.jar</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The OS creates a process that contains:</p>
+        <ul>
+            <li>Executable instructions and runtime state.</li>
+            <li>A unique process identifier (PID).</li>
+            <li>A virtual address space.</li>
+            <li>One or more execution threads.</li>
+            <li>CPU execution context, including registers and stack.</li>
+            <li>Open files, sockets, and other resources.</li>
+            <li>Scheduling and security information.</li>
+        </ul>
+        <p>The OS maintains information about the process so it can execute, suspend, resume, or terminate it.</p>
+        <p class="minor-heading"><strong>Program vs. Process</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Program</th><th>Process</th></tr></thead>
+            <tbody>
+                <tr><td>Passive executable code</td><td>Active execution of a program</td></tr>
+                <tr><td>Stored on disk</td><td>Exists as an OS-managed execution instance</td></tr>
+                <tr><td>Has no scheduling state</td><td>Has scheduling state</td></tr>
+                <tr><td>Does not require a PID</td><td>Has a PID</td></tr>
+                <tr><td>Example: <code>java</code> executable</td><td>Example: running JVM instance</td></tr>
+            </tbody>
+        </table></div>
+        <p>A single program can have multiple simultaneously executing processes.</p>
+        <p>For example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">java</span> -jar payment-service.jar &amp;
+<span class="code-keyword">java</span> -jar payment-service.jar &amp;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Two separate JVM processes are created, normally with distinct PIDs and virtual address spaces.</p>
+        <p class="minor-heading"><strong>Process vs. Thread</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Feature</th><th>Process</th><th>Thread</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Purpose</strong></td><td>Resource and isolation boundary</td><td>Unit of execution</td></tr>
+                <tr><td><strong>Address space</strong></td><td>Usually separate between processes</td><td>Shared within a process</td></tr>
+                <tr><td><strong>Stack</strong></td><td>Has at least one thread stack</td><td>Each thread has its own stack</td></tr>
+                <tr><td><strong>CPU registers</strong></td><td>Maintained per execution thread</td><td>Maintained per thread</td></tr>
+                <tr><td><strong>Communication</strong></td><td>IPC required for separate processes</td><td>Shared memory directly available</td></tr>
+                <tr><td><strong>Failure isolation</strong></td><td>Stronger isolation</td><td>Thread failure can affect entire process</td></tr>
+                <tr><td><strong>Scheduling</strong></td><td>Kernel schedules runnable tasks/threads</td><td>Kernel schedules runnable tasks/threads</td></tr>
+            </tbody>
+        </table></div>
+        <p>A Java application may look like:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-jvm-threads.svg" alt="A Java payment service process, PID 4200, with one JVM virtual address space: a main thread, an HTTP worker and a GC thread each with its own stack and registers, sharing heap, code, file descriptors and sockets" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p><strong>Important Linux detail:</strong> Linux represents each schedulable thread using a <code>task_struct</code>. Threads belonging to the same process can share address-space and resource structures. Therefore, a textbook process control block is a useful abstraction, but Linux&rsquo;s actual implementation is more flexible.</p>
+    </div>
+
+    <div class="subheading">Process Architecture: How a Process Fits into the OS</div>
+    <div class="svg-diagram">
+        <img src="../static/process-architecture.svg" alt="Layered view: user applications such as Java, Python, browsers and shells call the system call interface (fork, execve, read, write, wait), which enters the kernel; process management connects to the CPU scheduler, virtual memory manager and file system and I/O, which drive the hardware: CPU cores, RAM, storage and devices" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>The kernel has several responsibilities:</p>
+        <ol>
+            <li><strong>Creation:</strong> Create execution contexts and resource structures.</li>
+            <li><strong>Scheduling:</strong> Decide which runnable thread uses which CPU.</li>
+            <li><strong>Memory management:</strong> Maintain and protect virtual address spaces.</li>
+            <li><strong>Synchronization:</strong> Coordinate access to shared resources.</li>
+            <li><strong>IPC:</strong> Facilitate communication between processes.</li>
+            <li><strong>Termination:</strong> Release resources and record exit status.</li>
+        </ol>
+        <p>A CPU executes instructions. The OS determines which process&rsquo;s thread is allowed to execute and under what protection settings.</p>
+    </div>
+
+    <div class="subheading">Process Lifecycle and States</div>
+    <div class="intro">
+        <p>A process does not execute continuously from start to finish. It transitions through different states.</p>
+        <p class="minor-heading"><strong>The five-state process model</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-states.svg" alt="Five-state process model: NEW is admitted to READY, the scheduler dispatches it to RUNNING, preemption or yield returns it to READY, waiting for I/O or an event moves it to BLOCKED or WAITING, the event completing returns it to READY, and exit moves it to TERMINATED" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>State</th><th>Meaning</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td>New</td><td>OS is creating the process</td><td>Creating a task and memory structures</td></tr>
+                <tr><td>Ready</td><td>Can execute, waiting for CPU</td><td>Thread waiting in run queue</td></tr>
+                <tr><td>Running</td><td>Executing on a CPU</td><td>Thread processing a calculation</td></tr>
+                <tr><td>Blocked / Waiting</td><td>Cannot continue until an event</td><td>Waiting for socket data</td></tr>
+                <tr><td>Terminated</td><td>Execution has finished</td><td>Process exited</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Example: A database query</strong></p>
+        <p>Suppose a Java service executes:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">var</span> result = jdbcTemplate.queryForList(<span class="code-string">"SELECT * FROM orders WHERE id = 101"</span>);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>A possible execution sequence:</p>
+        <ol>
+            <li><strong>Running:</strong> The Java thread prepares the query and sends a database request.</li>
+            <li><strong>Blocked:</strong> The thread waits for database response data on a socket.</li>
+            <li><strong>Ready:</strong> Data arrives. The OS wakes the thread, making it eligible for CPU time.</li>
+            <li><strong>Running:</strong> The thread resumes, processes the database response, and continues application logic.</li>
+        </ol>
+        <p>The blocked thread does not consume CPU time merely by waiting. However, its process still occupies memory and maintains other resources.</p>
+        <p>With nonblocking I/O, the application may register interest in socket events and continue other work rather than blocking that particular thread.</p>
+        <p class="minor-heading"><strong>Additional states</strong></p>
+        <p>Real operating systems have states beyond the basic five-state model.</p>
+        <ul>
+            <li><strong>Stopped:</strong> Execution is suspended, for example by <code>SIGSTOP</code>.</li>
+            <li><strong>Zombie:</strong> Process has exited, but its parent has not yet collected its termination status.</li>
+            <li><strong>Suspended ready / suspended blocked:</strong> States in an extended textbook model where process execution is suspended, potentially involving swapping.</li>
+            <li><strong>Uninterruptible sleep:</strong> Linux state commonly associated with certain kernel waits, often displayed as <code>D</code> by <code>ps</code>.</li>
+        </ul>
+        <p>Linux process states do not correspond one-to-one with the simplified textbook states.</p>
+    </div>
+
+    <div class="subheading">Process Control Block (PCB)</div>
+    <div class="intro">
+        <p>The <strong>Process Control Block</strong> is a conceptual data structure used by the OS to represent and manage a process.</p>
+        <p>Without the process&rsquo;s saved execution state and resource metadata, the OS would not know how to resume it after a context switch.</p>
+        <p class="minor-heading"><strong>PCB structure</strong></p>
+        <p><strong>Process Control Block</strong> — conceptual kernel data structure</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Component</th><th>Contents</th></tr></thead>
+            <tbody>
+                <tr><td>Identity</td><td>PID, parent PID, credentials</td></tr>
+                <tr><td>State</td><td>Ready, running, blocked, exited</td></tr>
+                <tr><td>CPU context</td><td>Instruction pointer, stack pointer, registers</td></tr>
+                <tr><td>Scheduling</td><td>Policy, priority, runtime, queue metadata</td></tr>
+                <tr><td>Memory</td><td>Address-space descriptor, page-table root</td></tr>
+                <tr><td>Resources</td><td>File descriptors, sockets, signal information</td></tr>
+                <tr><td>Accounting</td><td>CPU time, execution statistics, exit status</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Example PCB structure</strong></p>
+        <p>The following structure is educational and intentionally simplified. It is <strong>not</strong> a copy of Linux&rsquo;s actual <code>task_struct</code>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">enum</span> <span class="code-class">ProcessState</span> { NEW, READY, RUNNING, BLOCKED, TERMINATED }
+
+<span class="code-keyword">class</span> <span class="code-class">CpuContext</span> {
+    <span class="code-keyword">long</span> instructionPointer;
+    <span class="code-keyword">long</span> stackPointer;
+    <span class="code-keyword">long</span>[] registers = <span class="code-keyword">new</span> <span class="code-keyword">long</span>[<span class="code-number">16</span>];
+}
+
+<span class="code-keyword">class</span> <span class="code-class">Process</span> {
+    <span class="code-keyword">int</span> pid;
+    <span class="code-keyword">int</span> parentPid;
+    <span class="code-class">ProcessState</span> state;
+    <span class="code-keyword">int</span> priority;
+    <span class="code-keyword">long</span> cpuTimeNs;
+    <span class="code-class">CpuContext</span> context;
+    <span class="code-keyword">long</span> pageTableRoot;
+    <span class="code-class">Object</span> kernelStack;
+    <span class="code-class">Object</span> openFileTable;
+    <span class="code-class">Process</span> nextReady;
+    <span class="code-class">Process</span> parent;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Important fields:</p>
+        <ul>
+            <li><code>pid</code>: Identifies the process.</li>
+            <li><code>state</code>: Records whether execution is ready, running, or waiting.</li>
+            <li><code>context</code>: Represents information required to resume execution.</li>
+            <li><code>pageTableRoot</code>: Identifies the process&rsquo;s virtual-memory translation structures.</li>
+            <li><code>kernelStack</code>: Refers to the kernel execution stack used by a task.</li>
+            <li><code>nextReady</code>: Allows a task to be linked into a scheduling queue.</li>
+        </ul>
+        <p>In real kernels, execution context may be distributed between task structures, architecture-specific fields, and kernel stacks rather than being stored in one simple <code>CpuContext</code>.</p>
+        <p class="minor-heading"><strong>Actual Linux implementation</strong></p>
+        <p>Linux uses a family of interconnected structures, including:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Linux structure</th><th>Responsibility</th></tr></thead>
+            <tbody>
+                <tr><td><code>task_struct</code></td><td>Thread/task identity, scheduling, lifecycle</td></tr>
+                <tr><td><code>mm_struct</code></td><td>Virtual address space</td></tr>
+                <tr><td><code>vm_area_struct</code></td><td>Memory mapping/region</td></tr>
+                <tr><td><code>files_struct</code></td><td>File descriptor table</td></tr>
+                <tr><td><code>fs_struct</code></td><td>Filesystem-related context</td></tr>
+                <tr><td><code>signal_struct</code></td><td>Shared signal-related state</td></tr>
+                <tr><td><code>sched_entity</code></td><td>Fair scheduling accounting</td></tr>
+                <tr><td><code>rq</code></td><td>Per-CPU scheduling run queue</td></tr>
+            </tbody>
+        </table></div>
+        <p>Linux uses a maple tree within <code>mm_struct</code> to organize virtual-memory areas.</p>
+        <p>Conceptually:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-linux-structures.svg" alt="Linux task_struct points to mm_struct for the virtual address space, files_struct for open file descriptors and sched_entity for scheduling information; mm_struct uses a maple tree of virtual memory regions for code, heap, stack and shared libraries" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>Two threads belonging to the same process generally share the <code>mm_struct</code> and appropriate resource tables, while each has its own execution state.</p>
+    </div>
+
+    <div class="subheading">Process Memory Structure</div>
+    <div class="intro">
+        <p>A process normally operates inside its own <strong>virtual address space</strong>.</p>
+        <p>A simplified layout of a typical native program is shown below.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-memory-layout.svg" alt="Process memory layout from higher to lower virtual addresses: stack, memory-mapped region, heap, BSS, data, and text or code" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>Conceptual layout only. Actual addresses, mapping order and stack locations depend on architecture, OS and ASLR. Multithreaded processes have multiple stacks.</p>
+        <p class="minor-heading"><strong>What each region stores</strong></p>
+        <p>Consider this program:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">int</span> globalCounter = <span class="code-number">100</span>;            <span class="code-comment">Initialized data</span>
+<span class="code-keyword">int</span> uninitialized;                  <span class="code-comment">BSS</span>
+
+<span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span> local = <span class="code-number">10</span>;                 <span class="code-comment">Stack</span>
+    <span class="code-keyword">int</span>[] ptr = allocate(<span class="code-number">1</span>);        <span class="code-comment">Heap allocation</span>
+    <span class="code-keyword">if</span> (ptr == <span class="code-keyword">null</span>) <span class="code-keyword">return</span>;
+    ptr[<span class="code-number">0</span>] = <span class="code-number">50</span>;
+    print(<span class="code-string">"Global: "</span> + addressOf(globalCounter));
+    print(<span class="code-string">"BSS:    "</span> + addressOf(uninitialized));
+    print(<span class="code-string">"Stack:  "</span> + addressOf(local));
+    print(<span class="code-string">"Heap:   "</span> + addressOf(ptr));
+    free(ptr);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>A crucial distinction: the local pointer variable <code>ptr</code> normally lives on the stack, but the memory returned by <code>allocate()</code> resides in a dynamically allocated region.</p>
+        <p class="minor-heading"><strong>Virtual memory vs. physical memory</strong></p>
+        <p>Two processes can use the same virtual address while the addresses map to different physical memory.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-virtual-memory.svg" alt="Process A and process B both use virtual address 0x1000, but page table A maps it to physical frame 42 and page table B maps it to physical frame 91" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>This is how memory isolation works at a high level.</p>
+        <p>The Memory Management Unit (MMU), together with page tables configured by the OS, translates virtual addresses to physical addresses and enforces access permissions.</p>
+        <p>There are deliberate exceptions to physical separation: processes may map the same shared-memory page or file-backed page.</p>
+        <p class="minor-heading"><strong>Why virtual memory matters</strong></p>
+        <p>Virtual memory provides:</p>
+        <ul>
+            <li>Isolation between processes.</li>
+            <li>Memory permissions such as read, write and execute.</li>
+            <li>Flexible allocation without requiring contiguous physical RAM.</li>
+            <li>Shared memory and memory-mapped files.</li>
+            <li>Demand paging and copy-on-write.</li>
+            <li>A consistent addressing abstraction for applications.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Process Creation: <code>fork()</code>, <code>exec()</code>, and <code>wait()</code></div>
+    <div class="intro">
+        <p>In Unix-like operating systems, these are three of the most important process-related operations.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><code>fork()</code></td><td>Creates a child process</td></tr>
+                <tr><td><code>execve()</code> / <code>execvp()</code></td><td>Replaces the current process&rsquo;s program</td></tr>
+                <tr><td><code>wait()</code> / <code>waitpid()</code></td><td>Waits for and collects child-process status</td></tr>
+                <tr><td><code>exit()</code> / <code>_exit()</code></td><td>Terminates the calling process</td></tr>
+                <tr><td><code>getpid()</code></td><td>Returns the current process ID</td></tr>
+                <tr><td><code>getppid()</code></td><td>Returns the parent process ID</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>How process creation works</strong></p>
+        <p>Suppose a Linux shell executes:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">ls</span> -l</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>A typical process lifecycle is:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-fork-exec.svg" alt="The shell calls fork, the kernel allocates the child and returns its PID to the parent and 0 to the child; the child calls execve to run ls and later exits; the shell calls waitpid to collect the status and reap the child" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>The parent and child may execute concurrently; their precise ordering is determined by scheduling.</p>
+        <p class="minor-heading"><strong>Step 1: <code>fork()</code></strong></p>
+        <p><code>fork()</code> creates a child process.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span> pid = fork();
+    <span class="code-keyword">if</span> (pid &lt; <span class="code-number">0</span>) { error(<span class="code-string">"fork failed"</span>); <span class="code-keyword">return</span>; }
+    <span class="code-keyword">if</span> (pid == <span class="code-number">0</span>) {                 <span class="code-comment">Executed by child process</span>
+        print(<span class="code-string">"Child PID: "</span> + getpid());
+        print(<span class="code-string">"Parent PID: "</span> + getppid());
+    } <span class="code-keyword">else</span> {                        <span class="code-comment">Executed by parent process</span>
+        print(<span class="code-string">"Parent created child: "</span> + pid);
+        waitpid(pid);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>fork()</code> returns different values depending on the execution context:</p>
+        <ul>
+            <li><code>0</code> inside the child.</li>
+            <li>Child PID inside the parent.</li>
+            <li><code>-1</code> in the parent if creation fails.</li>
+        </ul>
+        <p>The child begins execution immediately after the <code>fork()</code> call, rather than restarting <code>main()</code>.</p>
+        <p class="minor-heading"><strong>Step 2: Copy-on-Write (COW)</strong></p>
+        <p>Does <code>fork()</code> immediately copy all of the parent&rsquo;s physical memory?</p>
+        <p><strong>Normally, no.</strong> Linux uses <em>Copy-on-Write</em> to avoid eagerly duplicating ordinary writable memory pages. The parent and child initially share suitable physical pages, and a private copy is created when a shared copy-on-write page is written.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-cow.svg" alt="Copy-on-write: right after fork, the parent and child page tables share one physical page through read-only mappings; when the child writes, a COW fault gives it a copied page while the parent keeps the original" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>The diagram simplifies page permissions and mappings. Shared-memory mappings do not necessarily follow private COW behavior.</p>
+        <p>Example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span> counter = <span class="code-number">100</span>;
+    <span class="code-keyword">int</span> pid = fork();
+    <span class="code-keyword">if</span> (pid &lt; <span class="code-number">0</span>) { error(<span class="code-string">"fork"</span>); <span class="code-keyword">return</span>; }
+    <span class="code-keyword">if</span> (pid == <span class="code-number">0</span>) {
+        counter = <span class="code-number">200</span>;
+        print(<span class="code-string">"Child: "</span> + counter);
+        <span class="code-keyword">return</span>;
+    }
+    waitpid(pid);
+    print(<span class="code-string">"Parent: "</span> + counter);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Child: 200
+Parent: 100</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The processes have independent logical copies of <code>counter</code>.</p>
+        <p class="minor-heading"><strong>Step 3: <code>exec()</code></strong></p>
+        <p>The <code>exec</code> family replaces the current process&rsquo;s executable image.</p>
+        <p>It does <strong>not</strong> create another process. Normally, its PID remains the same.</p>
+        <p class="minor-heading"><strong>Step 4: <code>waitpid()</code></strong></p>
+        <p>The parent collects the child process&rsquo;s exit status. This is important because terminated children can otherwise remain as zombies until their status is reaped.</p>
+        <p class="minor-heading"><strong>Complete runnable example: <code>fork()</code> + <code>exec()</code> + <code>waitpid()</code></strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span> pid = fork();
+    <span class="code-keyword">if</span> (pid == -<span class="code-number">1</span>) { error(<span class="code-string">"fork"</span>); <span class="code-keyword">return</span>; }
+    <span class="code-keyword">if</span> (pid == <span class="code-number">0</span>) {
+        exec(<span class="code-string">"ls"</span>, <span class="code-string">"-l"</span>);           <span class="code-comment">Child replaces its program with "ls"</span>
+        error(<span class="code-string">"exec"</span>);              <span class="code-comment">Reached only if exec fails</span>
+        exit(<span class="code-number">127</span>);
+    }
+    <span class="code-class">ExitStatus</span> status = waitpid(pid);    <span class="code-comment">Parent waits for child, retrying if interrupted</span>
+    <span class="code-keyword">if</span> (status.exited()) print(<span class="code-string">"Child exit code: "</span> + status.exitCode());
+    <span class="code-keyword">else</span> <span class="code-keyword">if</span> (status.signaled()) print(<span class="code-string">"Child killed by signal: "</span> + status.signal());
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Production systems may also use <code>posix_spawn()</code> for process creation. A process created by <code>fork()</code> from a multithreaded application requires additional care before <code>exec()</code> because only the calling thread survives in the child.</p>
+    </div>
+
+    <div class="subheading">Process vs. Thread</div>
+    <div class="intro">
+        <p>A <strong>process</strong> is a resource container and an execution environment. A <strong>thread</strong> is an execution path within that process.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-process-threads.svg" alt="Process memory and thread structure: three threads, each with its own registers, program counter and private stack, sharing the heap, global variables, code, open files and virtual address space" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Each thread has its own</strong></p>
+        <ul>
+            <li>Thread ID and execution state</li>
+            <li>Program Counter (PC)</li>
+            <li>CPU register context</li>
+            <li>Stack, including local variables and function call frames</li>
+            <li>Thread-local storage</li>
+        </ul>
+        <p class="minor-heading"><strong>Threads of the same process share</strong></p>
+        <ul>
+            <li>Heap memory</li>
+            <li>Global and static variables</li>
+            <li>Program code</li>
+            <li>Open file descriptors</li>
+            <li>Process virtual address space</li>
+            <li>Other process-wide resources</li>
+        </ul>
+        <p>This shared memory makes thread communication efficient, but also introduces race conditions and synchronization challenges.</p>
+    </div>
+
+    <div class="subheading">Types of threads</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>User-level threads</strong></p>
+        <p>Managed primarily by a user-space runtime or thread library.</p>
+        <p>Characteristics include fast runtime-managed scheduling, lower management overhead, and potentially large numbers of lightweight threads.</p>
+        <p>However, actual CPU parallelism and blocking behavior depend on how the runtime maps them onto OS threads.</p>
+        <p class="minor-heading"><strong>Kernel-level threads</strong></p>
+        <p>Managed and scheduled by the operating system kernel.</p>
+        <p>The OS can schedule them independently on CPU cores, block them individually, and perform context switches between them.</p>
+        <p class="minor-heading"><strong>Thread mapping models</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Model</th><th>Mapping</th><th>Characteristics</th></tr></thead>
+            <tbody>
+                <tr><td>Many-to-One</td><td>Many user threads → one kernel thread</td><td>No parallel CPU execution among those user threads</td></tr>
+                <tr><td>One-to-One</td><td>One user thread → one kernel thread</td><td>Native parallelism, higher per-thread cost</td></tr>
+                <tr><td>Many-to-Many</td><td>Many user threads → multiple kernel threads</td><td>Flexible scheduling and resource management</td></tr>
+                <tr><td>Two-Level</td><td>Many-to-Many with optional binding</td><td>Some user threads can bind to kernel threads</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, mainstream JVM platform threads generally use one-to-one native thread mapping, while Java virtual threads are scheduled by the JVM onto a smaller set of carrier platform threads.</p>
+    </div>
+
+    <div class="subheading">Thread lifecycle and states</div>
+    <div class="intro">
+        <p>From an OS perspective, a simplified thread lifecycle contains five major states.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-thread-states.svg" alt="Simplified OS scheduling-state model: New, Ready, Running, Blocked and Terminated with admit, dispatch, preempt, wait and wake-up transitions" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Simplified OS scheduling-state model.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>New</td><td>Thread has been created</td></tr>
+                <tr><td>Ready</td><td>Eligible for execution, waiting for CPU</td></tr>
+                <tr><td>Running</td><td>Currently executing on a CPU</td></tr>
+                <tr><td>Blocked / Waiting</td><td>Waiting for I/O, synchronization, or another event</td></tr>
+                <tr><td>Terminated</td><td>Execution completed</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Note:</strong> These are conceptual OS states. Java&rsquo;s <code>Thread.State</code> uses different categories: <code>NEW</code>, <code>RUNNABLE</code>, <code>BLOCKED</code>, <code>WAITING</code>, <code>TIMED_WAITING</code>, and <code>TERMINATED</code>. Java <code>RUNNABLE</code> includes threads that may be waiting for CPU scheduling.</p>
+    </div>
+
+    <div class="subheading">CPU Scheduling and Process Queues</div>
+    <div class="intro">
+        <p>A system may have hundreds or thousands of runnable tasks, but a CPU logical processor executes only one thread&rsquo;s instruction stream at a particular instant.</p>
+        <p>The scheduler decides which runnable task executes next.</p>
+        <p class="minor-heading"><strong>Important scheduling data structures</strong></p>
+        <p>An OS maintains structures conceptually similar to:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Data structure</th><th>Purpose</th><th>Common implementation</th></tr></thead>
+            <tbody>
+                <tr><td>Process lookup</td><td>Locate tasks by identity</td><td>Hash tables, ID mappings</td></tr>
+                <tr><td>Ready/run queue</td><td>Track runnable tasks</td><td>FIFO, tree, heap, priority queues</td></tr>
+                <tr><td>Wait queue</td><td>Track tasks waiting for events</td><td>Linked lists or specialized queues</td></tr>
+                <tr><td>Timer queue</td><td>Track future wakeups</td><td>Timer wheels, heaps, trees</td></tr>
+                <tr><td>Scheduling metadata</td><td>Account for fairness and priority</td><td>Per-task fields, trees</td></tr>
+            </tbody>
+        </table></div>
+        <p>Real Linux scheduling maintains per-CPU run queues and policy-specific scheduling structures rather than one universal global ready queue.</p>
+        <p class="minor-heading"><strong>Scheduler queue flow</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-scheduler-queues.svg" alt="A new runnable task enters the ready queue, the CPU scheduler dispatches it to a CPU core; time-slice preemption returns it to the ready queue, a blocking operation moves it to the wait queue until a wakeup event, and it can exit" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Scheduler vs. Dispatcher</strong></p>
+        <p>These concepts have different responsibilities.</p>
+        <p><strong>Scheduler:</strong> Selects the task that should run.</p>
+        <p><strong>Dispatcher:</strong> Performs the operations required to transfer CPU execution to the selected task, including the appropriate context switch.</p>
+        <p>The dispatcher is part of the scheduling mechanism.</p>
+    </div>
+
+    <div class="subheading">Context Switching</div>
+    <div class="intro">
+        <p>A <strong>context switch</strong> happens when the OS stops executing one task and resumes another.</p>
+        <p>For example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>CPU running Task A
+        ↓
+Task A's execution context saved
+        ↓
+Task B's execution context restored
+        ↓
+CPU running Task B</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The saved context includes execution state sufficient to resume a task, such as the instruction pointer, stack pointer, and registers.</p>
+        <p class="minor-heading"><strong>Context-switch workflow</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-context-switch.svg" alt="Task A is preempted or blocks; the kernel scheduler preserves its context, updates its state, selects Task B, switches address space if needed, restores B and resumes it" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Simplified scheduling algorithm</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>schedule():
+
+    previous = current_task
+
+    if previous is still runnable:
+        make previous eligible for scheduling
+
+    next = choose_next_runnable_task()
+
+    if next != previous:
+        preserve previous execution context
+
+        if address spaces differ:
+            activate next address space
+
+        switch kernel execution context
+
+        restore / resume next task</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This is conceptual pseudocode. Actual context switching requires architecture-specific routines, careful synchronization, and a precise handling of execution stacks and interrupt/preemption state.</p>
+        <p class="minor-heading"><strong>Context-switch overhead</strong></p>
+        <p>Context switching is not free.</p>
+        <p>It may involve:</p>
+        <ul>
+            <li>Saving and restoring register state.</li>
+            <li>Switching execution stacks.</li>
+            <li>Changing virtual-memory context.</li>
+            <li>Translation Lookaside Buffer (TLB) effects.</li>
+            <li>Cache disruption.</li>
+            <li>Scheduler bookkeeping.</li>
+        </ul>
+        <p>An important nuance: <strong>entering kernel mode does not necessarily mean a context switch occurs</strong>. A system call may execute and return to the same task.</p>
+        <p>Similarly, a task can be preempted and later resumed without another application thread initiating the change.</p>
+        <p class="minor-heading"><strong>Process switching vs. thread switching</strong></p>
+        <p>Switching between threads that share an address space can avoid changing the address-space context. Switching between independent processes generally requires more memory-context work.</p>
+        <p>However, the precise cost depends on hardware, OS implementation, cache state, and which resources are shared.</p>
+    </div>
+
+    <div class="subheading">CPU Scheduling Algorithms</div>
+    <div class="intro">
+        <p>Scheduling algorithms determine execution order.</p>
+        <p class="minor-heading"><strong>Scheduling performance metrics</strong></p>
+        <p>Suppose:</p>
+        <ul>
+            <li><code>AT</code>: Arrival time.</li>
+            <li><code>BT</code>: CPU burst time.</li>
+            <li><code>CT</code>: Completion time.</li>
+            <li><code>ST</code>: First execution start time.</li>
+        </ul>
+        <p>Then:</p>
+    </div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\text{Turnaround Time} = CT - AT" data-display="1">Turnaround Time = CT - AT</span></p></div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\text{Waiting Time} = CT - AT - BT" data-display="1">Waiting Time = CT - AT - BT</span></p></div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\text{Response Time} = ST - AT" data-display="1">Response Time = ST - AT</span></p></div>
+    <div class="intro">
+        <p>These formulas apply to the simplified CPU-burst scheduling model used below. Real processes may have multiple bursts, I/O waits, sleep time, and other complexities.</p>
+        <p class="minor-heading"><strong>First Come First Served (FCFS)</strong></p>
+        <p>FCFS executes processes in arrival order.</p>
+        <p><strong>Data structure:</strong> FIFO queue.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>enqueue(new_process)
+
+while queue not empty:
+    process = dequeue()
+    run process until CPU burst completes</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Characteristics: simple, non-preemptive, but can suffer from the <em>convoy effect</em>, where short jobs wait behind long jobs.</p>
+        <p class="minor-heading"><strong>Shortest Job First (SJF)</strong></p>
+        <p>Select the process with the smallest next CPU burst.</p>
+        <p><strong>Data structure:</strong> Min-heap or sorted queue.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>select ready process with minimum CPU burst
+run until the burst completes</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>SJF can minimize average waiting time for a fixed set of available jobs under suitable assumptions, but actual future CPU burst lengths are generally unknown.</p>
+        <p>A non-preemptive SJF scheduler may cause long jobs to wait excessively.</p>
+        <p class="minor-heading"><strong>Shortest Remaining Time First (SRTF)</strong></p>
+        <p>SRTF is the preemptive version of SJF.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>when a process arrives or scheduling is reconsidered:
+    choose ready process with shortest remaining CPU time
+    preempt current task if necessary</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>It favors short tasks, but can cause starvation for long jobs under continuous arrivals of short jobs.</p>
+        <p class="minor-heading"><strong>Round Robin (RR)</strong></p>
+        <p>Round Robin gives each runnable task a limited CPU time quantum.</p>
+        <p><strong>Data structure:</strong> Circular FIFO queue.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>while processes remain:
+
+    process = dequeue()
+
+    run process for at most QUANTUM
+
+    if process finished:
+        mark completed
+    else:
+        enqueue(process)</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>RR is useful for responsiveness and time-sharing.</p>
+        <p>The quantum is important:</p>
+        <ul>
+            <li>Too short: excessive context-switch overhead.</li>
+            <li>Too long: behavior approaches FCFS.</li>
+            <li>Appropriate quantum: balances responsiveness and overhead.</li>
+        </ul>
+        <p class="minor-heading"><strong>Priority Scheduling</strong></p>
+        <p>Select the highest-priority ready task.</p>
+        <p><strong>Data structure:</strong> Priority queue or policy-specific queues.</p>
+        <p>It can be preemptive or non-preemptive.</p>
+        <p>One issue is starvation. A common textbook mitigation is <strong>aging</strong>, which gradually increases the effective priority of tasks that have waited for a long time.</p>
+        <p class="minor-heading"><strong>Multilevel Feedback Queue (MLFQ)</strong></p>
+        <p>MLFQ uses several priority levels and dynamically moves tasks between them.</p>
+        <p>Typical rules:</p>
+        <ol>
+            <li>New tasks enter a high-priority queue.</li>
+            <li>Tasks consuming their full quantum may be moved down.</li>
+            <li>Interactive tasks that frequently block can retain better responsiveness, depending on the policy.</li>
+            <li>Periodic priority boosts may prevent starvation.</li>
+        </ol>
+        <p>MLFQ attempts to distinguish CPU-intensive from interactive workloads using observed behavior.</p>
+        <p class="minor-heading"><strong>Algorithm comparison</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Algorithm</th><th>Preemptive?</th><th>Selection data structure</th><th>Main drawback</th></tr></thead>
+            <tbody>
+                <tr><td>FCFS</td><td>No</td><td>FIFO queue</td><td>Convoy effect</td></tr>
+                <tr><td>SJF</td><td>No</td><td>Min-heap</td><td>Burst prediction, starvation</td></tr>
+                <tr><td>SRTF</td><td>Yes</td><td>Min-heap</td><td>Starvation, prediction</td></tr>
+                <tr><td>Round Robin</td><td>Yes</td><td>FIFO queue</td><td>Quantum sensitivity</td></tr>
+                <tr><td>Priority</td><td>Either</td><td>Priority queue</td><td>Starvation</td></tr>
+                <tr><td>MLFQ</td><td>Yes</td><td>Multiple queues</td><td>Tuning complexity</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Scheduling Example with Gantt Charts</div>
+    <div class="intro">
+        <p>Consider three processes, all CPU-bound for this example.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Process</th><th>Arrival time</th><th>CPU burst</th></tr></thead>
+            <tbody>
+                <tr><td>P1</td><td>0</td><td>8</td></tr>
+                <tr><td>P2</td><td>1</td><td>4</td></tr>
+                <tr><td>P3</td><td>2</td><td>2</td></tr>
+            </tbody>
+        </table></div>
+        <p>All times are abstract scheduling units.</p>
+        <p class="minor-heading"><strong>FCFS</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-gantt-fcfs.svg" alt="FCFS Gantt chart: P1 runs 0 to 8, P2 runs 8 to 12, P3 runs 12 to 14" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>P1: 0–8 · P2: 8–12 · P3: 12–14</p>
+        <p>Average waiting time:</p>
+    </div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\frac{0+7+10}{3}=5.67" data-display="1">(0+7+10)/(3)=5.67</span></p></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>SJF (non-preemptive)</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-gantt-sjf.svg" alt="Non-preemptive SJF Gantt chart: P1 runs 0 to 8, P3 runs 8 to 10, P2 runs 10 to 14" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>P1: 0–8 · P3: 8–10 · P2: 10–14</p>
+        <p>At time 0, only P1 has arrived, so non-preemptive SJF starts P1.</p>
+        <p>Average waiting time:</p>
+    </div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\frac{0+6+9}{3}=5.00" data-display="1">(0+6+9)/(3)=5.00</span></p></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>SRTF</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>0     1     2     4       7              14
+| P1  | P2  | P3  |  P2   |      P1       |</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Average waiting time:</p>
+    </div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\frac{6+2+0}{3}=2.67" data-display="1">(6+2+0)/(3)=2.67</span></p></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Round Robin (quantum = 2)</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-gantt-rr.svg" alt="Round Robin Gantt chart with quantum 2: P1, P2, P3, P1, P2, P1, P1 in two-unit slices" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>Each segment is 2 time units. P3 finishes at 6, P2 at 10, P1 at 14.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Process</th><th>Completion</th><th>Turnaround</th><th>Waiting</th><th>Response</th></tr></thead>
+            <tbody>
+                <tr><td>P1</td><td>14</td><td>14</td><td>6</td><td>0</td></tr>
+                <tr><td>P2</td><td>10</td><td>9</td><td>5</td><td>1</td></tr>
+                <tr><td>P3</td><td>6</td><td>4</td><td>2</td><td>2</td></tr>
+                <tr><td><strong>Average</strong></td><td>—</td><td><strong>9.00</strong></td><td><strong>4.33</strong></td><td><strong>1.00</strong></td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Compare the algorithms</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-waiting-chart.svg" alt="Bar chart of average waiting time: FCFS 5.67, SJF 5, SRTF 2.67, Round Robin with quantum 2 4.33; lower is better" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>SRTF gives the lowest average waiting time for this specific workload, but it is not necessarily the best real-world policy. Fairness, responsiveness, deadlines, throughput, and predictability are also important.</p>
+    </div>
+
+    <div class="subheading">Complete Round Robin Scheduler Implementation</div>
+    <div class="intro">
+        <p>This is a standalone educational scheduler simulator. It models arrivals, CPU bursts, a ready queue, completion times, and scheduling metrics.</p>
+        <p>It does not perform actual OS context switching.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">class</span> <span class="code-class">Task</span> {
+    <span class="code-keyword">int</span> pid, arrival, burst, remaining, firstStart = -<span class="code-number">1</span>, completion = -<span class="code-number">1</span>;
+
+    <span class="code-class">Task</span>(<span class="code-keyword">int</span> pid, <span class="code-keyword">int</span> arrival, <span class="code-keyword">int</span> burst) { <span class="code-keyword">this</span>.pid = pid; <span class="code-keyword">this</span>.arrival = arrival; <span class="code-keyword">this</span>.burst = burst; <span class="code-keyword">this</span>.remaining = burst; }
+}
+
+<span class="code-keyword">void</span> main() {
+    <span class="code-class">Task</span>[] p = { <span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">8</span>), <span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-number">2</span>, <span class="code-number">1</span>, <span class="code-number">4</span>), <span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-number">3</span>, <span class="code-number">2</span>, <span class="code-number">2</span>) };    <span class="code-comment">Sorted by arrival time</span>
+    <span class="code-keyword">int</span> n = p.length, quantum = <span class="code-number">2</span>;
+    <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; ready = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();      <span class="code-comment">Circular ready queue</span>
+    <span class="code-keyword">int</span> next = <span class="code-number">0</span>, finished = <span class="code-number">0</span>, time = <span class="code-number">0</span>;
+    <span class="code-keyword">double</span> totalWait = <span class="code-number">0</span>, totalTurnaround = <span class="code-number">0</span>;
+    <span class="code-keyword">while</span> (finished &lt; n) {
+        <span class="code-keyword">if</span> (ready.isEmpty() &amp;&amp; next &lt; n &amp;&amp; time &lt; p[next].arrival) time = p[next].arrival;    <span class="code-comment">Skip idle CPU time</span>
+        <span class="code-keyword">while</span> (next &lt; n &amp;&amp; p[next].arrival &lt;= time) ready.add(next++);    <span class="code-comment">Admit newly arrived processes</span>
+        <span class="code-keyword">int</span> i = ready.remove();                     <span class="code-comment">Select next runnable process</span>
+        <span class="code-keyword">if</span> (p[i].firstStart == -<span class="code-number">1</span>) p[i].firstStart = time;
+        <span class="code-keyword">int</span> slice = <span class="code-class">Math</span>.min(p[i].remaining, quantum);
+        print(<span class="code-string">"t="</span> + time + <span class="code-string">".."</span> + (time + slice) + <span class="code-string">": P"</span> + p[i].pid);
+        p[i].remaining -= slice;
+        time += slice;
+        <span class="code-keyword">while</span> (next &lt; n &amp;&amp; p[next].arrival &lt;= time) ready.add(next++);    <span class="code-comment">New arrivals enter before requeueing the previous task</span>
+        <span class="code-keyword">if</span> (p[i].remaining &gt; <span class="code-number">0</span>) ready.add(i);
+        <span class="code-keyword">else</span> { p[i].completion = time; finished++; }
+    }
+    print(<span class="code-string">"PID  WT  TAT  RT"</span>);
+    <span class="code-keyword">for</span> (<span class="code-class">Task</span> t : p) {
+        <span class="code-keyword">int</span> turnaround = t.completion - t.arrival;
+        <span class="code-keyword">int</span> waiting = turnaround - t.burst;
+        <span class="code-keyword">int</span> response = t.firstStart - t.arrival;
+        print(<span class="code-string">"P"</span> + t.pid + <span class="code-string">"   "</span> + waiting + <span class="code-string">"   "</span> + turnaround + <span class="code-string">"   "</span> + response);
+        totalWait += waiting;
+        totalTurnaround += turnaround;
+    }
+    print(<span class="code-string">"Average waiting="</span> + totalWait / n + <span class="code-string">", turnaround="</span> + totalTurnaround / n);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Verified output</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>t= 0.. 2: P1
+t= 2.. 4: P2
+t= 4.. 6: P3
+t= 6.. 8: P1
+t= 8..10: P2
+t=10..12: P1
+t=12..14: P1
+PID  WT  TAT  RT
+P1    6   14    0
+P2    5    9    1
+P3    2    4    2
+Average waiting=4.33, turnaround=9.00</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Algorithm complexity</strong></p>
+        <p>With processes already sorted by arrival:</p>
+        <ul>
+            <li>Enqueue operation: <span class="math" data-tex="O(1)">O(1)</span>.</li>
+            <li>Dequeue operation: <span class="math" data-tex="O(1)">O(1)</span>.</li>
+            <li>Ready-queue storage: <span class="math" data-tex="O(n)">O(n)</span>.</li>
+            <li>Overall time: <span class="math" data-tex="O(n+d)">O(n+d)</span>, where <span class="math" data-tex="d">d</span> is the number of CPU dispatches.</li>
+        </ul>
+        <p>The number of dispatches depends on process CPU bursts and the quantum.</p>
+        <p>For a process with burst length <span class="math" data-tex="B_i">B_i</span>, it normally needs approximately <span class="math" data-tex="\lceil B_i/q \rceil">⌈ B_i/q ⌉</span> dispatches, where <span class="math" data-tex="q">q</span> is the quantum.</p>
+        <p>If the arrival times are unsorted, sorting adds <span class="math" data-tex="O(n\log n)">O(nlog  n)</span>.</p>
+    </div>
+
+    <div class="subheading">What Scheduling Algorithm Does Linux Actually Use?</div>
+    <div class="intro">
+        <p>Linux does not directly use basic FCFS, SJF, or simple textbook Round Robin for all regular applications.</p>
+        <p>Historically, Linux relied on the Completely Fair Scheduler (CFS) for ordinary fair scheduling.</p>
+        <p>Beginning with Linux kernel 6.6, Linux began transitioning its fair-scheduling selection mechanism to <strong>EEVDF — Earliest Eligible Virtual Deadline First</strong>.</p>
+        <p>Its central concepts include:</p>
+        <ul>
+            <li><strong>Virtual runtime:</strong> Tracks CPU service in weighted virtual-time terms.</li>
+            <li><strong>Lag:</strong> Measures whether a task has received more or less CPU time than its fair allocation.</li>
+            <li><strong>Eligibility:</strong> Determines which tasks should be considered for execution.</li>
+            <li><strong>Virtual deadline:</strong> Helps select a responsive task among eligible tasks.</li>
+        </ul>
+        <p>Simplified decision algorithm:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>pick_next_fair_task():
+
+    eligible = runnable tasks with nonnegative lag
+
+    next = eligible task with earliest virtual deadline
+
+    return next</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The real implementation uses optimized data structures and more detailed rules.</p>
+        <p>Linux also supports scheduling policies and classes for real-time work, including <code>SCHED_FIFO</code>, <code>SCHED_RR</code>, and <code>SCHED_DEADLINE</code>. Those policies are distinct from the normal fair scheduler.</p>
+        <p>Source: <a href="https://docs.kernel.org/scheduler/sched-eevdf.html">Linux Kernel — EEVDF Scheduler documentation</a>.</p>
+    </div>
+
+    <div class="subheading">Inter-Process Communication (IPC)</div>
+    <div class="intro">
+        <p>Since different processes usually have separate virtual address spaces, they need OS-provided mechanisms to exchange information.</p>
+        <p>Common IPC mechanisms:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Mechanism</th><th>How it works</th><th>Typical use</th></tr></thead>
+            <tbody>
+                <tr><td>Pipe</td><td>Byte stream between endpoints</td><td>Shell pipelines, parent-child IPC</td></tr>
+                <tr><td>Named pipe (FIFO)</td><td>Pipe with filesystem name</td><td>Local process communication</td></tr>
+                <tr><td>Unix domain socket</td><td>Bidirectional local socket</td><td>Local services and daemons</td></tr>
+                <tr><td>TCP socket</td><td>Network byte stream</td><td>Microservices, network applications</td></tr>
+                <tr><td>Shared memory</td><td>Multiple processes map shared pages</td><td>High-throughput local communication</td></tr>
+                <tr><td>Message queue</td><td>OS-managed message exchange</td><td>Asynchronous IPC</td></tr>
+                <tr><td>Signal</td><td>Asynchronous event notification</td><td>Termination, control, notification</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Example: Parent-child IPC through a pipe</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-pipe.svg" alt="The child process writes into a kernel pipe buffer and the parent process reads from it" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>Here is a Linux/Unix example.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main() {
+    <span class="code-class">Pipe</span> pipe = <span class="code-keyword">new</span> <span class="code-class">Pipe</span>();
+    <span class="code-keyword">int</span> pid = fork();
+    <span class="code-keyword">if</span> (pid == -<span class="code-number">1</span>) { error(<span class="code-string">"fork"</span>); <span class="code-keyword">return</span>; }
+    <span class="code-keyword">if</span> (pid == <span class="code-number">0</span>) {                 <span class="code-comment">Child writes into pipe</span>
+        pipe.closeReadEnd();
+        pipe.write(<span class="code-string">"Hello from child"</span>);
+        pipe.closeWriteEnd();
+        exit(<span class="code-number">0</span>);
+    }
+    pipe.closeWriteEnd();           <span class="code-comment">Parent reads from pipe</span>
+    <span class="code-class">String</span> message = pipe.read(<span class="code-number">127</span>);
+    <span class="code-keyword">if</span> (message != <span class="code-keyword">null</span>) print(<span class="code-string">"Parent received: "</span> + message);
+    pipe.closeReadEnd();
+    waitpid(pid);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Expected output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Parent received: Hello from child</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This example sends a short message with one <code>write()</code> and one <code>read()</code>. Production pipe protocols must handle partial reads/writes, interruption, EOF, and message framing.</p>
+    </div>
+
+    <div class="subheading">Process Management in Java</div>
+    <div class="intro">
+        <p>Java applications also run inside OS processes.</p>
+        <p>The JVM provides Java-level APIs, while process creation, scheduling, and memory protection are ultimately implemented by the OS.</p>
+        <p class="minor-heading"><strong>Starting a process with <code>ProcessBuilder</code></strong></p>
+        <p>Reading the output of a child process:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">Exception</span> {
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Parent PID: {ProcessHandle.current().pid()}"</span>);
+    <span class="code-keyword">var</span> processBuilder = <span class="code-keyword">new</span> <span class="code-class">ProcessBuilder</span>(<span class="code-string">"find"</span>);
+    <span class="code-class">Process</span> child = processBuilder.start();
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Child PID: {child.pid()}"</span>);
+    <span class="code-class">InputStream</span> inputStream = child.getInputStream();
+    <span class="code-class">InputStreamReader</span> isr = <span class="code-keyword">new</span> <span class="code-class">InputStreamReader</span>(inputStream);
+    <span class="code-class">BufferedReader</span> reader = <span class="code-keyword">new</span> <span class="code-class">BufferedReader</span>(isr);
+    <span class="code-keyword">var</span> data = <span class="code-keyword">new</span> <span class="code-class">StringBuilder</span>();
+    <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {
+        <span class="code-class">String</span> line = reader.readLine();
+        <span class="code-keyword">if</span> (line == <span class="code-keyword">null</span>) <span class="code-keyword">break</span>;
+        data.append(line).append(<span class="code-string">'\n'</span>);
+    }
+    <span class="code-keyword">int</span> retval = child.waitFor();
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Child exit code: {retval}"</span>);
+    <span class="code-keyword">if</span> (retval == <span class="code-number">0</span>) <span class="code-class">System</span>.out.println(<span class="code-string">"{data}"</span>);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><strong>Java thread creation is different:</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Thread</span> thread = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Worker thread"</span>);
+});
+thread.start();</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>Thread.start()</code> creates a new execution thread inside the same Java process, not a separate JVM process.</p>
+        <p><code>ProcessBuilder.start()</code> launches another OS process. The JVM may use different platform-specific process-creation mechanisms; it is not guaranteed to issue a simple <code>fork()</code> in every implementation.</p>
+        <p class="minor-heading"><strong>Practical Spring Boot example</strong></p>
+        <p>Imagine three Spring Boot microservices running on one Linux server.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/process-spring-jvms.svg" alt="Three Spring Boot JVM processes on one Linux system, an API gateway, an order service and a payment service, each with threads scheduled by the Linux CPU scheduler, calling each other over HTTP and TCP" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>Each JVM process normally has its own:</p>
+        <ul>
+            <li>Virtual address space and heap.</li>
+            <li>Java runtime state and garbage collector.</li>
+            <li>File descriptors and network sockets.</li>
+            <li>OS process identity and scheduling metadata.</li>
+        </ul>
+        <p>Each JVM may have many threads competing for CPU time.</p>
+        <p>If one JVM process crashes, the OS does not automatically terminate the other JVMs. However, dependent services may still experience failures through network calls or lost communication.</p>
+    </div>
+
+    <div class="subheading">Process Termination, Zombies, and Orphans</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Normal termination</strong></p>
+        <p>A process normally terminates when its program completes or explicitly exits.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">return</span>;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>or:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>exit(<span class="code-number">0</span>);</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The OS releases most of its resources, while child exit status may remain available for its parent to collect.</p>
+        <p class="minor-heading"><strong>Zombie process</strong></p>
+        <p>A zombie is a process that has finished executing but still has termination information awaiting collection.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Parent Process
+     |
+     +---- Child executes
+                |
+                v
+           Child exits
+                |
+                v
+           ZOMBIE state
+                |
+                v
+         Parent calls wait()
+                |
+                v
+         Child reaped</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>A zombie is not actively executing instructions. Its ordinary user-space memory has been released, but a small amount of kernel process bookkeeping remains.</p>
+        <p class="minor-heading"><strong>Orphan process</strong></p>
+        <p>An orphan is a still-running child whose parent has terminated.</p>
+        <p>On Linux, such children are reparented to an appropriate child subreaper or to an init process in the relevant PID namespace.</p>
+        <p>Being orphaned does not itself mean a process becomes a zombie.</p>
+        <p class="minor-heading"><strong>Signals</strong></p>
+        <p>Signals are another important process-management mechanism.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Signal</th><th>Typical meaning</th></tr></thead>
+            <tbody>
+                <tr><td><code>SIGTERM</code></td><td>Request termination</td></tr>
+                <tr><td><code>SIGKILL</code></td><td>Force termination; cannot be caught or ignored</td></tr>
+                <tr><td><code>SIGSTOP</code></td><td>Stop execution</td></tr>
+                <tr><td><code>SIGCONT</code></td><td>Continue stopped execution</td></tr>
+                <tr><td><code>SIGINT</code></td><td>Interrupt, commonly Ctrl+C</td></tr>
+                <tr><td><code>SIGCHLD</code></td><td>Notification of child state changes</td></tr>
+            </tbody>
+        </table></div>
+        <p>Example:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">kill</span> -TERM 1234
+<span class="code-keyword">kill</span> -KILL 1234</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>SIGTERM</code> allows an application to implement graceful shutdown. <code>SIGKILL</code> does not give the application an opportunity to run ordinary shutdown handlers.</p>
+        <p>See the Linux <a href="https://man7.org/linux/man-pages/man7/signal.7.html">signal(7) manual</a>.</p>
+    </div>
+
+    <div class="subheading">Practical Linux Commands for Inspecting Processes</div>
+    <div class="intro">
+        <p>These commands are useful when diagnosing real processes, including Java and Spring Boot applications.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><code>ps aux</code></td><td>List process information</td></tr>
+                <tr><td><code>ps -ef</code></td><td>List processes with parent PID</td></tr>
+                <tr><td><code>top</code></td><td>Monitor CPU and memory usage</td></tr>
+                <tr><td><code>htop</code></td><td>Interactive process monitoring, if installed</td></tr>
+                <tr><td><code>pstree -p</code></td><td>Display parent-child process tree</td></tr>
+                <tr><td><code>pidof java</code></td><td>Find Java process PIDs</td></tr>
+                <tr><td><code>kill -TERM PID</code></td><td>Request termination</td></tr>
+                <tr><td><code>renice</code></td><td>Change scheduling nice value</td></tr>
+                <tr><td><code>taskset</code></td><td>Inspect or control CPU affinity</td></tr>
+                <tr><td><code>strace</code></td><td>Trace system calls, if installed</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Inspect scheduling details</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">ps</span> -eo pid,ppid,stat,pri,ni,comm --sort=pid</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <ul>
+            <li><code>PID</code>: Process ID.</li>
+            <li><code>PPID</code>: Parent process ID.</li>
+            <li><code>STAT</code>: Process state.</li>
+            <li><code>PRI</code>: Scheduler priority display.</li>
+            <li><code>NI</code>: Nice value.</li>
+            <li><code>COMM</code>: Command name.</li>
+        </ul>
+        <p class="minor-heading"><strong>Inspect the current shell process</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">cat</span> /proc/$$/status</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Inspect virtual-memory mappings:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">cat</span> /proc/$$/maps</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Inspect open file descriptors:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">ls</span> -l /proc/$$/fd</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Inspect individual threads in a Java process</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">top</span> -H -p &lt;PID&gt;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This shows thread-level activity within the selected process, subject to your system&rsquo;s tools and permissions.</p>
+    </div>
+
+    <div class="subheading">Process Protection, Isolation, and Resource Limits</div>
+    <div class="intro">
+        <p>Processes also act as resource-management and protection boundaries.</p>
+        <p>The OS manages several mechanisms:</p>
+        <p><strong>Memory protection:</strong> Page tables prevent arbitrary access to another process&rsquo;s private memory.</p>
+        <p><strong>CPU scheduling:</strong> The scheduler shares CPU resources across runnable tasks.</p>
+        <p><strong>Credentials:</strong> User and group identities, capabilities, and access-control systems limit permitted actions.</p>
+        <p><strong>File descriptors:</strong> Each process accesses opened files and sockets through OS-managed handles.</p>
+        <p><strong>Resource limits:</strong> The OS can restrict memory, CPU usage, open files, and the number of tasks.</p>
+        <p><strong>Namespaces and cgroups:</strong> Linux can isolate selected views of system resources and account for or control resource consumption. These are fundamental building blocks of Linux containers.</p>
+        <p>For example, a Docker container is not a separate kernel. Containerized processes execute under the host Linux kernel, with isolation and resource-control features applied.</p>
+    </div>
+
+    <div class="subheading">Complete Real-World Process Execution Flow</div>
+    <div class="intro">
+        <p>Suppose a request reaches a Spring Boot payment application.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Client
+  |
+  v
+Linux network stack
+  |
+  v
+JVM process / network socket
+  |
+  v
+Worker thread becomes runnable
+  |
+  v
+Linux CPU scheduler
+  |
+  v
+Worker thread executes Java code
+  |
+  v
+Database request is sent
+  |
+  v
+Thread waits for response
+  |
+  v
+Another runnable task uses CPU
+  |
+  v
+Database response arrives
+  |
+  v
+Waiting thread is woken
+  |
+  v
+Scheduler eventually runs it
+  |
+  v
+Java code processes response
+  |
+  v
+HTTP response is sent</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This example combines nearly every process-management concept:</p>
+        <ul>
+            <li>A process encapsulates JVM resources.</li>
+            <li>Threads execute application code.</li>
+            <li>The OS scheduler selects runnable threads.</li>
+            <li>System calls provide access to sockets and I/O.</li>
+            <li>Blocked threads wait for events.</li>
+            <li>Context switching allows CPU sharing.</li>
+            <li>Virtual memory isolates the JVM from other processes.</li>
+        </ul>
+        <p>The exact transitions vary with synchronous vs. asynchronous I/O, JVM implementation, CPU availability, and network activity.</p>
+    </div>
+
+    <div class="subheading">Important OS Process Concepts to Master</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Concept</th><th>Key takeaway</th></tr></thead>
+            <tbody>
+                <tr><td>Process</td><td>Running program instance with OS-managed resources</td></tr>
+                <tr><td>PCB</td><td>Process metadata and execution state abstraction</td></tr>
+                <tr><td>PID/PPID</td><td>Process and parent identity</td></tr>
+                <tr><td>Process states</td><td>Ready, running, blocked, terminated, etc.</td></tr>
+                <tr><td>Virtual memory</td><td>Protected process address space</td></tr>
+                <tr><td><code>fork()</code></td><td>Creates a child process</td></tr>
+                <tr><td>Copy-on-Write</td><td>Avoids eager duplication of private memory</td></tr>
+                <tr><td><code>exec()</code></td><td>Replaces the current program image</td></tr>
+                <tr><td><code>waitpid()</code></td><td>Waits for and reaps child termination</td></tr>
+                <tr><td>CPU scheduler</td><td>Chooses runnable tasks for CPUs</td></tr>
+                <tr><td>Context switch</td><td>Transfers execution between tasks</td></tr>
+                <tr><td>Ready queue</td><td>Holds tasks eligible to run</td></tr>
+                <tr><td>Wait queue</td><td>Holds tasks waiting for events</td></tr>
+                <tr><td>FCFS/SJF/SRTF/RR</td><td>Foundational scheduling algorithms</td></tr>
+                <tr><td>EEVDF</td><td>Modern Linux fair-scheduling approach</td></tr>
+                <tr><td>IPC</td><td>Communication across process boundaries</td></tr>
+                <tr><td>Signal</td><td>Asynchronous control/notification mechanism</td></tr>
+                <tr><td>Zombie</td><td>Exited child awaiting reaping</td></tr>
+                <tr><td>Orphan</td><td>Running child whose parent has exited</td></tr>
+                <tr><td>Process isolation</td><td>Memory and resource protection boundary</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Final mental model</strong></p>
+        <p>The most useful way to understand a process internally is to separate three concerns:</p>
+        <ul>
+            <li><strong>Resources:</strong> Memory, files, sockets, credentials</li>
+            <li><strong>Execution:</strong> Threads, registers, stacks, state</li>
+            <li><strong>Management:</strong> PCB, scheduling, signals, lifecycle</li>
+        </ul>
+        <p><strong>A process provides the execution environment and resource boundary; its threads are the actual schedulable execution streams. The kernel coordinates both using data structures, scheduling algorithms, virtual memory, and system calls.</strong></p>
+        <p>That distinction is the foundation for understanding how multitasking, concurrency, and modern operating systems work.</p>
+    </div>
+<!-- chatgpt-guide:end -->
+</div>
+</body>
+</html>

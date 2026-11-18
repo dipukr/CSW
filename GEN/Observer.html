@@ -192,7 +192,7 @@ newStatus = SHIPPED</code></pre></div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailNotification</span> <span class="code-keyword">implements</span> <span class="code-class">OrderObserver</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> onStatusChanged(<span class="code-class">OrderStatusChanged</span> event) {
         <span class="code-keyword">if</span> (event.newStatus() == <span class="code-class">OrderStatus</span>.SHIPPED) {
-            <span class="code-class">System</span>.out.println(<span class="code-string">"Email: Order "</span> + event.orderId() + <span class="code-string">" has been shipped."</span>);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Email: Order {event.orderId()} has been shipped."</span>);
         }
     }
 }</code></pre></div>
@@ -202,7 +202,7 @@ newStatus = SHIPPED</code></pre></div>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">DashboardUpdater</span> <span class="code-keyword">implements</span> <span class="code-class">OrderObserver</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> onStatusChanged(<span class="code-class">OrderStatusChanged</span> event) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Dashboard: Order "</span> + event.orderId() + <span class="code-string">" status updated to "</span> + event.newStatus());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Dashboard: Order {event.orderId()} status updated to {event.newStatus()}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -211,7 +211,7 @@ newStatus = SHIPPED</code></pre></div>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">AuditLogger</span> <span class="code-keyword">implements</span> <span class="code-class">OrderObserver</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> onStatusChanged(<span class="code-class">OrderStatusChanged</span> event) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Audit: Order "</span> + event.orderId() + <span class="code-string">" changed from "</span> + event.oldStatus() + <span class="code-string">" to "</span> + event.newStatus());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Audit: Order {event.orderId()} changed from {event.oldStatus()} to {event.newStatus()}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -252,7 +252,7 @@ Audit: Order ORD-101 changed from SHIPPED to DELIVERED</code></pre></div>
     </div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">AnalyticsObserver</span> <span class="code-keyword">implements</span> <span class="code-class">OrderObserver</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> onStatusChanged(<span class="code-class">OrderStatusChanged</span> event) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Analytics: Tracking order status "</span> + event.newStatus());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Analytics: Tracking order status {event.newStatus()}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -315,7 +315,7 @@ Audit: Order ORD-101 changed from SHIPPED to DELIVERED</code></pre></div>
     <span class="code-annotation">@Override</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> update(<span class="code-class">Order</span> order) {
         <span class="code-class">OrderStatus</span> status = order.getStatus();
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Current status: "</span> + status);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Current status: {status}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -389,7 +389,7 @@ Analytics event recorded</code></pre></div>
     <div class="code-block"><pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
     <span class="code-class">TemperatureSensor</span> sensor = <span class="code-keyword">new</span> <span class="code-class">TemperatureSensor</span>();
     sensor.addListener(event -&gt; { <span class="code-comment">Observer 1: Display</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Display: "</span> + event.getNewValue() + <span class="code-string">"°C"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Display: {event.getNewValue()}°C"</span>);
     });
     sensor.addListener(event -&gt; { <span class="code-comment">Observer 2: Temperature alert</span>
         <span class="code-keyword">double</span> temperature = (<span class="code-keyword">double</span>) event.getNewValue();
@@ -437,7 +437,7 @@ ALERT: High temperature!</code></pre></div>
 
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> shipOrder(<span class="code-class">String</span> orderId) {
         <span class="code-comment">Business logic for shipping an order</span>
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Order shipped: "</span> + orderId);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Order shipped: {orderId}"</span>);
         publisher.publishEvent(<span class="code-keyword">new</span> <span class="code-class">OrderShippedEvent</span>(orderId));
     }
 }</code></pre></div>
@@ -449,7 +449,7 @@ ALERT: High temperature!</code></pre></div>
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">EmailListener</span> {
     <span class="code-annotation">@EventListener</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> onOrderShipped(<span class="code-class">OrderShippedEvent</span> event) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending email for order: "</span> + event.orderId());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending email for order: {event.orderId()}"</span>);
     }
 }</code></pre></div>
     <div class="intro">
@@ -459,7 +459,7 @@ ALERT: High temperature!</code></pre></div>
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">AnalyticsListener</span> {
     <span class="code-annotation">@EventListener</span>
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> trackShipping(<span class="code-class">OrderShippedEvent</span> event) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Recording shipping analytics: "</span> + event.orderId());
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Recording shipping analytics: {event.orderId()}"</span>);
     }
 }</code></pre></div>
     <div class="intro">

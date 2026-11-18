@@ -270,38 +270,38 @@ factory.createDialog();</code></pre></div>
     <div class="subheading">AWS products</div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">S3Storage</span> <span class="code-keyword">implements</span> <span class="code-class">CloudStorage</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> upload(<span class="code-class">String</span> file) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Uploading "</span> + file + <span class="code-string">" to AWS S3"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Uploading {file} to AWS S3"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SqsQueue</span> <span class="code-keyword">implements</span> <span class="code-class">MessageQueue</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending message using AWS SQS: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending message using AWS SQS: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">DynamoDatabase</span> <span class="code-keyword">implements</span> <span class="code-class">Database</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> save(<span class="code-class">String</span> data) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Saving data to DynamoDB: "</span> + data);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Saving data to DynamoDB: {data}"</span>);
     }
 }</code></pre></div>
 
     <div class="subheading">Azure products</div>
     <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">BlobStorage</span> <span class="code-keyword">implements</span> <span class="code-class">CloudStorage</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> upload(<span class="code-class">String</span> file) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Uploading "</span> + file + <span class="code-string">" to Azure Blob Storage"</span>);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Uploading {file} to Azure Blob Storage"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ServiceBusQueue</span> <span class="code-keyword">implements</span> <span class="code-class">MessageQueue</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> send(<span class="code-class">String</span> message) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending message using Azure Service Bus: "</span> + message);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Sending message using Azure Service Bus: {message}"</span>);
     }
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CosmosDatabase</span> <span class="code-keyword">implements</span> <span class="code-class">Database</span> {
     <span class="code-keyword">public</span> <span class="code-keyword">void</span> save(<span class="code-class">String</span> data) {
-        <span class="code-class">System</span>.out.println(<span class="code-string">"Saving data to Azure Cosmos DB: "</span> + data);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Saving data to Azure Cosmos DB: {data}"</span>);
     }
 }</code></pre></div>
 

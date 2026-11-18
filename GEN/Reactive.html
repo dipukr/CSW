@@ -55,7 +55,7 @@
         .delayElements(<span class="code-class">Duration</span>.ofMillis(<span class="code-number">100</span>));
 
     numbers.subscribe(
-        n -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"got: "</span> + n),
+        n -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"got: {n}"</span>),
         err -&gt; <span class="code-class">System</span>.err.println(err),
         () -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"done"</span>)
     );
