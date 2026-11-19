@@ -1,0 +1,58 @@
+<svg width="720" height="444" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 444" role="img" aria-label="Database design splits into requirements and workload, data modeling, logical schema design, physical and performance design, transactions and integrity, scalability and distribution, and security and lifecycle, each with two main concepts">
+    <path d="M360 58 V80 M90 80 H630" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M90 80 V100 M270 80 V100 M450 80 V100 M630 80 V100" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M360 80 V286 M180 266 H540 M180 266 V286 M540 266 V286" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M90 144 V208 M270 144 V208 M450 144 V208 M630 144 V208" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M180 330 V394 M360 330 V394 M540 330 V394" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <rect x="255" y="14" width="210" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="41.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#222222">Database Design</text>
+
+    <rect x="15" y="100" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222"><tspan x="90" y="118.5">Requirements &amp;</tspan><tspan x="90" y="134.5">Workload</tspan></text>
+    <rect x="17" y="164" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="90" y="186" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Read / Write Patterns</text>
+    <rect x="17" y="208" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="90" y="230" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Data Volume &amp; SLAs</text>
+
+    <rect x="195" y="100" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="270" y="126.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Data Modeling</text>
+    <rect x="197" y="164" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="270" y="186" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Entities &amp; Attributes</text>
+    <rect x="197" y="208" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222"><tspan x="270" y="224">Relationships &amp;</tspan><tspan x="270" y="238">Cardinality</tspan></text>
+
+    <rect x="375" y="100" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222"><tspan x="450" y="118.5">Logical Schema</tspan><tspan x="450" y="134.5">Design</tspan></text>
+    <rect x="377" y="164" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="450" y="186" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Keys &amp; Constraints</text>
+    <rect x="377" y="208" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="450" y="230" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Normalization</text>
+
+    <rect x="555" y="100" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222"><tspan x="630" y="118.5">Physical &amp;</tspan><tspan x="630" y="134.5">Performance Design</tspan></text>
+    <rect x="557" y="164" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="630" y="186" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Indexes &amp; Storage</text>
+    <rect x="557" y="208" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="630" y="230" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Query Optimization</text>
+
+    <rect x="105" y="286" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222"><tspan x="180" y="304.5">Transactions &amp;</tspan><tspan x="180" y="320.5">Integrity</tspan></text>
+    <rect x="107" y="350" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="180" y="372" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">ACID &amp; Isolation</text>
+    <rect x="107" y="394" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="180" y="416" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Concurrency Control</text>
+
+    <rect x="285" y="286" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222"><tspan x="360" y="304.5">Scalability &amp;</tspan><tspan x="360" y="320.5">Distribution</tspan></text>
+    <rect x="287" y="350" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222"><tspan x="360" y="366">Partitioning &amp;</tspan><tspan x="360" y="380">Sharding</tspan></text>
+    <rect x="287" y="394" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222"><tspan x="360" y="410">Replication &amp;</tspan><tspan x="360" y="424">Consistency</tspan></text>
+
+    <rect x="465" y="286" width="150" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222"><tspan x="540" y="304.5">Security &amp;</tspan><tspan x="540" y="320.5">Lifecycle</tspan></text>
+    <rect x="467" y="350" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222"><tspan x="540" y="366">Access Control &amp;</tspan><tspan x="540" y="380">Encryption</tspan></text>
+    <rect x="467" y="394" width="146" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="540" y="416" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Migrations &amp; Recovery</text>
+</svg>

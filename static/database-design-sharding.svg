@@ -1,0 +1,26 @@
+<svg width="720" height="314" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 314" role="img" aria-label="The application sends requests to a shard router, which routes them to Shard A or Shard B; Shard A replicates to Replica A and holds customers partition 1; Shard B replicates to Replica B and holds customers partition 2">
+    <defs><marker id="dds-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <path d="M360 54 V94" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dds-a)"/>
+    <path d="M360 136 V156 H180 V176" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dds-a)"/>
+    <path d="M360 156 H540 V176" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dds-a)"/>
+    <path d="M180 218 V238 H90 V258" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dds-a)"/>
+    <path d="M180 238 H270 V260" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <path d="M540 218 V238 H450 V258" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dds-a)"/>
+    <path d="M540 238 H630 V260" fill="none" stroke="#555555" stroke-width="1.5"/>
+    <rect x="280" y="14" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="38.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Application</text>
+    <rect x="280" y="96" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="120.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Shard Router</text>
+    <rect x="100" y="178" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="180" y="202.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Shard A</text>
+    <rect x="460" y="178" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="540" y="202.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Shard B</text>
+    <rect x="10" y="260" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="90" y="284.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Replica A</text>
+    <rect x="190" y="260" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="270" y="284.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Customers: Partition 1</text>
+    <rect x="370" y="260" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="450" y="284.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Replica B</text>
+    <rect x="550" y="260" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="630" y="284.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#222222">Customers: Partition 2</text>
+</svg>

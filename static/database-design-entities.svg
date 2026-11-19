@@ -1,0 +1,25 @@
+<svg width="720" height="410" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 410" role="img" aria-label="Customer places Order; Order contains Order Item, which references Product; Order has Payment; Product has Inventory">
+    <defs><marker id="dde-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <path d="M360 54 V94" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dde-a)"/>
+    <text x="368" y="78" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">Places</text>
+    <path d="M360 136 V156 H240 V194" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dde-a)"/>
+    <path d="M360 156 H480 V194" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dde-a)"/>
+    <text x="248" y="182" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">Contains</text>
+    <text x="488" y="182" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">Has</text>
+    <path d="M240 236 V274" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dde-a)"/>
+    <text x="248" y="260" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">References</text>
+    <path d="M240 316 V354" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dde-a)"/>
+    <text x="248" y="340" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">Has</text>
+    <rect x="280" y="14" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="38.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Customer</text>
+    <rect x="280" y="96" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="120.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Order</text>
+    <rect x="160" y="196" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="240" y="220.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Order Item</text>
+    <rect x="400" y="196" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="480" y="220.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Payment</text>
+    <rect x="160" y="276" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="240" y="300.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Product</text>
+    <rect x="160" y="356" width="160" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="240" y="380.55" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Inventory</text>
+</svg>

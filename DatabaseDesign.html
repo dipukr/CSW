@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Database Design</title>
+<link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Database Design</div>
+
+    <div class="intro">
+        <p><strong>Database Design</strong> is a fundamental part of software engineering and system design. It focuses on how data should be structured, organized, stored, related, accessed, and maintained so that applications can operate correctly, efficiently, and reliably.</p>
+        <p>A well-designed database helps ensure:</p>
+        <ul>
+            <li><strong>Data Integrity:</strong> Data remains accurate, valid, and consistent.</li>
+            <li><strong>Efficient Data Access:</strong> Applications can retrieve and modify data efficiently.</li>
+            <li><strong>Scalability:</strong> The database can support increasing data volumes and workloads.</li>
+            <li><strong>Concurrency:</strong> Multiple users and transactions can safely access and modify data.</li>
+            <li><strong>Maintainability:</strong> Database schemas can evolve as application requirements change.</li>
+            <li><strong>Reliability:</strong> Data can be recovered and protected against failures.</li>
+        </ul>
+        <p>Database design is not simply about creating tables and columns. It involves decisions about data modeling, relationships, constraints, normalization, indexing, storage structures, transactions, and scalability.</p>
+    </div>
+
+    <div class="subheading">1. What is Database Design?</div>
+    <div class="intro">
+        <p><strong>Database Design</strong> is the process of defining the structure and organization of data in a database, including the relationships, rules, constraints, and access mechanisms needed to satisfy application requirements.</p>
+        <p>For example, consider an e-commerce application that manages:</p>
+        <ul>
+            <li>Customers</li>
+            <li>Products</li>
+            <li>Orders</li>
+            <li>Payments</li>
+            <li>Inventory</li>
+        </ul>
+        <p>Instead of storing everything in one large table, database design determines how these entities should be represented, how they relate to each other, and how data integrity should be enforced.</p>
+        <p>For example:</p>
+        <div class="svg-diagram">
+            <img src="static/database-design-entities.svg" alt="Customer places Order; Order contains Order Item, which references Product; Order has Payment; Product has Inventory" style="width:100%;max-width:720px">
+        </div>
+        <p>Important design questions include:</p>
+        <ol>
+            <li>Should customer and order information be stored in the same table?</li>
+            <li>How should one-to-many and many-to-many relationships be represented?</li>
+            <li>Which fields should be primary keys and foreign keys?</li>
+            <li>How can duplicate orders or payments be prevented?</li>
+            <li>Which indexes should be created for frequently executed queries?</li>
+            <li>How can concurrent transactions update inventory safely?</li>
+            <li>How should the database handle millions or billions of records?</li>
+        </ol>
+        <p>Database design provides the foundation for answering these questions.</p>
+    </div>
+
+    <div class="subheading">2. Concept Map of Database Design</div>
+    <div class="intro">
+        <p>Database design is a broad discipline containing several interrelated concepts. These can be organized into major categories.</p>
+        <div class="svg-diagram">
+            <img src="static/database-design-concept-map.svg" alt="Concept map: database design splits into requirements and workload, data modeling, logical schema design, physical and performance design, transactions and integrity, scalability and distribution, and security and lifecycle, each with its two main concepts" style="width:100%;max-width:720px">
+        </div>
+        <p>Conceptual overview: these categories overlap. For example, choosing a primary key affects logical modeling, indexing, and distributed scalability.</p>
+    </div>
+
+    <div class="subheading">3. Goals of Database Design</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Goal</th><th>Explanation</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Data Integrity</td><td>Prevent invalid, inconsistent, or duplicate data</td></tr>
+                <tr><td>Data Consistency</td><td>Ensure the database respects defined business rules and consistency guarantees</td></tr>
+                <tr><td>Data Efficiency</td><td>Reduce unnecessary duplication and excessive storage</td></tr>
+                <tr><td>Query Performance</td><td>Optimize retrieval, filtering, joins, and aggregation</td></tr>
+                <tr><td>Write Performance</td><td>Support efficient inserts, updates, and deletes</td></tr>
+                <tr><td>Scalability</td><td>Accommodate increases in data size and user traffic</td></tr>
+                <tr><td>Concurrency Control</td><td>Coordinate simultaneous transactions without violating correctness</td></tr>
+                <tr><td>Availability</td><td>Keep data accessible according to application requirements</td></tr>
+                <tr><td>Reliability</td><td>Protect against crashes, failures, and data loss</td></tr>
+                <tr><td>Security</td><td>Protect sensitive data from unauthorized access</td></tr>
+                <tr><td>Maintainability</td><td>Make the data model understandable and adaptable</td></tr>
+                <tr><td>Extensibility</td><td>Allow new features and schema changes without unnecessary disruption</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Key point:</strong> Database design is about balancing correctness, performance, scalability, and maintainability. Optimizing one dimension may introduce costs in another.</p>
+    </div>
+
+    <div class="subheading">4. Levels of Database Design</div>
+    <div class="intro">
+        <p>Database design is commonly divided into three major levels.</p>
+        <div class="svg-diagram">
+            <img src="static/database-design-levels.svg" alt="Three levels of database design: conceptual design (what data exists and how business entities relate) leads to logical design (how entities become tables, keys, relationships, and constraints), which leads to physical design (how data is indexed, partitioned, and physically accessed)" style="width:100%;max-width:720px">
+        </div>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Level</th><th>Focus</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Conceptual Database Design</td><td>High-level business entities and relationships</td><td>Customer places Order</td></tr>
+                <tr><td>Logical Database Design</td><td>Tables, columns, keys, constraints, normalization</td><td><code>orders.customer_id</code> references <code>customers.id</code></td></tr>
+                <tr><td>Physical Database Design</td><td>Indexes, partitions, storage, access paths</td><td>B-tree index on <code>orders(customer_id, created_at)</code></td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>4.1 Conceptual Database Design</strong></p>
+        <p>Defines the business entities and their relationships without focusing on database-specific implementations.</p>
+        <p>Typical concepts include entities, attributes, relationships, cardinality, and ER diagrams.</p>
+        <p class="minor-heading"><strong>4.2 Logical Database Design</strong></p>
+        <p>Transforms the conceptual model into a formal data structure.</p>
+        <p>Typical concepts include tables, columns, primary keys, foreign keys, data types, constraints, and normalization.</p>
+        <p class="minor-heading"><strong>4.3 Physical Database Design</strong></p>
+        <p>Determines how the logical schema is implemented efficiently in a specific database management system.</p>
+        <p>Typical concepts include indexes, storage pages, data organization, partitioning, compression, and access paths.</p>
+        <p><strong>Important:</strong> Conceptual and logical designs are primarily concerned with correctness and structure. Physical design is primarily concerned with implementation and efficiency, although all three influence one another.</p>
+    </div>
+
+    <div class="subheading">5. Core Concepts of Database Design</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>5.1 Data Modeling Concepts</strong></p>
+        <p>Data modeling defines how real-world information is represented inside a database.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Data Model</td><td>A formal way of describing how data is structured, related, and constrained</td></tr>
+                <tr><td>Entity</td><td>A real-world object or concept, such as Customer, Product, or Order</td></tr>
+                <tr><td>Attribute</td><td>A property of an entity, such as customer name or email</td></tr>
+                <tr><td>Entity Relationship Diagram (ERD)</td><td>Visual representation of entities and their relationships</td></tr>
+                <tr><td>Relationship</td><td>Association between entities</td></tr>
+                <tr><td>Cardinality</td><td>Number of records that can participate in a relationship</td></tr>
+                <tr><td>Optionality</td><td>Whether participation in a relationship is mandatory or optional</td></tr>
+                <tr><td>Domain</td><td>Set of permitted values for an attribute</td></tr>
+                <tr><td>Business Rule</td><td>A requirement that determines how data must behave</td></tr>
+                <tr><td>Data Dictionary</td><td>Documentation of database objects, fields, definitions, and constraints</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>5.2 Types of Relationships</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Relationship</th><th>Meaning</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>One-to-One (1:1)</td><td>One record relates to at most one record in another entity</td><td>User ↔ UserProfile</td></tr>
+                <tr><td>One-to-Many (1:N)</td><td>One record relates to multiple records</td><td>Customer → Orders</td></tr>
+                <tr><td>Many-to-One (N:1)</td><td>Multiple records reference one record</td><td>Orders → Customer</td></tr>
+                <tr><td>Many-to-Many (M:N)</td><td>Records on both sides can relate to multiple records</td><td>Students ↔ Courses</td></tr>
+                <tr><td>Self-Referencing</td><td>Records within the same table reference other records in that table</td><td>Employee → Manager</td></tr>
+            </tbody>
+        </table></div>
+        <p>In relational databases, many-to-many relationships are normally implemented using a <strong>junction table</strong>.</p>
+        <p>For example:</p>
+        <div class="svg-diagram">
+            <img src="static/database-design-er-diagram.svg" alt="ER diagram: a customer places zero or more customer orders; a customer order contains one or more order items; a product is referenced by zero or more order items; ORDER_ITEM has a composite key of order_id and product_id" style="width:100%;max-width:720px">
+        </div>
+        <p>Here, <code>ORDER_ITEM</code> is the junction table between orders and products. It also stores properties of the relationship, such as quantity and price.</p>
+        <p class="minor-heading"><strong>5.3 Relational Database Concepts</strong></p>
+        <p>These concepts form the foundation of relational database design.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Relation / Table</td><td>Logical collection of records with a defined structure</td></tr>
+                <tr><td>Tuple / Row</td><td>One record within a relation</td></tr>
+                <tr><td>Attribute / Column</td><td>A named field with a defined data type</td></tr>
+                <tr><td>Schema</td><td>Formal definition of database objects and their structure</td></tr>
+                <tr><td>Primary Key</td><td>Column or combination of columns uniquely identifying a row</td></tr>
+                <tr><td>Foreign Key</td><td>Column or columns referencing a candidate key in another or the same table</td></tr>
+                <tr><td>Candidate Key</td><td>Minimal set of attributes that uniquely identifies a record</td></tr>
+                <tr><td>Alternate Key</td><td>Candidate key not selected as the primary key</td></tr>
+                <tr><td>Composite Key</td><td>Key formed using multiple columns</td></tr>
+                <tr><td>Natural Key</td><td>Key derived from real business data, such as a stable product code</td></tr>
+                <tr><td>Surrogate Key</td><td>Artificial identifier, such as a generated numeric ID or UUID</td></tr>
+                <tr><td>Unique Constraint</td><td>Ensures specified values or combinations are unique, subject to database-specific NULL semantics</td></tr>
+                <tr><td>Referential Integrity</td><td>Ensures referenced relationships remain valid</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important distinction:</strong> A primary key identifies a record, while a foreign key establishes a relationship between records.</p>
+        <p class="minor-heading"><strong>5.4 Data Integrity and Constraints</strong></p>
+        <p>Database constraints protect data integrity independently of application code.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Constraint</th><th>Purpose</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>PRIMARY KEY</code></td><td>Uniquely identifies records</td><td><code>customer_id</code></td></tr>
+                <tr><td><code>FOREIGN KEY</code></td><td>Maintains valid relationships</td><td><code>orders.customer_id</code></td></tr>
+                <tr><td><code>UNIQUE</code></td><td>Prevents duplicate values or combinations</td><td>Customer email</td></tr>
+                <tr><td><code>NOT NULL</code></td><td>Requires a value</td><td>Order creation timestamp</td></tr>
+                <tr><td><code>CHECK</code></td><td>Validates a condition</td><td><code>quantity &gt; 0</code></td></tr>
+                <tr><td><code>DEFAULT</code></td><td>Supplies a value when omitted</td><td><code>status = 'PENDING'</code></td></tr>
+                <tr><td>Data Type</td><td>Restricts the kind of stored value</td><td><code>DECIMAL(12,2)</code></td></tr>
+                <tr><td>Referential Action</td><td>Defines behavior when referenced rows change</td><td><code>ON DELETE RESTRICT</code></td></tr>
+                <tr><td>Exclusion Constraint</td><td>Prevents overlapping/conflicting values in databases that support it</td><td>Overlapping bookings</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, an inventory quantity should never become negative.</p>
+        <p>A database can enforce this using:</p>
+        <div class="code-block"><pre><code>quantity INT NOT NULL CHECK (quantity &gt;= 0)</code></pre></div>
+        <p>However, constraints alone do not solve every concurrency problem. Transactional update logic is also required.</p>
+    </div>
+
+    <div class="subheading">6. Database Normalization</div>
+    <div class="intro">
+        <p><strong>Normalization</strong> is the process of organizing relational data to minimize unnecessary duplication and reduce data modification anomalies.</p>
+        <p>It primarily focuses on logical database design.</p>
+        <p class="minor-heading"><strong>6.1 Normal Forms</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Normal Form</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>First Normal Form (1NF)</td><td>Ensures attributes contain values from their defined domains and rows are representable as proper relational tuples; repeating groups are eliminated</td></tr>
+                <tr><td>Second Normal Form (2NF)</td><td>Removes partial dependencies of non-prime attributes on candidate keys</td></tr>
+                <tr><td>Third Normal Form (3NF)</td><td>Removes problematic transitive dependencies involving non-prime attributes</td></tr>
+                <tr><td>Boyce-Codd Normal Form (BCNF)</td><td>Requires every determinant of a nontrivial functional dependency to be a superkey</td></tr>
+                <tr><td>Fourth Normal Form (4NF)</td><td>Addresses nontrivial multivalued dependencies</td></tr>
+                <tr><td>Fifth Normal Form (5NF)</td><td>Addresses certain join dependencies</td></tr>
+            </tbody>
+        </table></div>
+        <p>In many transactional applications, <strong>3NF is a practical starting point</strong>, with BCNF considered when applicable.</p>
+        <p class="minor-heading"><strong>6.2 Example of Normalization</strong></p>
+        <p>Suppose an order table stores:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>order_id</th><th>customer_id</th><th>customer_name</th><th>product_name</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>101</td><td>1</td><td>Rahul</td><td>Laptop</td></tr>
+                <tr><td>102</td><td>1</td><td>Rahul</td><td>Mouse</td></tr>
+                <tr><td>103</td><td>2</td><td>Amit</td><td>Keyboard</td></tr>
+            </tbody>
+        </table></div>
+        <p>Customer information is duplicated across orders.</p>
+        <p>A normalized design might separate the data into:</p>
+        <div class="gw-grid2">
+            <div>
+                <p><strong>CUSTOMERS</strong></p>
+                <div class="gpt-table-wrap"><table class="gpt-table">
+                    <thead>
+                        <tr><th>id</th><th>name</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Rahul</td></tr>
+                        <tr><td>2</td><td>Amit</td></tr>
+                    </tbody>
+                </table></div>
+            </div>
+            <div>
+                <p><strong>ORDERS</strong></p>
+                <div class="gpt-table-wrap"><table class="gpt-table">
+                    <thead>
+                        <tr><th>id</th><th>customer_id</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>101</td><td>1</td></tr>
+                        <tr><td>102</td><td>1</td></tr>
+                        <tr><td>103</td><td>2</td></tr>
+                    </tbody>
+                </table></div>
+            </div>
+        </div>
+        <p>Product information would be modeled separately using Product and OrderItem tables.</p>
+        <p>This separates customer data from order data, reduces duplication, and ensures customer information has a single authoritative location.</p>
+        <p class="minor-heading"><strong>6.3 Normalization vs Denormalization</strong></p>
+        <p><strong>Denormalization</strong> intentionally introduces redundancy or derived data to improve access performance for specific workloads.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Aspect</th><th>Normalization</th><th>Denormalization</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Primary goal</td><td>Data integrity and reduced redundancy</td><td>Faster reads or simpler queries</td></tr>
+                <tr><td>Redundancy</td><td>Generally reduced</td><td>Intentionally introduced</td></tr>
+                <tr><td>Updates</td><td>Fewer duplicated values to maintain</td><td>Multiple copies may need synchronization</td></tr>
+                <tr><td>Joins</td><td>Often more joins</td><td>Often fewer joins</td></tr>
+                <tr><td>Storage</td><td>Often lower</td><td>Often higher</td></tr>
+                <tr><td>Common use</td><td>Transactional systems</td><td>Reporting, analytics, read-heavy applications</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Key point:</strong> Normalization and denormalization are not opposing rules where one is always better. A database can have a normalized core model and selectively denormalized read models.</p>
+        <p>For example, storing the product's sale price in <code>order_items.unit_price</code> is important for preserving order history, even when a Product table stores the current price.</p>
+    </div>
+
+    <div class="subheading">7. Database Types and Data Models</div>
+    <div class="intro">
+        <p>Different database systems organize and access data in different ways.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Database Type</th><th>Data Model</th><th>Common Use Cases</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Relational (RDBMS)</td><td>Tables with relationships</td><td>Banking, payments, orders, inventory</td></tr>
+                <tr><td>Document Database</td><td>JSON-like documents</td><td>Product catalogs, flexible content</td></tr>
+                <tr><td>Key-Value Database</td><td>Key-value pairs</td><td>Caching, session data</td></tr>
+                <tr><td>Wide-Column Database</td><td>Partitioned rows with flexible columns</td><td>Large-scale event and time-series workloads</td></tr>
+                <tr><td>Graph Database</td><td>Nodes and edges</td><td>Social networks, recommendations, fraud analysis</td></tr>
+                <tr><td>Time-Series Database</td><td>Time-indexed records</td><td>Metrics, monitoring, IoT</td></tr>
+                <tr><td>Columnar / Analytical Database</td><td>Column-oriented data storage</td><td>Reporting, OLAP, analytics</td></tr>
+                <tr><td>Vector Database</td><td>Embedding vectors and metadata</td><td>Semantic search, similarity search, RAG</td></tr>
+            </tbody>
+        </table></div>
+        <p>Examples include:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Database</th><th>Common Classification</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>PostgreSQL</td><td>Relational</td></tr>
+                <tr><td>MySQL</td><td>Relational</td></tr>
+                <tr><td>Microsoft SQL Server</td><td>Relational</td></tr>
+                <tr><td>MongoDB</td><td>Document</td></tr>
+                <tr><td>Redis</td><td>Key-value / multimodel</td></tr>
+                <tr><td>Cassandra</td><td>Wide-column</td></tr>
+                <tr><td>Neo4j</td><td>Graph</td></tr>
+                <tr><td>ClickHouse</td><td>Column-oriented analytical</td></tr>
+                <tr><td>InfluxDB</td><td>Time-series</td></tr>
+            </tbody>
+        </table></div>
+        <p>These categories are not mutually exclusive. For example, PostgreSQL also supports JSON documents, and Redis supports multiple data structures.</p>
+        <p class="minor-heading"><strong>Relational vs NoSQL Database Design</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Aspect</th><th>Relational</th><th>NoSQL</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Data organization</td><td>Primarily tables</td><td>Documents, keys, graphs, wide columns, etc.</td></tr>
+                <tr><td>Schema</td><td>Explicit relational schema</td><td>Model-specific; may be flexible or strictly validated</td></tr>
+                <tr><td>Relationships</td><td>Foreign keys and joins</td><td>References, embedding, or model-specific relationships</td></tr>
+                <tr><td>Transactions</td><td>Strong transactional support is common</td><td>Varies by database; some support full ACID transactions</td></tr>
+                <tr><td>Scaling</td><td>Vertical and horizontal approaches</td><td>Often designed with horizontal distribution in mind</td></tr>
+                <tr><td>Typical strengths</td><td>Complex relationships, constraints, transactions</td><td>Workload-specific models and distributed access patterns</td></tr>
+            </tbody>
+        </table></div>
+        <p>Database selection should depend on access patterns, data relationships, consistency requirements, operational complexity, and workload characteristics—not simply whether data is structured or unstructured.</p>
+    </div>
+
+    <div class="subheading">8. Physical Database Design</div>
+    <div class="intro">
+        <p>Physical database design determines how database data is organized and accessed efficiently.</p>
+        <p class="minor-heading"><strong>8.1 Core Physical Design Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Storage Engine</td><td>Component responsible for storing, retrieving, and managing data</td></tr>
+                <tr><td>Page / Block</td><td>Unit in which many database engines organize data on disk</td></tr>
+                <tr><td>Heap Table</td><td>Table whose row storage is not ordered by a clustered key</td></tr>
+                <tr><td>Clustered Organization</td><td>Storage organization based on an index or key, depending on the DBMS</td></tr>
+                <tr><td>Index</td><td>Auxiliary structure that helps locate rows efficiently</td></tr>
+                <tr><td>B-tree / B+ tree</td><td>Tree-based structure commonly used for indexes</td></tr>
+                <tr><td>Hash Index</td><td>Index based on hashing, typically useful for equality lookups</td></tr>
+                <tr><td>Bitmap Index</td><td>Compact representation useful for certain analytical workloads</td></tr>
+                <tr><td>Composite Index</td><td>Index containing multiple columns</td></tr>
+                <tr><td>Covering Index</td><td>Index containing the data needed to satisfy a query without fetching additional table columns</td></tr>
+                <tr><td>Partial / Filtered Index</td><td>Index covering rows that satisfy a condition</td></tr>
+                <tr><td>Expression Index</td><td>Index built from a computed expression</td></tr>
+                <tr><td>Partitioning</td><td>Dividing a large table or dataset into manageable subsets</td></tr>
+                <tr><td>Compression</td><td>Reducing physical storage requirements</td></tr>
+                <tr><td>Materialized View</td><td>Stored result of a query, refreshed according to defined rules</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>8.2 Indexing</strong></p>
+        <p>An index can reduce the amount of data that must be inspected for a query.</p>
+        <p>For example:</p>
+        <div class="code-block"><pre><code>CREATE INDEX idx_orders_customer
+ON orders(customer_id);</code></pre></div>
+        <p>A query such as:</p>
+        <div class="code-block"><pre><code>SELECT *
+FROM orders
+WHERE customer_id = 101;</code></pre></div>
+        <p>may benefit from this index.</p>
+        <p>However, indexes introduce trade-offs.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Advantage</th><th>Disadvantage</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Faster selective queries</td><td>Additional storage</td></tr>
+                <tr><td>Faster indexed joins</td><td>Extra work during writes</td></tr>
+                <tr><td>Efficient filtering and ordering</td><td>Index maintenance overhead</td></tr>
+                <tr><td>May reduce full-table scanning</td><td>Poor index selection can waste resources</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important:</strong> Creating an index does not guarantee that the database will use it. The query optimizer selects a plan based on estimated costs, statistics, and available access paths.</p>
+        <p class="minor-heading"><strong>8.3 Advanced Indexing Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Explanation</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Index Selectivity</td><td>How effectively an indexed condition narrows down matching rows</td></tr>
+                <tr><td>Cardinality</td><td>Number of distinct values in a column or result set, depending on context</td></tr>
+                <tr><td>Leftmost-Prefix Principle</td><td>Column-order behavior important for many composite B-tree indexes</td></tr>
+                <tr><td>Index-Only Scan</td><td>Accessing required information using an index without ordinary table-row retrieval</td></tr>
+                <tr><td>Index Maintenance</td><td>Updating index structures after underlying data changes</td></tr>
+                <tr><td>Index Fragmentation</td><td>Physical or logical fragmentation affecting some index designs</td></tr>
+                <tr><td>Query Statistics</td><td>Information used by query optimizers to estimate costs</td></tr>
+                <tr><td>Sargability</td><td>Whether a predicate can efficiently use available indexes or access paths</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">9. Query Design and Optimization</div>
+    <div class="intro">
+        <p>Database design must consider how applications access data.</p>
+        <p>Two schemas representing the same business entities can perform very differently for a particular workload.</p>
+        <p class="minor-heading"><strong>Core Query Performance Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Query Execution Plan</td><td>Strategy selected by the database to execute a query</td></tr>
+                <tr><td>Query Optimizer</td><td>Component that evaluates possible execution strategies</td></tr>
+                <tr><td>Full Table Scan</td><td>Reading the table to identify matching rows</td></tr>
+                <tr><td>Index Scan / Seek</td><td>Using an index to locate or scan relevant entries</td></tr>
+                <tr><td>Nested Loop Join</td><td>Join approach that repeatedly searches for matches</td></tr>
+                <tr><td>Hash Join</td><td>Join approach that uses a hash structure</td></tr>
+                <tr><td>Merge Join</td><td>Join approach that matches ordered inputs</td></tr>
+                <tr><td>Predicate Pushdown</td><td>Applying filtering as early as practical</td></tr>
+                <tr><td>Projection</td><td>Selecting required columns</td></tr>
+                <tr><td>Join Ordering</td><td>Choosing the order in which tables are joined</td></tr>
+                <tr><td>Pagination</td><td>Retrieving a subset of a result set</td></tr>
+                <tr><td>Keyset Pagination</td><td>Paging using an ordered cursor or last-seen key</td></tr>
+                <tr><td>Aggregation</td><td>Computing summaries such as counts and totals</td></tr>
+                <tr><td>Query Profiling</td><td>Examining execution costs, timing, and resource usage</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, if an application frequently retrieves recent orders for a customer:</p>
+        <div class="code-block"><pre><code>SELECT id, status, created_at
+FROM orders
+WHERE customer_id = 101
+ORDER BY created_at DESC
+LIMIT 20;</code></pre></div>
+        <p>A composite index can be appropriate:</p>
+        <div class="code-block"><pre><code>CREATE INDEX idx_orders_customer_created
+ON orders(customer_id, created_at DESC);</code></pre></div>
+        <p>This is an example of <strong>workload-driven database design</strong>: index choices are based on actual query patterns rather than indexing every column.</p>
+    </div>
+
+    <div class="subheading">10. Transactions and Concurrency Control</div>
+    <div class="intro">
+        <p>Database design must account for concurrent operations and the correctness guarantees they require.</p>
+        <p>For example, two users might attempt to purchase the last available item at the same time.</p>
+        <p>Without proper transactional handling, the application could oversell inventory.</p>
+        <p class="minor-heading"><strong>10.1 ACID Properties</strong></p>
+        <p>ACID describes four important properties of database transactions.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Property</th><th>Meaning</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Atomicity</td><td>A transaction's changes are applied together or rolled back as a unit</td><td>Payment and order updates succeed together</td></tr>
+                <tr><td>Consistency</td><td>A transaction preserves defined database invariants</td><td>Foreign keys and balance rules remain valid</td></tr>
+                <tr><td>Isolation</td><td>Concurrent transactions are controlled according to an isolation model</td><td>Concurrent purchases do not corrupt inventory</td></tr>
+                <tr><td>Durability</td><td>Committed changes survive failures according to the database's durability guarantees</td><td>Committed orders remain after a crash</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>10.2 Transaction Isolation Levels</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Isolation Level</th><th>General Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Read Uncommitted</td><td>May allow reading another transaction's uncommitted changes</td></tr>
+                <tr><td>Read Committed</td><td>Prevents dirty reads; repeated reads may observe committed changes</td></tr>
+                <tr><td>Repeatable Read</td><td>Provides stronger guarantees for repeated reads</td></tr>
+                <tr><td>Serializable</td><td>Ensures the result is equivalent to some serial execution of transactions</td></tr>
+            </tbody>
+        </table></div>
+        <p>Actual behavior depends on the DBMS and its concurrency implementation.</p>
+        <p>For example, PostgreSQL uses MVCC-based isolation, while SQL Server supports several locking- and versioning-based isolation options.</p>
+        <p class="minor-heading"><strong>10.3 Common Concurrency Problems in Databases</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Problem</th><th>Explanation</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Dirty Read</td><td>A transaction reads uncommitted changes from another transaction</td><td>Reading a payment before it is committed</td></tr>
+                <tr><td>Non-Repeatable Read</td><td>Repeated reads of the same record return different committed values</td><td>Account balance changes between reads</td></tr>
+                <tr><td>Phantom Read</td><td>Repeating a predicate query returns a different matching set</td><td>Additional orders appear between queries</td></tr>
+                <tr><td>Lost Update</td><td>One transaction's update overwrites another's</td><td>Two purchases update the same stock quantity</td></tr>
+                <tr><td>Write Skew</td><td>Concurrent transactions make individually valid decisions that violate a combined invariant</td><td>Two doctors each go off duty</td></tr>
+                <tr><td>Deadlock</td><td>Transactions wait for locks held by each other</td><td>Opposite record-lock acquisition order</td></tr>
+                <tr><td>Lock Contention</td><td>Transactions compete for the same locked records</td><td>Many updates to one inventory row</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>10.4 Concurrency Control Mechanisms</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Mechanism</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Pessimistic Locking</td><td>Lock records before performing protected operations</td></tr>
+                <tr><td>Optimistic Locking</td><td>Detect conflicting changes using version values or conditions</td></tr>
+                <tr><td>MVCC (Multi-Version Concurrency Control)</td><td>Maintain row versions to support transactionally consistent access</td></tr>
+                <tr><td>Row-Level Locking</td><td>Coordinate access to individual rows</td></tr>
+                <tr><td>Table-Level Locking</td><td>Coordinate access to a whole table</td></tr>
+                <tr><td>Predicate / Range Locking</td><td>Protect qualifying ranges or predicates where supported</td></tr>
+                <tr><td>Deadlock Detection</td><td>Identify transactions involved in circular waits</td></tr>
+                <tr><td>Serialization Retry</td><td>Retry transactions aborted because a serializable execution cannot be maintained</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important:</strong> Java's <code>synchronized</code> keyword cannot protect a database record across several Spring Boot application instances. Coordination must use mechanisms shared by those instances, such as database transactions, constraints, and locking.</p>
+    </div>
+
+    <div class="subheading">11. Database Scalability</div>
+    <div class="intro">
+        <p>Scalability becomes important when databases must support larger amounts of data, more users, and greater read/write throughput.</p>
+        <p class="minor-heading"><strong>11.1 Scalability Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Vertical Scaling</td><td>Increasing CPU, RAM, or storage on a database server</td></tr>
+                <tr><td>Horizontal Scaling</td><td>Distributing workloads across additional nodes</td></tr>
+                <tr><td>Partitioning</td><td>Dividing data into subsets, often within one logical database</td></tr>
+                <tr><td>Sharding</td><td>Distributing subsets of data across separate database nodes or clusters</td></tr>
+                <tr><td>Replication</td><td>Maintaining copies of data across database instances</td></tr>
+                <tr><td>Read Replica</td><td>Replica used to serve some read workloads</td></tr>
+                <tr><td>Primary-Replica Architecture</td><td>Primary handles authoritative writes; replicas follow changes</td></tr>
+                <tr><td>Multi-Primary Replication</td><td>Multiple nodes accept writes under a defined conflict and replication model</td></tr>
+                <tr><td>Distributed Database</td><td>Database whose data or operations span multiple machines</td></tr>
+                <tr><td>Data Locality</td><td>Keeping frequently accessed related data close together</td></tr>
+                <tr><td>Hot Partition / Hot Key</td><td>A partition or key receiving disproportionate traffic</td></tr>
+                <tr><td>Rebalancing</td><td>Redistributing data or workloads among partitions/nodes</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>11.2 Partitioning vs Sharding vs Replication</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Main Purpose</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Partitioning</td><td>Manage large datasets and improve data access/maintenance</td><td>Divide orders by month</td></tr>
+                <tr><td>Sharding</td><td>Distribute data and workload across machines</td><td>Customers 1–1M on shard A, others on shard B</td></tr>
+                <tr><td>Replication</td><td>Maintain multiple copies for availability or read capacity</td><td>Primary database with two read replicas</td></tr>
+            </tbody>
+        </table></div>
+        <div class="svg-diagram">
+            <img src="static/database-design-sharding.svg" alt="The application sends requests to a shard router, which routes them to Shard A or Shard B; each shard replicates to its own replica and holds one customers partition" style="width:100%;max-width:720px">
+        </div>
+        <p>The diagram shows a conceptual combination of sharding and replication. A real deployment may use different replication and routing topologies.</p>
+        <p class="minor-heading"><strong>11.3 Distributed Database Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Explanation</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Strong Consistency</td><td>Reads and writes satisfy a specified strong consistency model</td></tr>
+                <tr><td>Eventual Consistency</td><td>Replicas converge when updates cease and propagation completes</td></tr>
+                <tr><td>Quorum</td><td>Required participation threshold for certain operations</td></tr>
+                <tr><td>Leader Election</td><td>Selecting a node to coordinate a replicated group</td></tr>
+                <tr><td>Consensus</td><td>Agreement among distributed nodes under specified failure assumptions</td></tr>
+                <tr><td>CAP Theorem</td><td>Describes the consistency/availability trade-off during network partitions</td></tr>
+                <tr><td>Network Partition</td><td>Communication failure separating parts of a distributed system</td></tr>
+                <tr><td>Distributed Transaction</td><td>Transaction involving multiple database participants</td></tr>
+                <tr><td>Two-Phase Commit (2PC)</td><td>Protocol for coordinating commit across participants</td></tr>
+                <tr><td>Change Data Capture (CDC)</td><td>Capturing database changes for downstream processing</td></tr>
+                <tr><td>Replication Lag</td><td>Delay before a replica reflects changes from its source</td></tr>
+                <tr><td>Split-Brain</td><td>Situation in which multiple nodes incorrectly act as authoritative leaders</td></tr>
+            </tbody>
+        </table></div>
+        <p>The main distributed design concern is selecting appropriate consistency, availability, latency, and operational trade-offs.</p>
+    </div>
+
+    <div class="subheading">12. OLTP vs OLAP Database Design</div>
+    <div class="intro">
+        <p>Database design differs considerably between transactional and analytical workloads.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Aspect</th><th>OLTP</th><th>OLAP</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Full Form</td><td>Online Transaction Processing</td><td>Online Analytical Processing</td></tr>
+                <tr><td>Primary Goal</td><td>Process operational transactions</td><td>Analyze large datasets</td></tr>
+                <tr><td>Workload</td><td>Many short reads/writes</td><td>Complex analytical queries</td></tr>
+                <tr><td>Data Model</td><td>Often normalized relational schemas</td><td>Often dimensional or analytical models</td></tr>
+                <tr><td>Common Operations</td><td>INSERT, UPDATE, DELETE, selective SELECT</td><td>Aggregations, scans, grouping</td></tr>
+                <tr><td>Query Patterns</td><td>Small targeted record sets</td><td>Large data ranges</td></tr>
+                <tr><td>Optimization</td><td>Transaction latency and concurrency</td><td>Scan efficiency and aggregation throughput</td></tr>
+                <tr><td>Example</td><td>Order processing, payment systems</td><td>Sales dashboards, trend analysis</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>OLAP Data Modeling Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Fact Table</td><td>Stores measurable events or business facts</td></tr>
+                <tr><td>Dimension Table</td><td>Stores descriptive context such as customer, date, or product</td></tr>
+                <tr><td>Star Schema</td><td>Fact table connected to dimension tables</td></tr>
+                <tr><td>Snowflake Schema</td><td>Dimension tables further normalized into related tables</td></tr>
+                <tr><td>Slowly Changing Dimension (SCD)</td><td>Strategy for tracking changes to dimensional attributes</td></tr>
+                <tr><td>Data Warehouse</td><td>Centralized analytical data platform</td></tr>
+                <tr><td>Data Mart</td><td>Subject-specific subset of analytical data</td></tr>
+                <tr><td>ETL / ELT</td><td>Processes for extracting, transforming, and loading data</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, an order-processing database might store normalized customer and order tables, while a reporting system stores a sales fact table connected to product, customer, and date dimensions.</p>
+    </div>
+
+    <div class="subheading">13. Security, Reliability, and Data Lifecycle</div>
+    <div class="intro">
+        <p>A database design is incomplete without considering how data is protected, recovered, and evolved.</p>
+        <p class="minor-heading"><strong>13.1 Security Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Authentication</td><td>Verify identities accessing the database</td></tr>
+                <tr><td>Authorization</td><td>Control permitted database operations</td></tr>
+                <tr><td>Role-Based Access Control (RBAC)</td><td>Assign privileges through roles</td></tr>
+                <tr><td>Least Privilege</td><td>Grant only necessary permissions</td></tr>
+                <tr><td>Encryption at Rest</td><td>Protect stored data</td></tr>
+                <tr><td>Encryption in Transit</td><td>Protect data moving between systems</td></tr>
+                <tr><td>Data Masking</td><td>Hide sensitive values</td></tr>
+                <tr><td>Row-Level Security</td><td>Restrict accessible rows according to policies</td></tr>
+                <tr><td>Auditing</td><td>Track relevant data access and modifications</td></tr>
+                <tr><td>Data Classification</td><td>Identify sensitive, confidential, or public data</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>13.2 Reliability and Recovery Concepts</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Backup</td><td>Preserve recoverable copies of data</td></tr>
+                <tr><td>Restore</td><td>Recover data from backups</td></tr>
+                <tr><td>Point-in-Time Recovery</td><td>Restore to a particular recoverable point</td></tr>
+                <tr><td>Write-Ahead Logging (WAL)</td><td>Record changes to support crash recovery and other database functions</td></tr>
+                <tr><td>Checkpoint</td><td>Coordinate durable data state and recovery progress</td></tr>
+                <tr><td>High Availability</td><td>Reduce downtime through resilient system design</td></tr>
+                <tr><td>Failover</td><td>Transfer service to another instance after failure</td></tr>
+                <tr><td>Disaster Recovery</td><td>Restore service following major disruption</td></tr>
+                <tr><td>RPO</td><td>Maximum acceptable amount of data loss, measured in time</td></tr>
+                <tr><td>RTO</td><td>Maximum acceptable recovery duration</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>13.3 Schema Evolution and Lifecycle</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concept</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Schema Migration</td><td>Controlled modification of database structure</td></tr>
+                <tr><td>Backward Compatibility</td><td>Ensuring existing application versions can continue working</td></tr>
+                <tr><td>Expand-and-Contract</td><td>Gradually introducing a schema change before removing obsolete structures</td></tr>
+                <tr><td>Data Backfill</td><td>Populating existing records with new or transformed data</td></tr>
+                <tr><td>Data Archiving</td><td>Moving infrequently accessed historical data to another storage tier</td></tr>
+                <tr><td>Data Retention</td><td>Defining how long information must be kept</td></tr>
+                <tr><td>Soft Delete</td><td>Marking a record as deleted without immediately removing it</td></tr>
+                <tr><td>Hard Delete</td><td>Physically removing a record</td></tr>
+                <tr><td>Temporal Data Modeling</td><td>Representing historical or time-dependent information</td></tr>
+                <tr><td>Data Lineage</td><td>Tracking data origins and transformations</td></tr>
+                <tr><td>Data Governance</td><td>Managing data ownership, policies, quality, and compliance</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">14. Common Database Design Problems</div>
+    <div class="intro">
+        <p>Poor database design can introduce correctness, maintainability, and performance problems.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Problem</th><th>Cause</th><th>Preferred Mitigation</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Duplicate Data</td><td>Repeated storage of the same facts</td><td>Normalization and uniqueness constraints</td></tr>
+                <tr><td>Update Anomaly</td><td>One fact stored in multiple places</td><td>Normalize or coordinate derived copies</td></tr>
+                <tr><td>Insert Anomaly</td><td>Data model requires unrelated data to be inserted</td><td>Improve entity decomposition</td></tr>
+                <tr><td>Delete Anomaly</td><td>Deleting one fact unintentionally removes another</td><td>Improve table separation</td></tr>
+                <tr><td>Orphan Records</td><td>Invalid or missing relationships</td><td>Foreign keys and appropriate delete policies</td></tr>
+                <tr><td>Missing Business Constraints</td><td>Rules enforced only in application code</td><td>Use DB constraints where practical</td></tr>
+                <tr><td>Slow Queries</td><td>Poor access paths or inefficient schema</td><td>Indexes, execution-plan analysis</td></tr>
+                <tr><td>Excessive Indexing</td><td>Too many unnecessary indexes</td><td>Workload-driven index selection</td></tr>
+                <tr><td>N+1 Queries</td><td>Repeated dependent database queries</td><td>Appropriate joins, batching, and fetching</td></tr>
+                <tr><td>Hotspot Contention</td><td>Many writes target the same records</td><td>Redesign contention points or distribute work</td></tr>
+                <tr><td>Overselling Inventory</td><td>Unsafe concurrent updates</td><td>Atomic updates and transaction control</td></tr>
+                <tr><td>Deadlocks</td><td>Conflicting lock acquisition order</td><td>Consistent ordering, short transactions, retries</td></tr>
+                <tr><td>Large Table Scans</td><td>Missing/selectively ineffective indexes</td><td>Query optimization and partition pruning</td></tr>
+                <tr><td>Inefficient Pagination</td><td>Large offsets on growing datasets</td><td>Consider keyset pagination</td></tr>
+                <tr><td>Data Inconsistency</td><td>Uncoordinated replicated or denormalized data</td><td>Explicit consistency and reconciliation rules</td></tr>
+                <tr><td>Migration Failure</td><td>Breaking schema changes</td><td>Versioned, compatible migrations</td></tr>
+                <tr><td>Data Loss</td><td>Insufficient recovery strategy</td><td>Verified backups, recovery tests</td></tr>
+                <tr><td>Uncontrolled Growth</td><td>Missing data lifecycle policy</td><td>Retention, partitioning, archival</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">15. Practical Database Design Example</div>
+    <div class="intro">
+        <p>Consider an e-commerce system built using Java, Spring Boot, and PostgreSQL.</p>
+        <p>The application needs to store customers, products, orders, and order items.</p>
+        <p class="minor-heading"><strong>15.1 Basic Schema</strong></p>
+        <div class="code-block"><pre><code>CREATE TABLE customers (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(150) NOT NULL
+);
+
+CREATE TABLE products (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    sku VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(200) NOT NULL,
+    price DECIMAL(12,2) NOT NULL CHECK (price &gt;= 0),
+    stock_quantity INT NOT NULL
+        CHECK (stock_quantity &gt;= 0)
+);
+
+CREATE TABLE orders (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id BIGINT NOT NULL,
+    status VARCHAR(30) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_orders_customer
+        FOREIGN KEY (customer_id)
+        REFERENCES customers(id)
+);
+
+CREATE TABLE order_items (
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity &gt; 0),
+    unit_price DECIMAL(12,2) NOT NULL CHECK (unit_price &gt;= 0),
+
+    PRIMARY KEY (order_id, product_id),
+
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);</code></pre></div>
+        <p class="minor-heading"><strong>15.2 Physical Optimization</strong></p>
+        <p>If customers frequently retrieve their recent orders:</p>
+        <div class="code-block"><pre><code>CREATE INDEX idx_orders_customer_created
+ON orders(customer_id, created_at DESC);</code></pre></div>
+        <p class="minor-heading"><strong>15.3 Concurrency-Safe Inventory Update</strong></p>
+        <p>When purchasing a product, simply reading the stock and subsequently updating it can produce a lost-update race.</p>
+        <p>A safer approach is a conditional atomic update:</p>
+        <div class="code-block"><pre><code>UPDATE products
+SET stock_quantity = stock_quantity - 1
+WHERE id = 1001
+  AND stock_quantity &gt;= 1;</code></pre></div>
+        <p>If exactly one row was updated, the stock deduction succeeded. If zero rows were updated, the product either does not exist or has insufficient stock.</p>
+        <p>The application must check the affected-row count and run the deduction inside a transaction that coordinates all required order changes.</p>
+        <p class="minor-heading"><strong>15.4 Concepts Applied</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Design Decision</th><th>Database Concept</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Separate Customer and Order tables</td><td>Normalization</td></tr>
+                <tr><td>Customer-to-Order reference</td><td>One-to-Many Relationship</td></tr>
+                <tr><td><code>customers.id</code></td><td>Primary Key</td></tr>
+                <tr><td><code>orders.customer_id</code></td><td>Foreign Key</td></tr>
+                <tr><td>Unique customer email</td><td>Unique Constraint</td></tr>
+                <tr><td>Nonnegative stock</td><td>Check Constraint</td></tr>
+                <tr><td>Index on customer and creation time</td><td>Composite Index</td></tr>
+                <tr><td>Conditional inventory deduction</td><td>Atomic Update / Concurrency Control</td></tr>
+                <tr><td>Order and inventory changes in one transaction</td><td>Transaction Design</td></tr>
+                <tr><td>Historical <code>unit_price</code> in OrderItem</td><td>Historical Data Modeling</td></tr>
+            </tbody>
+        </table></div>
+        <p>This demonstrates how several database design concepts work together in a real application.</p>
+    </div>
+
+    <div class="subheading">16. Important Database Design Trade-offs</div>
+    <div class="intro">
+        <p>Database design often involves choosing between alternatives that optimize different properties.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Trade-off</th><th>Key Consideration</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Normalization vs Denormalization</td><td>Data integrity vs read optimization</td></tr>
+                <tr><td>Natural Key vs Surrogate Key</td><td>Business meaning vs identifier stability</td></tr>
+                <tr><td>SQL vs NoSQL</td><td>Relational semantics vs workload-specific data models</td></tr>
+                <tr><td>Relational References vs Document Embedding</td><td>Independent updates vs colocated reads</td></tr>
+                <tr><td>Indexing vs Write Performance</td><td>Faster lookups vs index maintenance</td></tr>
+                <tr><td>Vertical vs Horizontal Scaling</td><td>Simplicity vs distributed scaling</td></tr>
+                <tr><td>Partitioning vs Sharding</td><td>Local data organization vs cross-node distribution</td></tr>
+                <tr><td>Strong vs Eventual Consistency</td><td>Immediate consistency guarantees vs distributed availability/latency trade-offs</td></tr>
+                <tr><td>Optimistic vs Pessimistic Locking</td><td>Conflict detection vs up-front coordination</td></tr>
+                <tr><td>Soft Delete vs Hard Delete</td><td>Recoverability and history vs storage and erasure requirements</td></tr>
+                <tr><td>UUID vs Sequential IDs</td><td>Distributed identifier generation vs locality and index behavior</td></tr>
+                <tr><td>Schema Flexibility vs Strict Validation</td><td>Adaptability vs centralized integrity enforcement</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important:</strong> There is no universally optimal database schema. A design that performs well for one workload may be inefficient or unnecessarily complicated for another.</p>
+    </div>
+
+    <div class="subheading">17. Database Design Process</div>
+    <div class="intro">
+        <p>A practical database design process can follow this sequence:</p>
+        <div class="steps">
+            <div class="step"><div class="step-title">Requirement Analysis</div><div class="step-body">Identify business entities, use cases, invariants, data volume, access patterns, and availability requirements.</div></div>
+            <div class="step"><div class="step-title">Database Selection</div><div class="step-body">Choose a suitable database model and DBMS based on workload and data characteristics.</div></div>
+            <div class="step"><div class="step-title">Conceptual Modeling</div><div class="step-body">Identify entities, attributes, relationships, and cardinalities.</div></div>
+            <div class="step"><div class="step-title">Logical Schema Design</div><div class="step-body">Define tables, fields, data types, keys, and relationships.</div></div>
+            <div class="step"><div class="step-title">Normalization</div><div class="step-body">Remove unintended redundancy and address modification anomalies.</div></div>
+            <div class="step"><div class="step-title">Constraint Design</div><div class="step-body">Define integrity rules, uniqueness, referential integrity, and valid data domains.</div></div>
+            <div class="step"><div class="step-title">Transaction Design</div><div class="step-body">Define transaction boundaries, isolation requirements, locking, and concurrency behavior.</div></div>
+            <div class="step"><div class="step-title">Physical Design</div><div class="step-body">Choose indexes, storage organization, and partitions based on measured or expected workloads.</div></div>
+            <div class="step"><div class="step-title">Performance and Scalability Validation</div><div class="step-body">Analyze execution plans, test data growth, and benchmark representative workloads.</div></div>
+            <div class="step"><div class="step-title">Security and Operational Design</div><div class="step-body">Define permissions, encryption, backups, recovery, retention, and migration strategies.</div></div>
+            <div class="step"><div class="step-title">Monitoring and Evolution</div><div class="step-body">Monitor workloads and evolve the design as requirements and usage change.</div></div>
+        </div>
+        <p>Database design is iterative. A system may revisit its logical and physical design multiple times as workload requirements evolve.</p>
+    </div>
+
+    <div class="subheading">18. Database Design in Java and Spring Boot Applications</div>
+    <div class="intro">
+        <p>In Java and Spring Boot applications, database design decisions influence entity modeling, repository queries, transaction boundaries, and application performance.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Database Concept</th><th>Java / Spring Boot Implementation</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Entity / Table Mapping</td><td>JPA <code>@Entity</code>, <code>@Table</code></td></tr>
+                <tr><td>Primary Key</td><td><code>@Id</code>, <code>@GeneratedValue</code></td></tr>
+                <tr><td>Column Mapping</td><td><code>@Column</code></td></tr>
+                <tr><td>Unique Constraint</td><td><code>@UniqueConstraint</code></td></tr>
+                <tr><td>Relationships</td><td><code>@OneToMany</code>, <code>@ManyToOne</code>, <code>@OneToOne</code>, <code>@ManyToMany</code></td></tr>
+                <tr><td>Foreign Key</td><td>JPA join mappings and database DDL constraints</td></tr>
+                <tr><td>Index</td><td><code>@Index</code> or SQL migration</td></tr>
+                <tr><td>Transaction</td><td><code>@Transactional</code></td></tr>
+                <tr><td>Optimistic Locking</td><td><code>@Version</code></td></tr>
+                <tr><td>Pessimistic Locking</td><td><code>@Lock</code> with <code>LockModeType.PESSIMISTIC_WRITE</code></td></tr>
+                <tr><td>Query Optimization</td><td>JPQL, native SQL, projections, fetch tuning</td></tr>
+                <tr><td>Schema Migration</td><td>Flyway or Liquibase</td></tr>
+                <tr><td>Connection Pooling</td><td>HikariCP</td></tr>
+                <tr><td>Database Monitoring</td><td>Metrics, slow-query logs, execution plans</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important:</strong> JPA mappings are not a substitute for database design. For example, creating a <code>@ManyToOne</code> mapping describes a relationship in application code, but reliable integrity also depends on the actual database constraints and schema.</p>
+    </div>
+
+    <div class="subheading">19. Other Important Distinctions</div>
+    <div class="intro">
+        <p>Several database concepts are closely related but solve different problems.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Concepts</th><th>Difference</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Database vs DBMS</td><td>Stored and organized data vs software used to manage it</td></tr>
+                <tr><td>Database Design vs Database Architecture</td><td>Data structure and access decisions vs overall organization of database components, nodes, and infrastructure</td></tr>
+                <tr><td>Conceptual vs Logical Design</td><td>Business representation vs formal logical structure</td></tr>
+                <tr><td>Logical vs Physical Design</td><td>Data schema vs storage and access implementation</td></tr>
+                <tr><td>Schema vs Instance</td><td>Database structure vs data stored at a particular time</td></tr>
+                <tr><td>Primary Key vs Foreign Key</td><td>Unique row identity vs relationship reference</td></tr>
+                <tr><td>Primary Key vs Unique Constraint</td><td>Chosen primary identifier vs additional uniqueness rule</td></tr>
+                <tr><td>Clustered vs Nonclustered Index</td><td>Table/index organization vs a separate index access structure; exact semantics vary by DBMS</td></tr>
+                <tr><td>Normalization vs Denormalization</td><td>Redundancy reduction vs intentional redundancy</td></tr>
+                <tr><td>Transaction vs Lock</td><td>Logical unit of work vs mechanism for coordinating access</td></tr>
+                <tr><td>ACID Consistency vs Distributed Consistency</td><td>Preserving defined invariants vs guarantees about observations of distributed data</td></tr>
+                <tr><td>MVCC vs Locking</td><td>Version-based access coordination vs lock-based access coordination</td></tr>
+                <tr><td>Partitioning vs Sharding</td><td>Dividing data subsets vs distributing them across independently managed nodes</td></tr>
+                <tr><td>Replication vs Backup</td><td>Maintaining operating copies vs creating recoverable historical copies</td></tr>
+                <tr><td>OLTP vs OLAP</td><td>Operational transactions vs analytical processing</td></tr>
+                <tr><td>Database Scaling vs Query Optimization</td><td>Increasing system capacity vs improving query execution efficiency</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">20. Advanced Database Design Concepts</div>
+    <div class="intro">
+        <p>Once the fundamentals are understood, these topics become important for large-scale and production systems.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Area</th><th>Advanced Concepts</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Relational Theory</td><td>Functional dependencies, candidate keys, BCNF, relational algebra</td></tr>
+                <tr><td>Storage Internals</td><td>B+ trees, LSM trees, buffer pools, WAL, page layouts</td></tr>
+                <tr><td>Index Engineering</td><td>Covering indexes, partial indexes, expression indexes, clustering, selectivity</td></tr>
+                <tr><td>Query Processing</td><td>Cost-based optimization, cardinality estimation, join algorithms</td></tr>
+                <tr><td>Transaction Processing</td><td>MVCC, 2PL, SSI, deadlock detection, serialization anomalies</td></tr>
+                <tr><td>Distributed Databases</td><td>Sharding, replication, consensus, quorum, failover</td></tr>
+                <tr><td>Consistency Models</td><td>Linearizability, serializability, snapshot isolation, eventual consistency</td></tr>
+                <tr><td>High Availability</td><td>Leader election, synchronous/asynchronous replication, failover</td></tr>
+                <tr><td>Large Data Management</td><td>Partition pruning, archival, data tiering, compression</td></tr>
+                <tr><td>Data Architecture</td><td>CQRS, event sourcing, CDC, materialized views, data warehousing</td></tr>
+                <tr><td>Multitenancy</td><td>Shared schema, tenant-specific schema, database per tenant</td></tr>
+                <tr><td>Temporal Modeling</td><td>Event time, valid time, system time, bitemporal data</td></tr>
+                <tr><td>Database Evolution</td><td>Online schema changes, expand-and-contract, backfills</td></tr>
+                <tr><td>Performance Engineering</td><td>Benchmarking, workload modeling, contention analysis</td></tr>
+                <tr><td>Data Security</td><td>Encryption, row-level security, auditing, retention</td></tr>
+                <tr><td>Operational Resilience</td><td>Recovery testing, capacity planning, observability</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">21. Advantages of Good Database Design</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Advantage</th><th>Explanation</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Improved Data Integrity</td><td>Constraints and correct relationships prevent many invalid states</td></tr>
+                <tr><td>Reduced Redundancy</td><td>Well-structured models avoid unnecessary duplication</td></tr>
+                <tr><td>Better Performance</td><td>Appropriate indexes and access patterns reduce query costs</td></tr>
+                <tr><td>Easier Maintenance</td><td>Clear structures are easier to understand and modify</td></tr>
+                <tr><td>Better Scalability</td><td>Workload-aware designs provide clearer scaling options</td></tr>
+                <tr><td>Higher Reliability</td><td>Transaction and recovery strategies protect critical data</td></tr>
+                <tr><td>Improved Security</td><td>Explicit controls reduce unnecessary data exposure</td></tr>
+                <tr><td>Lower Long-Term Complexity</td><td>Well-defined data ownership and invariants simplify application behavior</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Challenges and Costs</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead>
+                <tr><th>Challenge</th><th>Explanation</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Upfront Design Effort</td><td>Requires understanding business requirements and access patterns</td></tr>
+                <tr><td>Evolving Requirements</td><td>Schema decisions may need revisions as products change</td></tr>
+                <tr><td>Performance Trade-offs</td><td>Normalization, indexing, and consistency choices have costs</td></tr>
+                <tr><td>Migration Complexity</td><td>Changing large production tables can be operationally difficult</td></tr>
+                <tr><td>Distributed Complexity</td><td>Sharding and replication introduce coordination and failure modes</td></tr>
+                <tr><td>Overengineering</td><td>Premature distribution, indexing, or abstraction can create unnecessary complexity</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">22. Final Mental Model</div>
+    <div class="intro">
+        <p>Think of Database Design as a sequence of related decisions:</p>
+        <div class="gw-card"><div class="gw-cols4">
+            <div class="gw-tile line"><span class="gw-cap">01</span><p class="gw-n">Data Modeling</p><span class="gw-cap">What data exists?</span></div>
+            <div class="gw-tile line"><span class="gw-cap">02</span><p class="gw-n">Logical Design</p><span class="gw-cap">How is it structured?</span></div>
+            <div class="gw-tile line"><span class="gw-cap">03</span><p class="gw-n">Integrity</p><span class="gw-cap">What rules must always hold?</span></div>
+            <div class="gw-tile line"><span class="gw-cap">04</span><p class="gw-n">Transactions</p><span class="gw-cap">How are updates kept correct?</span></div>
+            <div class="gw-tile line"><span class="gw-cap">05</span><p class="gw-n">Physical Design</p><span class="gw-cap">How is data accessed efficiently?</span></div>
+            <div class="gw-tile line"><span class="gw-cap">06</span><p class="gw-n">Scalability</p><span class="gw-cap">How does it handle growth?</span></div>
+            <div class="gw-tile line"><span class="gw-cap">07</span><p class="gw-n">Reliability</p><span class="gw-cap">How does it survive failures?</span></div>
+            <div class="gw-tile line"><span class="gw-cap">08</span><p class="gw-n">Evolution</p><span class="gw-cap">How does it change safely?</span></div>
+        </div></div>
+    </div>
+
+    <div class="subheading">23. Key Takeaways</div>
+    <div class="intro">
+        <p><strong>Database Design is not just about creating tables, writing SQL queries, or applying normalization.</strong></p>
+        <p>It is about designing a data system that satisfies several interconnected requirements:</p>
+        <ul>
+            <li><strong>Data Modeling</strong> defines the business information being represented.</li>
+            <li><strong>Logical Design</strong> defines schemas, keys, relationships, and integrity rules.</li>
+            <li><strong>Normalization</strong> helps reduce redundancy and modification anomalies.</li>
+            <li><strong>Physical Design</strong> determines efficient storage and access paths.</li>
+            <li><strong>Transactions and Concurrency Control</strong> preserve correctness during simultaneous operations.</li>
+            <li><strong>Scalability and Distribution</strong> help the database accommodate larger workloads.</li>
+            <li><strong>Security and Reliability</strong> protect data and support recovery.</li>
+            <li><strong>Schema Evolution</strong> allows the database to change safely as the application grows.</li>
+        </ul>
+        <p>The most important principle is that <strong>database design should start with business requirements and data correctness, then optimize for actual access patterns, performance, and scalability.</strong></p>
+        <p>A strong database design provides the foundation for a correct, maintainable, efficient, and scalable software system.</p>
+    </div>
+
+</div>
+</body>
+</html>

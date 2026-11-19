@@ -1,0 +1,14 @@
+<svg width="720" height="242" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 242" role="img" aria-label="Three levels of database design: conceptual design leads to logical design, which leads to physical design">
+    <defs><marker id="ddl-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <path d="M360 64 V94" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ddl-a)"/>
+    <path d="M360 146 V176" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ddl-a)"/>
+    <rect x="170" y="14" width="380" height="50" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="35" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Conceptual Design</text>
+    <text x="360" y="51" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">What data exists and how business entities relate</text>
+    <rect x="170" y="96" width="380" height="50" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="117" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Logical Design</text>
+    <text x="360" y="133" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">How entities become tables, keys, relationships, and constraints</text>
+    <rect x="170" y="178" width="380" height="50" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="360" y="199" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Physical Design</text>
+    <text x="360" y="215" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#555555">How data is indexed, partitioned, and physically accessed</text>
+</svg>

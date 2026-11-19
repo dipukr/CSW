@@ -239,7 +239,9 @@
         </ul>
     </div>
     <div class="intro">
-        <p>The <a href="MemoryModel.html">Java Memory Model</a> uses the <strong>happens-before</strong> relationship to specify when actions are ordered and writes must be visible.</p>
+        <p>The <a href="MemoryModel.html">Java Memory Model (JMM)</a> defines how threads interact through memory. It uses the <strong>happens-before</strong> relationship to specify when actions are ordered and writes must be visible.</p>
+        <p>Other important ideas include safe publication, synchronization actions, <code>volatile</code>, and the semantics of <code>final</code> fields.</p>
+        <p>Without appropriate synchronization, one thread is not necessarily guaranteed to observe another thread&rsquo;s latest writes.</p>
     </div>
 
 	<div class="subheading">Deadlock and its conditions</div>
@@ -324,15 +326,6 @@
 	<div class="intro">
 		<p>A region of code that accesses shared mutable state and must be protected from unsafe concurrent access.</p>
 		<p>The <code>synchronized</code> keyword provides mutual exclusion and memory-visibility guarantees when threads use the same monitor correctly.</p>
-	</div>
-	<div class="subheading">Atomicity, visibility and ordering</div>
-	<div class="intro">
-	</div>
-	<div class="subheading">Java Memory Model</div>
-	<div class="intro">
-		<p>The <strong>Java Memory Model (JMM)</strong> defines how threads interact through memory, including the happens-before relationships that establish visibility and ordering guarantees.</p>
-        <p>Important ideas include the <strong>happens-before relationship</strong>, safe publication, visibility, synchronization actions, <code>volatile</code>, and the semantics of <code>final</code> fields.</p>
-        <p>Without appropriate synchronization, one thread is not necessarily guaranteed to observe another thread&rsquo;s latest writes.</p>
 	</div>
 	<div class="subheading">Synchronization mechanisms</div>
 	<div class="intro">
