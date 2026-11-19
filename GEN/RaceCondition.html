@@ -67,13 +67,15 @@
     <div class="intro">
         <p class="minor-heading"><strong>Counter example</strong></p>
         <p>Suppose <code>counter = 0</code> and two threads both execute <code>counter++</code>.</p>
-        <p>The increment comprises multiple conceptual steps:</p>
+		<p>The increment (<code>count++</code>) comprises multiple conceptual steps: reading, modifying and writing a value.</p>
+		<p>Two threads may read the same old value and overwrite each other&rsquo;s updates.</p>
     </div>
     <div class="svg-diagram">
         <img src="../static/concurrency-race-condition.svg" alt="Race condition: with counter at 0, Thread A and Thread B both read 0, both compute 1 locally, then A writes 1 and B overwrites it with 1, so the counter ends at 1 instead of the expected 2 and one increment is lost" style="width:100%;max-width:1000px">
     </div>
     <div class="intro">
-        <p><code>counter++</code> is not an atomic operation.</p>
+		<p>This is a <strong>lost update</strong>, a common concurrency bug.</p>
+        <p>The increment (<code>counter++</code>) is not an atomic operation.</p>
         <p class="minor-heading"><strong>Synchronized counter</strong></p>
     </div>
     <div class="section code-section">

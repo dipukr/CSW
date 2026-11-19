@@ -1,9 +1,5 @@
 * {box-sizing: border-box;}
 
-html {
-    zoom: 0.9;
-}
-
 body {
     margin: 0;
     padding: 35px 24px;

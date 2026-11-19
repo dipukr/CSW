@@ -3,87 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thread Pool - Notes</title>
+<title>Thread Pool</title>
 <link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
 <div class="note">
     <div class="title">Thread Pool</div>
+	<div class="intro">
+		<p>A thread pool is a software design pattern where a collection of pre-created, reusable worker threads waits in the background to handle concurrent tasks. Instead of spawning and destroying a new thread for every incoming request<br> or job, the application submits tasks to a shared queue from which idle worker threads pick them up.</p>
+	</div>
 
+    <div class="subheading">Thread pools and task execution</div>
     <div class="intro">
-        <p>Thread pool is a collection of pre-created worker threads that are kept ready to perform tasks.</p>
-        <p>Thread pool avoids the overhead of creating and destroying new threads for each task.</p>
-        <p>When a task is submitted, it is assigned to an available thread from the pool.</p>
-        <p>When all threads are busy, the task waits in a queue until a thread becomes free.</p>
-        <p>Thread pools improve performance by reusing threads and manage resources by limiting the no of threads running concurrently.</p>
+        <p>Creating a new OS thread for every task can be expensive. <a href="ThreadPool.html">Thread pools</a> reuse worker threads.</p>
     </div>
-
-    <div class="section when-use">
-        <div class="section-title">Key characteristics</div>
-        <div class="section-content">
-            <ul>
-                <li>Worker threads: A set of threads that are created at the start and are always ready to execute tasks.</li>
-                <li>Task queue: A queue to hold tasks when all threads in the pool are busy.</li>
-                <li>Configurable: Thread pools allow configuration of the no. of threads, type of queue to use and how to handle rejected tasks.</li>
-            </ul>
-        </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-thread-pool.svg" alt="Thread pool: incoming tasks enter a task queue, the pool hands them to worker threads 1, 2 and 3, and they become completed tasks" style="width:100%;max-width:720px">
     </div>
-
-    <div class="section when-use">
-        <div class="section-title">How it works</div>
-        <div class="section-content">
-            <ul>
-                <li>Task submission: Tasks are submitted to the thread pool, not directly to individual threads.</li>
-                <li>Task assignment: An available worker thread from the pool is assigned to the task.</li>
-                <li>Queueing: If all threads are busy, the task is placed in a waiting queue.</li>
-                <li>Thread reuse: After completing a task, the thread returns to the pool to wait for another task, instead of being terminated.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="subheading">Advantages</div>
-    <div class="pc-grid">
-        <div class="pc-card pro">
-            <div class="pc-title">Improved Performance</div>
-            <p>Reduces the significant cost of creating and destroying threads for each task.</p>
-        </div>
-        <div class="pc-card pro">
-            <div class="pc-title">Resource Management</div>
-            <p>Limits the total no. of threads, preventing the system from running out of resources like memory.</p>
-        </div>
-        <div class="pc-card pro">
-            <div class="pc-title">Simplified Programming</div>
-            <p>Developers can focus on the task logic rather than the complexities of managing thread lifecycles.</p>
-        </div>
-    </div>
-
     <div class="section code-section">
-        <div class="section-title">Code</div>
-        <div class="code-layout">
-            <div class="code-wrapper">
-<pre><code><span class="code-keyword">void</span> <span class="code-class">main</span>(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">Exception</span> {
-    <span class="code-class">var</span> pool = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">3</span>);
-
-    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">5</span>; i++) {
-        <span class="code-keyword">final int</span> id = i;
-        pool.submit(() -&gt; <span class="code-class">System</span>.out.println(<span class="code-string">"task {id}"</span>));
-    }
-
-    <span class="code-class">Future</span>&lt;<span class="code-class">Integer</span>&gt; f = pool.submit(() -&gt; <span class="code-number">40</span> + <span class="code-number">2</span>);
-    <span class="code-class">System</span>.out.println(<span class="code-string">"result: {f.get()}"</span>);  <span class="code-comment">// 42</span>
-
-    pool.shutdown();          <span class="code-comment">// stop accepting new tasks</span>
-}</code></pre>
-            </div>
-
-            <div class="code-explanation">
-                <div class="code-explanation-title">How it works</div>
-                <p>Three worker threads run the five queued tasks by reuse.<br><br>
-                    <code>submit()</code> queues a task and returns a <code>Future</code>.<br><br>
-                    <code>Callable</code> returns a value fetched with <code>f.get()</code>.<br><br>
-                    <code>shutdown()</code> lets running tasks finish, then stops the pool.</p>
-            </div>
+        <div class="code-wrapper">
+<pre><code><span class="code-class">ExecutorService</span> executor = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">4</span>);
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">10</span>; i++) {
+    <span class="code-keyword">int</span> taskId = i;
+    executor.submit(() -&gt; {
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Task {taskId} executed by {Thread.currentThread().getName()}"</span>);
+    });
+}
+executor.shutdown();</code></pre>
         </div>
+    </div>
+
+	<div class="intro">
+        <p>Ten tasks are submitted, but at most four pool worker threads execute tasks concurrently.<br> The executor manages queuing and scheduling work onto its workers.</p>
+        <p>For production systems, queue bounds, rejection behavior, shutdown and workload characteristics also matter.</p>
     </div>
 </div>
 </body>

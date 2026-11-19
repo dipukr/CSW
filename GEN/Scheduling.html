@@ -9,6 +9,31 @@
 <body>
 <div class="note">
     <div class="title">CPU Scheduling</div>
+
+	<div class="intro">
+        <p>The operating system schedules runnable threads across available CPU cores.</p>
+        <p class="minor-heading"><strong>CPU scheduler</strong></p>
+        <p>Its responsibilities include selecting runnable threads, assigning CPU time, enforcing priorities and scheduling policies, and balancing tasks across cores.</p>
+        <p>Common scheduling algorithms include:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Algorithm</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>FCFS</td><td>First-Come, First-Served</td></tr>
+                <tr><td>SJF</td><td>Shortest Job First</td></tr>
+                <tr><td>SRTF</td><td>Preemptive Shortest Remaining Time First</td></tr>
+                <tr><td>Round Robin</td><td>Each task receives a CPU time quantum</td></tr>
+                <tr><td>Priority Scheduling</td><td>Higher-priority tasks are favored</td></tr>
+                <tr><td>Multilevel Feedback Queue</td><td>Dynamically adjusts task scheduling queues/priorities</td></tr>
+                <tr><td>Fair Scheduling</td><td>Attempts to distribute CPU time fairly</td></tr>
+            </tbody>
+        </table></div>
+        <p>Real operating systems use more sophisticated scheduling policies, including fairness and real-time mechanisms.</p>
+        <p class="minor-heading"><strong>Context switching</strong></p>
+        <p>Context switching is the process of suspending one thread and resuming another.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/concurrency2-context-switch.svg" alt="Context switch: Thread A runs until preempted, yields to the OS scheduler, which preserves its state and dispatches Thread B; when B yields, the scheduler resumes A from its saved context" style="width:100%;max-width:620px">
+    </div>
 </div>
 </body>
 </html>
