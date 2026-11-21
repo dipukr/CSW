@@ -1593,6 +1593,12 @@ strong {
 .sw-easy { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
 .sw-medium { background: #fffbeb; border-color: #fde68a; color: #b45309; }
 .sw-hard { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+/* implementation labels above code blocks (Iterative / Recursive / Helper), same pill as the difficulty tags */
+.sw-impl { margin: 14px 0 0; }
+.sw-impl > .sw-diff { border-radius: 5px; }
+.sw-iter { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+.sw-rec { background: #f5f3ff; border-color: #ddd6fe; color: #6d28d9; }
+.sw-helper { background: #f8fafc; border-color: #e2e8f0; color: #475569; }
 .subheading:has(> .sw-diff) { display: flex; justify-content: space-between; align-items: center; gap: 12px; }   /* label on the right of the heading */
 .subheading > .sw-diff { flex: none; text-transform: none; }
 .sw-tracker > .sw-row:first-child { justify-content: space-between; align-items: flex-start; }

@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linked List Programs</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.katex) return; // offline: keep the plain-text fallback
+    document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note sw-page">
+
+    <div class="title">Linked List Problems</div>
+
+    <div class="intro">
+        <p>The exercises below are ordered by increasing difficulty.</p>
+        <p>Every section gives the iterative implementation first, then the recursive one.</p>
+        <p>All snippets share the <code>Node</code> class and the <code>build</code> / <code>draw</code> helpers from the first two sections. Indices are 0-based unless stated otherwise.</p>
+        <p>Recursive versions use <span class="math" data-tex="O(n)">O(n)</span> call-stack space. On very long lists (tens of thousands of nodes), prefer the iterative form to avoid a <code>StackOverflowError</code>.</p>
+    </div>
+
+    <div class="subheading"><span>Node structure and printing a list</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p>A singly linked list is a chain of nodes. Each node stores a value and a reference to the next node; the last node points to <code>null</code>.</p>
+        <p><strong>Input:</strong> <code>1 → 2 → 3</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;null</code></p>
+        <p>The iterative version walks a cursor from the head until it falls off the end, appending each value. The recursive version formats the current node, then hands the rest of the list to itself.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(n)">O(n)</span> for the text, plus <span class="math" data-tex="O(n)">O(n)</span> call stack when recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-helper">Node</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Node</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> data;
+    <span class="code-keyword">public</span> <span class="code-class">Node</span> next;
+
+    <span class="code-keyword">public</span> <span class="code-class">Node</span>(<span class="code-keyword">int</span> data) {
+        <span class="code-keyword">this</span>.data = data;
+    }
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> draw(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">var</span> text = <span class="code-keyword">new</span> <span class="code-class">StringBuilder</span>();
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> iter = head; iter != <span class="code-keyword">null</span>; iter = iter.next)
+        text.append(iter.data).append(<span class="code-string">"-&gt;"</span>);
+    text.append(<span class="code-string">"null"</span>);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{text}"</span>);
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> draw(<span class="code-class">Node</span> head) {
+    <span class="code-class">String</span> text = chain(head);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{text}"</span>);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">String</span> chain(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-string">"null"</span>;
+    <span class="code-keyword">return</span> head.data + <span class="code-string">"-&gt;"</span> + chain(head.next);
+}</code></pre></div>
+
+    <div class="subheading"><span>Build a list from values</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>[1, 2, 3, 4]</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;4-&gt;null</code></p>
+        <p>The iterative version keeps a <code>tail</code> pointer so each append is <span class="math" data-tex="O(1)">O(1)</span>. A <strong>sentinel</strong> (dummy) node in front of the head removes the special case for the first node.</p>
+        <p>The recursive version builds node <code>i</code> and sets its <code>next</code> to the list built from <code>i + 1</code>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(n)">O(n)</span> for the nodes.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> build(<span class="code-keyword">int</span>... values) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    <span class="code-class">Node</span> tail = sentinel;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> value : values) {
+        tail.next = <span class="code-keyword">new</span> <span class="code-class">Node</span>(value);
+        tail = tail.next;
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> build(<span class="code-keyword">int</span>[] values, <span class="code-keyword">int</span> index) {
+    <span class="code-keyword">if</span> (index == values.length)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(values[index]);
+    node.next = build(values, index + <span class="code-number">1</span>);
+    <span class="code-keyword">return</span> node;
+}</code></pre></div>
+
+    <div class="subheading"><span>Print a list in reverse</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4</code></p>
+        <p><strong>Output:</strong> <code>4 3 2 1</code></p>
+        <p>The list is not modified. The recursive version formats the rest of the list <em>first</em> and appends the current value after the call returns, so the last node comes first. The iterative version makes that call stack explicit with a <code>Deque</code>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(n)">O(n)</span> in both versions.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> drawReverse(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> iter = head; iter != <span class="code-keyword">null</span>; iter = iter.next)
+        stack.push(iter);
+    <span class="code-keyword">var</span> text = <span class="code-keyword">new</span> <span class="code-class">StringJoiner</span>(<span class="code-string">" "</span>);
+    <span class="code-keyword">while</span> (!stack.isEmpty())
+        text.add(<span class="code-class">String</span>.valueOf(stack.pop().data));
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{text}"</span>);
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> drawReverse(<span class="code-class">Node</span> head) {
+    <span class="code-class">String</span> text = reversed(head);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{text}"</span>);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">String</span> reversed(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-string">""</span>;
+    <span class="code-keyword">if</span> (head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-class">String</span>.valueOf(head.data);
+    <span class="code-keyword">return</span> reversed(head.next) + <span class="code-string">" "</span> + head.data;
+}</code></pre></div>
+
+    <div class="subheading"><span>Size and emptiness</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code></p>
+        <p><strong>Output:</strong> <code>5</code></p>
+        <p>Counting needs a full traversal. Checking for an empty list never does: a list is empty exactly when <code>head == null</code>, which is <span class="math" data-tex="O(1)">O(1)</span>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> size(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">int</span> count = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> iter = head; iter != <span class="code-keyword">null</span>; iter = iter.next)
+        count++;
+    <span class="code-keyword">return</span> count;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">return</span> head == <span class="code-keyword">null</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> size(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">return</span> <span class="code-number">1</span> + size(head.next);
+}</code></pre></div>
+
+    <div class="subheading"><span>Search for an element</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>4 → 8 → 15 → 16</code>, <code>key = 15</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p>Linked lists have no random access, so search is always linear, even if the list is sorted.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> searchElement(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> curr = head; curr != <span class="code-keyword">null</span>; curr = curr.next)
+        <span class="code-keyword">if</span> (curr.data == key)
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> searchElement(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">if</span> (head.data == key)
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    <span class="code-keyword">return</span> searchElement(head.next, key);
+}</code></pre></div>
+
+    <div class="subheading"><span>Get the node at an index</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>10 → 20 → 30 → 40</code>, <code>index = 2</code> (0-based)</p>
+        <p><strong>Output:</strong> <code>30</code></p>
+        <p>Move <code>index</code> steps from the head. Both versions return <code>null</code> when the index is past the end; <code>index</code> must be non-negative.</p>
+        <p>Time <span class="math" data-tex="O(index)">O(index)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(index)">O(index)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> nodeAt(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> index) {
+    <span class="code-class">Node</span> curr = head;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> &amp;&amp; index-- &gt; <span class="code-number">0</span>)
+        curr = curr.next;
+    <span class="code-keyword">return</span> curr;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> nodeAt(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> index) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || index == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-keyword">return</span> nodeAt(head.next, index - <span class="code-number">1</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Count occurrences of a value</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 1 → 3 → 1</code>, <code>key = 1</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> count(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> curr = head; curr != <span class="code-keyword">null</span>; curr = curr.next)
+        <span class="code-keyword">if</span> (curr.data == key)
+            total++;
+    <span class="code-keyword">return</span> total;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> count(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">return</span> (head.data == key ? <span class="code-number">1</span> : <span class="code-number">0</span>) + count(head.next, key);
+}</code></pre></div>
+
+    <div class="subheading"><span>Insert at the head and at the tail</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>2 → 3</code>, add <code>1</code> at the head, then <code>4</code> at the tail</p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;4-&gt;null</code></p>
+        <p>Inserting at the head is <span class="math" data-tex="O(1)">O(1)</span> and needs no traversal, so it has no meaningful recursive form. Inserting at the tail must first reach the last node.</p>
+        <p>Both versions <strong>return the head</strong>, so appending to an empty list (<code>head == null</code>) works too.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> for the tail. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> addFirst(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> data) {
+    <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(data);
+    node.next = head;
+    <span class="code-keyword">return</span> node;
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> addLast(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> data) {
+    <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(data);
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> node;
+    <span class="code-class">Node</span> curr = head;
+    <span class="code-keyword">while</span> (curr.next != <span class="code-keyword">null</span>)
+        curr = curr.next;
+    curr.next = node;
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> addLast(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> data) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Node</span>(data);
+    head.next = addLast(head.next, data);
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+
+    <div class="subheading"><span>Insert at a position</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 4</code>, insert <code>3</code> at index <code>2</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;4-&gt;null</code></p>
+        <p>Find the node <em>before</em> the position and splice the new node in after it. <code>insertAfter</code> does the splice when you already hold that node.</p>
+        <p>Index <code>0</code> replaces the head. An index greater than the size throws.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> insertAfter(<span class="code-class">Node</span> after, <span class="code-keyword">int</span> data) {
+    <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(data);
+    node.next = after.next;
+    after.next = node;
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> insertAt(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> index, <span class="code-keyword">int</span> data) {
+    <span class="code-keyword">if</span> (index == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> addFirst(head, data);
+    <span class="code-class">Node</span> prev = nodeAt(head, index - <span class="code-number">1</span>);
+    <span class="code-keyword">if</span> (prev == <span class="code-keyword">null</span>)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IndexOutOfBoundsException</span>(<span class="code-string">"index "</span> + index);
+    insertAfter(prev, data);
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> insertAt(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> index, <span class="code-keyword">int</span> data) {
+    <span class="code-keyword">if</span> (index == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> addFirst(head, data);
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IndexOutOfBoundsException</span>(<span class="code-string">"index past the end"</span>);
+    head.next = insertAt(head.next, index - <span class="code-number">1</span>, data);
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+
+    <div class="subheading"><span>Delete the head and the tail</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4</code></p>
+        <p><strong>Output:</strong> <code>2-&gt;3-&gt;null</code> after deleting both the head and the tail</p>
+        <p>Deleting the tail requires stopping at the <em>second-to-last</em> node. A one-node list becomes empty, so both versions return the new head instead of assuming <code>head.next.next</code> exists.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> for the tail. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> deleteFirst(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">return</span> head == <span class="code-keyword">null</span> ? <span class="code-keyword">null</span> : head.next;
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> deleteTail(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> curr = head;
+    <span class="code-keyword">while</span> (curr.next.next != <span class="code-keyword">null</span>)
+        curr = curr.next;
+    curr.next = <span class="code-keyword">null</span>;
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> deleteTail(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    head.next = deleteTail(head.next);
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+
+    <div class="subheading"><span>Delete the first node with a value</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 2</code>, <code>val = 2</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;3-&gt;2-&gt;null</code></p>
+        <p>A sentinel node in front of the head means deleting the head needs no special case.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> deleteByValue(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> val) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    sentinel.next = head;
+    <span class="code-class">Node</span> curr = sentinel;
+    <span class="code-keyword">while</span> (curr.next != <span class="code-keyword">null</span> &amp;&amp; curr.next.data != val)
+        curr = curr.next;
+    <span class="code-keyword">if</span> (curr.next != <span class="code-keyword">null</span>)
+        curr.next = curr.next.next;
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> deleteByValue(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> val) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">if</span> (head.data == val)
+        <span class="code-keyword">return</span> head.next;
+    head.next = deleteByValue(head.next, val);
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+
+    <div class="subheading"><span>Remove all nodes with a value (LeetCode 203)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>7 → 1 → 7 → 2 → 7</code>, <code>val = 7</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;null</code></p>
+        <p>Unlike the previous problem, the cursor only advances when the next node is kept. That way, consecutive matches are all removed.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> removeAll(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> val) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    sentinel.next = head;
+    <span class="code-class">Node</span> curr = sentinel;
+    <span class="code-keyword">while</span> (curr.next != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (curr.next.data == val)
+            curr.next = curr.next.next;
+        <span class="code-keyword">else</span>
+            curr = curr.next;
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> removeAll(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> val) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    head.next = removeAll(head.next, val);
+    <span class="code-keyword">return</span> head.data == val ? head.next : head;
+}</code></pre></div>
+
+    <div class="subheading"><span>Delete a given node (LeetCode 237)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>4 → 5 → 1 → 9</code>, delete the node holding <code>5</code></p>
+        <p><strong>Output:</strong> <code>4-&gt;1-&gt;9-&gt;null</code></p>
+        <p>With access to the head, find the node's predecessor and bypass the node, in <span class="math" data-tex="O(n)">O(n)</span>.</p>
+        <p>With access to <em>only</em> the node (LeetCode 237), copy the successor's value into it and bypass the successor instead, in <span class="math" data-tex="O(1)">O(1)</span>. This trick cannot delete the tail.</p>
+        <p>Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> deleteNode(<span class="code-class">Node</span> head, <span class="code-class">Node</span> node) {
+    <span class="code-keyword">if</span> (head == node)
+        <span class="code-keyword">return</span> head.next;
+    <span class="code-class">Node</span> curr = head;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> &amp;&amp; curr.next != node)
+        curr = curr.next;
+    <span class="code-keyword">if</span> (curr != <span class="code-keyword">null</span>)
+        curr.next = node.next;
+    <span class="code-keyword">return</span> head;
+}
+
+<span class="code-comment">// Only the node is known; it must not be the tail.</span>
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> deleteNodeInPlace(<span class="code-class">Node</span> node) {
+    node.data = node.next.data;
+    node.next = node.next.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> deleteNode(<span class="code-class">Node</span> head, <span class="code-class">Node</span> node) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">if</span> (head == node)
+        <span class="code-keyword">return</span> head.next;
+    head.next = deleteNode(head.next, node);
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+
+    <div class="subheading"><span>Clone a list</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3</code></p>
+        <p><strong>Output:</strong> a new list <code>1-&gt;2-&gt;3-&gt;null</code> that shares no nodes with the original</p>
+        <p>Cloning an empty list returns <code>null</code>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(n)">O(n)</span> for the copy (plus <span class="math" data-tex="O(n)">O(n)</span> call stack when recursive).</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> cloneList(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    <span class="code-class">Node</span> tail = sentinel;
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> iter = head; iter != <span class="code-keyword">null</span>; iter = iter.next) {
+        tail.next = <span class="code-keyword">new</span> <span class="code-class">Node</span>(iter.data);
+        tail = tail.next;
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> cloneList(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> copy = <span class="code-keyword">new</span> <span class="code-class">Node</span>(head.data);
+    copy.next = cloneList(head.next);
+    <span class="code-keyword">return</span> copy;
+}</code></pre></div>
+
+    <div class="subheading"><span>Middle of the list (LeetCode 876)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code> &nbsp;/&nbsp; <code>1 → 2 → 3 → 4 → 5 → 6</code></p>
+        <p><strong>Output:</strong> <code>3</code> &nbsp;/&nbsp; <code>4</code> (the second middle for even lengths)</p>
+        <p>Use the <strong>slow and fast pointer</strong> technique. <code>fast</code> moves two steps for each step of <code>slow</code>, so when <code>fast</code> reaches the end, <code>slow</code> is halfway.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> middle(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="code-keyword">return</span> slow;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> middle(<span class="code-class">Node</span> slow, <span class="code-class">Node</span> fast) {
+    <span class="code-keyword">if</span> (fast == <span class="code-keyword">null</span> || fast.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> slow;
+    <span class="code-keyword">return</span> middle(slow.next, fast.next.next);
+}</code></pre></div>
+
+    <div class="subheading"><span>Merge two sorted lists (LeetCode 21)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 3 → 5</code>, <code>2 → 4 → 6 → 8</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;8-&gt;null</code></p>
+        <p>Repeatedly take the smaller head. When one list runs out, attach the rest of the other in one step; there is no need to walk it node by node.</p>
+        <p>Nodes are relinked, not copied. Using <code>&lt;=</code> keeps the merge stable.</p>
+        <p>Time <span class="math" data-tex="O(n + m)">O(n + m)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n + m)">O(n + m)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> mergeSortedLists(<span class="code-class">Node</span> first, <span class="code-class">Node</span> second) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    <span class="code-class">Node</span> tail = sentinel;
+    <span class="code-keyword">while</span> (first != <span class="code-keyword">null</span> &amp;&amp; second != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (first.data &lt;= second.data) {
+            tail.next = first;
+            first = first.next;
+        } <span class="code-keyword">else</span> {
+            tail.next = second;
+            second = second.next;
+        }
+        tail = tail.next;
+    }
+    tail.next = first != <span class="code-keyword">null</span> ? first : second;
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> mergeSortedLists(<span class="code-class">Node</span> first, <span class="code-class">Node</span> second) {
+    <span class="code-keyword">if</span> (first == <span class="code-keyword">null</span>) <span class="code-keyword">return</span> second;
+    <span class="code-keyword">if</span> (second == <span class="code-keyword">null</span>) <span class="code-keyword">return</span> first;
+    <span class="code-keyword">if</span> (first.data &lt;= second.data) {
+        first.next = mergeSortedLists(first.next, second);
+        <span class="code-keyword">return</span> first;
+    }
+    second.next = mergeSortedLists(first, second.next);
+    <span class="code-keyword">return</span> second;
+}</code></pre></div>
+
+    <div class="subheading"><span>Remove duplicates from a sorted list (LeetCode 83)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 1 → 2 → 3 → 3 → 3</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;null</code></p>
+        <p>In a sorted list, duplicates are adjacent. Bypass the next node while it repeats the current value.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> dedupSorted(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> curr = head;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> &amp;&amp; curr.next != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (curr.data == curr.next.data)
+            curr.next = curr.next.next;
+        <span class="code-keyword">else</span>
+            curr = curr.next;
+    }
+    <span class="code-keyword">return</span> head;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> dedupSorted(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> head;
+    head.next = dedupSorted(head.next);
+    <span class="code-keyword">return</span> head.data == head.next.data ? head.next : head;
+}</code></pre></div>
+
+    <div class="subheading"><span>Reverse a list (LeetCode 206)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code></p>
+        <p><strong>Output:</strong> <code>5-&gt;4-&gt;3-&gt;2-&gt;1-&gt;null</code></p>
+        <p>Algorithm:</p>
+        <ol><li>Save <code>curr.next</code> before overwriting it.</li><li>Point <code>curr</code> back at <code>prev</code>.</li><li>Move <code>prev</code> and <code>curr</code> one step forward.</li></ol>
+        <p>The recursive version reverses the rest of the list first. It then makes the old second node point back at the head.</p>
+        <p>The accumulator version is the iterative loop written as tail recursion.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> reverseList(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> prev = <span class="code-keyword">null</span>, curr = head;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span>) {
+        <span class="code-class">Node</span> next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+    <span class="code-keyword">return</span> prev;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> reverseList(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> newHead = reverseList(head.next);
+    head.next.next = head;
+    head.next = <span class="code-keyword">null</span>;
+    <span class="code-keyword">return</span> newHead;
+}
+
+<span class="code-comment">// Tail-recursive form: call as reverseAcc(head, null).</span>
+<span class="code-keyword">public</span> <span class="code-class">Node</span> reverseAcc(<span class="code-class">Node</span> curr, <span class="code-class">Node</span> prev) {
+    <span class="code-keyword">if</span> (curr == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> prev;
+    <span class="code-class">Node</span> next = curr.next;
+    curr.next = prev;
+    <span class="code-keyword">return</span> reverseAcc(next, curr);
+}</code></pre></div>
+
+    <div class="subheading"><span>Palindrome list (LeetCode 234)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 2 → 1</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p><strong>Iterative, <span class="math" data-tex="O(1)">O(1)</span> space:</strong> find the middle, reverse the second half, and compare the halves. Then reverse the second half again so the caller's list is unchanged.</p>
+        <p><strong>Recursive:</strong> the recursion reaches the tail and compares on the way back. The call stack yields nodes from the back, while a <code>mirror</code> field walks forward from the head.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isPalindrome(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> second = reverseList(middle(head));
+    <span class="code-keyword">boolean</span> same = <span class="code-keyword">true</span>;
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> p = head, q = second; q != <span class="code-keyword">null</span>; p = p.next, q = q.next) {
+        <span class="code-keyword">if</span> (p.data != q.data) {
+            same = <span class="code-keyword">false</span>;
+            <span class="code-keyword">break</span>;
+        }
+    }
+    reverseList(second);
+    <span class="code-keyword">return</span> same;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> mirror;
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isPalindrome(<span class="code-class">Node</span> head) {
+    mirror = head;
+    <span class="code-keyword">return</span> matches(head);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> matches(<span class="code-class">Node</span> node) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    <span class="code-keyword">if</span> (!matches(node.next))
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">boolean</span> same = mirror.data == node.data;
+    mirror = mirror.next;
+    <span class="code-keyword">return</span> same;
+}</code></pre></div>
+
+    <div class="subheading"><span>Detect a cycle (LeetCode 141)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>3 → 2 → 0 → -4</code>, and the tail links back to index <code>1</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p><strong>Floyd's cycle detection:</strong> <code>fast</code> moves two steps and <code>slow</code> moves one. In an acyclic list, <code>fast</code> reaches <code>null</code>.</p>
+        <p>In a cycle, the gap between them shrinks by one each step, so they must meet. <code>detectCycle</code> returns that meeting node, which the next problems use.</p>
+        <p><code>makeCycle</code> is a test helper. It links the tail to the node at <code>pos</code> (0-based).</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-helper">Helper</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> makeCycle(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> pos) {
+    <span class="code-class">Node</span> target = nodeAt(head, pos);
+    <span class="code-class">Node</span> tail = head;
+    <span class="code-keyword">while</span> (tail.next != <span class="code-keyword">null</span>)
+        tail = tail.next;
+    tail.next = target;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> detectCycle(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+        <span class="code-keyword">if</span> (slow == fast)
+            <span class="code-keyword">return</span> slow;
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> hasCycle(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">return</span> detectCycle(head) != <span class="code-keyword">null</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> detectCycle(<span class="code-class">Node</span> slow, <span class="code-class">Node</span> fast) {
+    <span class="code-keyword">if</span> (fast == <span class="code-keyword">null</span> || fast.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    slow = slow.next;
+    fast = fast.next.next;
+    <span class="code-keyword">return</span> slow == fast ? slow : detectCycle(slow, fast);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> hasCycle(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">return</span> detectCycle(head, head) != <span class="code-keyword">null</span>;
+}</code></pre></div>
+
+    <div class="subheading"><span>Circular list check</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4</code>, and the tail links back to the head</p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p>A list is <em>circular</em> when walking from the head eventually returns to the head. This is a stricter question than "has a cycle".</p>
+        <p>The simple walk assumes the list either ends in <code>null</code> or loops back to the head. If a cycle might start elsewhere, use <code>detectFirstCycleNode(head) == head</code> (next sections) so the walk always terminates.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> circular(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-class">Node</span> curr = head.next;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> &amp;&amp; curr != head)
+        curr = curr.next;
+    <span class="code-keyword">return</span> curr == head;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> circular(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">return</span> head != <span class="code-keyword">null</span> &amp;&amp; reaches(head.next, head);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> reaches(<span class="code-class">Node</span> node, <span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">return</span> node == head || reaches(node.next, head);
+}</code></pre></div>
+
+    <div class="subheading"><span>Intersection of two lists (LeetCode 160)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>4 → 1 → 8 → 4 → 5</code> and <code>5 → 6 → 1</code>, where the second list's tail joins the first at node <code>8</code></p>
+        <p><strong>Output:</strong> the shared node <code>8</code></p>
+        <p>Intersection means the lists share the same <em>node</em>, not merely an equal value. After the joining node, both lists are identical.</p>
+        <p>Skip the length difference on the longer list, then advance both lists together until the references are equal.</p>
+        <p><code>intersect</code> is a test helper that joins the second list's tail to node <code>pos</code> (0-based) of the first.</p>
+        <p>Time <span class="math" data-tex="O(n + m)">O(n + m)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n + m)">O(n + m)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-helper">Helper</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> intersect(<span class="code-class">Node</span> first, <span class="code-class">Node</span> second, <span class="code-keyword">int</span> pos) {
+    <span class="code-class">Node</span> tail = second;
+    <span class="code-keyword">while</span> (tail.next != <span class="code-keyword">null</span>)
+        tail = tail.next;
+    tail.next = nodeAt(first, pos);
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> intersectionPoint(<span class="code-class">Node</span> first, <span class="code-class">Node</span> second) {
+    <span class="code-keyword">int</span> diff = size(first) - size(second);
+    <span class="code-keyword">for</span> (; diff &gt; <span class="code-number">0</span>; diff--)
+        first = first.next;
+    <span class="code-keyword">for</span> (; diff &lt; <span class="code-number">0</span>; diff++)
+        second = second.next;
+    <span class="code-keyword">while</span> (first != second) {
+        first = first.next;
+        second = second.next;
+    }
+    <span class="code-keyword">return</span> first;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> intersectionPoint(<span class="code-class">Node</span> first, <span class="code-class">Node</span> second) {
+    <span class="code-keyword">int</span> diff = size(first) - size(second);
+    <span class="code-keyword">if</span> (diff &gt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> sameNode(nodeAt(first, diff), second);
+    <span class="code-keyword">return</span> sameNode(first, nodeAt(second, -diff));
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> sameNode(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b) {
+    <span class="code-keyword">if</span> (a == b)
+        <span class="code-keyword">return</span> a;
+    <span class="code-keyword">return</span> sameNode(a.next, b.next);
+}</code></pre></div>
+
+    <div class="subheading"><span>K-th node from the end</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code>, <code>k = 2</code></p>
+        <p><strong>Output:</strong> <code>4</code></p>
+        <p><strong>Iterative:</strong> move a <code>lead</code> pointer <code>k</code> nodes ahead, then move <code>lead</code> and <code>trail</code> together. When <code>lead</code> falls off the end, <code>trail</code> is <code>k</code> from the end. This takes one pass and needs no size.</p>
+        <p><strong>Recursive:</strong> count nodes while the recursion unwinds. The node where the count reaches <code>k</code> is the answer.</p>
+        <p>Both versions return <code>null</code> when <code>k</code> exceeds the size.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> kthFromEnd(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-class">Node</span> lead = head;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; k; i++) {
+        <span class="code-keyword">if</span> (lead == <span class="code-keyword">null</span>)
+            <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+        lead = lead.next;
+    }
+    <span class="code-class">Node</span> trail = head;
+    <span class="code-keyword">while</span> (lead != <span class="code-keyword">null</span>) {
+        lead = lead.next;
+        trail = trail.next;
+    }
+    <span class="code-keyword">return</span> trail;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> kthFromEnd(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">return</span> kthFromEnd(head, k, <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">1</span>]);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> kthFromEnd(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> k, <span class="code-keyword">int</span>[] seen) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> found = kthFromEnd(node.next, k, seen);
+    <span class="code-keyword">if</span> (found != <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> found;
+    seen[<span class="code-number">0</span>]++;
+    <span class="code-keyword">return</span> seen[<span class="code-number">0</span>] == k ? node : <span class="code-keyword">null</span>;
+}</code></pre></div>
+
+    <div class="subheading"><span>Remove the k-th node from the end (LeetCode 19)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code>, <code>k = 2</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;5-&gt;null</code></p>
+        <p>Deletion needs the node <em>before</em> the target, so the iterative version starts both pointers at a sentinel and gives <code>lead</code> a head start of <code>k + 1</code> steps.</p>
+        <p>The sentinel also handles removing the head (<code>k == size</code>). If <code>k</code> exceeds the size, the list is unchanged.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> removeKthFromEnd(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    sentinel.next = head;
+    <span class="code-class">Node</span> lead = sentinel, trail = sentinel;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt;= k; i++) {
+        <span class="code-keyword">if</span> (lead == <span class="code-keyword">null</span>)
+            <span class="code-keyword">return</span> head;
+        lead = lead.next;
+    }
+    <span class="code-keyword">while</span> (lead != <span class="code-keyword">null</span>) {
+        lead = lead.next;
+        trail = trail.next;
+    }
+    trail.next = trail.next.next;
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> removeKthFromEnd(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">return</span> removeKthFromEnd(head, k, <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">1</span>]);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> removeKthFromEnd(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> k, <span class="code-keyword">int</span>[] seen) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    node.next = removeKthFromEnd(node.next, k, seen);
+    seen[<span class="code-number">0</span>]++;
+    <span class="code-keyword">return</span> seen[<span class="code-number">0</span>] == k ? node.next : node;
+}</code></pre></div>
+
+    <div class="subheading"><span>Reverse the first K nodes</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>3-&gt;2-&gt;1-&gt;4-&gt;5-&gt;null</code></p>
+        <p>Reverse as in LeetCode 206, but stop after <code>k</code> nodes. The old head becomes the tail of the reversed block and must link to the first node that was not reversed.</p>
+        <p><strong>Recursive:</strong> reverse the first <code>k - 1</code> nodes after the head. The head's old successor is now the block's tail, so the head goes after it.</p>
+        <p>If <code>k &lt;= 1</code>, the list is returned unchanged. If <code>k</code> exceeds the size, the whole list is reversed.</p>
+        <p>Time <span class="math" data-tex="O(k)">O(k)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(k)">O(k)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> reverseK(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || k &lt;= <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> prev = <span class="code-keyword">null</span>, curr = head;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> &amp;&amp; k-- &gt; <span class="code-number">0</span>) {
+        <span class="code-class">Node</span> next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head.next = curr;
+    <span class="code-keyword">return</span> prev;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> reverseK(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span> || k &lt;= <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> newHead = reverseK(head.next, k - <span class="code-number">1</span>);
+    <span class="code-class">Node</span> blockTail = head.next;
+    head.next = blockTail.next;
+    blockTail.next = head;
+    <span class="code-keyword">return</span> newHead;
+}</code></pre></div>
+
+    <div class="subheading"><span>Start of the cycle (LeetCode 142)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>3 → 2 → 0 → -4</code>, and the tail links back to index <code>1</code></p>
+        <p><strong>Output:</strong> the node <code>2</code></p>
+        <p>Let <span class="math" data-tex="a">a</span> be the distance from the head to the cycle start. Let <span class="math" data-tex="b">b</span> be the distance from the cycle start to the meeting point, and let the cycle length be <span class="math" data-tex="c">c</span>.</p>
+        <p>When they meet, <code>fast</code> has travelled twice as far as <code>slow</code>, which gives:</p>
+        <p class="math-display"><span class="math" data-tex="2(a + b) = a + b + k\,c \;\Rightarrow\; a = k\,c - b" data-display="1">2(a + b) = a + b + kc ⇒ a = kc − b</span></p>
+        <p>So a pointer starting at the head and one starting at the meeting point, moving one step at a time, meet exactly at the cycle start.</p>
+        <p>Both versions return <code>null</code> when there is no cycle.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> detectFirstCycleNode(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> meet = detectCycle(head);
+    <span class="code-keyword">if</span> (meet == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> start = head;
+    <span class="code-keyword">while</span> (start != meet) {
+        start = start.next;
+        meet = meet.next;
+    }
+    <span class="code-keyword">return</span> start;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> detectFirstCycleNode(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> meet = detectCycle(head, head);
+    <span class="code-keyword">return</span> meet == <span class="code-keyword">null</span> ? <span class="code-keyword">null</span> : sameNode(head, meet);
+}</code></pre></div>
+
+    <div class="subheading"><span>Remove a cycle</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code>, and the tail links back to the head</p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;null</code></p>
+        <p>Find the start of the cycle, then walk around the cycle to the node whose <code>next</code> is the start, and cut that link.</p>
+        <p>This also works when the cycle starts at the head; that case is easy to get wrong.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> removeCycle(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> start = detectFirstCycleNode(head);
+    <span class="code-keyword">if</span> (start == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-class">Node</span> last = start;
+    <span class="code-keyword">while</span> (last.next != start)
+        last = last.next;
+    last.next = <span class="code-keyword">null</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> removeCycle(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> start = detectFirstCycleNode(head);
+    <span class="code-keyword">if</span> (start != <span class="code-keyword">null</span>)
+        lastInCycle(start, start).next = <span class="code-keyword">null</span>;
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> lastInCycle(<span class="code-class">Node</span> node, <span class="code-class">Node</span> start) {
+    <span class="code-keyword">return</span> node.next == start ? node : lastInCycle(node.next, start);
+}</code></pre></div>
+
+    <div class="subheading"><span>Swap nodes in pairs (LeetCode 24)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code></p>
+        <p><strong>Output:</strong> <code>2-&gt;1-&gt;4-&gt;3-&gt;5-&gt;null</code></p>
+        <p>Swap the nodes themselves, not their values. Each swap rewires three links: <code>prev → second</code>, <code>second → first</code>, and <code>first → (rest)</code>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> swapPairs(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    sentinel.next = head;
+    <span class="code-class">Node</span> prev = sentinel;
+    <span class="code-keyword">while</span> (prev.next != <span class="code-keyword">null</span> &amp;&amp; prev.next.next != <span class="code-keyword">null</span>) {
+        <span class="code-class">Node</span> first = prev.next;
+        <span class="code-class">Node</span> second = first.next;
+        first.next = second.next;
+        second.next = first;
+        prev.next = second;
+        prev = first;
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> swapPairs(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> second = head.next;
+    head.next = swapPairs(second.next);
+    second.next = head;
+    <span class="code-keyword">return</span> second;
+}</code></pre></div>
+
+    <div class="subheading"><span>Add two numbers (LeetCode 2)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>2 → 4 → 3</code> (342), <code>5 → 6 → 4</code> (465)</p>
+        <p><strong>Output:</strong> <code>7-&gt;0-&gt;8-&gt;null</code> (807)</p>
+        <p>Digits are stored least-significant first, so add column by column and carry exactly as on paper.</p>
+        <p>Keep going while either list has digits <em>or</em> a carry remains.</p>
+        <p>Time <span class="math" data-tex="O(\max(n, m))">O(max(n, m))</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative (besides the result), <span class="math" data-tex="O(\max(n, m))">O(max(n, m))</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> addNumbers(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b) {
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    <span class="code-class">Node</span> tail = sentinel;
+    <span class="code-keyword">int</span> carry = <span class="code-number">0</span>;
+    <span class="code-keyword">while</span> (a != <span class="code-keyword">null</span> || b != <span class="code-keyword">null</span> || carry != <span class="code-number">0</span>) {
+        <span class="code-keyword">int</span> sum = carry;
+        <span class="code-keyword">if</span> (a != <span class="code-keyword">null</span>) {
+            sum += a.data;
+            a = a.next;
+        }
+        <span class="code-keyword">if</span> (b != <span class="code-keyword">null</span>) {
+            sum += b.data;
+            b = b.next;
+        }
+        tail.next = <span class="code-keyword">new</span> <span class="code-class">Node</span>(sum % <span class="code-number">10</span>);
+        tail = tail.next;
+        carry = sum / <span class="code-number">10</span>;
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> addNumbers(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b, <span class="code-keyword">int</span> carry) {
+    <span class="code-keyword">if</span> (a == <span class="code-keyword">null</span> &amp;&amp; b == <span class="code-keyword">null</span> &amp;&amp; carry == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">int</span> sum = carry + (a != <span class="code-keyword">null</span> ? a.data : <span class="code-number">0</span>) + (b != <span class="code-keyword">null</span> ? b.data : <span class="code-number">0</span>);
+    <span class="code-keyword">var</span> digit = <span class="code-keyword">new</span> <span class="code-class">Node</span>(sum % <span class="code-number">10</span>);
+    digit.next = addNumbers(a != <span class="code-keyword">null</span> ? a.next : <span class="code-keyword">null</span>, b != <span class="code-keyword">null</span> ? b.next : <span class="code-keyword">null</span>, sum / <span class="code-number">10</span>);
+    <span class="code-keyword">return</span> digit;
+}</code></pre></div>
+
+    <div class="subheading"><span>Reorder list (LeetCode 143)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;5-&gt;2-&gt;4-&gt;3-&gt;null</code></p>
+        <p>The target order is <span class="math" data-tex="L_0, L_n, L_1, L_{n-1}, \ldots">L0, Ln, L1, Ln−1, …</span></p>
+        <p><strong>Iterative:</strong></p>
+        <ol><li>Find the end of the first half.</li><li>Reverse the second half.</li><li>Interleave the two halves.</li></ol>
+        <p>Stopping <code>fast</code> at <code>fast.next.next</code> keeps the extra node of an odd-length list in the first half, so it never dereferences <code>null</code>.</p>
+        <p><strong>Recursive:</strong> recurse to the tail. While unwinding, each tail node is inserted after the <code>front</code> pointer, which moves forward. The process stops once <code>front</code> meets the tail.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n)">O(n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> reorderList(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">while</span> (fast.next != <span class="code-keyword">null</span> &amp;&amp; fast.next.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="code-class">Node</span> second = reverseList(slow.next);
+    slow.next = <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> first = head;
+    <span class="code-keyword">while</span> (second != <span class="code-keyword">null</span>) {
+        <span class="code-class">Node</span> firstNext = first.next;
+        <span class="code-class">Node</span> secondNext = second.next;
+        first.next = second;
+        second.next = firstNext;
+        first = firstNext;
+        second = secondNext;
+    }
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> front;
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> done;
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> reorderList(<span class="code-class">Node</span> head) {
+    front = head;
+    done = <span class="code-keyword">false</span>;
+    weave(head);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> weave(<span class="code-class">Node</span> tail) {
+    <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    weave(tail.next);
+    <span class="code-keyword">if</span> (done)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">if</span> (front == tail || front.next == tail) {
+        tail.next = <span class="code-keyword">null</span>;
+        done = <span class="code-keyword">true</span>;
+        <span class="code-keyword">return</span>;
+    }
+    <span class="code-class">Node</span> next = front.next;
+    front.next = tail;
+    tail.next = next;
+    front = next;
+}</code></pre></div>
+
+    <div class="subheading"><span>Sort a list (LeetCode 148)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>4 → 2 → 1 → 5 → 3</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;null</code></p>
+        <p>Merge sort suits linked lists. Splitting and merging only relink nodes, and there is no random access for quicksort or heapsort to exploit.</p>
+        <p><strong>Recursive (top-down):</strong> split at the middle, sort each half, and merge.</p>
+        <p><strong>Iterative (bottom-up):</strong> merge runs of width 1, 2, 4, …. This avoids the recursion stack, so it uses true <span class="math" data-tex="O(1)">O(1)</span> extra space.</p>
+        <p>Time <span class="math" data-tex="O(n\log n)">O(n log n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(\log n)">O(log n)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> sortList(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">int</span> n = size(head);
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    sentinel.next = head;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> width = <span class="code-number">1</span>; width &lt; n; width *= <span class="code-number">2</span>) {
+        <span class="code-class">Node</span> tail = sentinel, curr = sentinel.next;
+        <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span>) {
+            <span class="code-class">Node</span> left = curr;
+            <span class="code-class">Node</span> right = split(left, width);
+            curr = split(right, width);
+            tail.next = mergeSortedLists(left, right);
+            <span class="code-keyword">while</span> (tail.next != <span class="code-keyword">null</span>)
+                tail = tail.next;
+        }
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}
+
+<span class="code-comment">// Cuts the list after `count` nodes and returns the remainder.</span>
+<span class="code-keyword">public</span> <span class="code-class">Node</span> split(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> count) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; head != <span class="code-keyword">null</span> &amp;&amp; i &lt; count; i++)
+        head = head.next;
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> rest = head.next;
+    head.next = <span class="code-keyword">null</span>;
+    <span class="code-keyword">return</span> rest;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> sortList(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> slow = head, fast = head.next;
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="code-class">Node</span> second = slow.next;
+    slow.next = <span class="code-keyword">null</span>;
+    <span class="code-keyword">return</span> mergeSortedLists(sortList(head), sortList(second));
+}</code></pre></div>
+
+    <div class="subheading"><span>Reverse nodes in k-groups (LeetCode 25)</span><span class="sw-diff sw-hard">Hard</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>1 → 2 → 3 → 4 → 5 → 6 → 7 → 8</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>3-&gt;2-&gt;1-&gt;6-&gt;5-&gt;4-&gt;7-&gt;8-&gt;null</code></p>
+        <p>Reverse each full block of <code>k</code> nodes. A final block with fewer than <code>k</code> nodes is left as is.</p>
+        <p><strong>Iterative:</strong> for each block, find its <code>k</code>-th node and reverse the block in place. Starting <code>prev</code> at the block's successor connects the block's new tail automatically. Then link the previous block to the new block head.</p>
+        <p><strong>Recursive:</strong> check that <code>k</code> nodes remain, reverse them with <code>reverseK</code>, and attach the recursively processed remainder to the block's new tail (the old head).</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(n/k)">O(n/k)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> reverseGroups(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    sentinel.next = head;
+    <span class="code-class">Node</span> groupPrev = sentinel;
+    <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {
+        <span class="code-class">Node</span> kth = groupPrev;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; k &amp;&amp; kth != <span class="code-keyword">null</span>; i++)
+            kth = kth.next;
+        <span class="code-keyword">if</span> (kth == <span class="code-keyword">null</span>)
+            <span class="code-keyword">break</span>;
+        <span class="code-class">Node</span> groupNext = kth.next;
+        <span class="code-class">Node</span> prev = groupNext, curr = groupPrev.next;
+        <span class="code-keyword">while</span> (curr != groupNext) {
+            <span class="code-class">Node</span> next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        <span class="code-class">Node</span> groupTail = groupPrev.next;
+        groupPrev.next = kth;
+        groupPrev = groupTail;
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> reverseGroups(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> rest = head;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; k; i++) {
+        <span class="code-keyword">if</span> (rest == <span class="code-keyword">null</span>)
+            <span class="code-keyword">return</span> head;
+        rest = rest.next;
+    }
+    <span class="code-class">Node</span> newHead = reverseK(head, k);
+    head.next = reverseGroups(rest, k);
+    <span class="code-keyword">return</span> newHead;
+}</code></pre></div>
+
+    <div class="subheading"><span>Merge k sorted lists (LeetCode 23)</span><span class="sw-diff sw-hard">Hard</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>[1 → 4 → 5, 1 → 3 → 4, 2 → 6]</code></p>
+        <p><strong>Output:</strong> <code>1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6-&gt;null</code></p>
+        <p>Merging the lists one by one costs <span class="math" data-tex="O(kN)">O(kN)</span>, where <span class="math" data-tex="N">N</span> is the total number of nodes.</p>
+        <p><strong>Iterative:</strong> keep the current head of every list in a min-heap. Repeatedly take the smallest node and push its successor.</p>
+        <p><strong>Recursive (divide and conquer):</strong> merge the left half of the lists and the right half, then merge the two results. Each node takes part in <span class="math" data-tex="\log k">log k</span> merges.</p>
+        <p>Time <span class="math" data-tex="O(N\log k)">O(N log k)</span>. Extra space <span class="math" data-tex="O(k)">O(k)</span> for the heap or <span class="math" data-tex="O(\log k)">O(log k)</span> for the recursion.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> mergeKLists(<span class="code-class">Node</span>[] lists) {
+    <span class="code-keyword">var</span> heap = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;<span class="code-class">Node</span>&gt;((a, b) -&gt; <span class="code-class">Integer</span>.compare(a.data, b.data));
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> list : lists)
+        <span class="code-keyword">if</span> (list != <span class="code-keyword">null</span>)
+            heap.add(list);
+    <span class="code-keyword">var</span> sentinel = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    <span class="code-class">Node</span> tail = sentinel;
+    <span class="code-keyword">while</span> (!heap.isEmpty()) {
+        <span class="code-class">Node</span> smallest = heap.poll();
+        tail.next = smallest;
+        tail = smallest;
+        <span class="code-keyword">if</span> (smallest.next != <span class="code-keyword">null</span>)
+            heap.add(smallest.next);
+    }
+    <span class="code-keyword">return</span> sentinel.next;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> mergeKLists(<span class="code-class">Node</span>[] lists, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi) {
+    <span class="code-keyword">if</span> (lo &gt; hi)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">if</span> (lo == hi)
+        <span class="code-keyword">return</span> lists[lo];
+    <span class="code-keyword">int</span> mid = (lo + hi) &gt;&gt;&gt; <span class="code-number">1</span>;
+    <span class="code-class">Node</span> left = mergeKLists(lists, lo, mid);
+    <span class="code-class">Node</span> right = mergeKLists(lists, mid + <span class="code-number">1</span>, hi);
+    <span class="code-keyword">return</span> mergeSortedLists(left, right);
+}</code></pre></div>
+</div>
+</body>
+</html>

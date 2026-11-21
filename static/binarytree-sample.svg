@@ -1,0 +1,64 @@
+<svg font-family="-apple-system-body, ui-sans-serif, -apple-system, system-ui, &quot;Segoe UI&quot;, Helvetica, Arial, sans-serif" font-weight="400" fill="currentColor" style="color:rgb(13, 13, 13)" viewBox="0 0 640 318" width="640" height="318" xmlns="http://www.w3.org/2000/svg">
+  <!-- level guides -->
+  <g stroke="#94A3B8" stroke-opacity=".35" stroke-width="1" stroke-dasharray="3 5">
+    <line x1="96" y1="62" x2="624" y2="62"/>
+    <line x1="96" y1="156" x2="624" y2="156"/>
+    <line x1="96" y1="250" x2="624" y2="250"/>
+  </g>
+  <g font-size="13" font-weight="650" fill="currentColor" opacity=".55">
+    <text x="16" y="66">Level 1</text>
+    <text x="16" y="160">Level 2</text>
+    <text x="16" y="254">Level 3</text>
+  </g>
+
+  <!-- edges -->
+  <g stroke="#64748B" stroke-width="2" stroke-linecap="round">
+    <line x1="360" y1="62" x2="220" y2="156"/>
+    <line x1="360" y1="62" x2="500" y2="156"/>
+    <line x1="220" y1="156" x2="150" y2="250"/>
+    <line x1="220" y1="156" x2="290" y2="250"/>
+    <line x1="500" y1="156" x2="430" y2="250"/>
+    <line x1="500" y1="156" x2="570" y2="250"/>
+  </g>
+  <g font-size="12" font-weight="600" fill="#64748B">
+    <text x="276" y="104" text-anchor="end">left</text>
+    <text x="444" y="104">right</text>
+  </g>
+
+  <!-- root -->
+  <circle cx="360" cy="62" r="27" fill="#E7F6F4" stroke="#0D9488" stroke-width="2"/>
+  <text x="360" y="69" text-anchor="middle" font-size="20" font-weight="700">40</text>
+  <text x="400" y="35" font-size="12" font-weight="650" fill="#0D9488">root</text>
+
+  <!-- inner nodes -->
+  <g fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6">
+    <circle cx="220" cy="156" r="27"/>
+    <circle cx="500" cy="156" r="27"/>
+  </g>
+  <!-- leaves -->
+  <g fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.6" stroke-dasharray="0">
+    <circle cx="150" cy="250" r="27"/>
+    <circle cx="290" cy="250" r="27"/>
+    <circle cx="430" cy="250" r="27"/>
+    <circle cx="570" cy="250" r="27"/>
+  </g>
+  <g font-size="20" font-weight="700" text-anchor="middle">
+    <text x="220" y="163">20</text>
+    <text x="500" y="163">70</text>
+    <text x="150" y="257">10</text>
+    <text x="290" y="257">30</text>
+    <text x="430" y="257">60</text>
+    <text x="570" y="257">90</text>
+  </g>
+
+  <!-- heap indices -->
+  <g font-size="12" text-anchor="middle" opacity=".55">
+    <text x="360" y="108">i = 0</text>
+    <text x="220" y="202">i = 1</text>
+    <text x="500" y="202">i = 2</text>
+    <text x="150" y="296">i = 3</text>
+    <text x="290" y="296">i = 4</text>
+    <text x="430" y="296">i = 5</text>
+    <text x="570" y="296">i = 6</text>
+  </g>
+</svg>

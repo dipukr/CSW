@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Tree Programs</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.katex) return; // offline: keep the plain-text fallback
+    document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note sw-page">
+
+    <div class="title">Binary Tree Problems</div>
+
+    <div class="intro">
+        <p>The exercises below are ordered by increasing difficulty.</p>
+        <p>Every section gives the iterative implementation first, then the recursive one.</p>
+        <p>All snippets share the <code>Node</code> class and the <code>build</code> helper from the first section. Unless stated otherwise, examples use the 7-node sample tree built there. <span class="math" data-tex="h">h</span> is the tree height and <span class="math" data-tex="w">w</span> the width of the widest level.</p>
+        <p>Recursive versions use <span class="math" data-tex="O(h)">O(h)</span> call-stack space. On very deep trees (tens of thousands of levels, such as a degenerate chain), prefer the iterative form to avoid a <code>StackOverflowError</code>.</p>
+    </div>
+
+    <div class="subheading"><span>Node structure and building a tree</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p>Each node stores a value and references to a <code>left</code> and a <code>right</code> child. A missing child is <code>null</code>.</p>
+        <p>Trees are built from an array in <strong>heap order</strong>: the children of index <code>i</code> sit at <code>2i + 1</code> and <code>2i + 2</code>, and <code>null</code> marks a missing node.</p>
+        <p><strong>Input:</strong> <code>[40, 20, 70, 10, 30, 60, 90]</code></p>
+        <p><strong>Output:</strong> the tree below, used as the sample in most sections.</p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">SAMPLE TREE</p><div class="sw-figure"><img src="../static/binarytree-sample.svg" alt="Binary tree with root 40 at index 0; its left child 20 (index 1) has children 10 and 30 (indices 3 and 4); its right child 70 (index 2) has children 60 and 90 (indices 5 and 6)." style="width:100%;max-width:560px"></div><p class="sw-caption">Node values with their heap-order array index <code>i</code>; the children of <code>i</code> are at <code>2i + 1</code> and <code>2i + 2</code>.</p></div>
+        <p>The iterative version creates every node first, then links each one to its children by index. The recursive version builds index <code>i</code> and asks itself for the subtrees at <code>2i + 1</code> and <code>2i + 2</code>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(n)">O(n)</span>.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-helper">Node</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Node</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> data;
+    <span class="code-keyword">public</span> <span class="code-class">Node</span> left;
+    <span class="code-keyword">public</span> <span class="code-class">Node</span> right;
+
+    <span class="code-keyword">public</span> <span class="code-class">Node</span>(<span class="code-keyword">int</span> data) {
+        <span class="code-keyword">this</span>.data = data;
+    }
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> build(<span class="code-class">Integer</span>... values) {
+    <span class="code-keyword">if</span> (values.length == <span class="code-number">0</span> || values[<span class="code-number">0</span>] == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> nodes = <span class="code-keyword">new</span> <span class="code-class">Node</span>[values.length];
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; values.length; i++)
+        <span class="code-keyword">if</span> (values[i] != <span class="code-keyword">null</span>)
+            nodes[i] = <span class="code-keyword">new</span> <span class="code-class">Node</span>(values[i]);
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; values.length; i++) {
+        <span class="code-keyword">if</span> (nodes[i] == <span class="code-keyword">null</span>)
+            <span class="code-keyword">continue</span>;
+        <span class="code-keyword">if</span> (<span class="code-number">2</span> * i + <span class="code-number">1</span> &lt; values.length)
+            nodes[i].left = nodes[<span class="code-number">2</span> * i + <span class="code-number">1</span>];
+        <span class="code-keyword">if</span> (<span class="code-number">2</span> * i + <span class="code-number">2</span> &lt; values.length)
+            nodes[i].right = nodes[<span class="code-number">2</span> * i + <span class="code-number">2</span>];
+    }
+    <span class="code-keyword">return</span> nodes[<span class="code-number">0</span>];
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> build(<span class="code-class">Integer</span>[] values, <span class="code-keyword">int</span> index) {
+    <span class="code-keyword">if</span> (index &gt;= values.length || values[index] == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(values[index]);
+    node.left = build(values, <span class="code-number">2</span> * index + <span class="code-number">1</span>);
+    node.right = build(values, <span class="code-number">2</span> * index + <span class="code-number">2</span>);
+    <span class="code-keyword">return</span> node;
+}</code></pre></div>
+
+    <div class="subheading"><span>Print a tree level by level</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong></p>
+        <div class="code-block"><pre><code>Level 1: 40
+Level 2: 20 70
+Level 3: 10 30 60 90</code></pre></div>
+        <p><strong>Iterative:</strong> breadth-first search with a queue. At the start of each round, the queue holds exactly one level, so <code>queue.size()</code> says how many nodes to take.</p>
+        <p><strong>Recursive:</strong> for each level number, walk the tree and collect the nodes exactly that many steps down. This is simple, but it revisits the upper levels once per level.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> iterative, <span class="math" data-tex="O(n \cdot h)">O(n·h)</span> recursive. Space <span class="math" data-tex="O(w)">O(w)</span> (widest level) iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> drawLevels(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">int</span> level = <span class="code-number">1</span>;
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">var</span> line = <span class="code-keyword">new</span> <span class="code-class">StringJoiner</span>(<span class="code-string">" "</span>);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> count = queue.size(); count &gt; <span class="code-number">0</span>; count--) {
+            <span class="code-class">Node</span> node = queue.poll();
+            line.add(<span class="code-class">String</span>.valueOf(node.data));
+            <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+                queue.offer(node.left);
+            <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+                queue.offer(node.right);
+        }
+        <span class="code-class">Console</span>.draw(<span class="code-string">"Level {level}: {line}"</span>);
+        level++;
+    }
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> drawLevels(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">int</span> height = height(root);
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> level = <span class="code-number">1</span>; level &lt;= height; level++) {
+        <span class="code-keyword">var</span> line = <span class="code-keyword">new</span> <span class="code-class">StringJoiner</span>(<span class="code-string">" "</span>);
+        collectLevel(root, level, line);
+        <span class="code-class">Console</span>.draw(<span class="code-string">"Level {level}: {line}"</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> collectLevel(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> level, <span class="code-class">StringJoiner</span> line) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">if</span> (level == <span class="code-number">1</span>) {
+        line.add(<span class="code-class">String</span>.valueOf(node.data));
+        <span class="code-keyword">return</span>;
+    }
+    collectLevel(node.left, level - <span class="code-number">1</span>, line);
+    collectLevel(node.right, level - <span class="code-number">1</span>, line);
+}</code></pre></div>
+
+    <div class="subheading"><span>Preorder traversal (LeetCode 144)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>[40, 20, 10, 30, 70, 60, 90]</code></p>
+        <p>Order: <strong>node, left, right</strong>.</p>
+        <p>The iterative version pops a node, records it, then pushes the <em>right</em> child before the <em>left</em> child, so that the left subtree comes off the stack first.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(h)">O(h)</span>, where <span class="math" data-tex="h">h</span> is the tree height.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; preorder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> result;
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    stack.push(root);
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        <span class="code-class">Node</span> node = stack.pop();
+        result.add(node.data);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            stack.push(node.right);
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            stack.push(node.left);
+    }
+    <span class="code-keyword">return</span> result;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; preorder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    preorder(root, result);
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> preorder(<span class="code-class">Node</span> node, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; result) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    result.add(node.data);
+    preorder(node.left, result);
+    preorder(node.right, result);
+}</code></pre></div>
+
+    <div class="subheading"><span>Inorder traversal (LeetCode 94)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>[10, 20, 30, 40, 60, 70, 90]</code></p>
+        <p>Order: <strong>left, node, right</strong>. For a binary search tree, this visits the values in sorted order.</p>
+        <p>The iterative version pushes the whole left spine, then pops a node, records it, and moves to its right child. The loop continues while there is a current node <em>or</em> the stack is non-empty.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(h)">O(h)</span>.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; inorder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> curr = root;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> || !stack.isEmpty()) {
+        <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span>) {
+            stack.push(curr);
+            curr = curr.left;
+        }
+        curr = stack.pop();
+        result.add(curr.data);
+        curr = curr.right;
+    }
+    <span class="code-keyword">return</span> result;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; inorder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    inorder(root, result);
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> inorder(<span class="code-class">Node</span> node, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; result) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    inorder(node.left, result);
+    result.add(node.data);
+    inorder(node.right, result);
+}</code></pre></div>
+
+    <div class="subheading"><span>Postorder traversal (LeetCode 145)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>[10, 30, 20, 60, 90, 70, 40]</code></p>
+        <p>Order: <strong>left, right, node</strong>. A node is recorded only after both subtrees are finished.</p>
+        <p><strong>One stack:</strong> walk left as far as possible. At the top of the stack, go right if the right subtree exists and was not just finished (<code>prev</code>). Otherwise record the node and pop it.</p>
+        <p><strong>Two stacks:</strong> produce node, right, left (a mirrored preorder) onto a second stack, then pop it to reverse the order.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(h)">O(h)</span> for one stack, <span class="math" data-tex="O(n)">O(n)</span> for two.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; postorder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> curr = root, prev = <span class="code-keyword">null</span>;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> || !stack.isEmpty()) {
+        <span class="code-keyword">if</span> (curr != <span class="code-keyword">null</span>) {
+            stack.push(curr);
+            curr = curr.left;
+        } <span class="code-keyword">else</span> <span class="code-keyword">if</span> (stack.peek().right != <span class="code-keyword">null</span> &amp;&amp; stack.peek().right != prev) {
+            curr = stack.peek().right;
+        } <span class="code-keyword">else</span> {
+            prev = stack.pop();
+            result.add(prev.data);
+        }
+    }
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; postorderTwoStacks(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> result;
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-keyword">var</span> output = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    stack.push(root);
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        <span class="code-class">Node</span> node = stack.pop();
+        output.push(node);
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            stack.push(node.left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            stack.push(node.right);
+    }
+    <span class="code-keyword">while</span> (!output.isEmpty())
+        result.add(output.pop().data);
+    <span class="code-keyword">return</span> result;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; postorder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    postorder(root, result);
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> postorder(<span class="code-class">Node</span> node, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; result) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    postorder(node.left, result);
+    postorder(node.right, result);
+    result.add(node.data);
+}</code></pre></div>
+
+    <div class="subheading"><span>Level order traversal (LeetCode 102)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>[[40], [20, 70], [10, 30, 60, 90]]</code></p>
+        <p><strong>Iterative:</strong> breadth-first search, taking <code>queue.size()</code> nodes per round so that each round is one level.</p>
+        <p><strong>Recursive:</strong> depth-first search that carries the depth. The first time a depth is reached, a new list is opened for it. Left is visited before right, so each level stays in left-to-right order.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive (plus the output).</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; levelOrder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt;();
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> result;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">var</span> level = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> count = queue.size(); count &gt; <span class="code-number">0</span>; count--) {
+            <span class="code-class">Node</span> node = queue.poll();
+            level.add(node.data);
+            <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+                queue.offer(node.left);
+            <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+                queue.offer(node.right);
+        }
+        result.add(level);
+    }
+    <span class="code-keyword">return</span> result;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; levelOrder(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt;();
+    levelOrder(root, <span class="code-number">0</span>, result);
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> levelOrder(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> depth, <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; result) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">if</span> (depth == result.size())
+        result.add(<span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;());
+    result.get(depth).add(node.data);
+    levelOrder(node.left, depth + <span class="code-number">1</span>, result);
+    levelOrder(node.right, depth + <span class="code-number">1</span>, result);
+}</code></pre></div>
+
+    <div class="subheading"><span>Size of a tree</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>7</code></p>
+        <p>Every node must be visited once. The recursive form reads directly as the definition: <span class="math" data-tex="size = size(left) + size(right) + 1">size = size(left) + size(right) + 1</span>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> size(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">int</span> count = <span class="code-number">0</span>;
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span> node = queue.poll();
+        count++;
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            queue.offer(node.left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            queue.offer(node.right);
+    }
+    <span class="code-keyword">return</span> count;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> size(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">return</span> size(root.left) + size(root.right) + <span class="code-number">1</span>;
+}</code></pre></div>
+
+    <div class="subheading"><span>Height of a tree (LeetCode 104)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>Height here counts the <em>nodes</em> on the longest root-to-leaf path: an empty tree has height 0 and a single node has height 1. Some texts count edges instead, which gives one less.</p>
+        <p><strong>Iterative:</strong> count the breadth-first rounds. <strong>Recursive:</strong> one more than the taller subtree.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> height(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">int</span> levels = <span class="code-number">0</span>;
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> count = queue.size(); count &gt; <span class="code-number">0</span>; count--) {
+            <span class="code-class">Node</span> node = queue.poll();
+            <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+                queue.offer(node.left);
+            <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+                queue.offer(node.right);
+        }
+        levels++;
+    }
+    <span class="code-keyword">return</span> levels;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> height(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">return</span> <span class="code-class">Math</span>.max(height(root.left), height(root.right)) + <span class="code-number">1</span>;
+}</code></pre></div>
+
+    <div class="subheading"><span>Sum of all nodes</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>320</code></p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> treeSum(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">int</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> sum;
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    stack.push(root);
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        <span class="code-class">Node</span> node = stack.pop();
+        sum += node.data;
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            stack.push(node.left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            stack.push(node.right);
+    }
+    <span class="code-keyword">return</span> sum;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> treeSum(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">return</span> root.data + treeSum(root.left) + treeSum(root.right);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum value</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>build(5, 12, 3, 7, 41, 2)</code></p>
+        <p><strong>Output:</strong> <code>41</code></p>
+        <p>In a general binary tree, the maximum can be anywhere, so every node is examined. For an empty tree, both versions return <code>Integer.MIN_VALUE</code>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> treeMax(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">int</span> max = <span class="code-class">Integer</span>.<span class="code-class">MIN_VALUE</span>;
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> max;
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    stack.push(root);
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        <span class="code-class">Node</span> node = stack.pop();
+        max = <span class="code-class">Math</span>.max(max, node.data);
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            stack.push(node.left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            stack.push(node.right);
+    }
+    <span class="code-keyword">return</span> max;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> treeMax(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-class">Integer</span>.<span class="code-class">MIN_VALUE</span>;
+    <span class="code-keyword">int</span> childMax = <span class="code-class">Math</span>.max(treeMax(root.left), treeMax(root.right));
+    <span class="code-keyword">return</span> <span class="code-class">Math</span>.max(root.data, childMax);
+}</code></pre></div>
+
+    <div class="subheading"><span>Search for a value</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree, <code>key = 60</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p>Stop as soon as the key is found. In the recursive version, <code>||</code> short-circuits, so the right subtree is not searched when the left one already contains the key.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> worst case. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> contains(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span> node = queue.poll();
+        <span class="code-keyword">if</span> (node.data == key)
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            queue.offer(node.left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            queue.offer(node.right);
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> contains(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">if</span> (root.data == key)
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    <span class="code-keyword">return</span> contains(root.left, key) || contains(root.right, key);
+}</code></pre></div>
+
+    <div class="subheading"><span>Count leaf nodes</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>build(1, 2, 3, 4, null, 5, 6)</code></p>
+        <p><strong>Output:</strong> <code>3</code> (the leaves are 4, 5, 6)</p>
+        <p>A <strong>leaf</strong> is a node with no children.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> countLeaves(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">int</span> leaves = <span class="code-number">0</span>;
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> leaves;
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    stack.push(root);
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        <span class="code-class">Node</span> node = stack.pop();
+        <span class="code-keyword">if</span> (node.left == <span class="code-keyword">null</span> &amp;&amp; node.right == <span class="code-keyword">null</span>)
+            leaves++;
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            stack.push(node.left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            stack.push(node.right);
+    }
+    <span class="code-keyword">return</span> leaves;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> countLeaves(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">if</span> (root.left == <span class="code-keyword">null</span> &amp;&amp; root.right == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">1</span>;
+    <span class="code-keyword">return</span> countLeaves(root.left) + countLeaves(root.right);
+}</code></pre></div>
+
+    <div class="subheading"><span>Invert a tree (LeetCode 226)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> its mirror image, level order <code>[[40], [70, 20], [90, 60, 30, 10]]</code></p>
+        <p>Swap the left and right child of every node. The order of visits does not matter, so breadth-first search works as well as recursion.</p>
+        <p>The recursive version inverts both subtrees first (bottom-up), then swaps them.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> invert(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span> node = queue.poll();
+        <span class="code-class">Node</span> saved = node.left;
+        node.left = node.right;
+        node.right = saved;
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+            queue.offer(node.left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            queue.offer(node.right);
+    }
+    <span class="code-keyword">return</span> root;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> invert(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> saved = invert(root.left);
+    root.left = invert(root.right);
+    root.right = saved;
+    <span class="code-keyword">return</span> root;
+}</code></pre></div>
+
+    <div class="subheading"><span>Same tree (LeetCode 100)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> two trees built from <code>[1, 2, 3]</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p>Two trees are the same when they have the same shape and equal values in matching positions.</p>
+        <p>Compare the nodes in pairs. Two <code>null</code>s match; one <code>null</code>, or two different values, do not.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> sameTree(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b) {
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>[]&gt;();
+    queue.offer(<span class="code-keyword">new</span> <span class="code-class">Node</span>[] {a, b});
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span>[] pair = queue.poll();
+        <span class="code-class">Node</span> x = pair[<span class="code-number">0</span>], y = pair[<span class="code-number">1</span>];
+        <span class="code-keyword">if</span> (x == <span class="code-keyword">null</span> &amp;&amp; y == <span class="code-keyword">null</span>)
+            <span class="code-keyword">continue</span>;
+        <span class="code-keyword">if</span> (x == <span class="code-keyword">null</span> || y == <span class="code-keyword">null</span> || x.data != y.data)
+            <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+        queue.offer(<span class="code-keyword">new</span> <span class="code-class">Node</span>[] {x.left, y.left});
+        queue.offer(<span class="code-keyword">new</span> <span class="code-class">Node</span>[] {x.right, y.right});
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> sameTree(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b) {
+    <span class="code-keyword">if</span> (a == <span class="code-keyword">null</span> || b == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> a == b;
+    <span class="code-keyword">return</span> a.data == b.data &amp;&amp; sameTree(a.left, b.left) &amp;&amp; sameTree(a.right, b.right);
+}</code></pre></div>
+
+    <div class="subheading"><span>Symmetric tree (LeetCode 101)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>build(1, 2, 2, 3, 4, 4, 3)</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p>A tree is symmetric when its left subtree is the mirror of its right subtree. Compare pairs as in "Same tree", but cross over: <code>left.left</code> pairs with <code>right.right</code>, and <code>left.right</code> pairs with <code>right.left</code>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> symmetric(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>[]&gt;();
+    queue.offer(<span class="code-keyword">new</span> <span class="code-class">Node</span>[] {root.left, root.right});
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span>[] pair = queue.poll();
+        <span class="code-class">Node</span> x = pair[<span class="code-number">0</span>], y = pair[<span class="code-number">1</span>];
+        <span class="code-keyword">if</span> (x == <span class="code-keyword">null</span> &amp;&amp; y == <span class="code-keyword">null</span>)
+            <span class="code-keyword">continue</span>;
+        <span class="code-keyword">if</span> (x == <span class="code-keyword">null</span> || y == <span class="code-keyword">null</span> || x.data != y.data)
+            <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+        queue.offer(<span class="code-keyword">new</span> <span class="code-class">Node</span>[] {x.left, y.right});
+        queue.offer(<span class="code-keyword">new</span> <span class="code-class">Node</span>[] {x.right, y.left});
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> symmetric(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">return</span> root == <span class="code-keyword">null</span> || mirror(root.left, root.right);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> mirror(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b) {
+    <span class="code-keyword">if</span> (a == <span class="code-keyword">null</span> || b == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> a == b;
+    <span class="code-keyword">return</span> a.data == b.data &amp;&amp; mirror(a.left, b.right) &amp;&amp; mirror(a.right, b.left);
+}</code></pre></div>
+
+    <div class="subheading"><span>Left and right view (LeetCode 199)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>build(1, 2, 3, null, 5, null, 4)</code></p>
+        <p><strong>Output:</strong> left view <code>[1, 2, 5]</code>, right view <code>[1, 3, 4]</code></p>
+        <p>The left view is the first node of every level, and the right view is the last.</p>
+        <p><strong>Iterative:</strong> breadth-first search level by level, keeping index <code>0</code> or index <code>count - 1</code> of each level.</p>
+        <p><strong>Recursive:</strong> depth-first search that records a node the first time its depth is reached. Visiting left first gives the left view; visiting right first gives the right view.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; leftView(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> view = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> view;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">int</span> count = queue.size();
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; count; i++) {
+            <span class="code-class">Node</span> node = queue.poll();
+            <span class="code-keyword">if</span> (i == <span class="code-number">0</span>)
+                view.add(node.data);
+            <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+                queue.offer(node.left);
+            <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+                queue.offer(node.right);
+        }
+    }
+    <span class="code-keyword">return</span> view;
+}
+
+<span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; rightView(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> view = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> view;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">int</span> count = queue.size();
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; count; i++) {
+            <span class="code-class">Node</span> node = queue.poll();
+            <span class="code-keyword">if</span> (i == count - <span class="code-number">1</span>)
+                view.add(node.data);
+            <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+                queue.offer(node.left);
+            <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+                queue.offer(node.right);
+        }
+    }
+    <span class="code-keyword">return</span> view;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; leftView(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> view = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    leftView(root, <span class="code-number">0</span>, view);
+    <span class="code-keyword">return</span> view;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> leftView(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> depth, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; view) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">if</span> (depth == view.size())
+        view.add(node.data);
+    leftView(node.left, depth + <span class="code-number">1</span>, view);
+    leftView(node.right, depth + <span class="code-number">1</span>, view);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; rightView(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> view = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    rightView(root, <span class="code-number">0</span>, view);
+    <span class="code-keyword">return</span> view;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> rightView(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> depth, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; view) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">if</span> (depth == view.size())
+        view.add(node.data);
+    rightView(node.right, depth + <span class="code-number">1</span>, view);
+    rightView(node.left, depth + <span class="code-number">1</span>, view);
+}</code></pre></div>
+
+    <div class="subheading"><span>Sum of each level</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>[40, 90, 190]</code></p>
+        <p>Entry <code>i</code> of the result is the sum of the nodes at depth <code>i</code>.</p>
+        <p>The recursive version opens a new entry the first time a depth is reached and adds each node to its depth's entry.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; levelSums(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> sums = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> sums;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">int</span> sum = <span class="code-number">0</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> count = queue.size(); count &gt; <span class="code-number">0</span>; count--) {
+            <span class="code-class">Node</span> node = queue.poll();
+            sum += node.data;
+            <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+                queue.offer(node.left);
+            <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+                queue.offer(node.right);
+        }
+        sums.add(sum);
+    }
+    <span class="code-keyword">return</span> sums;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; levelSums(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> sums = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    levelSums(root, <span class="code-number">0</span>, sums);
+    <span class="code-keyword">return</span> sums;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> levelSums(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> depth, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; sums) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">if</span> (depth == sums.size())
+        sums.add(<span class="code-number">0</span>);
+    sums.set(depth, sums.get(depth) + node.data);
+    levelSums(node.left, depth + <span class="code-number">1</span>, sums);
+    levelSums(node.right, depth + <span class="code-number">1</span>, sums);
+}</code></pre></div>
+
+    <div class="subheading"><span>Sum of left leaves (LeetCode 404)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>build(3, 9, 20, null, null, 15, 7)</code></p>
+        <p><strong>Output:</strong> <code>24</code> (the left leaves are 9 and 15)</p>
+        <p>A <strong>left leaf</strong> is a leaf that is the left child of its parent. A node cannot tell on its own which side it hangs on, so:</p>
+        <ul><li>the iterative version checks <code>node.left</code> from the parent;</li><li>the recursive version passes an <code>isLeft</code> flag down.</li></ul>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> leftLeavesSum(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">int</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> sum;
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    stack.push(root);
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        <span class="code-class">Node</span> node = stack.pop();
+        <span class="code-class">Node</span> left = node.left;
+        <span class="code-keyword">if</span> (left != <span class="code-keyword">null</span> &amp;&amp; left.left == <span class="code-keyword">null</span> &amp;&amp; left.right == <span class="code-keyword">null</span>)
+            sum += left.data;
+        <span class="code-keyword">else</span> <span class="code-keyword">if</span> (left != <span class="code-keyword">null</span>)
+            stack.push(left);
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+            stack.push(node.right);
+    }
+    <span class="code-keyword">return</span> sum;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> leftLeavesSum(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">return</span> leftLeavesSum(root, <span class="code-keyword">false</span>);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">int</span> leftLeavesSum(<span class="code-class">Node</span> node, <span class="code-keyword">boolean</span> isLeft) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">if</span> (isLeft &amp;&amp; node.left == <span class="code-keyword">null</span> &amp;&amp; node.right == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> node.data;
+    <span class="code-keyword">return</span> leftLeavesSum(node.left, <span class="code-keyword">true</span>) + leftLeavesSum(node.right, <span class="code-keyword">false</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Root-to-leaf path sum (LeetCode 112)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree, <code>target = 90</code></p>
+        <p><strong>Output:</strong> <code>true</code> (the path 40 → 20 → 30)</p>
+        <p>The path must end at a <em>leaf</em>; stopping at an inner node whose running sum matches does not count.</p>
+        <p><strong>Iterative:</strong> depth-first search that pushes each node together with the sum of the path that reaches it.</p>
+        <p><strong>Recursive:</strong> subtract the node's value from the target and ask the children for the remainder.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(h)">O(h)</span>.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> hasPathSum(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> target) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">var</span> nodes = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-keyword">var</span> sums = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+    nodes.push(root);
+    sums.push(root.data);
+    <span class="code-keyword">while</span> (!nodes.isEmpty()) {
+        <span class="code-class">Node</span> node = nodes.pop();
+        <span class="code-keyword">int</span> sum = sums.pop();
+        <span class="code-keyword">if</span> (node.left == <span class="code-keyword">null</span> &amp;&amp; node.right == <span class="code-keyword">null</span> &amp;&amp; sum == target)
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>) {
+            nodes.push(node.right);
+            sums.push(sum + node.right.data);
+        }
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>) {
+            nodes.push(node.left);
+            sums.push(sum + node.left.data);
+        }
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> hasPathSum(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> target) {
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">if</span> (root.left == <span class="code-keyword">null</span> &amp;&amp; root.right == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> root.data == target;
+    <span class="code-keyword">int</span> rest = target - root.data;
+    <span class="code-keyword">return</span> hasPathSum(root.left, rest) || hasPathSum(root.right, rest);
+}</code></pre></div>
+
+    <div class="subheading"><span>Diameter of a tree (LeetCode 543)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>4</code> (for example 10 → 20 → 40 → 70 → 90)</p>
+        <p>The diameter is the number of <em>edges</em> on the longest path between any two nodes. The path does not have to pass through the root.</p>
+        <p>The longest path that turns at a node has length <code>height(left) + height(right)</code>. Computing heights separately for every node costs <span class="math" data-tex="O(n^2)">O(n2)</span>. Instead, compute each height once, bottom-up, and update the best answer on the way.</p>
+        <p>The iterative version is the one-stack postorder traversal, with a map holding each finished node's height.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(n)">O(n)</span> iterative (map), <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> diameter(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> height = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Node</span>, <span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> curr = root, prev = <span class="code-keyword">null</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> || !stack.isEmpty()) {
+        <span class="code-keyword">if</span> (curr != <span class="code-keyword">null</span>) {
+            stack.push(curr);
+            curr = curr.left;
+        } <span class="code-keyword">else</span> <span class="code-keyword">if</span> (stack.peek().right != <span class="code-keyword">null</span> &amp;&amp; stack.peek().right != prev) {
+            curr = stack.peek().right;
+        } <span class="code-keyword">else</span> {
+            <span class="code-class">Node</span> node = stack.pop();
+            <span class="code-keyword">int</span> left = height.getOrDefault(node.left, <span class="code-number">0</span>);
+            <span class="code-keyword">int</span> right = height.getOrDefault(node.right, <span class="code-number">0</span>);
+            best = <span class="code-class">Math</span>.max(best, left + right);
+            height.put(node, <span class="code-number">1</span> + <span class="code-class">Math</span>.max(left, right));
+            prev = node;
+        }
+    }
+    <span class="code-keyword">return</span> best;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> diameter(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> best = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">1</span>];
+    depth(root, best);
+    <span class="code-keyword">return</span> best[<span class="code-number">0</span>];
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">int</span> depth(<span class="code-class">Node</span> node, <span class="code-keyword">int</span>[] best) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> left = depth(node.left, best);
+    <span class="code-keyword">int</span> right = depth(node.right, best);
+    best[<span class="code-number">0</span>] = <span class="code-class">Math</span>.max(best[<span class="code-number">0</span>], left + right);
+    <span class="code-keyword">return</span> <span class="code-number">1</span> + <span class="code-class">Math</span>.max(left, right);
+}</code></pre></div>
+
+    <div class="subheading"><span>Balanced tree check (LeetCode 110)</span><span class="sw-diff sw-easy">Easy</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree / <code>build(1, 2, null, 3)</code></p>
+        <p><strong>Output:</strong> <code>true</code> / <code>false</code></p>
+        <p>A tree is height-balanced when, at <em>every</em> node, the heights of the two subtrees differ by at most 1.</p>
+        <p>The recursive version returns <code>-1</code> as soon as a subtree is unbalanced, so the answer is found in one bottom-up pass. The iterative version runs the same check during a postorder traversal.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(n)">O(n)</span> iterative (map), <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> balanced(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> height = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Node</span>, <span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> curr = root, prev = <span class="code-keyword">null</span>;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> || !stack.isEmpty()) {
+        <span class="code-keyword">if</span> (curr != <span class="code-keyword">null</span>) {
+            stack.push(curr);
+            curr = curr.left;
+        } <span class="code-keyword">else</span> <span class="code-keyword">if</span> (stack.peek().right != <span class="code-keyword">null</span> &amp;&amp; stack.peek().right != prev) {
+            curr = stack.peek().right;
+        } <span class="code-keyword">else</span> {
+            <span class="code-class">Node</span> node = stack.pop();
+            <span class="code-keyword">int</span> left = height.getOrDefault(node.left, <span class="code-number">0</span>);
+            <span class="code-keyword">int</span> right = height.getOrDefault(node.right, <span class="code-number">0</span>);
+            <span class="code-keyword">if</span> (<span class="code-class">Math</span>.abs(left - right) &gt; <span class="code-number">1</span>)
+                <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+            height.put(node, <span class="code-number">1</span> + <span class="code-class">Math</span>.max(left, right));
+            prev = node;
+        }
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> balanced(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">return</span> checkedHeight(root) != -<span class="code-number">1</span>;
+}
+
+<span class="code-comment">// Height of the subtree, or -1 if any part of it is unbalanced.</span>
+<span class="code-keyword">public</span> <span class="code-keyword">int</span> checkedHeight(<span class="code-class">Node</span> node) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> left = checkedHeight(node.left);
+    <span class="code-keyword">if</span> (left == -<span class="code-number">1</span>)
+        <span class="code-keyword">return</span> -<span class="code-number">1</span>;
+    <span class="code-keyword">int</span> right = checkedHeight(node.right);
+    <span class="code-keyword">if</span> (right == -<span class="code-number">1</span> || <span class="code-class">Math</span>.abs(left - right) &gt; <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> -<span class="code-number">1</span>;
+    <span class="code-keyword">return</span> <span class="code-number">1</span> + <span class="code-class">Math</span>.max(left, right);
+}</code></pre></div>
+
+    <div class="subheading"><span>Path from the root to a node</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree, <code>key = 60</code></p>
+        <p><strong>Output:</strong> <code>[40, 70, 60]</code></p>
+        <p><strong>Iterative:</strong> breadth-first search that records each node's parent. Once the key is found, follow the parents back to the root and reverse the result.</p>
+        <p><strong>Recursive (backtracking):</strong> add the node to the path. If neither the node nor its subtrees hold the key, remove it again.</p>
+        <p>Both versions return an empty list when the key is absent.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(n)">O(n)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; pathTo(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">var</span> parent = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Node</span>, <span class="code-class">Node</span>&gt;();
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> target = <span class="code-keyword">null</span>;
+    <span class="code-keyword">if</span> (root != <span class="code-keyword">null</span>)
+        queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span> node = queue.poll();
+        <span class="code-keyword">if</span> (node.data == key) {
+            target = node;
+            <span class="code-keyword">break</span>;
+        }
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>) {
+            parent.put(node.left, node);
+            queue.offer(node.left);
+        }
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>) {
+            parent.put(node.right, node);
+            queue.offer(node.right);
+        }
+    }
+    <span class="code-keyword">var</span> path = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> node = target; node != <span class="code-keyword">null</span>; node = parent.get(node))
+        path.add(node.data);
+    <span class="code-class">Collections</span>.reverse(path);
+    <span class="code-keyword">return</span> path;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; pathTo(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> key) {
+    <span class="code-keyword">var</span> path = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    pathTo(root, key, path);
+    <span class="code-keyword">return</span> path;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> pathTo(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> key, <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; path) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    path.add(node.data);
+    <span class="code-keyword">if</span> (node.data == key || pathTo(node.left, key, path) || pathTo(node.right, key, path))
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    path.remove(path.size() - <span class="code-number">1</span>);
+    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+}</code></pre></div>
+
+    <div class="subheading"><span>Validate a binary search tree (LeetCode 98)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>build(40, 20, 70, 10, 30, 60, 90)</code> / <code>build(40, 20, 70, 10, 50)</code></p>
+        <p><strong>Output:</strong> <code>true</code> / <code>false</code></p>
+        <p>In a BST, <em>every</em> value in the left subtree is smaller than the node and every value in the right subtree is larger.</p>
+        <p>Checking only a node against its direct children is not enough. In the second tree, <code>50</code> is a valid right child of <code>20</code>, but it sits in the left subtree of <code>40</code>.</p>
+        <p><strong>Iterative:</strong> an inorder traversal of a BST is strictly increasing, so compare each value with the previous one.</p>
+        <p><strong>Recursive:</strong> pass down the open interval <code>(low, high)</code> that the subtree's values must fall in. Using <code>long</code> bounds means <code>Integer.MIN_VALUE</code> and <code>Integer.MAX_VALUE</code> are still valid node values.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(h)">O(h)</span>.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isBST(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> curr = root;
+    <span class="code-class">Integer</span> prev = <span class="code-keyword">null</span>;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> || !stack.isEmpty()) {
+        <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span>) {
+            stack.push(curr);
+            curr = curr.left;
+        }
+        curr = stack.pop();
+        <span class="code-keyword">if</span> (prev != <span class="code-keyword">null</span> &amp;&amp; curr.data &lt;= prev)
+            <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+        prev = curr.data;
+        curr = curr.right;
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isBST(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">return</span> isBST(root, <span class="code-class">Long</span>.<span class="code-class">MIN_VALUE</span>, <span class="code-class">Long</span>.<span class="code-class">MAX_VALUE</span>);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isBST(<span class="code-class">Node</span> node, <span class="code-keyword">long</span> low, <span class="code-keyword">long</span> high) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    <span class="code-keyword">if</span> (node.data &lt;= low || node.data &gt;= high)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    <span class="code-keyword">return</span> isBST(node.left, low, node.data) &amp;&amp; isBST(node.right, node.data, high);
+}</code></pre></div>
+
+    <div class="subheading"><span>Lowest common ancestor (LeetCode 236)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree, <code>a = 10</code>, <code>b = 30</code></p>
+        <p><strong>Output:</strong> <code>20</code></p>
+        <p>The lowest common ancestor is the deepest node that has both <code>a</code> and <code>b</code> as descendants. A node counts as its own descendant.</p>
+        <p>Both values are assumed to be present.</p>
+        <p><strong>Iterative:</strong> record parents with breadth-first search until both nodes are found. Collect all ancestors of <code>a</code>, then climb from <code>b</code> until reaching one of them.</p>
+        <p><strong>Recursive:</strong> a subtree returns whichever of the two values it contains. If the left and right subtrees both return something, the current node is where the two paths meet.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(n)">O(n)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> lca(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b) {
+    <span class="code-keyword">var</span> parent = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Node</span>, <span class="code-class">Node</span>&gt;();
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> nodeA = <span class="code-keyword">null</span>, nodeB = <span class="code-keyword">null</span>;
+    queue.offer(root);
+    <span class="code-keyword">while</span> (nodeA == <span class="code-keyword">null</span> || nodeB == <span class="code-keyword">null</span>) {
+        <span class="code-class">Node</span> node = queue.poll();
+        <span class="code-keyword">if</span> (node.data == a)
+            nodeA = node;
+        <span class="code-keyword">if</span> (node.data == b)
+            nodeB = node;
+        <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>) {
+            parent.put(node.left, node);
+            queue.offer(node.left);
+        }
+        <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>) {
+            parent.put(node.right, node);
+            queue.offer(node.right);
+        }
+    }
+    <span class="code-keyword">var</span> ancestors = <span class="code-keyword">new</span> <span class="code-class">HashSet</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-keyword">for</span> (<span class="code-class">Node</span> node = nodeA; node != <span class="code-keyword">null</span>; node = parent.get(node))
+        ancestors.add(node);
+    <span class="code-class">Node</span> node = nodeB;
+    <span class="code-keyword">while</span> (!ancestors.contains(node))
+        node = parent.get(node);
+    <span class="code-keyword">return</span> node;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> lca(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span> || node.data == a || node.data == b)
+        <span class="code-keyword">return</span> node;
+    <span class="code-class">Node</span> left = lca(node.left, a, b);
+    <span class="code-class">Node</span> right = lca(node.right, a, b);
+    <span class="code-keyword">if</span> (left != <span class="code-keyword">null</span> &amp;&amp; right != <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> node;
+    <span class="code-keyword">return</span> left != <span class="code-keyword">null</span> ? left : right;
+}</code></pre></div>
+
+    <div class="subheading"><span>Zigzag level order (LeetCode 103)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> <code>[[40], [70, 20], [10, 30, 60, 90]]</code></p>
+        <p>Levels alternate direction: left to right, then right to left, and so on.</p>
+        <p>The traversal itself is an ordinary level order. Only the insertion point changes: append on even levels, prepend on odd ones. A <code>LinkedList</code> makes both <span class="math" data-tex="O(1)">O(1)</span>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(w)">O(w)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; zigzag(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt;();
+    <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> result;
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">boolean</span> leftToRight = <span class="code-keyword">true</span>;
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">var</span> level = <span class="code-keyword">new</span> <span class="code-class">LinkedList</span>&lt;<span class="code-class">Integer</span>&gt;();
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> count = queue.size(); count &gt; <span class="code-number">0</span>; count--) {
+            <span class="code-class">Node</span> node = queue.poll();
+            <span class="code-keyword">if</span> (leftToRight)
+                level.addLast(node.data);
+            <span class="code-keyword">else</span>
+                level.addFirst(node.data);
+            <span class="code-keyword">if</span> (node.left != <span class="code-keyword">null</span>)
+                queue.offer(node.left);
+            <span class="code-keyword">if</span> (node.right != <span class="code-keyword">null</span>)
+                queue.offer(node.right);
+        }
+        result.add(level);
+        leftToRight = !leftToRight;
+    }
+    <span class="code-keyword">return</span> result;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; zigzag(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt;();
+    zigzag(root, <span class="code-number">0</span>, result);
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> zigzag(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> depth, <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; result) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span>;
+    <span class="code-keyword">if</span> (depth == result.size())
+        result.add(<span class="code-keyword">new</span> <span class="code-class">LinkedList</span>&lt;&gt;());
+    <span class="code-keyword">if</span> (depth % <span class="code-number">2</span> == <span class="code-number">0</span>)
+        result.get(depth).add(node.data);
+    <span class="code-keyword">else</span>
+        result.get(depth).add(<span class="code-number">0</span>, node.data);
+    zigzag(node.left, depth + <span class="code-number">1</span>, result);
+    zigzag(node.right, depth + <span class="code-number">1</span>, result);
+}</code></pre></div>
+
+    <div class="subheading"><span>Build a tree from preorder and inorder (LeetCode 105)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>preorder = [40, 20, 10, 30, 70, 60, 90]</code>, <code>inorder = [10, 20, 30, 40, 60, 70, 90]</code></p>
+        <p><strong>Output:</strong> the sample tree (postorder <code>[10, 30, 20, 60, 90, 70, 40]</code>)</p>
+        <p>Values must be distinct.</p>
+        <p><strong>Recursive:</strong> the next preorder value is the root of the current subtree. Its position in the inorder array splits that array into the left subtree and the right subtree. A hash map gives the position in <span class="math" data-tex="O(1)">O(1)</span>.</p>
+        <p><strong>Iterative:</strong> keep a stack of nodes still waiting for a right child, and push each new preorder value as a left child. When the stack top equals the next inorder value, that node's left side is complete. Pop such nodes; the new value becomes the right child of the last one popped.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(n)">O(n)</span>.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> fromTraversals(<span class="code-keyword">int</span>[] preorder, <span class="code-keyword">int</span>[] inorder) {
+    <span class="code-keyword">if</span> (preorder.length == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> root = <span class="code-keyword">new</span> <span class="code-class">Node</span>(preorder[<span class="code-number">0</span>]);
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    stack.push(root);
+    <span class="code-keyword">int</span> in = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; preorder.length; i++) {
+        <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(preorder[i]);
+        <span class="code-class">Node</span> parent = stack.peek();
+        <span class="code-keyword">if</span> (parent.data != inorder[in]) {
+            parent.left = node;
+        } <span class="code-keyword">else</span> {
+            <span class="code-keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek().data == inorder[in]) {
+                parent = stack.pop();
+                in++;
+            }
+            parent.right = node;
+        }
+        stack.push(node);
+    }
+    <span class="code-keyword">return</span> root;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span> fromTraversals(<span class="code-keyword">int</span>[] preorder, <span class="code-keyword">int</span>[] inorder) {
+    <span class="code-keyword">var</span> position = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; inorder.length; i++)
+        position.put(inorder[i], i);
+    <span class="code-keyword">var</span> next = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">1</span>];
+    <span class="code-keyword">return</span> subtree(preorder, next, <span class="code-number">0</span>, inorder.length - <span class="code-number">1</span>, position);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> subtree(<span class="code-keyword">int</span>[] preorder, <span class="code-keyword">int</span>[] next, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi, <span class="code-class">Map</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt; position) {
+    <span class="code-keyword">if</span> (lo &gt; hi)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(preorder[next[<span class="code-number">0</span>]++]);
+    <span class="code-keyword">int</span> mid = position.get(node.data);
+    node.left = subtree(preorder, next, lo, mid - <span class="code-number">1</span>, position);
+    node.right = subtree(preorder, next, mid + <span class="code-number">1</span>, hi, position);
+    <span class="code-keyword">return</span> node;
+}</code></pre></div>
+
+    <div class="subheading"><span>Flatten a tree to a linked list (LeetCode 114)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> a right-leaning chain in preorder: <code>40 → 20 → 10 → 30 → 70 → 60 → 90</code>, with every <code>left</code> set to <code>null</code>.</p>
+        <p><strong>Iterative, <span class="math" data-tex="O(1)">O(1)</span> space:</strong> at each node that has a left subtree, find that subtree's rightmost node. Hang the current right subtree there, move the left subtree to the right, and continue down the right.</p>
+        <p><strong>Recursive:</strong> flatten both subtrees, then splice the left chain between the node and the right chain. The method returns the tail of the flattened chain so that the splice is <span class="math" data-tex="O(1)">O(1)</span>.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(1)">O(1)</span> iterative, <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> flatten(<span class="code-class">Node</span> root) {
+    <span class="code-class">Node</span> curr = root;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (curr.left != <span class="code-keyword">null</span>) {
+            <span class="code-class">Node</span> last = curr.left;
+            <span class="code-keyword">while</span> (last.right != <span class="code-keyword">null</span>)
+                last = last.right;
+            last.right = curr.right;
+            curr.right = curr.left;
+            curr.left = <span class="code-keyword">null</span>;
+        }
+        curr = curr.right;
+    }
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-comment">// Flattens the subtree and returns the last node of the chain.</span>
+<span class="code-keyword">public</span> <span class="code-class">Node</span> flatten(<span class="code-class">Node</span> node) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> leftTail = flatten(node.left);
+    <span class="code-class">Node</span> rightTail = flatten(node.right);
+    <span class="code-keyword">if</span> (leftTail != <span class="code-keyword">null</span>) {
+        leftTail.right = node.right;
+        node.right = node.left;
+        node.left = <span class="code-keyword">null</span>;
+    }
+    <span class="code-keyword">if</span> (rightTail != <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> rightTail;
+    <span class="code-keyword">return</span> leftTail != <span class="code-keyword">null</span> ? leftTail : node;
+}</code></pre></div>
+
+    <div class="subheading"><span>K-th smallest in a BST (LeetCode 230)</span><span class="sw-diff sw-medium">Medium</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree (a BST), <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>30</code></p>
+        <p>An inorder traversal of a BST visits values in increasing order, so the answer is the <code>k</code>-th node visited. Both versions stop there instead of traversing the whole tree.</p>
+        <p>Both return <code>-1</code> when <code>k</code> exceeds the size.</p>
+        <p>Time <span class="math" data-tex="O(h + k)">O(h + k)</span>. Extra space <span class="math" data-tex="O(h)">O(h)</span>.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> kthSmallest(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> curr = root;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> || !stack.isEmpty()) {
+        <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span>) {
+            stack.push(curr);
+            curr = curr.left;
+        }
+        curr = stack.pop();
+        <span class="code-keyword">if</span> (--k == <span class="code-number">0</span>)
+            <span class="code-keyword">return</span> curr.data;
+        curr = curr.right;
+    }
+    <span class="code-keyword">return</span> -<span class="code-number">1</span>;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> kthSmallest(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">var</span> seen = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">1</span>];
+    <span class="code-class">Node</span> found = kthNode(root, k, seen);
+    <span class="code-keyword">return</span> found == <span class="code-keyword">null</span> ? -<span class="code-number">1</span> : found.data;
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> kthNode(<span class="code-class">Node</span> node, <span class="code-keyword">int</span> k, <span class="code-keyword">int</span>[] seen) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span> found = kthNode(node.left, k, seen);
+    <span class="code-keyword">if</span> (found != <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> found;
+    <span class="code-keyword">if</span> (++seen[<span class="code-number">0</span>] == k)
+        <span class="code-keyword">return</span> node;
+    <span class="code-keyword">return</span> kthNode(node.right, k, seen);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum path sum (LeetCode 124)</span><span class="sw-diff sw-hard">Hard</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> <code>build(-10, 9, 20, null, null, 15, 7)</code></p>
+        <p><strong>Output:</strong> <code>42</code> (the path 15 → 20 → 7)</p>
+        <p>A path may start and end at any nodes, but it can turn only once, at its highest node.</p>
+        <p>For every node, compute its <strong>gain</strong>: the best sum of a downward path starting there. Negative gains are dropped (treated as 0). The best path that turns at the node is then <span class="math" data-tex="data + gain(left) + gain(right)">data + gain(left) + gain(right)</span>.</p>
+        <p>The iterative version computes the gains in a postorder traversal, exactly as in "Diameter".</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>. Extra space <span class="math" data-tex="O(n)">O(n)</span> iterative (map), <span class="math" data-tex="O(h)">O(h)</span> recursive.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> maxPathSum(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> gain = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Node</span>, <span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    <span class="code-class">Node</span> curr = root, prev = <span class="code-keyword">null</span>;
+    <span class="code-keyword">int</span> best = <span class="code-class">Integer</span>.<span class="code-class">MIN_VALUE</span>;
+    <span class="code-keyword">while</span> (curr != <span class="code-keyword">null</span> || !stack.isEmpty()) {
+        <span class="code-keyword">if</span> (curr != <span class="code-keyword">null</span>) {
+            stack.push(curr);
+            curr = curr.left;
+        } <span class="code-keyword">else</span> <span class="code-keyword">if</span> (stack.peek().right != <span class="code-keyword">null</span> &amp;&amp; stack.peek().right != prev) {
+            curr = stack.peek().right;
+        } <span class="code-keyword">else</span> {
+            <span class="code-class">Node</span> node = stack.pop();
+            <span class="code-keyword">int</span> left = <span class="code-class">Math</span>.max(<span class="code-number">0</span>, gain.getOrDefault(node.left, <span class="code-number">0</span>));
+            <span class="code-keyword">int</span> right = <span class="code-class">Math</span>.max(<span class="code-number">0</span>, gain.getOrDefault(node.right, <span class="code-number">0</span>));
+            best = <span class="code-class">Math</span>.max(best, node.data + left + right);
+            gain.put(node, node.data + <span class="code-class">Math</span>.max(left, right));
+            prev = node;
+        }
+    }
+    <span class="code-keyword">return</span> best;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> maxPathSum(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> best = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[] {<span class="code-class">Integer</span>.<span class="code-class">MIN_VALUE</span>};
+    gain(root, best);
+    <span class="code-keyword">return</span> best[<span class="code-number">0</span>];
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">int</span> gain(<span class="code-class">Node</span> node, <span class="code-keyword">int</span>[] best) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> left = <span class="code-class">Math</span>.max(<span class="code-number">0</span>, gain(node.left, best));
+    <span class="code-keyword">int</span> right = <span class="code-class">Math</span>.max(<span class="code-number">0</span>, gain(node.right, best));
+    best[<span class="code-number">0</span>] = <span class="code-class">Math</span>.max(best[<span class="code-number">0</span>], node.data + left + right);
+    <span class="code-keyword">return</span> node.data + <span class="code-class">Math</span>.max(left, right);
+}</code></pre></div>
+
+    <div class="subheading"><span>Serialize and deserialize (LeetCode 297)</span><span class="sw-diff sw-hard">Hard</span></div>
+    <div class="intro">
+        <p><strong>Input:</strong> the sample tree</p>
+        <p><strong>Output:</strong> a string that rebuilds the same tree</p>
+        <p>A traversal alone cannot identify a tree; writing <code>#</code> for every missing child makes it unambiguous. Each version below reads back exactly the format it writes.</p>
+        <p><strong>Iterative (level order):</strong> <code>40,20,70,10,30,60,90,#,#,#,#,#,#,#,#</code>. Reading consumes two tokens, the left and right child, for every non-null node taken from the queue.</p>
+        <p><strong>Recursive (preorder):</strong> <code>40,20,10,#,#,30,#,#,70,60,#,#,90,#,#</code>. Reading follows the same order: node, then its whole left subtree, then its whole right subtree.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(n)">O(n)</span>.</p>
+    </div>
+    <div class="sw-impl"><span class="sw-diff sw-iter">Iterative</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">String</span> serialize(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> out = <span class="code-keyword">new</span> <span class="code-class">StringJoiner</span>(<span class="code-string">","</span>);
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">LinkedList</span>&lt;<span class="code-class">Node</span>&gt;();   <span class="code-comment">// LinkedList accepts null</span>
+    queue.offer(root);
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span> node = queue.poll();
+        <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>) {
+            out.add(<span class="code-string">"#"</span>);
+            <span class="code-keyword">continue</span>;
+        }
+        out.add(<span class="code-class">String</span>.valueOf(node.data));
+        queue.offer(node.left);
+        queue.offer(node.right);
+    }
+    <span class="code-keyword">return</span> out.toString();
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> deserialize(<span class="code-class">String</span> data) {
+    <span class="code-class">String</span>[] tokens = data.split(<span class="code-string">","</span>);
+    <span class="code-keyword">if</span> (tokens[<span class="code-number">0</span>].equals(<span class="code-string">"#"</span>))
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> root = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-class">Integer</span>.parseInt(tokens[<span class="code-number">0</span>]));
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Node</span>&gt;();
+    queue.offer(root);
+    <span class="code-keyword">int</span> i = <span class="code-number">1</span>;
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-class">Node</span> node = queue.poll();
+        <span class="code-keyword">if</span> (!tokens[i].equals(<span class="code-string">"#"</span>)) {
+            node.left = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-class">Integer</span>.parseInt(tokens[i]));
+            queue.offer(node.left);
+        }
+        i++;
+        <span class="code-keyword">if</span> (!tokens[i].equals(<span class="code-string">"#"</span>)) {
+            node.right = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-class">Integer</span>.parseInt(tokens[i]));
+            queue.offer(node.right);
+        }
+        i++;
+    }
+    <span class="code-keyword">return</span> root;
+}</code></pre></div>
+    <div class="sw-impl"><span class="sw-diff sw-rec">Recursive</span></div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">String</span> serialize(<span class="code-class">Node</span> root) {
+    <span class="code-keyword">var</span> out = <span class="code-keyword">new</span> <span class="code-class">StringJoiner</span>(<span class="code-string">","</span>);
+    write(root, out);
+    <span class="code-keyword">return</span> out.toString();
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> write(<span class="code-class">Node</span> node, <span class="code-class">StringJoiner</span> out) {
+    <span class="code-keyword">if</span> (node == <span class="code-keyword">null</span>) {
+        out.add(<span class="code-string">"#"</span>);
+        <span class="code-keyword">return</span>;
+    }
+    out.add(<span class="code-class">String</span>.valueOf(node.data));
+    write(node.left, out);
+    write(node.right, out);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> deserialize(<span class="code-class">String</span> data) {
+    <span class="code-keyword">var</span> tokens = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">String</span>&gt;(<span class="code-class">Arrays</span>.asList(data.split(<span class="code-string">","</span>)));
+    <span class="code-keyword">return</span> read(tokens);
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> read(<span class="code-class">Deque</span>&lt;<span class="code-class">String</span>&gt; tokens) {
+    <span class="code-class">String</span> token = tokens.poll();
+    <span class="code-keyword">if</span> (token.equals(<span class="code-string">"#"</span>))
+        <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-class">Integer</span>.parseInt(token));
+    node.left = read(tokens);
+    node.right = read(tokens);
+    <span class="code-keyword">return</span> node;
+}</code></pre></div>
+</div>
+</body>
+</html>
