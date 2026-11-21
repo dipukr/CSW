@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Structures</title>
+<link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+<div class="note">
+    <div class="title">Data Structures &mdash; Complete Top-Level Overview</div>
+
+    <div class="intro">
+        <p>A <strong>Data Structure</strong> is a way of organizing, storing, and managing data so that operations such as searching, accessing, inserting, deleting, and updating can be performed efficiently.</p>
+        <p>Data structures are one of the foundational concepts in computer science. They are used in everything from simple Java applications to databases, operating systems, compilers, search engines, and large-scale distributed systems.</p>
+        <p>This overview covers their <strong>classification, types, internal organization, time complexities, applications, trade-offs, and Java implementations</strong>.</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="subheading">Big Picture: Classification of Data Structures</div>
+    <div class="intro">
+        <p>There is no single universally accepted classification of all data structures. They can be classified by their relationships, behavior, memory layout, and intended operations.</p>
+        <p class="minor-heading"><strong>Data Structures &mdash; Taxonomy</strong></p>
+        <p>Conceptual hierarchy. Some structures belong to multiple categories.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-taxonomy.svg" alt="Taxonomy: data structures split into primitive values (int, char, boolean, float) and composite or non-primitive structures. Composite structures are linear or sequential (arrays and dynamic arrays, linked lists, stacks, queues and deques), non-linear (trees, heaps and tries; graphs) or specialized (hash tables, maps and sets; range query structures; probabilistic structures; disk, spatial and text indexes)" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p>Primitive values are included for introductory classification. Strictly speaking, they are basic data types rather than composite data structures. Also, maps, sets and tries are classified by behavior as well as implementation.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="subheading">Fundamental Classification</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Primitive vs Non-Primitive</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Category</th><th>Explanation</th><th>Examples</th></tr></thead>
+            <tbody>
+                <tr><td>Primitive</td><td>Basic individual values supported by a programming language</td><td><code>int</code>, <code>char</code>, <code>boolean</code>, <code>double</code></td></tr>
+                <tr><td>Non-Primitive</td><td>Organizes multiple values or relationships</td><td>Array, List, Tree, Graph, HashMap</td></tr>
+            </tbody>
+        </table></div>
+
+        <p class="minor-heading"><strong>Linear vs Non-Linear</strong></p>
+        <p><strong>Linear Data Structures</strong></p>
+        <p>Elements are arranged sequentially.</p>
+        <p>Examples: Array, Linked List, Stack, Queue</p>
+        <p><strong>Non-Linear Data Structures</strong></p>
+        <p>Elements form hierarchical or network relationships.</p>
+        <p>Examples: Tree, Heap, Graph</p>
+
+        <p class="minor-heading"><strong>Static vs Dynamic</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Static</th><th>Dynamic</th></tr></thead>
+            <tbody>
+                <tr><td>Capacity is fixed after creation</td><td>Capacity can grow or shrink</td></tr>
+                <tr><td>Typically predictable memory usage</td><td>Memory usage can change</td></tr>
+                <tr><td>Example: Java array <code>int[100]</code></td><td>Example: <code>ArrayList</code>, <code>LinkedList</code></td></tr>
+            </tbody>
+        </table></div>
+        <p>A dynamic array still uses a fixed-capacity backing array at any given moment. It resizes by allocating a larger array when necessary.</p>
+
+        <p class="minor-heading"><strong>Contiguous vs Linked / Pointer-Based</strong></p>
+        <p><strong>Contiguous Storage</strong></p>
+        <p>Array: good locality and random access.</p>
+        <p><strong>Linked Storage</strong></p>
+        <p>Linked List: nodes connected by references.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-contiguous-linked.svg" alt="Contiguous storage: an array keeps values 10 to 60 in adjacent memory cells at addresses 0x100, 0x104 and so on. Linked storage: a linked list keeps nodes at scattered addresses, each node holding a value and a reference to the next node, ending in null" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p>This distinction is important for performance. Arrays generally benefit from CPU caching and locality of reference, whereas linked structures can require additional memory allocations and pointer traversal.</p>
+    </div>
+
+    <!-- 3 -->
+    <div class="subheading">Linear Data Structures</div>
+    <div class="intro">
+        <p>Linear data structures arrange elements in a sequence, although their access and modification rules differ.</p>
+
+        <p class="minor-heading"><strong>Array</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-array.svg" alt="Array of eight integers with indices 0 to 7; element arr[3] is highlighted, reached directly at address base + 3 times element size" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p>Stores a fixed number of elements, accessible by index. Offers O(1) random access but O(n) insertion or deletion when elements must be shifted.</p>
+        <p>Java: <code>int[]</code>, <code>String[]</code></p>
+
+        <p class="minor-heading"><strong>Dynamic Array</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-dynamic-array.svg" alt="Dynamic array growth: a full backing array of capacity 4 holding A to D; adding E allocates a new array of capacity 8, copies A to D and appends E" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p>Array-backed structure that automatically grows its capacity when needed. Fast indexing and efficient appending.</p>
+        <p>Java: <code>ArrayList</code></p>
+
+        <p class="minor-heading"><strong>Linked List</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-linked-list.svg" alt="Singly linked list: head points to nodes 10, 20, 30, each holding data and a next reference, ending in null. Doubly linked list: each node also holds a prev reference, so it can be walked in both directions" style="width:100%;max-width:660px">
+    </div>
+    <div class="intro">
+        <p>Sequence of nodes, each containing data and reference(s) to other nodes.</p>
+        <p>Variants: Singly Linked List, Doubly Linked List, Circular Linked List.</p>
+        <p>Java: <code>LinkedList</code> (doubly linked)</p>
+
+        <p class="minor-heading"><strong>Stack &mdash; LIFO</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-stack.svg" alt="Stack: values 10, 20, 30, 40 stacked with 40 on top; push adds a new element on top and pop removes the top element, last in first out" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p>Last In, First Out. Main operations: <code>push</code>, <code>pop</code>, <code>peek</code>.</p>
+        <p>Used in recursion, function calls, undo systems, expression evaluation, DFS.</p>
+        <p>Java: <code>ArrayDeque</code> via <code>Deque</code></p>
+
+        <p class="minor-heading"><strong>Queue &mdash; FIFO</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-queue.svg" alt="Queue: elements 10, 20, 30, 40 in a row; dequeue or poll removes 10 from the front on the left, enqueue or offer adds 50 at the rear on the right, first in first out" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p>First In, First Out. Main operations: <code>enqueue</code> / <code>offer</code>, <code>dequeue</code> / <code>poll</code>.</p>
+        <p>Used in scheduling, messaging, buffering, and BFS.</p>
+        <p>Java: <code>Queue</code>, <code>ArrayDeque</code></p>
+
+        <p class="minor-heading"><strong>Deque &mdash; Double-Ended Queue</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-deque.svg" alt="Deque: elements 10, 20, 30, 40 in a row; elements can be added or removed at the front with offerFirst and pollFirst and at the back with offerLast and pollLast" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p>Supports insertion and deletion at both ends. Can implement both stack and queue behavior.</p>
+        <p>Used in sliding-window algorithms, buffering, work scheduling.</p>
+        <p>Java: <code>Deque</code>, <code>ArrayDeque</code></p>
+        <p>Other important linear structures include the <strong>Circular Buffer (Ring Buffer)</strong>, used in high-performance queues and streams; <strong>Gap Buffer</strong>, used in text editing; and <strong>Rope</strong>, used for efficient manipulation of large text.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="subheading">Non-Linear Data Structures</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Trees</strong></p>
+        <p>A tree organizes nodes into hierarchical parent-child relationships. A conventional rooted tree has one root, and every other node has exactly one parent.</p>
+        <p class="minor-heading"><strong>Example: Binary Tree</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-binary-tree.svg" alt="Binary tree: root 8 with children 4 and 12; 4 has children 2 and 6, 12 has children 10 and 14; nodes 2, 6, 10 and 14 are leaves" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Major types of trees</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Data Structure</th><th>Characteristics</th><th>Primary Usage</th></tr></thead>
+            <tbody>
+                <tr><td>General Tree</td><td>Each node may have any number of children</td><td>File systems, DOM</td></tr>
+                <tr><td>Binary Tree</td><td>At most two children per node</td><td>Hierarchical algorithms</td></tr>
+                <tr><td>Binary Search Tree</td><td>Left keys smaller; right keys larger</td><td>Ordered searching</td></tr>
+                <tr><td>AVL Tree</td><td>Height-balanced BST</td><td>Predictable O(log n) lookups</td></tr>
+                <tr><td>Red-Black Tree</td><td>Self-balancing BST with color invariants</td><td>Ordered maps and sets</td></tr>
+                <tr><td>Splay Tree</td><td>Recently accessed nodes move toward root</td><td>Locality-sensitive access</td></tr>
+                <tr><td>Treap</td><td>BST + heap priority properties</td><td>Randomized ordered set</td></tr>
+                <tr><td>B-Tree</td><td>Multiway balanced search tree</td><td>Database and file indexes</td></tr>
+                <tr><td>B+ Tree</td><td>Search keys in internal nodes; records at leaves</td><td>Database range queries</td></tr>
+                <tr><td>Trie (Prefix Tree)</td><td>Organizes keys by character/element prefixes</td><td>Autocomplete, routing</td></tr>
+                <tr><td>Radix Tree</td><td>Compresses common paths in a trie</td><td>Prefix indexing</td></tr>
+                <tr><td>Segment Tree</td><td>Aggregates values over ranges</td><td>Range queries and updates</td></tr>
+                <tr><td>Fenwick Tree (BIT)</td><td>Maintains prefix aggregates</td><td>Prefix/range sums</td></tr>
+                <tr><td>Interval Tree</td><td>Stores intervals for overlap queries</td><td>Scheduling, geometry</td></tr>
+                <tr><td>KD-Tree</td><td>Partitions multidimensional points</td><td>Spatial search</td></tr>
+                <tr><td>R-Tree</td><td>Organizes spatial bounding rectangles</td><td>GIS, geographic indexes</td></tr>
+                <tr><td>Merkle Tree</td><td>Parent hashes summarize descendants</td><td>Integrity checks, distributed storage</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important distinctions:</strong></p>
+        <p>A Binary Tree is not necessarily a BST. A BST is not necessarily balanced. AVL and Red-Black Trees are balanced BST implementations. A B-Tree and a Binary Tree are different families, and B-Trees are particularly useful for page-oriented storage.</p>
+
+        <p class="minor-heading"><strong>Heaps and Priority Queues</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-heap.svg" alt="Min-heap: root 1, children 3 and 6, then 5, 9 and 8; every parent is less than or equal to its children. The same heap stored in an array is 1, 3, 6, 5, 9, 8 at indices 0 to 5" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p>A <strong>Heap</strong> is commonly a complete binary tree satisfying a priority-ordering property.</p>
+        <ul>
+            <li>Min-Heap: parent &le; children</li>
+            <li>Max-Heap: parent &ge; children</li>
+        </ul>
+        <p>A heap does not provide the full ordering of a BST.</p>
+        <p>Typical binary heap operations:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Complexity</th></tr></thead>
+            <tbody>
+                <tr><td>Peek highest-priority element</td><td>O(1)</td></tr>
+                <tr><td>Insert element</td><td>O(log n)</td></tr>
+                <tr><td>Remove highest-priority element</td><td>O(log n)</td></tr>
+                <tr><td>Build heap from n elements</td><td>O(n)</td></tr>
+            </tbody>
+        </table></div>
+        <p>A Priority Queue is an Abstract Data Type often implemented with a binary heap.</p>
+        <p>Java implementation: <code>PriorityQueue&lt;E&gt;</code>.</p>
+        <p>Other heap variants include Binomial Heap, Fibonacci Heap, Pairing Heap, and d-ary Heap.</p>
+
+        <p class="minor-heading"><strong>Graphs</strong></p>
+        <p>A graph consists of <strong>vertices (nodes)</strong> and <strong>edges (connections)</strong>. Unlike conventional trees, graphs can contain cycles, shared connections, and multiple possible paths.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-graph.svg" alt="Undirected graph with vertices A to E and edges A-B, A-E, B-C, B-D, C-D and D-E; B, C, D form a cycle" style="width:100%;max-width:600px">
+    </div>
+    <div class="intro">
+        <p>An undirected graph: vertices A&ndash;E connected by edges.</p>
+        <p>Graphs are classified along several dimensions:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Classification</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Directed / Undirected</td><td>Edges have direction or do not</td></tr>
+                <tr><td>Weighted / Unweighted</td><td>Edges carry costs or weights</td></tr>
+                <tr><td>Cyclic / Acyclic</td><td>Cycles exist or are absent</td></tr>
+                <tr><td>Connected / Disconnected</td><td>Connectivity differs</td></tr>
+                <tr><td>DAG</td><td>Directed Acyclic Graph</td></tr>
+                <tr><td>Bipartite Graph</td><td>Vertices split into two disjoint groups with edges only between groups</td></tr>
+                <tr><td>Multigraph</td><td>Multiple edges can connect the same pair of vertices</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Common graph representations:</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Representation</th><th>Storage</th><th>Check if edge exists</th><th>Enumerate neighbors</th></tr></thead>
+            <tbody>
+                <tr><td>Adjacency List</td><td>O(V + E)</td><td>O(degree) generally</td><td>O(degree)</td></tr>
+                <tr><td>Adjacency Matrix</td><td>O(V&sup2;)</td><td>O(1)</td><td>O(V)</td></tr>
+                <tr><td>Edge List</td><td>O(V + E)</td><td>O(E)</td><td>O(E)</td></tr>
+            </tbody>
+        </table></div>
+        <p>Here, <code>V</code> means vertices, and <code>E</code> means edges. Hash-backed adjacency lists can offer better expected edge-existence checks.</p>
+        <p>Typical applications include social networks, routing, dependency graphs, workflow engines, graph databases, and recommendation systems.</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="subheading">Associative Data Structures</div>
+    <div class="intro">
+        <p>These structures are selected primarily for lookup by key, membership testing, ordering, or grouping.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Structure</th><th>How it works</th><th>Use Case</th></tr></thead>
+            <tbody>
+                <tr><td>Hash Table</td><td>Maps keys to buckets using a hash function</td><td>Fast key-value lookup</td></tr>
+                <tr><td>Hash Map</td><td>Key &rarr; Value association, commonly hash-table-backed</td><td>User/session lookup</td></tr>
+                <tr><td>Hash Set</td><td>Maintains unique values, often hash-table-backed</td><td>Deduplication</td></tr>
+                <tr><td>Ordered Map</td><td>Maintains keys in sorted order, often with a balanced BST</td><td>Range queries</td></tr>
+                <tr><td>Ordered Set</td><td>Maintains unique sorted values</td><td>Sorted membership</td></tr>
+                <tr><td>Linked Hash Map</td><td>Combines hash lookup with linked iteration ordering</td><td>Ordered maps, LRU</td></tr>
+                <tr><td>Skip List</td><td>Probabilistic layered linked structure</td><td>Ordered search</td></tr>
+                <tr><td>Trie</td><td>Indexes sequences by prefixes</td><td>Prefix lookup</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Hash Table</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-hash-table.svg" alt="Hash table with chaining: keys apple, banana, cherry and grape pass through a hash function into 8 buckets; apple and grape both hash to bucket 3 and are chained in a list, cherry goes to bucket 1 and banana to bucket 6" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Calculates an index from a key using a hash function. Collisions are resolved with techniques such as chaining or open addressing.</p>
+        <p>Average search, insertion, and deletion are typically O(1), subject to appropriate hashing and load management.</p>
+        <p>Java&rsquo;s primary implementations include <code>HashMap</code>, <code>HashSet</code>, <code>LinkedHashMap</code>, <code>TreeMap</code>, <code>TreeSet</code>, <code>ConcurrentHashMap</code>, and <code>ConcurrentSkipListMap</code>.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="subheading">Specialized and Advanced Data Structures</div>
+    <div class="intro">
+        <p>Beyond the foundational structures, many are designed for specific query patterns or workloads.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Family</th><th>Important Structures</th><th>Solves</th></tr></thead>
+            <tbody>
+                <tr><td>Range Query</td><td>Fenwick Tree, Segment Tree, Sparse Table</td><td>Aggregate sums, minimums, maximums over ranges</td></tr>
+                <tr><td>Disjoint Sets</td><td>Union-Find / DSU</td><td>Efficient connected-component tracking</td></tr>
+                <tr><td>String / Text</td><td>Trie, Suffix Tree, Suffix Array, Rope</td><td>Prefix search, substring search, text editing</td></tr>
+                <tr><td>Spatial</td><td>KD-Tree, QuadTree, Octree, R-Tree</td><td>Multi-dimensional and geographic searching</td></tr>
+                <tr><td>Probabilistic</td><td>Bloom Filter, Cuckoo Filter</td><td>Approximate membership testing</td></tr>
+                <tr><td>Frequency / Cardinality</td><td>Count-Min Sketch, HyperLogLog</td><td>Approximate frequencies and distinct counts</td></tr>
+                <tr><td>Bitmap</td><td>BitSet, Compressed Bitmap, Roaring Bitmap</td><td>Compact set operations</td></tr>
+                <tr><td>Cache-Oriented</td><td>LRU, LFU supporting structures</td><td>Eviction and access tracking</td></tr>
+                <tr><td>Immutable / Persistent</td><td>Persistent Vector, HAMT, Persistent Tree</td><td>Efficient versioned data</td></tr>
+                <tr><td>Concurrent</td><td>Concurrent Queue, Lock-Free Stack, Concurrent Map</td><td>Multi-threaded access</td></tr>
+                <tr><td>External-Memory</td><td>B-Tree, B+ Tree, LSM Tree</td><td>Disk/SSD-optimized storage</td></tr>
+                <tr><td>Succinct</td><td>Rank/Select Bit Vectors, Wavelet Tree</td><td>Compact representation with query support</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Special attention: Database Data Structures</strong></p>
+        <p>Databases rely heavily on specialized structures.</p>
+        <p class="minor-heading"><strong>Simplified Database Indexing Architecture</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-db-index.svg" alt="Simplified database indexing: a database query is routed by its access pattern; equality lookups use a hash index, range or ordered queries a B+ tree, write-heavy workloads an LSM tree, full-text search an inverted index and spatial queries an R-tree or spatial index; all lead to finding the matching data" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p>These structures are particularly important for understanding how database engines handle indexes, disk I/O, write amplification, range scans, and search performance. The actual index type available depends on the database.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="subheading">Abstract Data Types (ADT) vs Data Structures</div>
+    <div class="intro">
+        <p>This is one of the most important distinctions in data structure design.</p>
+        <p>An <strong>Abstract Data Type (ADT)</strong> defines <em>what operations are supported and what behavior they guarantee</em>. A concrete data structure defines <em>how that behavior is implemented</em>.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>ADT / Interface Concept</th><th>Possible Implementation</th></tr></thead>
+            <tbody>
+                <tr><td>List</td><td>Dynamic Array, Linked List</td></tr>
+                <tr><td>Stack</td><td>Array, Linked List</td></tr>
+                <tr><td>Queue</td><td>Circular Array, Linked List</td></tr>
+                <tr><td>Deque</td><td>Circular Array, Doubly Linked List</td></tr>
+                <tr><td>Priority Queue</td><td>Binary Heap, Other Heaps</td></tr>
+                <tr><td>Map</td><td>Hash Table, Balanced Search Tree</td></tr>
+                <tr><td>Set</td><td>Hash Table, BST, Trie (for suitable keys)</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, a Stack promises <code>push</code>, <code>pop</code>, and <code>peek</code> operations with LIFO behavior, but it does not mandate an array or linked list implementation.</p>
+        <p>Java provides a practical illustration:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-comment">// List abstraction with dynamic array implementation</span>
+<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; list = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;();
+
+<span class="code-comment">// Queue abstraction with ArrayDeque implementation</span>
+<span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+<span class="code-comment">// Deque abstraction supporting stack operations</span>
+<span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+<span class="code-comment">// Map abstraction with hash table implementation</span>
+<span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Integer</span>&gt; map = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;&gt;();
+
+<span class="code-comment">// Set abstraction with balanced tree implementation</span>
+<span class="code-class">Set</span>&lt;<span class="code-class">Integer</span>&gt; sortedSet = <span class="code-keyword">new</span> <span class="code-class">TreeSet</span>&lt;&gt;();</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This is why choosing an interface and choosing a backing data structure are separate design decisions.</p>
+    </div>
+
+    <!-- 8 -->
+    <div class="subheading">Time Complexity Comparison</div>
+    <div class="intro">
+        <p>The following table compares common operations for important in-memory structures.</p>
+        <p>n = number of elements; L = length of a key; &alpha;(n) = inverse Ackermann function. Average-case assumptions are noted.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Data Structure</th><th>Access / Search</th><th>Insert</th><th>Delete</th></tr></thead>
+            <tbody>
+                <tr><td>Array</td><td>Index O(1), search O(n)</td><td>O(n) shifting</td><td>O(n) shifting</td></tr>
+                <tr><td>Dynamic Array</td><td>Index O(1), search O(n)</td><td>Append O(1) amortized; middle O(n)</td><td>Middle O(n)</td></tr>
+                <tr><td>Singly Linked List</td><td>O(n) search</td><td>Head O(1)</td><td>O(1) with predecessor; otherwise O(n)</td></tr>
+                <tr><td>Doubly Linked List</td><td>O(n) search</td><td>O(1) at known position</td><td>O(1) at known node</td></tr>
+                <tr><td>Stack</td><td>Top O(1)</td><td>Push O(1)*</td><td>Pop O(1)*</td></tr>
+                <tr><td>Queue / Deque</td><td>Ends O(1)</td><td>O(1)*</td><td>O(1)*</td></tr>
+                <tr><td>Hash Table</td><td>O(1) expected</td><td>O(1) expected</td><td>O(1) expected</td></tr>
+                <tr><td>Unbalanced BST</td><td>O(n) worst</td><td>O(n) worst</td><td>O(n) worst</td></tr>
+                <tr><td>AVL / Red-Black Tree</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td></tr>
+                <tr><td>Binary Heap</td><td>Root O(1); search O(n)</td><td>O(log n)</td><td>Root O(log n)</td></tr>
+                <tr><td>Trie</td><td>O(L)</td><td>O(L)</td><td>O(L)</td></tr>
+                <tr><td>Union-Find</td><td>Find O(&alpha;(n)) amortized</td><td>Union O(&alpha;(n)) amortized</td><td>Not generally supported</td></tr>
+            </tbody>
+        </table></div>
+        <p>*For suitable implementations, O(1) may be amortized rather than worst-case, due to resizing or other implementation costs. Hash-table performance assumes reasonably distributed hashes; pathological cases can degrade significantly.</p>
+
+        <p class="minor-heading"><strong>Understanding Big-O</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Complexity</th><th>Meaning</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td>O(1)</td><td>Constant time</td><td>Array index access</td></tr>
+                <tr><td>O(log n)</td><td>Logarithmic</td><td>Balanced BST search</td></tr>
+                <tr><td>O(n)</td><td>Linear</td><td>Search in unsorted array</td></tr>
+                <tr><td>O(n log n)</td><td>Linearithmic</td><td>Merge Sort</td></tr>
+                <tr><td>O(n&sup2;)</td><td>Quadratic</td><td>Nested pair comparisons</td></tr>
+                <tr><td>O(2&#8319;)</td><td>Exponential</td><td>Brute-force subset enumeration</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Growth of common time complexities</strong></p>
+        <p>Illustrative operation counts as input size grows. Logarithms use base 2.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-bigo-growth.svg" alt="Line chart of illustrative operation counts for n = 1 to 64 on a doubling x axis. At n = 64: O(1) is 1, O(log n) is 6, O(n) is 64, O(n log n) is 384 and O(n squared) is 4096. Only O(n squared) rises steeply; the others stay near the bottom at this scale" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Big-O describes asymptotic growth, not exact execution time. Memory layout, CPU cache locality, object allocation, garbage collection, concurrency, and I/O can make an O(n) operation faster than an O(log n) operation for small inputs.</p>
+    </div>
+
+    <!-- 9 -->
+    <div class="subheading">Choosing the Right Data Structure</div>
+    <div class="intro">
+        <p>Choosing a structure means understanding the workload, not simply choosing the one with the fastest advertised Big-O complexity.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Requirement</th><th>Common Best Starting Choice</th><th>Reason</th></tr></thead>
+            <tbody>
+                <tr><td>Fast access by index</td><td>Array / ArrayList</td><td>O(1) indexing</td></tr>
+                <tr><td>Frequently append items</td><td>ArrayList</td><td>Amortized O(1) append</td></tr>
+                <tr><td>Insert/remove at both ends</td><td>ArrayDeque</td><td>Efficient deque operations</td></tr>
+                <tr><td>LIFO processing</td><td>Stack using ArrayDeque</td><td>Efficient push/pop</td></tr>
+                <tr><td>FIFO processing</td><td>Queue using ArrayDeque</td><td>Efficient enqueue/dequeue</td></tr>
+                <tr><td>Lookup by unique key</td><td>HashMap</td><td>Expected O(1)</td></tr>
+                <tr><td>Test membership</td><td>HashSet</td><td>Expected O(1)</td></tr>
+                <tr><td>Maintain sorted keys</td><td>TreeMap / TreeSet</td><td>O(log n) ordered operations</td></tr>
+                <tr><td>Get minimum or maximum repeatedly</td><td>PriorityQueue</td><td>Heap-based prioritization</td></tr>
+                <tr><td>Find words by prefix</td><td>Trie</td><td>Prefix-oriented lookup</td></tr>
+                <tr><td>Maintain ranges with updates</td><td>Segment Tree / Fenwick Tree</td><td>Efficient aggregate operations</td></tr>
+                <tr><td>Connectivity tracking</td><td>Union-Find</td><td>Near-constant amortized operations</td></tr>
+                <tr><td>Traverse relationships</td><td>Graph adjacency list</td><td>Efficient sparse graph storage</td></tr>
+                <tr><td>Database range indexing</td><td>B+ Tree</td><td>Page-friendly ordered index</td></tr>
+                <tr><td>Approximate membership with small memory</td><td>Bloom Filter</td><td>Memory-efficient prefiltering</td></tr>
+                <tr><td>Multi-threaded key-value access</td><td>ConcurrentHashMap</td><td>Concurrent operations</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Five questions to ask before choosing</strong></p>
+        <ol>
+            <li><strong>Access pattern:</strong> Do I need index access, key lookup, sorted traversal, or range queries?</li>
+            <li><strong>Mutation pattern:</strong> Is the workload read-heavy, write-heavy, append-only, or frequently changing?</li>
+            <li><strong>Scale:</strong> How many elements are involved, and what is the memory budget?</li>
+            <li><strong>Ordering:</strong> Must insertion order, sorted order, or priority order be maintained?</li>
+            <li><strong>Environment:</strong> Does the structure need to work on disk, across threads, or across distributed nodes?</li>
+        </ol>
+    </div>
+
+    <!-- 10 -->
+    <div class="subheading">Data Structures in Real-World Systems</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Real-World System</th><th>Common Data Structures</th><th>Why They Are Used</th></tr></thead>
+            <tbody>
+                <tr><td>Java applications</td><td>ArrayList, HashMap, HashSet</td><td>General collection management</td></tr>
+                <tr><td>Operating systems</td><td>Queues, Trees, Bitmaps</td><td>Scheduling and resource management</td></tr>
+                <tr><td>Database engines</td><td>B+ Tree, Hash Index, LSM Tree</td><td>Indexing and storage</td></tr>
+                <tr><td>Redis</td><td>Hash Tables, Lists, Skip Lists, Sets, Streams</td><td>In-memory data operations</td></tr>
+                <tr><td>Kafka-like message systems</td><td>Logs, Indexes, Buffers, Queues</td><td>Message storage and delivery</td></tr>
+                <tr><td>Search engines</td><td>Inverted Index, Trie, FST</td><td>Fast text retrieval</td></tr>
+                <tr><td>Compilers</td><td>AST, Stack, Symbol Table, Graph</td><td>Parsing and semantic processing</td></tr>
+                <tr><td>Networking</td><td>Trie, Radix Tree, Queues</td><td>Routing and packet handling</td></tr>
+                <tr><td>Geographic systems</td><td>R-Tree, KD-Tree, QuadTree</td><td>Spatial queries</td></tr>
+                <tr><td>AI / ML</td><td>Arrays, Tensors, Graphs, KD-Trees</td><td>Numeric and nearest-neighbor computation</td></tr>
+                <tr><td>Distributed systems</td><td>Hash Rings, Merkle Trees, Bloom Filters</td><td>Placement, verification and filtering</td></tr>
+                <tr><td>Caching</td><td>HashMap, Doubly Linked List, Heaps</td><td>Lookup and eviction</td></tr>
+            </tbody>
+        </table></div>
+        <p>For instance, a typical <strong>LRU Cache</strong> can combine a HashMap and Doubly Linked List to obtain O(1) expected access and eviction operations. This demonstrates that a practical system often combines multiple structures.</p>
+    </div>
+
+    <!-- 11 -->
+    <div class="subheading">Important Properties Beyond Big-O</div>
+    <div class="intro">
+        <p>Several considerations determine whether a structure is appropriate in production systems.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Property</th><th>Explanation</th></tr></thead>
+            <tbody>
+                <tr><td>Memory overhead</td><td>Extra node references, metadata, and unused capacity</td></tr>
+                <tr><td>Cache locality</td><td>Whether nearby elements are accessed efficiently by the CPU</td></tr>
+                <tr><td>Allocation pressure</td><td>Number of heap allocations and effects on GC</td></tr>
+                <tr><td>Ordering guarantees</td><td>Sorted, insertion-ordered, or unordered iteration</td></tr>
+                <tr><td>Thread safety</td><td>Whether concurrent operations are safe</td></tr>
+                <tr><td>Mutability</td><td>Whether elements or structure can change</td></tr>
+                <tr><td>Persistence</td><td>Whether older versions remain accessible after updates</td></tr>
+                <tr><td>Serialization</td><td>How efficiently data can be transferred or persisted</td></tr>
+                <tr><td>Disk locality</td><td>Number of storage pages or I/O operations required</td></tr>
+                <tr><td>Exact vs Approximate</td><td>Whether a query returns precise or probabilistic results</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Memory behavior illustration</strong></p>
+        <p>Arrays and linked lists can both store n elements with O(n) space complexity, yet their practical memory usage may be very different.</p>
+        <p>An array of primitive <code>int</code> values stores its values compactly. A Java linked list stores node objects, references, and associated object metadata. Therefore, the linked list typically needs substantially more memory and incurs additional pointer-chasing costs.</p>
+        <p>This is one reason <code>ArrayList</code> is often a better default than <code>LinkedList</code>, even when both can support the necessary functionality.</p>
+    </div>
+
+    <!-- 12 -->
+    <div class="subheading">Java Collections Framework Overview</div>
+    <div class="intro">
+        <p>Java&rsquo;s standard collections APIs provide implementations of many common ADTs and data structures.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/ds-java-collections.svg" alt="Java collections map: Iterable is extended by Collection; Collection by List, Set and Queue. List is implemented by ArrayList and LinkedList; Set by HashSet and by SortedSet or NavigableSet, implemented by TreeSet; Queue by PriorityQueue and by Deque, implemented by ArrayDeque. Map is a separate interface implemented by HashMap, which LinkedHashMap extends, and by SortedMap or NavigableMap, implemented by TreeMap" style="width:100%;max-width:1000px">
+    </div>
+    <div class="intro">
+        <p>Conceptual interface/implementation map, not an exhaustive Java inheritance diagram. In particular, <code>Map</code> does not extend <code>Collection</code>, and <code>LinkedList</code> implements both <code>List</code> and <code>Deque</code>.</p>
+        <p class="minor-heading"><strong>Java examples</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">import</span> java.util.*;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">DataStructuresDemo</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+
+        <span class="code-comment">// 1. Dynamic Array</span>
+        <span class="code-class">List</span>&lt;<span class="code-class">String</span>&gt; list = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;();
+        list.add(<span class="code-string">"A"</span>);
+        list.add(<span class="code-string">"B"</span>);
+
+        <span class="code-comment">// 2. Linked List</span>
+        <span class="code-class">LinkedList</span>&lt;<span class="code-class">Integer</span>&gt; linkedList =
+            <span class="code-keyword">new</span> <span class="code-class">LinkedList</span>&lt;&gt;();
+        linkedList.add(<span class="code-number">10</span>);
+
+        <span class="code-comment">// 3. Stack</span>
+        <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+        stack.push(<span class="code-number">10</span>);
+        stack.push(<span class="code-number">20</span>);
+        <span class="code-class">System</span>.out.println(stack.pop()); <span class="code-comment">// 20</span>
+
+        <span class="code-comment">// 4. Queue</span>
+        <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+        queue.offer(<span class="code-number">10</span>);
+        queue.offer(<span class="code-number">20</span>);
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 10</span>
+
+        <span class="code-comment">// 5. HashMap</span>
+        <span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Integer</span>&gt; map = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;&gt;();
+        map.put(<span class="code-string">"Alice"</span>, <span class="code-number">100</span>);
+        <span class="code-class">System</span>.out.println(map.get(<span class="code-string">"Alice"</span>));
+
+        <span class="code-comment">// 6. HashSet</span>
+        <span class="code-class">Set</span>&lt;<span class="code-class">Integer</span>&gt; set = <span class="code-keyword">new</span> <span class="code-class">HashSet</span>&lt;&gt;();
+        set.add(<span class="code-number">10</span>);
+        set.add(<span class="code-number">10</span>); <span class="code-comment">// Duplicate ignored</span>
+
+        <span class="code-comment">// 7. Balanced Tree</span>
+        <span class="code-class">TreeMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">String</span>&gt; sortedMap =
+            <span class="code-keyword">new</span> <span class="code-class">TreeMap</span>&lt;&gt;();
+        sortedMap.put(<span class="code-number">20</span>, <span class="code-string">"B"</span>);
+        sortedMap.put(<span class="code-number">10</span>, <span class="code-string">"A"</span>);
+
+        <span class="code-comment">// 8. Min-Heap</span>
+        <span class="code-class">PriorityQueue</span>&lt;<span class="code-class">Integer</span>&gt; minHeap =
+            <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;();
+        minHeap.offer(<span class="code-number">30</span>);
+        minHeap.offer(<span class="code-number">10</span>);
+        <span class="code-class">System</span>.out.println(minHeap.poll()); <span class="code-comment">// 10</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Some structures, such as Segment Trees, Fenwick Trees, and Union-Find, are not supplied as dedicated general-purpose types in Java&rsquo;s standard collections framework and are typically implemented separately or obtained from libraries.</p>
+    </div>
+
+    <!-- 13 -->
+    <div class="subheading">Suggested Learning Roadmap</div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Level 1 &mdash; Foundations</div><div class="step-body">Arrays, Dynamic Arrays, Strings, Linked Lists, Stack, Queue, Deque, Big-O notation, recursion</div></div>
+        <div class="step"><div class="step-title">Level 2 &mdash; Searching and Associative Structures</div><div class="step-body">Hash Tables, HashMap, HashSet, hashing and collision resolution, binary search</div></div>
+        <div class="step"><div class="step-title">Level 3 &mdash; Hierarchical Structures</div><div class="step-body">Binary Trees, BST, AVL, Red-Black Tree, Heaps, Priority Queues, Tries</div></div>
+        <div class="step"><div class="step-title">Level 4 &mdash; Graphs and Range Queries</div><div class="step-body">Graph representations, BFS, DFS, shortest paths, Union-Find, Segment Tree, Fenwick Tree</div></div>
+        <div class="step"><div class="step-title">Level 5 &mdash; Advanced Indexing and Storage</div><div class="step-body">B-Tree, B+ Tree, LSM Tree, Skip List, Suffix Array, Inverted Index, spatial structures</div></div>
+        <div class="step"><div class="step-title">Level 6 &mdash; System-Level and Specialized Structures</div><div class="step-body">Concurrent and lock-free structures, Bloom Filter, Count-Min Sketch, HyperLogLog, Persistent Structures, Merkle Trees</div></div>
+    </div>
+
+    <!-- 14 -->
+    <div class="subheading">Final Mental Model</div>
+    <div class="intro">
+        <p>The entire field becomes easier to navigate by grouping data structures according to the main problem they solve.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Main Problem</th><th>Data Structure Family</th></tr></thead>
+            <tbody>
+                <tr><td>Store a sequence</td><td>Array, List, Linked List</td></tr>
+                <tr><td>Control processing order</td><td>Stack, Queue, Deque</td></tr>
+                <tr><td>Quickly locate data</td><td>Hash Table, Map, Set</td></tr>
+                <tr><td>Maintain sorted order</td><td>BST, AVL, Red-Black Tree, Skip List</td></tr>
+                <tr><td>Repeatedly obtain the highest priority</td><td>Heap, Priority Queue</td></tr>
+                <tr><td>Represent hierarchy</td><td>Tree</td></tr>
+                <tr><td>Represent relationships</td><td>Graph</td></tr>
+                <tr><td>Search prefixes and patterns</td><td>Trie, Suffix Structures</td></tr>
+                <tr><td>Compute range aggregates</td><td>Segment Tree, Fenwick Tree</td></tr>
+                <tr><td>Manage connectivity</td><td>Union-Find</td></tr>
+                <tr><td>Index data on storage devices</td><td>B-Tree, B+ Tree, LSM Tree</td></tr>
+                <tr><td>Represent large sets compactly</td><td>Bitmaps, Bloom Filters, Sketches</td></tr>
+                <tr><td>Support geographic queries</td><td>KD-Tree, R-Tree, QuadTree</td></tr>
+                <tr><td>Support concurrent access</td><td>Concurrent Maps, Queues, Lock-Free Structures</td></tr>
+                <tr><td>Preserve historical versions</td><td>Persistent Data Structures</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>The most important principle:</strong> There is no universally best data structure. Every structure is an engineering trade-off between <strong>time complexity, memory complexity, access patterns, update patterns, ordering guarantees, and implementation complexity</strong>.</p>
+        <p>Understanding those trade-offs&mdash;and how fundamental structures are combined&mdash;is what connects data structures to real-world software architecture and system design.</p>
+    </div>
+</div>
+</body>
+</html>

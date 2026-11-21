@@ -1,0 +1,36 @@
+<svg width="640" height="220" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" role="img" aria-label="Dynamic array growth: a full backing array of capacity 4 holding A to D; adding E allocates a new array of capacity 8, copies A to D and appends E">
+    <defs><marker id="da-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="da-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker></defs>
+    <text x="20" y="26" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#222222">size 4, capacity 4 (full)</text>
+    <rect x="40" y="36" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="68.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">A</text>
+    <rect x="96" y="36" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="124.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">B</text>
+    <rect x="152" y="36" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">C</text>
+    <rect x="208" y="36" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="236.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">D</text>
+    <text x="290" y="61" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="600" fill="#B45309">add("E")</text>
+    <text x="510" y="175" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#222222">size 5, capacity 8</text>
+    <text x="510" y="191" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#666666">(new backing array)</text>
+    <rect x="40" y="150" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="68.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">A</text>
+    <rect x="96" y="150" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="124.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">B</text>
+    <rect x="152" y="150" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">C</text>
+    <rect x="208" y="150" width="56" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="236.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">D</text>
+    <rect x="264" y="150" width="56" height="40" rx="0" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="292.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222">E</text>
+    <rect x="320" y="150" width="56" height="40" rx="0" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="348.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222"></text>
+    <rect x="376" y="150" width="56" height="40" rx="0" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="404.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222"></text>
+    <rect x="432" y="150" width="56" height="40" rx="0" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="460.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#222222"></text>
+    <path d="M68 76 V148" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#da-a)"/>
+    <path d="M124 76 V148" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#da-a)"/>
+    <path d="M180 76 V148" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#da-a)"/>
+    <path d="M236 76 V148" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#da-a)"/>
+    <text x="300" y="112" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#666666" font-style="italic">copy</text>
+</svg>

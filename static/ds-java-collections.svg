@@ -1,0 +1,61 @@
+<svg width="1000" height="370" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 370" role="img" aria-label="Java collections map: Iterable is extended by Collection; Collection by List, Set and Queue. List is implemented by ArrayList and LinkedList; Set by HashSet and by SortedSet or NavigableSet, implemented by TreeSet; Queue by PriorityQueue and by Deque, implemented by ArrayDeque. Map is a separate interface implemented by HashMap, which LinkedHashMap extends, and by SortedMap or NavigableMap, implemented by TreeMap">
+    <defs><marker id="jc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="jc-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker></defs>
+    <rect x="270.0" y="20" width="120" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="330.0" y="44.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Iterable</text>
+    <rect x="265.0" y="90" width="130" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="330.0" y="114.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Collection</text>
+    <path d="M330 60 V90" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="65.0" y="170" width="100" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="115.0" y="194.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">List</text>
+    <path d="M330 130 V150 H115 V170" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="280.0" y="170" width="100" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="330.0" y="194.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Set</text>
+    <path d="M330 130 V150 H330 V170" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="540.0" y="170" width="100" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="590.0" y="194.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Queue</text>
+    <path d="M330 130 V150 H590 V170" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="10.0" y="250" width="100" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="60.0" y="274.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">ArrayList</text>
+    <path d="M115 210 V230 H60 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="125.0" y="250" width="100" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="175.0" y="274.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">LinkedList</text>
+    <path d="M115 210 V230 H175 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="235.0" y="250" width="90" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="280.0" y="274.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">HashSet</text>
+    <path d="M330 210 V230 H280 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="345.0" y="250" width="130" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="410.0" y="266.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">SortedSet /</text>
+    <text x="410.0" y="282.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">NavigableSet</text>
+    <path d="M330 210 V230 H410 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="365.0" y="320" width="90" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="410.0" y="344.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">TreeSet</text>
+    <path d="M410 290 V320" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="500.0" y="250" width="120" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="560.0" y="274.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">PriorityQueue</text>
+    <path d="M590 210 V230 H560 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="645.0" y="250" width="90" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="690.0" y="274.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Deque</text>
+    <path d="M590 210 V230 H690 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="635.0" y="320" width="110" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="690.0" y="344.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">ArrayDeque</text>
+    <path d="M690 290 V320" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="765.0" y="90" width="210" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="870.0" y="114.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">Map (separate interface)</text>
+    <rect x="750.0" y="170" width="110" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="805.0" y="194.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">HashMap</text>
+    <path d="M870 130 V150 H805 V170" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="870.0" y="170" width="120" height="40" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
+    <text x="930.0" y="186.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">SortedMap /</text>
+    <text x="930.0" y="202.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#222222">NavigableMap</text>
+    <path d="M870 130 V150 H930 V170" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="745.0" y="250" width="120" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="805.0" y="274.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">LinkedHashMap</text>
+    <path d="M805 210 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="885.0" y="250" width="90" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+    <text x="930.0" y="274.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">TreeMap</text>
+    <path d="M930 210 V250" fill="none" stroke="#555555" stroke-width="1.4"/>
+    <rect x="760" y="318" width="16" height="12" rx="4" fill="#F1F5F9" stroke="#222222" stroke-width="1"/>
+    <text x="782" y="328" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#666666">interface</text>
+    <rect x="860" y="318" width="16" height="12" rx="1" fill="#FFFFFF" stroke="#222222" stroke-width="1"/>
+    <text x="882" y="328" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#666666">class</text>
+</svg>
