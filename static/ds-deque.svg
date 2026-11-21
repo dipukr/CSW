@@ -1,22 +1,24 @@
 <svg width="640" height="170" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 170" role="img" aria-label="Deque: elements 10, 20, 30, 40 in a row; elements can be added or removed at the front with offerFirst and pollFirst and at the back with offerLast and pollLast">
-    <defs><marker id="dq-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="dq-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker></defs>
-    <rect x="180" y="64" width="70" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="215.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#222222">10</text>
-    <rect x="250" y="64" width="70" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="285.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#222222">20</text>
-    <rect x="320" y="64" width="70" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="355.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#222222">30</text>
-    <rect x="390" y="64" width="70" height="40" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="425.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#222222">40</text>
-    <text x="215" y="54" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#666666">first</text>
-    <text x="425" y="54" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#666666">last</text>
-    <path d="M80 74 H176" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dq-a)"/>
-    <path d="M176 94 H80" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dq-a)"/>
-    <path d="M560 74 H464" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dq-a)"/>
-    <path d="M464 94 H560" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#dq-a)"/>
-    <text x="20" y="40" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#222222">offerFirst / push</text>
-    <text x="20" y="130" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#222222">pollFirst / pop</text>
-    <text x="620" y="40" text-anchor="end" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#222222">offerLast</text>
-    <text x="620" y="130" text-anchor="end" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#222222">pollLast</text>
-    <text x="320" y="158" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#666666" font-style="italic">insert and remove at both ends</text>
+    <defs><marker id="dq-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="dq-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="dq-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="180" y="64" width="70" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="215.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">10</text>
+    <rect x="250" y="64" width="70" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="285.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">20</text>
+    <rect x="320" y="64" width="70" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="355.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">30</text>
+    <rect x="390" y="64" width="70" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="425.0" y="89.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">40</text>
+    <text x="215" y="54" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">first</text>
+    <text x="425" y="54" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">last</text>
+    <path d="M80 74 H176" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#dq-a)"/>
+    <path d="M176 94 H80" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#dq-a)"/>
+    <path d="M560 74 H464" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#dq-a)"/>
+    <path d="M464 94 H560" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#dq-a)"/>
+    <text x="20" y="40" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#1E293B">offerFirst / push</text>
+    <text x="20" y="130" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#1E293B">pollFirst / pop</text>
+    <text x="620" y="40" text-anchor="end" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#1E293B">offerLast</text>
+    <text x="620" y="130" text-anchor="end" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#1E293B">pollLast</text>
+    <text x="320" y="158" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#64748B" font-style="italic">insert and remove at both ends</text>
+    <rect x="254" y="6" width="159" height="22" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="333.5" y="21" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#047857">all four end ops  O(1)</text>
 </svg>

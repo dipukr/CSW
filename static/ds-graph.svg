@@ -1,21 +1,62 @@
-<svg width="600" height="260" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260" role="img" aria-label="Undirected graph with vertices A to E and edges A-B, A-E, B-C, B-D, C-D and D-E; B, C, D form a cycle">
-    <defs><marker id="gr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="gr-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker></defs>
-    <path d="M110 80 L290 50" fill="none" stroke="#64748B" stroke-width="2"/>
-    <path d="M110 80 L170 205" fill="none" stroke="#64748B" stroke-width="2"/>
-    <path d="M290 50 L470 100" fill="none" stroke="#64748B" stroke-width="2"/>
-    <path d="M290 50 L390 210" fill="none" stroke="#64748B" stroke-width="2"/>
-    <path d="M470 100 L390 210" fill="none" stroke="#64748B" stroke-width="2"/>
-    <path d="M390 210 L170 205" fill="none" stroke="#64748B" stroke-width="2"/>
-    <circle cx="110" cy="80" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6"/>
-    <text x="110" y="85.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#222222">A</text>
-    <circle cx="290" cy="50" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6"/>
-    <text x="290" y="55.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#222222">B</text>
-    <circle cx="470" cy="100" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6"/>
-    <text x="470" y="105.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#222222">C</text>
-    <circle cx="390" cy="210" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6"/>
-    <text x="390" y="215.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#222222">D</text>
-    <circle cx="170" cy="205" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6"/>
-    <text x="170" y="210.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#222222">E</text>
-    <text x="500" y="90" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#666666">vertex</text>
-    <text x="224" y="140" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#666666" font-style="italic">edge</text>
+<svg width="880" height="260" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 260" role="img" aria-label="Undirected graph with vertices A to E and edges A-B, A-E, B-C, B-D, C-D and D-E; B, C, D form a cycle. Its adjacency list: A to B and E; B to A, C and D; C to B and D; D to B, C and E; E to A and D">
+    <defs><marker id="gr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="gr-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="gr-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <path d="M110 80 L290 50" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M110 80 L170 205" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M290 50 L470 100" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M290 50 L390 210" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M470 100 L390 210" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M390 210 L170 205" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="110" cy="80" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6" filter="url(#gr-s)"/>
+    <text x="110" y="85.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#1E293B">A</text>
+    <circle cx="290" cy="50" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6" filter="url(#gr-s)"/>
+    <text x="290" y="55.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#1E293B">B</text>
+    <circle cx="470" cy="100" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6" filter="url(#gr-s)"/>
+    <text x="470" y="105.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#1E293B">C</text>
+    <circle cx="390" cy="210" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6" filter="url(#gr-s)"/>
+    <text x="390" y="215.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#1E293B">D</text>
+    <circle cx="170" cy="205" r="24" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.6" filter="url(#gr-s)"/>
+    <text x="170" y="210.95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" fill="#1E293B">E</text>
+    <text x="500" y="90" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#64748B">vertex</text>
+    <text x="224" y="140" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#64748B" font-style="italic">edge</text>
+    <rect x="600" y="14" width="266" height="232" rx="3" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="616" y="38" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="650" fill="#64748B">adjacency list</text>
+    <rect x="616" y="52" width="30" height="28" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="631.0" y="70.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">A</text>
+    <path d="M648 66 H672" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#gr-a)"/>
+    <rect x="676" y="52" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="691.0" y="70.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">B</text>
+    <rect x="712" y="52" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="727.0" y="70.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">E</text>
+    <rect x="616" y="90" width="30" height="28" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="631.0" y="108.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">B</text>
+    <path d="M648 104 H672" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#gr-a)"/>
+    <rect x="676" y="90" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="691.0" y="108.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">A</text>
+    <rect x="712" y="90" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="727.0" y="108.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">C</text>
+    <rect x="748" y="90" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="763.0" y="108.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">D</text>
+    <rect x="616" y="128" width="30" height="28" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="631.0" y="146.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">C</text>
+    <path d="M648 142 H672" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#gr-a)"/>
+    <rect x="676" y="128" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="691.0" y="146.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">B</text>
+    <rect x="712" y="128" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="727.0" y="146.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">D</text>
+    <rect x="616" y="166" width="30" height="28" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="631.0" y="184.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">D</text>
+    <path d="M648 180 H672" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#gr-a)"/>
+    <rect x="676" y="166" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="691.0" y="184.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">B</text>
+    <rect x="712" y="166" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="727.0" y="184.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">C</text>
+    <rect x="748" y="166" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="763.0" y="184.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">E</text>
+    <rect x="616" y="204" width="30" height="28" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="631.0" y="222.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">E</text>
+    <path d="M648 218 H672" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#gr-a)"/>
+    <rect x="676" y="204" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="691.0" y="222.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">A</text>
+    <rect x="712" y="204" width="30" height="28" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#gr-s)"/>
+    <text x="727.0" y="222.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">D</text>
 </svg>

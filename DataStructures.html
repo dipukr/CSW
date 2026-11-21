@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="note">
-    <div class="title">Data Structures &mdash; Complete Top-Level Overview</div>
+    <div class="title">Data Structures</div>
 
     <div class="intro">
         <p>A <strong>Data Structure</strong> is a way of organizing, storing, and managing data so that operations such as searching, accessing, inserting, deleting, and updating can be performed efficiently.</p>
-        <p>Data structures are one of the foundational concepts in computer science. They are used in everything from simple Java applications to databases, operating systems, compilers, search engines, and large-scale distributed systems.</p>
-        <p>This overview covers their <strong>classification, types, internal organization, time complexities, applications, trade-offs, and Java implementations</strong>.</p>
+        <p>Data structures are one of the foundational concepts in computer science. They are used in everything from databases, operating systems, compilers, search engines, and large-scale distributed systems.</p>
+        <p>This overview covers their <strong>classification, types, internal organization, time complexities, applications and trade-offs</strong>.</p>
     </div>
 
     <!-- 1 -->
@@ -206,7 +206,7 @@
         <p>A graph consists of <strong>vertices (nodes)</strong> and <strong>edges (connections)</strong>. Unlike conventional trees, graphs can contain cycles, shared connections, and multiple possible paths.</p>
     </div>
     <div class="svg-diagram">
-        <img src="static/ds-graph.svg" alt="Undirected graph with vertices A to E and edges A-B, A-E, B-C, B-D, C-D and D-E; B, C, D form a cycle" style="width:100%;max-width:600px">
+        <img src="static/ds-graph.svg" alt="Undirected graph with vertices A to E and edges A-B, A-E, B-C, B-D, C-D and D-E; B, C, D form a cycle. Its adjacency list: A to B and E; B to A, C and D; C to B and D; D to B, C and E; E to A and D" style="width:100%;max-width:880px">
     </div>
     <div class="intro">
         <p>An undirected graph: vertices A&ndash;E connected by edges.</p>
@@ -243,20 +243,20 @@
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Structure</th><th>How it works</th><th>Use Case</th></tr></thead>
             <tbody>
+				<tr><td>Trie</td><td>Indexes sequences by prefixes</td><td>Prefix lookup</td></tr>
+				<tr><td>Skip List</td><td>Probabilistic layered linked structure</td><td>Ordered search</td></tr>
                 <tr><td>Hash Table</td><td>Maps keys to buckets using a hash function</td><td>Fast key-value lookup</td></tr>
                 <tr><td>Hash Map</td><td>Key &rarr; Value association, commonly hash-table-backed</td><td>User/session lookup</td></tr>
                 <tr><td>Hash Set</td><td>Maintains unique values, often hash-table-backed</td><td>Deduplication</td></tr>
                 <tr><td>Ordered Map</td><td>Maintains keys in sorted order, often with a balanced BST</td><td>Range queries</td></tr>
                 <tr><td>Ordered Set</td><td>Maintains unique sorted values</td><td>Sorted membership</td></tr>
                 <tr><td>Linked Hash Map</td><td>Combines hash lookup with linked iteration ordering</td><td>Ordered maps, LRU</td></tr>
-                <tr><td>Skip List</td><td>Probabilistic layered linked structure</td><td>Ordered search</td></tr>
-                <tr><td>Trie</td><td>Indexes sequences by prefixes</td><td>Prefix lookup</td></tr>
             </tbody>
         </table></div>
         <p class="minor-heading"><strong>Hash Table</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="static/ds-hash-table.svg" alt="Hash table with chaining: keys apple, banana, cherry and grape pass through a hash function into 8 buckets; apple and grape both hash to bucket 3 and are chained in a list, cherry goes to bucket 1 and banana to bucket 6" style="width:100%;max-width:720px">
+        <img src="static/ds-hash-table.svg" alt="Hash table as an array of linked lists: a vertical array of 6 buckets, each pointing to a linked list (chain) of key: value entries that ends in null. Bucket 0 chains ant, bat and cat; bucket 1 holds dog; bucket 2 chains eel, fox and gnu, which collided on index 2; bucket 3 chains hen, owl and yak; bucket 4 is empty; bucket 5 chains pig and ram. With 12 entries in 6 buckets the load factor is 2.0, so get and put take O(1 + load factor) on average and O(n) in the worst case. Looking up owl: hash it to bucket 3, skip hen, find owl with value 7. Side panels show the hash step (owl hashes to 1179, and 1179 % 6 = 3) and the three fields of a node: key, value and a next pointer" style="width:100%;max-width:800px">
     </div>
     <div class="intro">
         <p>Calculates an index from a key using a hash function. Collisions are resolved with techniques such as chaining or open addressing.</p>
@@ -290,7 +290,7 @@
         <p class="minor-heading"><strong>Simplified Database Indexing Architecture</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="static/ds-db-index.svg" alt="Simplified database indexing: a database query is routed by its access pattern; equality lookups use a hash index, range or ordered queries a B+ tree, write-heavy workloads an LSM tree, full-text search an inverted index and spatial queries an R-tree or spatial index; all lead to finding the matching data" style="width:100%;max-width:900px">
+        <img src="static/ds-db-index.svg" alt="Simplified database indexing: a database query is routed by its access pattern to a suitable index, which finds the matching row IDs, and the database then fetches those rows. equality lookup such as id = 42 uses a Hash Index (hash(key) → bucket, O(1); e.g. PostgreSQL hash, Redis); range / ordered such as price BETWEEN 10 AND 20 uses a B+ Tree (sorted keys, linked leaves, O(log n); e.g. MySQL InnoDB, PostgreSQL); write-heavy such as INSERT, millions / sec uses a LSM Tree (memtable → sorted runs, merged later; e.g. RocksDB, Cassandra); full-text such as MATCH 'linked list' uses a Inverted Index (word → list of documents; e.g. Elasticsearch, Lucene); spatial query such as ST_Within(loc, area) uses a R-Tree / Spatial Index (nested bounding boxes; e.g. PostGIS (GiST))." style="width:100%;max-width:1000px">
     </div>
     <div class="intro">
         <p>These structures are particularly important for understanding how database engines handle indexes, disk I/O, write amplification, range scans, and search performance. The actual index type available depends on the database.</p>
@@ -378,7 +378,7 @@
         <p>Illustrative operation counts as input size grows. Logarithms use base 2.</p>
     </div>
     <div class="svg-diagram">
-        <img src="static/ds-bigo-growth.svg" alt="Line chart of illustrative operation counts for n = 1 to 64 on a doubling x axis. At n = 64: O(1) is 1, O(log n) is 6, O(n) is 64, O(n log n) is 384 and O(n squared) is 4096. Only O(n squared) rises steeply; the others stay near the bottom at this scale" style="width:100%;max-width:720px">
+        <img src="static/ds-bigo-growth.svg" alt="Line chart of illustrative operation counts for n = 1 to 64 on a doubling x axis and a logarithmic y axis. At n = 64: O(1) is 1, O(log n) is 6, O(n) is 64, O(n log n) is 384 and O(n squared) is 4096; on the log scale every curve is visibly separate, and the gaps between them widen as n grows" style="width:100%;max-width:720px">
     </div>
     <div class="intro">
         <p>Big-O describes asymptotic growth, not exact execution time. Memory layout, CPU cache locality, object allocation, garbage collection, concurrency, and I/O can make an O(n) operation faster than an O(log n) operation for small inputs.</p>
@@ -573,8 +573,8 @@
                 <tr><td>Preserve historical versions</td><td>Persistent Data Structures</td></tr>
             </tbody>
         </table></div>
-        <p><strong>The most important principle:</strong> There is no universally best data structure. Every structure is an engineering trade-off between <strong>time complexity, memory complexity, access patterns, update patterns, ordering guarantees, and implementation complexity</strong>.</p>
-        <p>Understanding those trade-offs&mdash;and how fundamental structures are combined&mdash;is what connects data structures to real-world software architecture and system design.</p>
+        <p><strong>Note:</strong> There is no universally best data structure. Every structure is an engineering trade-off between <strong>time complexity, memory complexity, access patterns, update patterns, ordering guarantees and implementation complexity</strong>.</p>
+        <p>Understanding those trade-offs&mdash;and how fundamental structures are combined&mdash;is what connects data structures<br> to real-world software architecture and system design.</p>
     </div>
 </div>
 </body>

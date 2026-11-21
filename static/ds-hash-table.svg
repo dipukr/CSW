@@ -1,51 +1,127 @@
-<svg width="720" height="340" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" role="img" aria-label="Hash table with chaining: keys apple, banana, cherry and grape pass through a hash function into 8 buckets; apple and grape both hash to bucket 3 and are chained in a list, cherry goes to bucket 1 and banana to bucket 6">
-    <defs><marker id="ht-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker><marker id="ht-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker></defs>
-    <rect x="20" y="60" width="110" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <text x="75.0" y="82.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">"apple"</text>
-    <path d="M130 78 H178" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <rect x="20" y="124" width="110" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <text x="75.0" y="146.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">"banana"</text>
-    <path d="M130 142 H178" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <rect x="20" y="188" width="110" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <text x="75.0" y="210.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">"cherry"</text>
-    <path d="M130 206 H178" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <rect x="20" y="252" width="110" height="36" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <text x="75.0" y="274.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#222222">"grape"</text>
-    <path d="M130 270 H178" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <rect x="180" y="40" width="130" height="260" rx="10" fill="#F1F5F9" stroke="#222222" stroke-width="1.2"/>
-    <text x="245.0" y="166.4" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">hash(key)</text>
-    <text x="245.0" y="183.4" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#222222">% 8</text>
-    <text x="415" y="14" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#666666">buckets</text>
-    <rect x="390" y="20" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="43.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">0</text>
-    <rect x="390" y="58" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="81.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">1</text>
-    <rect x="390" y="96" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="119.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">2</text>
-    <rect x="390" y="134" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="157.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">3</text>
-    <rect x="390" y="172" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="195.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">4</text>
-    <rect x="390" y="210" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="233.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">5</text>
-    <rect x="390" y="248" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="271.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">6</text>
-    <rect x="390" y="286" width="50" height="38" rx="0" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2"/>
-    <text x="415.0" y="309.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#666666">7</text>
-    <path d="M310 115.0 L388 77" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <path d="M310 159.0 L388 153" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <path d="M310 225.0 L388 267" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <rect x="480" y="62" width="110" height="30" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <text x="535.0" y="81.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#222222">cherry: 7</text>
-    <rect x="480" y="138" width="110" height="30" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <text x="535.0" y="157.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#222222">apple: 5</text>
-    <rect x="610" y="138" width="100" height="30" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
-    <text x="660.0" y="157.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#222222">grape: 2</text>
-    <rect x="480" y="252" width="110" height="30" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
-    <text x="535.0" y="271.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#222222">banana: 3</text>
-    <path d="M440 77 H478" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <path d="M440 153 H478" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <path d="M440 267 H478" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ht-a)"/>
-    <path d="M590 153 H608" fill="none" stroke="#B45309" stroke-width="1.5" marker-end="url(#ht-h)"/>
-    <text x="660" y="190" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">collision → chain</text>
+<svg width="800" height="516" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 516" role="img" aria-label="Hash table as an array of linked lists: a vertical array of 6 buckets, each pointing to a linked list (chain) of key: value entries that ends in null. Bucket 0 chains ant, bat and cat; bucket 1 holds dog; bucket 2 chains eel, fox and gnu, which collided on index 2; bucket 3 chains hen, owl and yak; bucket 4 is empty; bucket 5 chains pig and ram. With 12 entries in 6 buckets the load factor is 2.0, so get and put take O(1 + load factor) on average and O(n) in the worst case. Looking up owl: hash it to bucket 3, skip hen, find owl with value 7. Side panels show the hash step (owl hashes to 1179, and 1179 % 6 = 3) and the three fields of a node: key, value and a next pointer">
+    <defs><marker id="ht-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="ht-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="ht-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="48" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="28" font-weight="600" fill="#1E293B">Hash Table</text>
+    <text x="372" y="58" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">buckets (m = 6)</text>
+    <text x="462" y="58" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">chains: linked lists of entries (key: value → next)</text>
+    <text x="278" y="232" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="400" fill="#1E293B">Array of</text>
+    <text x="278" y="256" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="400" fill="#1E293B">Linked Lists</text>
+    <path d="M318 70 C302 70 306 84 306 106 L306 216 C306 232 298 237 288 238 C298 239 306 244 306 260 L306 370 C306 392 302 406 318 406" fill="none" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
+    <defs><marker id="ht-p" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto"><path d="M0 0 L10 5 L0 10 L2.5 5 Z" fill="#DB2777"/></marker><marker id="ht-k" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0 L10 5 L0 10 L2.5 5 Z" fill="#475569"/></marker><marker id="ht-g" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 L2.5 5 Z" fill="#94A3B8"/></marker></defs>
+    <text x="40" y="92" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="650" fill="#1E293B">Hash function</text>
+    <rect x="40" y="104" width="70" height="30" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" filter="url(#ht-s)"/>
+    <text x="75.0" y="123.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="400" fill="#1E293B">"owl"</text>
+    <path d="M110 119 H128" stroke="#475569" stroke-width="1.6" marker-end="url(#ht-k)"/>
+    <rect x="130" y="104" width="132" height="30" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ht-s)"/>
+    <text x="196.0" y="123.4" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">hash() = 1179</text>
+    <path d="M196 134 V142 H75 V150" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#ht-k)"/>
+    <rect x="40" y="152" width="110" height="30" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ht-s)"/>
+    <text x="95.0" y="171.4" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">1179 % 6</text>
+    <path d="M150 167 H168" stroke="#475569" stroke-width="1.6" marker-end="url(#ht-k)"/>
+    <rect x="170" y="152" width="92" height="30" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#ht-s)"/>
+    <text x="216.0" y="171.4" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">bucket 3</text>
+    <text x="40" y="202" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="400" fill="#64748B">index = hash(key) % m</text>
+    <text x="40" y="300" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="650" fill="#1E293B">Each node (entry)</text>
+    <text x="73.0" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">key</text>
+    <rect x="40" y="326" width="66" height="36" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="73.0" y="349" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#065F46">"owl"</text>
+    <text x="131.0" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">value</text>
+    <rect x="106" y="326" width="50" height="36" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="131.0" y="349" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#065F46">7</text>
+    <text x="181.0" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">next</text>
+    <rect x="156" y="326" width="50" height="36" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="181" cy="344" r="3.5" fill="#475569"/>
+    <path d="M181 344 H232" stroke="#475569" stroke-width="1.6" marker-end="url(#ht-k)"/>
+    <text x="236" y="348" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="400" fill="#64748B">"yak"</text>
+    <text x="40" y="384" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#64748B">next points to the following node, or null</text>
+    <rect x="330" y="70" width="84" height="56" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="342" y="85" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="400" fill="#B45309">[0]</text>
+    <circle cx="360" cy="98.0" r="3.5" fill="#DB2777"/>
+    <path d="M360 98.0 H460" stroke="#DB2777" stroke-width="3" stroke-linecap="round" marker-end="url(#ht-p)"/>
+    <rect x="462" y="78.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="495.0" y="102.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">ant: 4</text>
+    <path d="M528 98.0 H555" stroke="#475569" stroke-width="1.8" marker-end="url(#ht-k)"/>
+    <rect x="556" y="78.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="589.0" y="102.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">bat: 1</text>
+    <path d="M622 98.0 H649" stroke="#475569" stroke-width="1.8" marker-end="url(#ht-k)"/>
+    <rect x="650" y="78.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="683.0" y="102.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">cat: 9</text>
+    <path d="M716 98.0 H736" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#ht-g)"/>
+    <text x="741" y="102.0" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">null</text>
+    <rect x="330" y="126" width="84" height="56" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="342" y="141" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="400" fill="#B45309">[1]</text>
+    <circle cx="360" cy="154.0" r="3.5" fill="#DB2777"/>
+    <path d="M360 154.0 H460" stroke="#DB2777" stroke-width="3" stroke-linecap="round" marker-end="url(#ht-p)"/>
+    <rect x="462" y="134.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="495.0" y="158.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">dog: 2</text>
+    <path d="M528 154.0 H548" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#ht-g)"/>
+    <text x="553" y="158.0" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">null</text>
+    <rect x="330" y="182" width="84" height="56" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="342" y="197" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="400" fill="#B45309">[2]</text>
+    <circle cx="360" cy="210.0" r="3.5" fill="#DB2777"/>
+    <path d="M360 210.0 H460" stroke="#DB2777" stroke-width="3" stroke-linecap="round" marker-end="url(#ht-p)"/>
+    <rect x="462" y="190.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="495.0" y="214.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">eel: 5</text>
+    <path d="M528 210.0 H555" stroke="#475569" stroke-width="1.8" marker-end="url(#ht-k)"/>
+    <rect x="556" y="190.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="589.0" y="214.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">fox: 8</text>
+    <path d="M622 210.0 H649" stroke="#475569" stroke-width="1.8" marker-end="url(#ht-k)"/>
+    <rect x="650" y="190.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="683.0" y="214.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">gnu: 6</text>
+    <path d="M716 210.0 H736" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#ht-g)"/>
+    <text x="741" y="214.0" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">null</text>
+    <rect x="330" y="238" width="84" height="56" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="2"/>
+    <text x="342" y="253" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="700" fill="#B45309">[3]</text>
+    <circle cx="360" cy="266.0" r="3.5" fill="#DB2777"/>
+    <path d="M360 266.0 H460" stroke="#DB2777" stroke-width="3" stroke-linecap="round" marker-end="url(#ht-p)"/>
+    <rect x="462" y="246.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="495.0" y="270.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">hen: 3</text>
+    <path d="M528 266.0 H555" stroke="#475569" stroke-width="1.8" marker-end="url(#ht-k)"/>
+    <rect x="556" y="246.0" width="66" height="40" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="2"/>
+    <text x="589.0" y="270.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#B45309">owl: 7</text>
+    <path d="M622 266.0 H649" stroke="#475569" stroke-width="1.8" marker-end="url(#ht-k)"/>
+    <rect x="650" y="246.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="683.0" y="270.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">yak: 2</text>
+    <path d="M716 266.0 H736" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#ht-g)"/>
+    <text x="741" y="270.0" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">null</text>
+    <rect x="330" y="294" width="84" height="56" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="342" y="309" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="400" fill="#B45309">[4]</text>
+    <circle cx="360" cy="322.0" r="3.5" fill="#DB2777"/>
+    <path d="M360 322.0 H456" stroke="#DB2777" stroke-width="3" stroke-linecap="round" marker-end="url(#ht-p)"/>
+    <text x="464" y="326.0" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">null  (empty bucket)</text>
+    <rect x="330" y="350" width="84" height="56" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="342" y="365" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="400" fill="#B45309">[5]</text>
+    <circle cx="360" cy="378.0" r="3.5" fill="#DB2777"/>
+    <path d="M360 378.0 H460" stroke="#DB2777" stroke-width="3" stroke-linecap="round" marker-end="url(#ht-p)"/>
+    <rect x="462" y="358.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="495.0" y="382.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">pig: 5</text>
+    <path d="M528 378.0 H555" stroke="#475569" stroke-width="1.8" marker-end="url(#ht-k)"/>
+    <rect x="556" y="358.0" width="66" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+    <text x="589.0" y="382.5" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#065F46">ram: 1</text>
+    <path d="M622 378.0 H642" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#ht-g)"/>
+    <text x="647" y="382.0" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">null</text>
+    <circle cx="404" cy="250" r="9" fill="#B45309"/>
+    <text x="404" y="254" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">1</text>
+    <circle cx="462" cy="244.0" r="9" fill="#B45309"/>
+    <text x="462" y="248.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">2</text>
+    <circle cx="556" cy="244.0" r="9" fill="#B45309"/>
+    <text x="556" y="248.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">3</text>
+    <rect x="40" y="428" width="210" height="22" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="145.0" y="443" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#047857">n = 12 entries,  m = 6 buckets</text>
+    <rect x="260" y="428" width="191" height="22" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="355.5" y="443" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#047857">load factor α = n / m = 2.0</text>
+    <rect x="461" y="428" width="191" height="22" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="556.5" y="443" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#047857">get / put  O(1 + α) average</text>
+    <rect x="662" y="428" width="114" height="22" rx="3" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+    <text x="719.0" y="443" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#B45309">O(n) worst case</text>
+    <text x="40" y="474" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Collision: eel, fox and gnu all hashed to index 2, so they share one chain.</text>
+    <text x="40" y="502" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="650" fill="#1E293B">get("owl"):</text>
+    <circle cx="132" cy="498" r="9" fill="#B45309"/>
+    <text x="132" y="502" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">1</text>
+    <text x="146" y="502" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">hash("owl") % 6 = 3 → bucket 3</text>
+    <circle cx="370" cy="498" r="9" fill="#B45309"/>
+    <text x="370" y="502" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">2</text>
+    <text x="384" y="502" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">"hen" ≠ "owl" → next</text>
+    <circle cx="548" cy="498" r="9" fill="#B45309"/>
+    <text x="548" y="502" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">3</text>
+    <text x="562" y="502" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">"owl" found → 7</text>
 </svg>

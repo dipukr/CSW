@@ -1180,6 +1180,11 @@ strong {
     font-weight: 500;
 }
 
+/* emphasis inside ordinary paragraphs is charcoal (classed paragraphs such as p.minor-heading headings keep body ink) */
+p:not([class]) strong {
+    color: #323238;
+}
+
 .font-size-15 {
     font-size: 15px !important;
 }
