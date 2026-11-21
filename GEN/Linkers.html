@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linkers and Loaders</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Assemblers, Linkers and Loaders</div>
+
+    <div class="intro">
+        <p>Between writing source code and seeing a running program, several tools do quiet but essential work. A <strong>compiler</strong> turns source into assembly, an <strong>assembler</strong> turns assembly into machine code, a <strong>linker</strong> stitches separately built pieces into one program, and a <strong>loader</strong> places that program in memory and starts it.</p>
+        <p>Most of the time a single command such as <code>gcc main.c util.c -o prog</code> runs all of these steps for you. Knowing what each step does explains error messages like <em>undefined reference</em>, shows why shared libraries exist, and makes the layout of a running process much less mysterious.</p>
+        <p>The examples use C, x86-64 assembly in NASM syntax and Linux&rsquo;s ELF file format, but the ideas carry over to Windows (PE/COFF) and macOS (Mach-O).</p>
+    </div>
+
+    <div class="subheading">The Build Pipeline</div>
+    <div class="svg-diagram">
+        <img src="../static/linkers-pipeline.svg" alt="Build pipeline: main.c is translated by the compiler into main.s, the assembler turns it into the object file main.o; the linker combines main.o with util.o and the archive libc.a into the executable prog; the loader maps prog into a process with text, data, heap and stack" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Stage</th><th>Input</th><th>Output</th><th>Key job</th></tr></thead>
+            <tbody>
+                <tr><td>Compile</td><td>Source file (<code>main.c</code>)</td><td>Assembly (<code>main.s</code>)</td><td>Translate high-level constructs into instructions</td></tr>
+                <tr><td>Assemble</td><td>Assembly</td><td>Relocatable object file (<code>main.o</code>)</td><td>Encode instructions, build the symbol table, record relocations</td></tr>
+                <tr><td>Link</td><td>Object files and libraries</td><td>Executable or shared library</td><td>Resolve symbols, merge sections, assign addresses, patch references</td></tr>
+                <tr><td>Load</td><td>Executable</td><td>Running process</td><td>Map segments into memory, load shared libraries, jump to the entry point</td></tr>
+            </tbody>
+        </table></div>
+        <p>You can stop the pipeline at any stage to look at the intermediate files:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>gcc -S main.c              <span class="code-comment"># stop after compiling: main.s</span>
+gcc -c main.c              <span class="code-comment"># stop after assembling: main.o</span>
+gcc main.o util.o -o prog  <span class="code-comment"># link</span>
+./prog                     <span class="code-comment"># the shell asks the kernel to load and run it</span></code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Assembly Language</div>
+    <div class="intro">
+        <p>Assembly language is a readable spelling of a processor&rsquo;s machine code. Each instruction usually maps to exactly one machine instruction, so the language is tied to one architecture: x86-64 assembly does not run on ARM. In exchange, it gives full control over registers, memory and individual instructions.</p>
+        <p class="minor-heading"><strong>Anatomy of a Statement</strong></p>
+        <p>A typical line has up to four fields, all of them optional:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>loop:   add     rax, rbx        <span class="code-comment">; label, mnemonic, operands, comment</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <ul>
+            <li><strong>Label:</strong> a name for the address of this line, so other code can jump to it or refer to it.</li>
+            <li><strong>Mnemonic:</strong> the operation, such as <code>mov</code>, <code>add</code> or <code>jmp</code>.</li>
+            <li><strong>Operands:</strong> registers, memory addresses or constants the operation works on.</li>
+            <li><strong>Comment:</strong> everything after <code>;</code> is ignored by the assembler.</li>
+        </ul>
+        <p class="minor-heading"><strong>Kinds of Statements</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Kind</th><th>Produces machine code?</th><th>Examples</th></tr></thead>
+            <tbody>
+                <tr><td>Instruction</td><td>Yes, one machine instruction</td><td><code>mov</code>, <code>add</code>, <code>call</code>, <code>syscall</code></td></tr>
+                <tr><td>Directive (pseudo-op)</td><td>No; it tells the assembler what to do</td><td><code>section</code>, <code>global</code>, <code>extern</code>, <code>db</code>, <code>equ</code></td></tr>
+                <tr><td>Macro</td><td>Expands into other statements</td><td><code>%macro print 1 &hellip; %endmacro</code></td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>A Complete Program</strong></p>
+        <p>This program prints a line and exits using Linux system calls directly, with no C library:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">section</span> .data
+msg:    <span class="code-keyword">db</span>      <span class="code-string">"Linked and loaded!"</span>, <span class="code-number">10</span>   <span class="code-comment">; bytes of the text plus a newline</span>
+len:    <span class="code-keyword">equ</span>     $ - msg                    <span class="code-comment">; assemble-time constant: the length</span>
+
+<span class="code-keyword">section</span> .text
+        <span class="code-keyword">global</span>  _start                     <span class="code-comment">; export the entry point to the linker</span>
+_start:
+        mov     rax, <span class="code-number">1</span>                     <span class="code-comment">; system call 1 = write</span>
+        mov     rdi, <span class="code-number">1</span>                     <span class="code-comment">; file descriptor 1 = stdout</span>
+        mov     rsi, msg                   <span class="code-comment">; address of the bytes</span>
+        mov     rdx, len                   <span class="code-comment">; how many bytes</span>
+        syscall
+
+        mov     rax, <span class="code-number">60</span>                    <span class="code-comment">; system call 60 = exit</span>
+        xor     rdi, rdi                   <span class="code-comment">; exit status 0</span>
+        syscall</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>nasm -f elf64 hello.asm -o hello.o   <span class="code-comment"># assemble</span>
+ld hello.o -o hello                  <span class="code-comment"># link</span>
+./hello                              <span class="code-comment"># load and run</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Notice that <code>mov rsi, msg</code> needs the address of <code>msg</code>, but the assembler does not know where the linker will finally place the data section. It writes a placeholder and leaves a note, called a <strong>relocation</strong>, asking the linker to fill in the real address. This idea drives everything that follows.</p>
+        <p class="minor-heading"><strong>When Assembly Is Worth It</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Good reasons</th><th>Costs</th></tr></thead>
+            <tbody>
+                <tr><td>Learning how instructions, registers and memory really work</td><td>Much slower to write and read than a high-level language</td></tr>
+                <tr><td>Boot code, context switches and other code the compiler cannot express</td><td>Easy to break calling conventions or leave the stack unbalanced</td></tr>
+                <tr><td>Hot loops that need special instructions (SIMD, atomics)</td><td>Tied to one architecture</td></tr>
+                <tr><td>Reading compiler output while debugging or tuning performance</td><td>Modern compilers usually match or beat hand-written code</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">How an Assembler Works</div>
+    <div class="intro">
+        <p>Most of an assembler&rsquo;s work is a table lookup: each mnemonic and operand combination has a fixed encoding. The hard part is <strong>symbols</strong>. A jump can refer to a label that appears later in the file (a <em>forward reference</em>), so when the assembler first meets <code>jmp done</code> it does not yet know where <code>done</code> is.</p>
+        <p>The assembler tracks the current address with a <strong>location counter</strong>, which starts at 0 for each section and grows by the size of every instruction or data item it emits.</p>
+        <p class="minor-heading"><strong>Two-Pass Assembly</strong></p>
+        <p>The classic answer to forward references is to read the source twice:</p>
+    </div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Pass 1: measure and record</div><div class="step-body">Walk through every line, work out how many bytes it needs and advance the location counter. Whenever a label is defined, record its name and the current counter value in the <strong>symbol table</strong>. No code is emitted yet.</div></div>
+        <div class="step"><div class="step-title">Pass 2: encode</div><div class="step-body">Walk through the lines again. Every symbol defined in this file is now in the table, so each instruction can be encoded completely. References to symbols defined elsewhere, or to addresses the linker will choose, get a placeholder plus a relocation entry.</div></div>
+        <div class="step"><div class="step-title">Write the object file</div><div class="step-body">Emit the machine code and data for each section, the symbol table and the relocation entries.</div></div>
+    </div>
+    <div class="intro">
+        <p>For example, take this fragment of a <code>.text</code> section, with the size in bytes of each instruction:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>start:  mov     ecx, <span class="code-number">10</span>        <span class="code-comment">; 5 bytes</span>
+again:  dec     ecx            <span class="code-comment">; 2 bytes</span>
+        jz      done           <span class="code-comment">; 2 bytes, forward reference</span>
+        jmp     again          <span class="code-comment">; 2 bytes, backward reference</span>
+done:   ret                    <span class="code-comment">; 1 byte</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Pass 1 produces this symbol table:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Symbol</th><th>Section</th><th>Offset</th><th>How it was found</th></tr></thead>
+            <tbody>
+                <tr><td><code>start</code></td><td>.text</td><td>0</td><td>First line</td></tr>
+                <tr><td><code>again</code></td><td>.text</td><td>5</td><td>After the 5-byte <code>mov</code></td></tr>
+                <tr><td><code>done</code></td><td>.text</td><td>11</td><td>5 + 2 + 2 + 2</td></tr>
+            </tbody>
+        </table></div>
+        <p>In pass 2, <code>jz done</code> can be encoded with a relative offset: the jump starts at 7, the next instruction is at 9, so the offset is 11 &minus; 9 = 2.</p>
+        <p class="minor-heading"><strong>One-Pass Assembly</strong></p>
+        <p>A one-pass assembler emits code immediately. For a forward reference it writes a placeholder and adds the location to a list of fixups waiting on that symbol. When the label is finally defined, it goes back and patches every waiting location; this is called <strong>backpatching</strong>. It is faster and needs less memory, at the cost of more bookkeeping.</p>
+        <p>One complication on x86: a jump to a nearby label fits in 2 bytes, but a distant one needs 5 or 6. Until the target is known, the assembler cannot be sure of the size, so real assemblers either assume the long form or repeat passes until every size settles.</p>
+    </div>
+
+    <div class="subheading">Object Files</div>
+    <div class="intro">
+        <p>An object file is a <em>relocatable</em> container of machine code: everything is addressed relative to the start of its own sections, because its final position is not yet known. On Linux the format is <strong>ELF</strong> (Executable and Linkable Format).</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Part</th><th>Holds</th></tr></thead>
+            <tbody>
+                <tr><td><code>.text</code></td><td>Machine code</td></tr>
+                <tr><td><code>.rodata</code></td><td>Read-only data, such as string literals and constant tables</td></tr>
+                <tr><td><code>.data</code></td><td>Initialised global and static variables</td></tr>
+                <tr><td><code>.bss</code></td><td>Zero-initialised globals; only the size is stored, not the bytes</td></tr>
+                <tr><td>Symbol table (<code>.symtab</code>)</td><td>Every symbol this file defines or uses, with its section and offset</td></tr>
+                <tr><td>Relocations (<code>.rela.text</code>, &hellip;)</td><td>Places in the code or data that must be patched once addresses are known</td></tr>
+                <tr><td>Debug info (<code>.debug_*</code>)</td><td>Line numbers, types and variable names for debuggers (with <code>-g</code>)</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>A Two-File Example</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-comment">// util.c</span>
+<span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+
+<span class="code-keyword">int</span> sum(<span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b) {
+    total += a + b;
+    <span class="code-keyword">return</span> a + b;
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-comment">// main.c</span>
+<span class="code-keyword">#include</span> &lt;stdio.h&gt;
+
+<span class="code-keyword">int</span> sum(<span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b);     <span class="code-comment">// declared here, defined in util.c</span>
+<span class="code-keyword">int</span> count = <span class="code-number">3</span>;
+
+<span class="code-keyword">int</span> main(<span class="code-keyword">void</span>) {
+    printf(<span class="code-string">"%d\n"</span>, sum(count, <span class="code-number">4</span>));
+    <span class="code-keyword">return</span> <span class="code-number">0</span>;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Compile both with <code>gcc -c main.c util.c</code>, then list the symbols in <code>main.o</code> with <code>nm</code>:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>$ nm main.o
+0000000000000000 D count
+0000000000000000 T main
+                 U printf
+                 U sum</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>T</code> means defined in the text section, <code>D</code> defined in the data section, and <code>U</code> <strong>undefined</strong>: used here but defined somewhere else. Both defined symbols sit at offset 0 because each is the first thing in its own section. The undefined ones are the linker&rsquo;s problem.</p>
+        <p>The relocation entries for <code>main.o</code> say where its code needs patching. Simplified, they look like this:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Where in .text</th><th>Symbol</th><th>Kind of patch</th></tr></thead>
+            <tbody>
+                <tr><td>The load of <code>count</code></td><td><code>count</code></td><td>PC-relative address of data</td></tr>
+                <tr><td>The <code>call</code> to <code>sum</code></td><td><code>sum</code></td><td>PC-relative call target</td></tr>
+                <tr><td>The <code>call</code> to <code>printf</code></td><td><code>printf</code></td><td>PC-relative call target, possibly via the PLT</td></tr>
+                <tr><td>The format string argument</td><td><code>.rodata</code></td><td>PC-relative address of read-only data</td></tr>
+            </tbody>
+        </table></div>
+        <p>Use <code>objdump -d main.o</code> to see the code with placeholders and <code>readelf -r main.o</code> to see the exact relocation records.</p>
+    </div>
+
+    <div class="subheading">What the Linker Does</div>
+    <div class="intro">
+        <p>A static linker has two main jobs: <strong>symbol resolution</strong> (match every use of a name to exactly one definition) and <strong>relocation</strong> (choose final addresses and patch every reference to them).</p>
+    </div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Collect inputs</div><div class="step-body">Read every object file named on the command line, then search libraries for anything still undefined.</div></div>
+        <div class="step"><div class="step-title">Resolve symbols</div><div class="step-body">Build a global symbol table. Every undefined reference must match one definition; a missing definition or two conflicting ones is an error.</div></div>
+        <div class="step"><div class="step-title">Merge sections</div><div class="step-body">Concatenate all <code>.text</code> sections into one, all <code>.data</code> into one, and so on.</div></div>
+        <div class="step"><div class="step-title">Assign addresses</div><div class="step-body">Place each merged section in the program&rsquo;s address space, which fixes the final address of every symbol.</div></div>
+        <div class="step"><div class="step-title">Apply relocations</div><div class="step-body">Walk the relocation entries and overwrite each placeholder with the correct address or offset.</div></div>
+        <div class="step"><div class="step-title">Write the executable</div><div class="step-body">Emit the file with program headers describing how to load it, plus the entry-point address.</div></div>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/linkers-relocation.svg" alt="Linking two object files: the .text sections of main.o and util.o are merged into one .text section of the executable at 0x401000 and 0x401020, the .data sections into one .data section at 0x404000 and 0x404008, and the unresolved call in main is patched to call 0x401020" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Symbol Resolution Rules</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Situation</th><th>Result</th></tr></thead>
+            <tbody>
+                <tr><td>One definition, any number of uses</td><td>All uses bind to that definition</td></tr>
+                <tr><td>Used but never defined</td><td><em>undefined reference to &hellip;</em></td></tr>
+                <tr><td>Two strong definitions (functions, initialised globals)</td><td><em>multiple definition of &hellip;</em></td></tr>
+                <tr><td>One strong and some weak definitions</td><td>The strong one wins</td></tr>
+                <tr><td><code>static</code> function or variable</td><td>Local to its file; invisible to the linker&rsquo;s global table, so two files can each have their own</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Computing a Relocation</strong></p>
+        <p>Each relocation entry names a symbol <span class="math" data-tex="S">S</span>, an addend <span class="math" data-tex="A">A</span> stored with the entry, and implies the address being patched, <span class="math" data-tex="P">P</span>. The two most common kinds are:</p>
+    </div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\text{absolute} = S + A \qquad \text{PC-relative} = S + A - P" data-display="1">absolute = S + A, PC-relative = S + A - P</span></p></div>
+    <div class="intro">
+        <p>Suppose the linker places <code>sum</code> at <span class="math" data-tex="S = \texttt{0x401020}">S = 0x401020</span>, and the 4-byte displacement field of the <code>call</code> in <code>main</code> ends up at <span class="math" data-tex="P = \texttt{0x40100C}">P = 0x40100C</span>. x86 measures a call from the <em>next</em> instruction, which starts 4 bytes after <span class="math" data-tex="P">P</span>, so the addend is <span class="math" data-tex="A = -4">A = -4</span>:</p>
+    </div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="\texttt{0x401020} + (-4) - \texttt{0x40100C} = \texttt{0x10}" data-display="1">0x401020 - 4 - 0x40100C = 0x10</span></p></div>
+    <div class="intro">
+        <p>At run time the CPU adds 0x10 to the address of the next instruction, 0x401010, and lands on 0x401020: exactly <code>sum</code>.</p>
+    </div>
+
+    <div class="subheading">Static Libraries</div>
+    <div class="intro">
+        <p>A static library (<code>.a</code> on Unix, <code>.lib</code> on Windows) is an archive of object files with an index. The linker does not copy the whole archive; it pulls in only the members that define a symbol that is still undefined.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>ar rcs libutil.a util.o              <span class="code-comment"># build the archive</span>
+gcc main.o -L. -lutil -o prog        <span class="code-comment"># -lutil searches for libutil.a</span></code></pre>
+        </div>
+    </div>
+    <div class="callout callout-note"><p><strong>Order matters.</strong> The GNU linker scans its inputs left to right and only searches an archive for symbols that are undefined <em>at that point</em>. <code>gcc -lutil main.o</code> fails because when <code>libutil.a</code> is scanned nothing needs <code>sum</code> yet. Put libraries after the objects that use them.</p></div>
+
+    <div class="subheading">Loading a Program</div>
+    <div class="intro">
+        <p>The loader copies the program into memory and starts it. How much work that takes depends on when final addresses are decided.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Approach</th><th>When addresses are fixed</th><th>Trade-off</th></tr></thead>
+            <tbody>
+                <tr><td>Absolute loading</td><td>At link time, for one specific memory location</td><td>Simplest, but the program can only run at that address</td></tr>
+                <tr><td>Relocatable loading</td><td>At load time: the loader adds the load address to every recorded relocation</td><td>Runs anywhere, but cannot move once loaded</td></tr>
+                <tr><td>Dynamic run-time loading</td><td>At every memory access, by hardware (a base register or virtual memory)</td><td>The program can be moved, swapped out and brought back elsewhere</td></tr>
+            </tbody>
+        </table></div>
+        <p>Modern systems use the third approach. With virtual memory every process gets its own address space, so the linker can place code at a conventional address and the memory management unit maps it to whatever physical frames are free.</p>
+        <p class="minor-heading"><strong>What Happens on Linux When You Run <code>./prog</code></strong></p>
+    </div>
+    <div class="steps">
+        <div class="step"><div class="step-title">The shell calls <code>execve</code></div><div class="step-body">The kernel opens the file and reads the ELF header to check that it is an executable for this machine.</div></div>
+        <div class="step"><div class="step-title">Map the segments</div><div class="step-body">For each loadable segment in the program headers, the kernel maps that part of the file into the address space with the right permissions: code read and execute, data read and write. Pages are only read from disk when first touched.</div></div>
+        <div class="step"><div class="step-title">Set up the stack</div><div class="step-body">The kernel pushes the command-line arguments, environment variables and an auxiliary vector of system information.</div></div>
+        <div class="step"><div class="step-title">Start the dynamic linker, if needed</div><div class="step-body">A dynamically linked program names an interpreter, usually <code>ld-linux-x86-64.so.2</code>. The kernel maps it and starts it first; it loads the shared libraries and performs their relocations.</div></div>
+        <div class="step"><div class="step-title">Jump to the entry point</div><div class="step-body">Control reaches <code>_start</code>, which sets up the C runtime and calls <code>main</code>.</div></div>
+    </div>
+
+    <div class="subheading">Dynamic Linking and Shared Libraries</div>
+    <div class="intro">
+        <p>With static linking every program carries its own copy of the library code it uses. A <strong>shared library</strong> (<code>.so</code> on Linux, <code>.dll</code> on Windows, <code>.dylib</code> on macOS) is linked when the program is loaded or even later, so one copy on disk and in memory serves every program that uses it.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th></th><th>Static linking</th><th>Dynamic linking</th></tr></thead>
+            <tbody>
+                <tr><td>Library code</td><td>Copied into each executable</td><td>One shared copy, mapped into each process</td></tr>
+                <tr><td>Executable size</td><td>Larger</td><td>Smaller</td></tr>
+                <tr><td>Library bug fix</td><td>Every program must be relinked</td><td>Update the library once</td></tr>
+                <tr><td>Start-up cost</td><td>None</td><td>Libraries are found and relocated at load time</td></tr>
+                <tr><td>Deployment</td><td>One self-contained file</td><td>The right library versions must be present</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Load-Time and Run-Time Linking</strong></p>
+        <ul>
+            <li><strong>Load-time:</strong> the executable lists the libraries it needs (see them with <code>ldd prog</code>), and the dynamic linker loads them all before <code>main</code> runs.</li>
+            <li><strong>Run-time:</strong> the program loads a library on demand with <code>dlopen</code> and looks up functions with <code>dlsym</code>. This is how plug-in systems work.</li>
+        </ul>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>gcc -fPIC -shared util.c -o libutil.so    <span class="code-comment"># build a shared library</span>
+gcc main.c -L. -lutil -o prog              <span class="code-comment"># link against it</span>
+LD_LIBRARY_PATH=. ./prog                   <span class="code-comment"># tell the loader where to find it</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Position-Independent Code</strong></p>
+        <p>A shared library can be mapped at a different address in every process, and its code pages are shared, so the loader cannot patch them per process. Instead the library is compiled as <strong>position-independent code</strong> (<code>-fPIC</code>): code reaches its own data with PC-relative addressing, and reaches symbols in other modules through a table of addresses, the <strong>Global Offset Table (GOT)</strong>, which lives in writable data and can differ per process.</p>
+        <p class="minor-heading"><strong>Lazy Binding with the PLT</strong></p>
+        <p>A program may import hundreds of functions but call only a few. Calls to external functions go through small stubs in the <strong>Procedure Linkage Table (PLT)</strong>, which jump through the function&rsquo;s GOT slot. Initially that slot points to the dynamic linker&rsquo;s resolver:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/linkers-plt-got.svg" alt="Lazy binding: the program calls puts@plt; the PLT stub jumps through the GOT slot for puts. On the first call the slot points to the dynamic linker's resolver, which finds puts in libc.so, writes its address into the GOT and jumps to it. Later calls go from the GOT straight to puts" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <ol>
+            <li>The first call to <code>puts</code> goes through the stub into the resolver.</li>
+            <li>The resolver finds <code>puts</code> in <code>libc.so</code> and writes its address into the GOT slot.</li>
+            <li>It then jumps to <code>puts</code>. Every later call goes through the same stub but now jumps straight to <code>puts</code>.</li>
+        </ol>
+        <p>Many distributions now resolve every symbol at start-up instead (<code>-z now</code>) and make the GOT read-only afterwards (<em>full RELRO</em>). This costs a little start-up time but stops attackers from overwriting GOT entries.</p>
+    </div>
+
+    <div class="subheading">The Same Ideas in Java</div>
+    <div class="intro">
+        <p>Java has no separate link step, but the JVM performs the same jobs, lazily and per class:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Native toolchain</th><th>JVM equivalent</th></tr></thead>
+            <tbody>
+                <tr><td>Object file</td><td><code>.class</code> file</td></tr>
+                <tr><td>Symbol table with undefined symbols</td><td>Constant pool with symbolic references such as <code>java/io/PrintStream.println</code></td></tr>
+                <tr><td>Library search path</td><td>Class path or module path</td></tr>
+                <tr><td>Loader</td><td>Class loader, which finds and reads the bytes of a class</td></tr>
+                <tr><td>Relocation and symbol resolution</td><td>Linking: verification, preparation, then resolution of symbolic references</td></tr>
+                <tr><td>Lazy binding through the PLT</td><td>References are typically resolved on first use</td></tr>
+                <tr><td><em>undefined reference</em> at link time</td><td><code>NoClassDefFoundError</code> or <code>NoSuchMethodError</code> at run time</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Common Errors and What They Mean</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Message</th><th>Stage</th><th>Usual cause</th></tr></thead>
+            <tbody>
+                <tr><td><em>undefined reference to `sum'</em></td><td>Link</td><td>The defining object file or library was not passed to the linker, or libraries are in the wrong order</td></tr>
+                <tr><td><em>multiple definition of `count'</em></td><td>Link</td><td>A variable or function is defined in a header that several files include; define it once and declare it <code>extern</code> elsewhere</td></tr>
+                <tr><td><em>error while loading shared libraries: libutil.so: cannot open shared object file</em></td><td>Load</td><td>The library exists at build time but the dynamic linker cannot find it at run time; install it or set the search path</td></tr>
+                <tr><td><em>undefined symbol: &hellip;</em> at run time</td><td>Load / dynamic link</td><td>The installed library version does not have the function the program was built against</td></tr>
+                <tr><td><em>relocation &hellip; can not be used when making a shared object; recompile with -fPIC</em></td><td>Link</td><td>Non-position-independent code was put into a shared library</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Useful Tools</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Command</th><th>Shows</th></tr></thead>
+            <tbody>
+                <tr><td><code>nm file.o</code></td><td>Defined and undefined symbols</td></tr>
+                <tr><td><code>objdump -d file</code></td><td>Disassembled machine code</td></tr>
+                <tr><td><code>readelf -S</code> / <code>-r</code> / <code>-l file</code></td><td>Sections, relocations, program headers</td></tr>
+                <tr><td><code>ldd prog</code></td><td>Shared libraries a program needs and where they resolve</td></tr>
+                <tr><td><code>LD_DEBUG=bindings ./prog</code></td><td>Each symbol the dynamic linker binds, as it happens</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Key Terms</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>Assembler</td><td>Translates assembly language into machine code in an object file</td></tr>
+                <tr><td>Directive</td><td>An assembler instruction that produces no machine code, such as <code>section</code> or <code>global</code></td></tr>
+                <tr><td>Location counter</td><td>The assembler&rsquo;s running offset within the current section</td></tr>
+                <tr><td>Symbol table</td><td>Names defined or used by a module, with their locations</td></tr>
+                <tr><td>Relocation</td><td>A record of a place that must be patched once addresses are known; also the act of patching</td></tr>
+                <tr><td>Object file</td><td>Relocatable machine code plus symbols and relocations, not yet runnable</td></tr>
+                <tr><td>Linker</td><td>Combines object files and libraries into one executable or library</td></tr>
+                <tr><td>Static library</td><td>An archive of object files; needed members are copied in at link time</td></tr>
+                <tr><td>Shared library</td><td>A library linked at load or run time and shared between processes</td></tr>
+                <tr><td>Loader</td><td>Places an executable in memory and starts it</td></tr>
+                <tr><td>Dynamic linker</td><td>Loads shared libraries and resolves their symbols at load or run time</td></tr>
+                <tr><td>PIC</td><td>Position-independent code: runs correctly wherever it is loaded</td></tr>
+                <tr><td>GOT / PLT</td><td>Tables that let PIC reach external data and functions, with optional lazy binding</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Summary</div>
+    <div class="intro">
+        <ul>
+            <li>The assembler turns symbolic instructions into machine code, using two passes or backpatching to handle forward references.</li>
+            <li>Object files are relocatable: they carry a symbol table of what they define and need, and relocation entries marking every address still to be fixed.</li>
+            <li>The linker resolves each symbol to one definition, merges sections, assigns addresses and patches the code.</li>
+            <li>The loader maps the executable into a process; with virtual memory, addresses are translated by hardware on every access.</li>
+            <li>Shared libraries defer linking to load or run time, using position-independent code and the GOT/PLT to share one copy between processes.</li>
+        </ul>
+        <p><strong>Compilers produce pieces, linkers make them fit together, and loaders bring the result to life.</strong></p>
+    </div>
+</div>
+</body>
+</html>
