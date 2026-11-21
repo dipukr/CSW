@@ -1,0 +1,10 @@
+<svg width="720" height="86" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 86" role="img" aria-label="Example 1,500-byte IPv4 packet: 20 bytes IP header, 20 bytes TCP header, 1,460 bytes TCP payload">
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222" text-anchor="middle">
+        <rect x="40" y="14" width="110" height="56" rx="3" fill="#E5E7EB" stroke="#222222" stroke-width="1.2"/>
+        <rect x="150" y="14" width="110" height="56" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <rect x="260" y="14" width="420" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="95" y="37" font-size="13" font-weight="600">20 B</text><text x="95" y="56" font-size="12" fill="#555555">IP</text>
+        <text x="205" y="37" font-size="13" font-weight="600">20 B</text><text x="205" y="56" font-size="12" fill="#555555">TCP</text>
+        <text x="470" y="37" font-size="13" font-weight="600">1,460 B</text><text x="470" y="56" font-size="12" fill="#555555">TCP payload</text>
+    </g>
+</svg>

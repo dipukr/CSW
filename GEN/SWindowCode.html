@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sliding Window Programs</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.katex) return; // offline: keep the plain-text fallback
+    document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note sw-page">
+
+    <div class="title">Sliding Window Problems</div>
+
+    <div class="intro">
+        <p>The exercises below are ordered by increasing difficulty.</p>
+        <p>All array-index ranges use inclusive bounds unless otherwise stated.</p>
+    </div>
+
+    <div class="subheading"><span>Maximum sum of a subarray of size K</span><span class="sw-diff sw-easy">Easy</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>nums = [2, 1, 5, 1, 3, 2]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>9</code></p>
+        <p>The best subarray is <code>[5, 1, 3]</code>.</p>
+        <p>Algorithm:</p>
+        <ol><li>Calculate the sum of the first <code>k</code> elements.</li><li>Add the next element and remove the oldest element.</li><li>Update the maximum.</li><li>Continue until all windows have been processed.</li></ol>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, extra space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> maxSumK(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">1</span> || k &gt; nums.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"k must be between 1 and n"</span>);
+
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; k; i++)
+        sum += nums[i];
+
+    <span class="code-keyword">long</span> best = sum;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = k; right &lt; nums.length; right++) {
+        sum += nums[right];
+        sum -= nums[right - k];
+        best = <span class="code-class">Math</span>.max(best, sum);
+    }
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">2</span>, <span class="code-number">1</span>, <span class="code-number">5</span>, <span class="code-number">1</span>, <span class="code-number">3</span>, <span class="code-number">2</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">long</span> sum = maxSumK(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum sum of {k} consecutive elements = {sum}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum average subarray</span><span class="sw-diff sw-easy">Easy</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>[1, 12, -5, -6, 50, 3]</code>, <code>k = 4</code></p>
+        <p><strong>Output:</strong> <code>12.75</code></p>
+        <p>The maximum-sum window is <code>[12, -5, -6, 50]</code>, whose sum is 51.</p>
+        <p>Because every window has exactly <code>k</code> elements, maximizing the average is equivalent to maximizing its sum.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">double</span> maxAverageK(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">1</span> || k &gt; nums.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"k must be between 1 and n"</span>);
+
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; k; i++)
+        sum += nums[i];
+
+    <span class="code-keyword">long</span> best = sum;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = k; right &lt; nums.length; right++) {
+        sum += nums[right];
+        sum -= nums[right - k];
+
+        best = <span class="code-class">Math</span>.max(best, sum);
+    }
+
+    <span class="code-keyword">return</span> (<span class="code-keyword">double</span>) best / k;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">12</span>, -<span class="code-number">5</span>, -<span class="code-number">6</span>, <span class="code-number">50</span>, <span class="code-number">3</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">4</span>;
+    <span class="code-keyword">double</span> average = maxAverageK(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum average of {k} consecutive elements = {average}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>First negative integer in every window</span><span class="sw-diff sw-easy">Easy</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>[12, -1, -7, 8, -15, 30, 16, 28]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>[-1, -1, -7, -15, -15, 0]</code></p>
+        <p>Use a deque to remember indices of negative numbers. For each window, discard indices outside the window. The oldest remaining negative number is the answer.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(k)">O(k)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; firstNegative(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">1</span> || k &gt; nums.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"k must be between 1 and n"</span>);
+
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> negIndices = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">if</span> (nums[right] &lt; <span class="code-number">0</span>)
+            negIndices.addLast(right);
+
+        <span class="code-keyword">int</span> left = right - k + <span class="code-number">1</span>;
+
+        <span class="code-keyword">if</span> (left &lt; <span class="code-number">0</span>)
+            <span class="code-keyword">continue</span>;
+
+        <span class="code-keyword">while</span> (!negIndices.isEmpty() &amp;&amp; negIndices.peekFirst() &lt; left)
+            negIndices.removeFirst();
+
+        result.add(negIndices.isEmpty() ? <span class="code-number">0</span> : nums[negIndices.peekFirst()]);
+    }
+
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">12</span>, -<span class="code-number">1</span>, -<span class="code-number">7</span>, <span class="code-number">8</span>, -<span class="code-number">15</span>, <span class="code-number">30</span>, <span class="code-number">16</span>, <span class="code-number">28</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; negatives = firstNegative(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"First negative in each window of {k} = {negatives}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Count distinct elements in every window</span><span class="sw-diff sw-easy">Easy</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>[1, 2, 1, 3, 4, 2, 3]</code>, <code>k = 4</code></p>
+        <p><strong>Output:</strong> <code>[3, 4, 4, 3]</code></p>
+        <p>Use a frequency map. When an element enters, increase its count; when it exits, decrease its count and remove it if the count reaches zero.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> expected with a hash map; space <span class="math" data-tex="O(k)">O(k)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; countDistinct(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">1</span> || k &gt; nums.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"k must be between 1 and n"</span>);
+
+    <span class="code-keyword">var</span> freq = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        freq.merge(nums[right], <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+
+        <span class="code-keyword">if</span> (right &gt;= k) {
+            <span class="code-keyword">int</span> outgoing = nums[right - k];
+            <span class="code-keyword">int</span> count = freq.get(outgoing);
+
+            <span class="code-keyword">if</span> (count == <span class="code-number">1</span>)
+                freq.remove(outgoing);
+            <span class="code-keyword">else</span>
+                freq.put(outgoing, count - <span class="code-number">1</span>);
+        }
+
+        <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span>)
+            result.add(freq.size());
+    }
+
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">1</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">2</span>, <span class="code-number">3</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">4</span>;
+    <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; counts = countDistinct(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Distinct values in each window of {k} = {counts}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum number of vowels in a substring of length K</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>"abciiidef"</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>The substring <code>"iii"</code> has three vowels.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> maxVowels(<span class="code-class">String</span> s, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">1</span> || k &gt; s.length())
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"k must be between 1 and n"</span>);
+
+    <span class="code-keyword">int</span> vowels = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+
+        <span class="code-keyword">if</span> (isVowel(s.charAt(right)))
+            vowels++;
+
+        <span class="code-keyword">if</span> (right &gt;= k &amp;&amp; isVowel(s.charAt(right - k)))
+            vowels--;
+
+        <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span>)
+            best = <span class="code-class">Math</span>.max(best, vowels);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isVowel(<span class="code-keyword">char</span> c) {
+    <span class="code-keyword">return</span> <span class="code-string">"aeiouAEIOU"</span>.indexOf(c) &gt;= <span class="code-number">0</span>;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"abciiidef"</span>;
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">int</span> vowels = maxVowels(s, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum vowels in a substring of length {k} = {vowels}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Minimum recolors to obtain K consecutive black blocks</span><span class="sw-diff sw-easy">Easy</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>"WBBWWBBWBW"</code>, <code>k = 7</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>Find a length-<code>k</code> window with the fewest white blocks. Every white block in that window needs recoloring.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> minimumRecolors(<span class="code-class">String</span> blocks, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">1</span> || k &gt; blocks.length())
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"k must be between 1 and n"</span>);
+
+    <span class="code-keyword">int</span> white = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-class">Integer</span>.MAX_VALUE;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; blocks.length(); right++) {
+
+        <span class="code-keyword">if</span> (blocks.charAt(right) == <span class="code-string">'W'</span>)
+            white++;
+
+        <span class="code-keyword">if</span> (right &gt;= k &amp;&amp; blocks.charAt(right - k) == <span class="code-string">'W'</span>)
+            white--;
+
+        <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span>)
+            best = <span class="code-class">Math</span>.min(best, white);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> blocks = <span class="code-string">"WBBWWBBWBW"</span>;
+    <span class="code-keyword">int</span> k = <span class="code-number">7</span>;
+    <span class="code-keyword">int</span> recolors = minimumRecolors(blocks, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Recolors needed for {k} black blocks in a row = {recolors}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum points from cards</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p>You can take exactly <code>k</code> cards from either end of an array.</p>
+        <p><strong>Input:</strong> <code>[1, 2, 3, 4, 5, 6, 1]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>12</code></p>
+        <p>Take the three cards from the right: <code>5 + 6 + 1</code>.</p>
+        <p>Key insight: taking <code>k</code> cards from the ends is equivalent to leaving behind one contiguous window of length <code>n-k</code>.</p>
+        <p class="math-display"><span class="math" data-tex="\text{Maximum points}
+=
+\text{Total sum}
+-
+\text{Minimum window sum of length }n-k" data-display="1">Maximum points=Total sum−Minimum window sum of length n−k</span></p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> maxCardPoints(<span class="code-keyword">int</span>[] cards, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">0</span> || k &gt; cards.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"Invalid k"</span>);
+
+    <span class="code-keyword">long</span> total = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : cards)
+        total += x;
+
+    <span class="code-keyword">int</span> windowSize = cards.length - k;
+
+    <span class="code-keyword">if</span> (windowSize == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> total;
+
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; windowSize; i++)
+        sum += cards[i];
+
+    <span class="code-keyword">long</span> minWindowSum = sum;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = windowSize; right &lt; cards.length; right++) {
+        sum += cards[right];
+        sum -= cards[right - windowSize];
+
+        minWindowSum = <span class="code-class">Math</span>.min(minWindowSum, sum);
+    }
+
+    <span class="code-keyword">return</span> total - minWindowSum;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] cards = {<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>, <span class="code-number">6</span>, <span class="code-number">1</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">long</span> points = maxCardPoints(cards, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum points from taking {k} cards = {points}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Contains duplicate II</span><span class="sw-diff sw-easy">Easy</span></div>
+
+    <div class="intro">
+        <p>Determine whether two equal values appear within distance <code>k</code>.</p>
+        <p><strong>Input:</strong> <code>[1, 2, 3, 1]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p>Maintain a set of the previous <code>k</code> elements.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> expected, space <span class="math" data-tex="O(\min(n,k))">O(min⁡(n,k))</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> containsNearbyDuplicate(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+
+    <span class="code-keyword">var</span> window = <span class="code-keyword">new</span> <span class="code-class">HashSet</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">if</span> (!window.add(nums[right]))
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+
+        <span class="code-keyword">if</span> (right &gt;= k)
+            window.remove(nums[right - k]);
+    }
+
+    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">1</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">boolean</span> found = containsNearbyDuplicate(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Duplicate within distance {k}: {found}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Minimum swaps to group all 1s together</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>[1, 0, 1, 0, 1]</code></p>
+        <p><strong>Output:</strong> <code>1</code></p>
+        <p>Let <code>k</code> be the total number of ones. Every valid final group occupies a contiguous window of size <code>k</code>.</p>
+        <p>The number of swaps required for a candidate window equals the number of zeros inside it, when swapping any two positions is allowed.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> minSwapsGroupOnes(<span class="code-keyword">int</span>[] nums) {
+    <span class="code-keyword">int</span> ones = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : nums)
+        <span class="code-keyword">if</span> (x == <span class="code-number">1</span>)
+            ones++;
+
+    <span class="code-keyword">if</span> (ones &lt;= <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">int</span> zeros = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-class">Integer</span>.MAX_VALUE;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">if</span> (nums[right] == <span class="code-number">0</span>)
+            zeros++;
+
+        <span class="code-keyword">if</span> (right &gt;= ones &amp;&amp; nums[right - ones] == <span class="code-number">0</span>)
+            zeros--;
+
+        <span class="code-keyword">if</span> (right &gt;= ones - <span class="code-number">1</span>)
+            best = <span class="code-class">Math</span>.min(best, zeros);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">1</span>};
+    <span class="code-keyword">int</span> swaps = minSwapsGroupOnes(nums);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Minimum swaps to group all 1s = {swaps}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Longest substring without repeating characters</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p>This is where sliding window becomes especially powerful. Instead of moving the left pointer at the same speed as the right pointer, we move it only when our algorithm's conditions require it.</p>
+        <p><span class="sw-pressable">LeetCode 3: Longest Substring Without Repeating Characters</span></p>
+        <p><strong>Input:</strong> <code>"abcabcbb"</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>The substring <code>"abc"</code> contains three unique characters.</p>
+        <p class="minor-heading"><strong>Why brute force is inefficient</strong></p>
+        <p>There are <span class="math" data-tex="O(n^2)">O(n2)</span> substrings. Testing each substring independently for duplicates can lead to <span class="math" data-tex="O(n^3)">O(n3)</span> work in a straightforward implementation.</p>
+        <p class="minor-heading"><strong>Optimized strategy</strong></p>
+        <p>Maintain a map from each character to its most recent index.</p>
+        <p>If character <code>c</code> has already been seen inside the current window, jump <code>left</code> past the previous occurrence.</p>
+    </div>
+    <div class="code-block"><pre><code>left = <span class="code-class">Math</span>.max(left, lastSeen.get(c) + <span class="code-number">1</span>);</code></pre></div>
+
+    <div class="intro">
+        <p>This means the left pointer never moves backward.</p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">DUPLICATE REMOVAL VISUALIZATION</p><div class="sw-row"><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.13);flex:1 1 0"><p class="sw-small sw-muted">0</p><p class="sw-strong">a</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.13);flex:1 1 0"><p class="sw-small sw-muted">1</p><p class="sw-strong">b</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.13);flex:1 1 0"><p class="sw-small sw-muted">2</p><p class="sw-strong">c</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">3</p><p class="sw-strong">a</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">4</p><p class="sw-strong">b</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">5</p><p class="sw-strong">c</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">6</p><p class="sw-strong">b</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">7</p><p class="sw-strong">b</p></div></div><div class="sw-row"><span class="sw-badge">Window "abc"</span><p class="sw-small">Next character is <strong>a</strong>, a duplicate.</p></div><div class="sw-row"><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">0</p><p class="sw-strong">a</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.13);flex:1 1 0"><p class="sw-small sw-muted">1</p><p class="sw-strong">b</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.13);flex:1 1 0"><p class="sw-small sw-muted">2</p><p class="sw-strong">c</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.13);flex:1 1 0"><p class="sw-small sw-muted">3</p><p class="sw-strong">a</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">4</p><p class="sw-strong">b</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">5</p><p class="sw-strong">c</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">6</p><p class="sw-strong">b</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-muted">7</p><p class="sw-strong">b</p></div></div><p class="sw-small sw-muted">Move left from index 0 to index 1. The resulting window "bca" is valid and has length 3.</p></div>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, extra space <span class="math" data-tex="O(\min(n,\text{alphabet size}))">O(min⁡(n,alphabet size))</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> longestUniqueSubstring(<span class="code-class">String</span> s) {
+    <span class="code-keyword">var</span> lastSeen = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Character</span>, <span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+        <span class="code-keyword">char</span> c = s.charAt(right);
+
+        <span class="code-keyword">if</span> (lastSeen.containsKey(c))
+            left = <span class="code-class">Math</span>.max(left, lastSeen.get(c) + <span class="code-number">1</span>);
+
+        lastSeen.put(c, right);
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"abcabcbb"</span>;
+    <span class="code-keyword">int</span> length = longestUniqueSubstring(s);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Longest substring of {s} without repeats = {length}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Minimum size subarray sum</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 209: Minimum Size Subarray Sum</span></p>
+        <p><strong>Input:</strong> <code>target = 7</code>, <code>nums = [2, 3, 1, 2, 4, 3]</code></p>
+        <p><strong>Output:</strong> <code>2</code></p>
+        <p>The shortest qualifying subarray is <code>[4, 3]</code>.</p>
+        <p>Important assumption: <strong>all array elements are positive</strong> (a nonnegative variant also works with suitable edge-case handling).</p>
+        <p>Expand until the sum reaches the target. Then repeatedly shrink and record smaller qualifying windows.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> minSubArrayLen(<span class="code-keyword">int</span> target, <span class="code-keyword">int</span>[] nums) {
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-class">Integer</span>.MAX_VALUE;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        sum += nums[right];
+
+        <span class="code-keyword">while</span> (sum &gt;= target &amp;&amp; left &lt;= right) {
+            best = <span class="code-class">Math</span>.min(best, right - left + <span class="code-number">1</span>);
+
+            sum -= nums[left];
+            left++;
+        }
+    }
+
+    <span class="code-keyword">return</span> best == <span class="code-class">Integer</span>.MAX_VALUE ? <span class="code-number">0</span> : best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span> target = <span class="code-number">7</span>;
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">4</span>, <span class="code-number">3</span>};
+    <span class="code-keyword">int</span> length = minSubArrayLen(target, nums);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Shortest subarray with sum &gt;= {target} = {length}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Max consecutive ones III</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1004: Max Consecutive Ones III</span></p>
+        <p><strong>Input:</strong> <code>[1,1,1,0,0,0,1,1,1,1,0]</code>, <code>k = 2</code></p>
+        <p><strong>Output:</strong> <code>6</code></p>
+        <p>We may flip at most two zeros. Maintain a window containing at most <code>k</code> zeros.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> longestOnes(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> zeros = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">if</span> (nums[right] == <span class="code-number">0</span>)
+            zeros++;
+
+        <span class="code-keyword">while</span> (zeros &gt; k) {
+            <span class="code-keyword">if</span> (nums[left] == <span class="code-number">0</span>)
+                zeros--;
+            left++;
+        }
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">0</span>, <span class="code-number">0</span>, <span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">0</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">2</span>;
+    <span class="code-keyword">int</span> length = longestOnes(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Longest run of 1s after flipping {k} zeros = {length}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Fruit into baskets</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 904: Fruit Into Baskets</span></p>
+        <p><strong>Input:</strong> <code>[1,2,3,2,2]</code></p>
+        <p><strong>Output:</strong> <code>4</code></p>
+        <p>Find the longest contiguous subarray containing at most two distinct values.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> expected, space <span class="math" data-tex="O(1)">O(1)</span> because the valid window holds at most two distinct values after shrinking.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> totalFruit(<span class="code-keyword">int</span>[] fruits) {
+    <span class="code-keyword">var</span> freq = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; fruits.length; right++) {
+
+        freq.merge(fruits[right], <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+
+        <span class="code-keyword">while</span> (freq.size() &gt; <span class="code-number">2</span>) {
+            <span class="code-keyword">int</span> outgoing = fruits[left++];
+
+            <span class="code-keyword">int</span> count = freq.get(outgoing) - <span class="code-number">1</span>;
+
+            <span class="code-keyword">if</span> (count == <span class="code-number">0</span>)
+                freq.remove(outgoing);
+            <span class="code-keyword">else</span>
+                freq.put(outgoing, count);
+        }
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] fruits = {<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">2</span>, <span class="code-number">2</span>};
+    <span class="code-keyword">int</span> picked = totalFruit(fruits);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum fruits in two baskets = {picked}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Longest repeating character replacement</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 424: Longest Repeating Character Replacement</span></p>
+        <p><strong>Input:</strong> <code>"AABABBA"</code>, <code>k = 1</code></p>
+        <p><strong>Output:</strong> <code>4</code></p>
+        <p>We can change at most <code>k</code> characters so the entire window contains one repeated character.</p>
+        <p>If the window length is <code>len</code> and its most frequent character occurs <code>maxFreq</code> times, then:</p>
+        <p class="math-display"><span class="math" data-tex="\text{Replacements needed}=\text{len}-\text{maxFreq}" data-display="1">Replacements needed=len−maxFreq</span></p>
+        <p>A window is valid if:</p>
+        <p class="math-display"><span class="math" data-tex="\text{len}-\text{maxFreq}\le k" data-display="1">len−maxFreq≤k</span></p>
+        <p>The implementation below deliberately uses a <strong>nondecreasing historical </strong><code>maxFreq</code>. This is a valid optimization for the longest-length problem, but <code>maxFreq</code> should not be interpreted as the exact frequency of the current window after shrinking.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span> for uppercase English letters.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> characterReplacement(<span class="code-class">String</span> s, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">var</span> freq = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">26</span>];
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> maxFreq = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+
+        <span class="code-keyword">int</span> index = s.charAt(right) - <span class="code-string">'A'</span>;
+
+        freq[index]++;
+        maxFreq = <span class="code-class">Math</span>.max(maxFreq, freq[index]);
+
+        <span class="code-keyword">while</span> (right - left + <span class="code-number">1</span> - maxFreq &gt; k) {
+            freq[s.charAt(left) - <span class="code-string">'A'</span>]--;
+            left++;
+        }
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"AABABBA"</span>;
+    <span class="code-keyword">int</span> k = <span class="code-number">1</span>;
+    <span class="code-keyword">int</span> length = characterReplacement(s, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Longest same-letter run after {k} replacement = {length}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Longest substring with at most K distinct characters</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><strong>Input:</strong> <code>"eceba"</code>, <code>k = 2</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>The longest substring is <code>"ece"</code>.</p>
+        <p>Use a hash map to count the characters currently present.</p>
+        <p>When the map contains more than <code>k</code> keys, shrink the window until at most <code>k</code> distinct characters remain.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span> expected.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> longestKDistinct(<span class="code-class">String</span> s, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">var</span> freq = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Character</span>, <span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+
+        <span class="code-keyword">char</span> incoming = s.charAt(right);
+        freq.merge(incoming, <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+
+        <span class="code-keyword">while</span> (freq.size() &gt; k) {
+            <span class="code-keyword">char</span> outgoing = s.charAt(left++);
+
+            <span class="code-keyword">int</span> count = freq.get(outgoing) - <span class="code-number">1</span>;
+
+            <span class="code-keyword">if</span> (count == <span class="code-number">0</span>)
+                freq.remove(outgoing);
+            <span class="code-keyword">else</span>
+                freq.put(outgoing, count);
+        }
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"eceba"</span>;
+    <span class="code-keyword">int</span> k = <span class="code-number">2</span>;
+    <span class="code-keyword">int</span> length = longestKDistinct(s, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Longest substring with {k} or fewer distinct = {length}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Longest subarray of ones after deleting one element</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1493: Longest Subarray of 1's After Deleting One Element</span></p>
+        <p><strong>Input:</strong> <code>[1,1,0,1]</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>Maintain a window containing at most one zero, then subtract one from its length because exactly one element must be deleted.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> longestAfterDeletingOne(<span class="code-keyword">int</span>[] nums) {
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> zeros = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">if</span> (nums[right] == <span class="code-number">0</span>)
+            zeros++;
+
+        <span class="code-keyword">while</span> (zeros &gt; <span class="code-number">1</span>) {
+            <span class="code-keyword">if</span> (nums[left] == <span class="code-number">0</span>)
+                zeros--;
+            left++;
+        }
+
+        best = <span class="code-class">Math</span>.max(best, right - left);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">1</span>};
+    <span class="code-keyword">int</span> length = longestAfterDeletingOne(nums);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Longest run of 1s after deleting one element = {length}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Number of subarrays with product less than K</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 713: Subarray Product Less Than K</span></p>
+        <p><strong>Input:</strong> <code>[10,5,2,6]</code>, <code>k = 100</code></p>
+        <p><strong>Output:</strong> <code>8</code></p>
+        <p>The input must contain <strong>strictly positive integers</strong>.</p>
+        <p>For each valid window <code>[left, right]</code>, every suffix ending at <code>right</code> is also valid.</p>
+        <p>Number of valid subarrays ending at <code>right</code>:</p>
+        <p class="math-display"><span class="math" data-tex="\text{countAdded}=\text{right}-\text{left}+1" data-display="1">countAdded=right−left+1</span></p>
+        <p>This counting formula is one of the most important ideas in variable-sized sliding windows.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> numSubarrayProductLessThanK(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">long</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> product = <span class="code-number">1</span>;
+    <span class="code-keyword">long</span> count = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-comment">// Avoid overflowing product * nums[right].</span>
+        <span class="code-comment">// If the product would reach/exceed k,</span>
+        <span class="code-comment">// discard elements from the left first.</span>
+        <span class="code-keyword">while</span> (left &lt; right &amp;&amp; product &gt; (k - <span class="code-number">1</span>) / nums[right])
+            product /= nums[left++];
+
+        <span class="code-comment">// A single element may itself be &gt;= k.</span>
+        <span class="code-keyword">if</span> (nums[right] &gt;= k) {
+            left = right + <span class="code-number">1</span>;
+            product = <span class="code-number">1</span>;
+            <span class="code-keyword">continue</span>;
+        }
+
+        product *= nums[right];
+
+        <span class="code-keyword">while</span> (left &lt;= right &amp;&amp; product &gt;= k)
+            product /= nums[left++];
+
+        count += right - left + <span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">return</span> count;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">10</span>, <span class="code-number">5</span>, <span class="code-number">2</span>, <span class="code-number">6</span>};
+    <span class="code-keyword">long</span> k = <span class="code-number">100</span>;
+    <span class="code-keyword">long</span> count = numSubarrayProductLessThanK(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Subarrays with product &lt; {k} = {count}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Number of subarrays with exactly K distinct integers</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 992: Subarrays with K Different Integers</span></p>
+        <p><strong>Input:</strong> <code>[1,2,1,2,3]</code>, <code>k = 2</code></p>
+        <p><strong>Output:</strong> <code>7</code></p>
+        <p>Directly maintaining exactly <code>k</code> distinct values is often difficult. Counting <em>at most</em> <code>k</code> distinct values is easy.</p>
+        <p>Let:</p>
+        <p class="math-display"><span class="math" data-tex="F(k)=\text{number of subarrays with at most }k\text{ distinct values}" data-display="1">F(k)=number of subarrays with at most k distinct values</span></p>
+        <p>Then:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{\text{Exactly}(k)=F(k)-F(k-1)}" data-display="1">Exactly(k)=F(k)−F(k−1)</span></p>
+        <div class="sw-box sw-bordered"><p class="sw-title sw-h3">Why the subtraction works</p><div class="sw-figure"><img src="../static/swindow-exactly-k.svg" alt="At most K distinct At most K − 1 0, 1, …, K−1 distinct Exactly K difference" style="width:100%;max-width:614px"></div><p class="math-display"><span class="math" data-tex="|\text{AtMost}(K)\setminus\text{AtMost}(K-1)|" data-display="1">∣AtMost(K)∖AtMost(K−1)∣</span></p><p class="sw-caption">The difference removes all subarrays with fewer than K distinct values.</p></div>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> subarraysWithKDistinct(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">return</span> atMostKDistinct(nums, k) - atMostKDistinct(nums, k - <span class="code-number">1</span>);
+}
+
+<span class="code-comment">// Helper: count subarrays with at most k distinct values.</span>
+<span class="code-keyword">public</span> <span class="code-keyword">long</span> atMostKDistinct(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">var</span> freq = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> count = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        freq.merge(nums[right], <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+
+        <span class="code-keyword">while</span> (freq.size() &gt; k) {
+            <span class="code-keyword">int</span> outgoing = nums[left++];
+
+            <span class="code-keyword">int</span> f = freq.get(outgoing) - <span class="code-number">1</span>;
+
+            <span class="code-keyword">if</span> (f == <span class="code-number">0</span>)
+                freq.remove(outgoing);
+            <span class="code-keyword">else</span>
+                freq.put(outgoing, f);
+        }
+
+        count += right - left + <span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">return</span> count;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">2</span>;
+    <span class="code-keyword">long</span> count = subarraysWithKDistinct(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Subarrays with exactly {k} distinct values = {count}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Binary subarrays with sum</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 930: Binary Subarrays With Sum</span></p>
+        <p><strong>Input:</strong> <code>[1,0,1,0,1]</code>, <code>goal = 2</code></p>
+        <p><strong>Output:</strong> <code>4</code></p>
+        <p>For a binary array:</p>
+        <p class="math-display"><span class="math" data-tex="\text{ExactSum}(g)
+=
+\text{AtMostSum}(g)
+-
+\text{AtMostSum}(g-1)" data-display="1">ExactSum(g)=AtMostSum(g)−AtMostSum(g−1)</span></p>
+        <p>Because all elements are nonnegative, the at-most-sum window can be maintained efficiently.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> numSubarraysWithSum(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> goal) {
+    <span class="code-keyword">return</span> atMostSum(nums, goal) - atMostSum(nums, goal - <span class="code-number">1</span>);
+}
+
+<span class="code-comment">// Helper: count binary subarrays with sum &lt;= goal.</span>
+<span class="code-keyword">public</span> <span class="code-keyword">long</span> atMostSum(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> goal) {
+    <span class="code-keyword">if</span> (goal &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> count = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        sum += nums[right];
+
+        <span class="code-keyword">while</span> (sum &gt; goal)
+            sum -= nums[left++];
+
+        count += right - left + <span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">return</span> count;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">1</span>};
+    <span class="code-keyword">int</span> goal = <span class="code-number">2</span>;
+    <span class="code-keyword">long</span> count = numSubarraysWithSum(nums, goal);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Binary subarrays with sum {goal} = {count}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Count number of nice subarrays</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1248: Count Number of Nice Subarrays</span></p>
+        <p><strong>Input:</strong> <code>[1,1,2,1,1]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>2</code></p>
+        <p>Find the number of subarrays containing exactly three odd numbers.</p>
+        <p>Treat each odd number as <code>1</code> and each even number as <code>0</code>. Then reuse the exact-sum counting method.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> numberOfNiceSubarrays(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">return</span> atMostKOdds(nums, k) - atMostKOdds(nums, k - <span class="code-number">1</span>);
+}
+
+<span class="code-comment">// Helper: count subarrays with at most k odd values.</span>
+<span class="code-keyword">public</span> <span class="code-keyword">long</span> atMostKOdds(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> odds = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> count = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">if</span> (nums[right] % <span class="code-number">2</span> != <span class="code-number">0</span>)
+            odds++;
+
+        <span class="code-keyword">while</span> (odds &gt; k) {
+            <span class="code-keyword">if</span> (nums[left] % <span class="code-number">2</span> != <span class="code-number">0</span>)
+                odds--;
+            left++;
+        }
+
+        count += right - left + <span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">return</span> count;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">1</span>, <span class="code-number">1</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">long</span> count = numberOfNiceSubarrays(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Subarrays with exactly {k} odd numbers = {count}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Number of substrings containing all three characters</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1358: Number of Substrings Containing All Three Characters</span></p>
+        <p><strong>Input:</strong> <code>"abcabc"</code></p>
+        <p><strong>Output:</strong> <code>10</code></p>
+        <p>The string consists only of <code>a</code>, <code>b</code>, and <code>c</code>. Count substrings containing all three.</p>
+        <p>Whenever a window <code>[left, right]</code> contains all three, every extension of this window to a later endpoint is also valid.</p>
+        <p>Thus, it contributes <code>n - right</code> substrings. Then move <code>left</code> forward and check again.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> numberOfSubstringsABC(<span class="code-class">String</span> s) {
+    <span class="code-keyword">var</span> freq = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">3</span>];
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> count = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+
+        freq[s.charAt(right) - <span class="code-string">'a'</span>]++;
+
+        <span class="code-keyword">while</span> (freq[<span class="code-number">0</span>] &gt; <span class="code-number">0</span> &amp;&amp; freq[<span class="code-number">1</span>] &gt; <span class="code-number">0</span> &amp;&amp; freq[<span class="code-number">2</span>] &gt; <span class="code-number">0</span>) {
+
+            count += s.length() - right;
+
+            freq[s.charAt(left) - <span class="code-string">'a'</span>]--;
+            left++;
+        }
+    }
+
+    <span class="code-keyword">return</span> count;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"abcabc"</span>;
+    <span class="code-keyword">long</span> count = numberOfSubstringsABC(s);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Substrings of {s} containing a, b and c = {count}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum erasure value</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1695: Maximum Erasure Value</span></p>
+        <p><strong>Input:</strong> <code>[4,2,4,5,6]</code></p>
+        <p><strong>Output:</strong> <code>17</code></p>
+        <p>The best unique-element subarray is <code>[2,4,5,6]</code>, with sum 17.</p>
+        <p>Maintain a set of unique values and the window sum. Whenever a duplicate enters, remove values from the left until that duplicate is gone.</p>
+        <p>This standard greedy approach assumes positive input values.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> maximumUniqueSubarray(<span class="code-keyword">int</span>[] nums) {
+    <span class="code-keyword">var</span> seen = <span class="code-keyword">new</span> <span class="code-class">HashSet</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">while</span> (seen.contains(nums[right])) {
+            seen.remove(nums[left]);
+            sum -= nums[left];
+            left++;
+        }
+
+        seen.add(nums[right]);
+        sum += nums[right];
+
+        best = <span class="code-class">Math</span>.max(best, sum);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">4</span>, <span class="code-number">2</span>, <span class="code-number">4</span>, <span class="code-number">5</span>, <span class="code-number">6</span>};
+    <span class="code-keyword">long</span> sum = maximumUniqueSubarray(nums);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum sum of a subarray with unique values = {sum}"</span>);
+}</code></pre></div>
+
+    <div class="intro">
+        <p><strong>Key takeaway:</strong> A single sliding window can be enough not only for finding a maximum or minimum, but also for counting potentially <span class="math" data-tex="O(n^2)">O(n2)</span> subarrays in linear time.</p>
+    </div>
+
+    <div class="subheading"><span>Find all anagrams in a string</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p>We now move beyond basic two-pointer implementations into pattern matching, monotonic data structures, and optimization problems.</p>
+        <p><span class="sw-pressable">LeetCode 438: Find All Anagrams in a String</span></p>
+        <p><strong>Input:</strong> <code>s = "cbaebabacd"</code>, <code>p = "abc"</code></p>
+        <p><strong>Output:</strong> <code>[0, 6]</code></p>
+        <p>Any anagram of <code>p</code> must have exactly the same character frequencies as <code>p</code>.</p>
+        <p>Maintain a fixed-size window of length <code>p.length()</code> and compare the frequency arrays.</p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">ANAGRAM WINDOW MATCHING</p><div class="sw-row"><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.16);flex:1 1 0"><p class="sw-strong">c</p><p class="sw-small sw-muted">0</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.16);flex:1 1 0"><p class="sw-strong">b</p><p class="sw-small sw-muted">1</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.16);flex:1 1 0"><p class="sw-strong">a</p><p class="sw-small sw-muted">2</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">e</p><p class="sw-small sw-muted">3</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">b</p><p class="sw-small sw-muted">4</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">a</p><p class="sw-small sw-muted">5</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">b</p><p class="sw-small sw-muted">6</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">a</p><p class="sw-small sw-muted">7</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">c</p><p class="sw-small sw-muted">8</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">d</p><p class="sw-small sw-muted">9</p></div></div><p>Window at index 0: "cba" has the same counts as "abc".</p><div class="sw-row"><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">c</p><p class="sw-small sw-muted">0</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">b</p><p class="sw-small sw-muted">1</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">a</p><p class="sw-small sw-muted">2</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">e</p><p class="sw-small sw-muted">3</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">b</p><p class="sw-small sw-muted">4</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">a</p><p class="sw-small sw-muted">5</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.16);flex:1 1 0"><p class="sw-strong">b</p><p class="sw-small sw-muted">6</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.16);flex:1 1 0"><p class="sw-strong">a</p><p class="sw-small sw-muted">7</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.16);flex:1 1 0"><p class="sw-strong">c</p><p class="sw-small sw-muted">8</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-strong">d</p><p class="sw-small sw-muted">9</p></div></div><p>Window at index 6: "bac" is another valid anagram.</p></div>
+        <p>Time <span class="math" data-tex="O(26n)">O(26n)</span>, which is <span class="math" data-tex="O(n)">O(n)</span> for lowercase English letters.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; findAnagrams(<span class="code-class">String</span> s, <span class="code-class">String</span> p) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> k = p.length();
+    <span class="code-keyword">if</span> (k == <span class="code-number">0</span> || k &gt; s.length())
+        <span class="code-keyword">return</span> result;
+
+    <span class="code-keyword">var</span> need = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">26</span>];
+    <span class="code-keyword">var</span> window = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">26</span>];
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">char</span> c : p.toCharArray())
+        need[c - <span class="code-string">'a'</span>]++;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+
+        window[s.charAt(right) - <span class="code-string">'a'</span>]++;
+
+        <span class="code-keyword">if</span> (right &gt;= k)
+            window[s.charAt(right - k) - <span class="code-string">'a'</span>]--;
+
+        <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span> &amp;&amp; <span class="code-class">Arrays</span>.equals(need, window))
+            result.add(right - k + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"cbaebabacd"</span>;
+    <span class="code-class">String</span> p = <span class="code-string">"abc"</span>;
+    <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; starts = findAnagrams(s, p);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Anagrams of {p} in {s} start at {starts}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Permutation in string</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 567: Permutation in String</span></p>
+        <p><strong>Input:</strong> <code>s1 = "ab"</code>, <code>s2 = "eidbaooo"</code></p>
+        <p><strong>Output:</strong> <code>true</code></p>
+        <p>This is essentially the anagram problem, except we only need to know whether one valid matching window exists.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">boolean</span> checkInclusion(<span class="code-class">String</span> s1, <span class="code-class">String</span> s2) {
+    <span class="code-keyword">if</span> (s1.length() &gt; s2.length())
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+
+    <span class="code-keyword">if</span> (s1.isEmpty())
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+
+    <span class="code-keyword">var</span> need = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">26</span>];
+    <span class="code-keyword">var</span> window = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">26</span>];
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">char</span> c : s1.toCharArray())
+        need[c - <span class="code-string">'a'</span>]++;
+
+    <span class="code-keyword">int</span> k = s1.length();
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s2.length(); right++) {
+
+        window[s2.charAt(right) - <span class="code-string">'a'</span>]++;
+
+        <span class="code-keyword">if</span> (right &gt;= k)
+            window[s2.charAt(right - k) - <span class="code-string">'a'</span>]--;
+
+        <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span> &amp;&amp; <span class="code-class">Arrays</span>.equals(need, window))
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    }
+
+    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s1 = <span class="code-string">"ab"</span>;
+    <span class="code-class">String</span> s2 = <span class="code-string">"eidbaooo"</span>;
+    <span class="code-keyword">boolean</span> found = checkInclusion(s1, s2);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{s2} contains a permutation of {s1}: {found}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Minimum window substring</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 76: Minimum Window Substring</span></p>
+        <p><strong>Input:</strong> <code>s = "ADOBECODEBANC"</code>, <code>t = "ABC"</code></p>
+        <p><strong>Output:</strong> <code>"BANC"</code></p>
+        <p>This is one of the most famous sliding window interview questions.</p>
+        <p>The window must contain every character of <code>t</code>, including repetitions.</p>
+        <p>For example, if <code>t = "AABC"</code>, the window must contain two <code>A</code>s, one <code>B</code>, and one <code>C</code>.</p>
+        <p class="minor-heading"><strong>Core technique: required frequencies</strong></p>
+        <p>Create two maps:</p>
+        <ul><li><code>need</code>: required frequency of each character.</li><li><code>window</code>: current window's character frequencies.</li></ul>
+        <p>However, we can optimize by maintaining a <code>missing</code> counter representing how many required character occurrences are still missing.</p>
+        <p>When <code>missing == 0</code>, the window covers <code>t</code>. Shrink it while it remains valid.</p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">MINIMUM WINDOW — FROM VALID TO SMALLEST VALID</p><div class="sw-row"><p class="sw-strong">Initial valid window</p><span class="sw-badge">Length 6</span></div><div class="sw-row"><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.15);flex:1 1 0"><p class="sw-small sw-strong"><strong>A</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.15);flex:1 1 0"><p class="sw-small sw-strong"><strong>D</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.15);flex:1 1 0"><p class="sw-small sw-strong"><strong>O</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.15);flex:1 1 0"><p class="sw-small sw-strong"><strong>B</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.15);flex:1 1 0"><p class="sw-small sw-strong"><strong>E</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(13, 148, 136, 0.15);flex:1 1 0"><p class="sw-small sw-strong"><strong>C</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>O</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>D</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>E</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>B</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>A</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>N</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>C</strong></p></div></div><div class="sw-row"><p class="sw-strong">Best window after shrinking</p><span class="sw-badge">Length 4</span></div><div class="sw-row"><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>A</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>D</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>O</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>B</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>E</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>C</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>O</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>D</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p class="sw-small sw-strong"><strong>E</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.16);flex:1 1 0"><p class="sw-small sw-strong"><strong>B</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.16);flex:1 1 0"><p class="sw-small sw-strong"><strong>A</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.16);flex:1 1 0"><p class="sw-small sw-strong"><strong>N</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(99, 102, 241, 0.16);flex:1 1 0"><p class="sw-small sw-strong"><strong>C</strong></p></div></div><p class="sw-caption">The final window "BANC" covers all required characters, and no shorter qualifying substring exists.</p></div>
+        <p>Time <span class="math" data-tex="O(n+m)">O(n+m)</span>, where <span class="math" data-tex="n=|s|">n=∣s∣</span> and <span class="math" data-tex="m=|t|">m=∣t∣</span>, expected with hash maps.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">String</span> minWindow(<span class="code-class">String</span> s, <span class="code-class">String</span> t) {
+    <span class="code-keyword">if</span> (t.isEmpty() || s.length() &lt; t.length())
+        <span class="code-keyword">return</span> <span class="code-string">""</span>;
+
+    <span class="code-keyword">var</span> need = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Character</span>, <span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">char</span> c : t.toCharArray())
+        need.merge(c, <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+
+    <span class="code-keyword">int</span> missing = t.length();
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> bestStart = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> bestLength = <span class="code-class">Integer</span>.MAX_VALUE;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+
+        <span class="code-keyword">char</span> incoming = s.charAt(right);
+
+        <span class="code-keyword">int</span> remaining = need.getOrDefault(incoming, <span class="code-number">0</span>);
+
+        <span class="code-keyword">if</span> (remaining &gt; <span class="code-number">0</span>)
+            missing--;
+
+        need.put(incoming, remaining - <span class="code-number">1</span>);
+
+        <span class="code-keyword">while</span> (missing == <span class="code-number">0</span>) {
+
+            <span class="code-keyword">int</span> length = right - left + <span class="code-number">1</span>;
+
+            <span class="code-keyword">if</span> (length &lt; bestLength) {
+                bestLength = length;
+                bestStart = left;
+            }
+
+            <span class="code-keyword">char</span> outgoing = s.charAt(left++);
+            <span class="code-keyword">int</span> updated = need.get(outgoing) + <span class="code-number">1</span>;
+
+            need.put(outgoing, updated);
+
+            <span class="code-keyword">if</span> (updated &gt; <span class="code-number">0</span>)
+                missing++;
+        }
+    }
+
+    <span class="code-keyword">if</span> (bestLength == <span class="code-class">Integer</span>.MAX_VALUE)
+        <span class="code-keyword">return</span> <span class="code-string">""</span>;
+
+    <span class="code-keyword">return</span> s.substring(bestStart, bestStart + bestLength);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"ADOBECODEBANC"</span>;
+    <span class="code-class">String</span> t = <span class="code-string">"ABC"</span>;
+    <span class="code-class">String</span> window = minWindow(s, t);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Minimum window of {s} covering {t} = {window}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum sum of a subarray with K distinct elements</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 2461: Maximum Sum of Distinct Subarrays With Length K</span></p>
+        <p><strong>Input:</strong> <code>[1,5,4,2,9,9,9]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>15</code></p>
+        <p>The best window is <code>[4,2,9]</code>, with three unique elements and sum 15.</p>
+        <p>Combine the fixed-window sum technique with a frequency map.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> maximumSubarraySum(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span> || k &gt; nums.length)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">var</span> freq = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        sum += nums[right];
+        freq.merge(nums[right], <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+
+        <span class="code-keyword">if</span> (right &gt;= k) {
+
+            <span class="code-keyword">int</span> outgoing = nums[right - k];
+            sum -= outgoing;
+
+            <span class="code-keyword">int</span> count = freq.get(outgoing) - <span class="code-number">1</span>;
+
+            <span class="code-keyword">if</span> (count == <span class="code-number">0</span>)
+                freq.remove(outgoing);
+            <span class="code-keyword">else</span>
+                freq.put(outgoing, count);
+        }
+
+        <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span> &amp;&amp; freq.size() == k)
+            best = <span class="code-class">Math</span>.max(best, sum);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">5</span>, <span class="code-number">4</span>, <span class="code-number">2</span>, <span class="code-number">9</span>, <span class="code-number">9</span>, <span class="code-number">9</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">long</span> sum = maximumSubarraySum(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum sum of {k} distinct consecutive elements = {sum}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Frequency of the most frequent element</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1838: Frequency of the Most Frequent Element</span></p>
+        <p><strong>Input:</strong> <code>[1,2,4]</code>, <code>k = 5</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>We can increment array elements at most <code>k</code> times in total. Find the largest achievable frequency of any value.</p>
+        <p>First, sort the array.</p>
+        <p>For a sorted window <code>[left, right]</code>, the cheapest way to make all elements equal is to increase them to <code>nums[right]</code>.</p>
+        <p>The required operations are:</p>
+        <p class="math-display"><span class="math" data-tex="\text{Cost}=
+\text{nums[right]}\times\text{windowLength}
+-
+\text{windowSum}" data-display="1">Cost=nums[right]×windowLength−windowSum</span></p>
+        <p>The window is valid when:</p>
+        <p class="math-display"><span class="math" data-tex="\text{Cost}\le k" data-display="1">Cost≤k</span></p>
+        <p>Time <span class="math" data-tex="O(n\log n)">O(nlog⁡n)</span>, space <span class="math" data-tex="O(1)">O(1)</span> auxiliary space aside from sorting implementation details. The code copies the array before sorting, so its explicit extra space is <span class="math" data-tex="O(n)">O(n)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> maxFrequency(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">long</span> k) {
+    <span class="code-keyword">if</span> (k &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">int</span>[] sorted = nums.clone();
+    <span class="code-class">Arrays</span>.sort(sorted);
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> windowSum = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; sorted.length; right++) {
+
+        windowSum += sorted[right];
+
+        <span class="code-keyword">while</span> ((<span class="code-keyword">long</span>) sorted[right] * (right - left + <span class="code-number">1</span>) - windowSum &gt; k)
+            windowSum -= sorted[left++];
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">4</span>};
+    <span class="code-keyword">long</span> k = <span class="code-number">5</span>;
+    <span class="code-keyword">int</span> frequency = maxFrequency(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Highest frequency with {k} increments = {frequency}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Take K of each character from left and right</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 2516: Take K of Each Character From Left and Right</span></p>
+        <p><strong>Input:</strong> <code>s = "aabaaaacaabc"</code>, <code>k = 2</code></p>
+        <p><strong>Output:</strong> <code>8</code></p>
+        <p>We must remove characters from either end while taking at least <code>k</code> copies of each of <code>a</code>, <code>b</code>, and <code>c</code>.</p>
+        <p>Instead of directly deciding what to remove, find the <strong>longest contiguous middle substring to keep</strong>.</p>
+        <p>If there are <code>total[c]</code> copies of character <code>c</code>, the retained window must satisfy:</p>
+        <p class="math-display"><span class="math" data-tex="\text{windowCount}[c]\le\text{total}[c]-k" data-display="1">windowCount[c]≤total[c]−k</span></p>
+        <p>Then:</p>
+        <p class="math-display"><span class="math" data-tex="\text{Minimum removals}
+=
+n-\text{maximum retained window length}" data-display="1">Minimum removals=n−maximum retained window length</span></p>
+        <p>This is another example of transforming an unfamiliar problem into a standard sliding-window invariant.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> takeCharacters(<span class="code-class">String</span> s, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">var</span> total = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">3</span>];
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">char</span> c : s.toCharArray())
+        total[c - <span class="code-string">'a'</span>]++;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> count : total)
+        <span class="code-keyword">if</span> (count &lt; k)
+            <span class="code-keyword">return</span> -<span class="code-number">1</span>;
+
+    <span class="code-keyword">var</span> window = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">3</span>];
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> longestKept = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; s.length(); right++) {
+
+        <span class="code-keyword">int</span> incoming = s.charAt(right) - <span class="code-string">'a'</span>;
+        window[incoming]++;
+
+        <span class="code-keyword">while</span> (window[<span class="code-number">0</span>] &gt; total[<span class="code-number">0</span>] - k || window[<span class="code-number">1</span>] &gt; total[<span class="code-number">1</span>] - k || window[<span class="code-number">2</span>] &gt; total[<span class="code-number">2</span>] - k) {
+
+            window[s.charAt(left) - <span class="code-string">'a'</span>]--;
+            left++;
+        }
+
+        longestKept = <span class="code-class">Math</span>.max(longestKept, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> s.length() - longestKept;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"aabaaaacaabc"</span>;
+    <span class="code-keyword">int</span> k = <span class="code-number">2</span>;
+    <span class="code-keyword">int</span> taken = takeCharacters(s, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Fewest characters taken to get {k} of each a, b, c = {taken}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Sliding Window Maximum</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p>Many candidates can solve basic sliding window problems but struggle when a window must efficiently maintain its maximum or minimum.</p>
+        <p>The <strong>monotonic deque</strong> solves this class of problems elegantly.</p>
+        <p><span class="sw-pressable">LeetCode 239: Sliding Window Maximum</span></p>
+        <p>Given:</p>
+    </div>
+    <div class="code-block"><pre><code>nums = [1, 3, -1, -3, 5, 3, 6, 7]
+k = 3</code></pre></div>
+
+    <div class="intro">
+        <p>Find the maximum value in every contiguous window of length 3.</p>
+        <p>Expected output:</p>
+    </div>
+    <div class="code-block"><pre><code>[3, 3, 5, 5, 6, 7]</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Why not just scan each window?</strong></p>
+        <p>Scanning all <code>k</code> elements for every window requires <span class="math" data-tex="O(nk)">O(nk)</span> time.</p>
+        <p>A max-heap can improve this to <span class="math" data-tex="O(n\log n)">O(nlog⁡n)</span> in a common lazy-deletion implementation.</p>
+        <p>A <strong>monotonic decreasing deque</strong> gives <span class="math" data-tex="O(n)">O(n)</span> time.</p>
+        <p class="minor-heading"><strong>What does the deque contain?</strong></p>
+        <p>It stores <strong>indices</strong>, not just values, because we must know when an element leaves the current window.</p>
+        <p>Its values are maintained in decreasing order:</p>
+        <p class="math-display"><span class="math" data-tex="a[d_0]&gt;a[d_1]&gt;\cdots&gt;a[d_m]" data-display="1">a[d0]&gt;a[d1]&gt;⋯&gt;a[dm]</span></p>
+        <p>The maximum is always at the front.</p>
+        <p>When a new value arrives:</p>
+        <ol><li>Remove expired indices from the front.</li><li>Remove smaller or equal values from the back.</li><li>Insert the new index at the back.</li><li>Read the front as the current maximum.</li></ol>
+        <p class="minor-heading"><strong>High-quality deque state diagram</strong></p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">MONOTONIC DEQUE — EXAMPLE WINDOW</p><div class="sw-figure"><img src="../static/swindow-deque-state.svg" alt="Array index 0 1 index 1 3 index 2 -1 index 3 -3 index 4 5 index 5 3 index 6 6 index 7 7 Current window [−3, 5, 3] Deque (front → back) index 4 5 index 5 3 Front = 5 Current maximum Indices 4 and 5 remain; index 3 (value −3) was dominated by 5." style="width:100%;max-width:614px"></div><p class="sw-caption">The deque stores only candidates that might become maximum values of a present or future window.</p></div>
+        <p class="minor-heading"><strong>Why can smaller elements be removed permanently?</strong></p>
+        <p>Suppose an earlier element has value 2 and a later element has value 5.</p>
+        <p>As long as the earlier 2 remains in any future window, the later 5 will also remain in that window.</p>
+        <p>Therefore, 2 can never be that window's maximum. It is safe to discard its index.</p>
+        <p class="minor-heading"><strong>Why is this O(n)?</strong></p>
+        <p>Although the implementation contains nested <code>while</code> loops, every index can be:</p>
+        <ul><li>Added to the deque once.</li><li>Removed from the deque at most once.</li></ul>
+        <p>Therefore, the total number of deque operations is <span class="math" data-tex="O(n)">O(n)</span>, not <span class="math" data-tex="O(n^2)">O(n2)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span>[] maxSlidingWindow(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span> || k &gt; nums.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"Invalid k"</span>);
+
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[nums.length - k + <span class="code-number">1</span>];
+
+    <span class="code-comment">// Holds indices in decreasing value order.</span>
+    <span class="code-keyword">var</span> deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-comment">// Remove indices that expired.</span>
+        <span class="code-keyword">while</span> (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt;= right - k)
+            deque.removeFirst();
+
+        <span class="code-comment">// Remove candidates dominated by nums[right].</span>
+        <span class="code-keyword">while</span> (!deque.isEmpty() &amp;&amp; nums[deque.peekLast()] &lt;= nums[right])
+            deque.removeLast();
+
+        deque.addLast(right);
+
+        <span class="code-comment">// A complete window is available.</span>
+        <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span>)
+            result[right - k + <span class="code-number">1</span>] = nums[deque.peekFirst()];
+    }
+
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">3</span>, -<span class="code-number">1</span>, -<span class="code-number">3</span>, <span class="code-number">5</span>, <span class="code-number">3</span>, <span class="code-number">6</span>, <span class="code-number">7</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">int</span>[] maxima = maxSlidingWindow(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum of each window of {k} = {maxima}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Longest continuous subarray with absolute difference at most limit</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1438: Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit</span></p>
+        <p><strong>Input:</strong> <code>[8,2,4,7]</code>, <code>limit = 4</code></p>
+        <p><strong>Output:</strong> <code>2</code></p>
+        <p>The window must satisfy:</p>
+        <p class="math-display"><span class="math" data-tex="\max(\text{window})-\min(\text{window})\le\text{limit}" data-display="1">max⁡(window)−min⁡(window)≤limit</span></p>
+        <p>Maintain two deques:</p>
+        <ul><li>A decreasing deque for the maximum.</li><li>An increasing deque for the minimum.</li></ul>
+        <p>Whenever their front values differ by more than the limit, move <code>left</code> forward.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(n)">O(n)</span> worst case.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> longestSubarray(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> limit) {
+    <span class="code-keyword">if</span> (limit &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">var</span> maxDeque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">var</span> minDeque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-comment">// Maintain descending values.</span>
+        <span class="code-keyword">while</span> (!maxDeque.isEmpty() &amp;&amp; nums[maxDeque.peekLast()] &lt;= nums[right])
+            maxDeque.removeLast();
+
+        maxDeque.addLast(right);
+
+        <span class="code-comment">// Maintain ascending values.</span>
+        <span class="code-keyword">while</span> (!minDeque.isEmpty() &amp;&amp; nums[minDeque.peekLast()] &gt;= nums[right])
+            minDeque.removeLast();
+
+        minDeque.addLast(right);
+
+        <span class="code-comment">// Restore max - min &lt;= limit.</span>
+        <span class="code-keyword">while</span> ((<span class="code-keyword">long</span>) nums[maxDeque.peekFirst()] - nums[minDeque.peekFirst()] &gt; limit) {
+
+            <span class="code-keyword">if</span> (maxDeque.peekFirst() == left)
+                maxDeque.removeFirst();
+
+            <span class="code-keyword">if</span> (minDeque.peekFirst() == left)
+                minDeque.removeFirst();
+
+            left++;
+        }
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">8</span>, <span class="code-number">2</span>, <span class="code-number">4</span>, <span class="code-number">7</span>};
+    <span class="code-keyword">int</span> limit = <span class="code-number">4</span>;
+    <span class="code-keyword">int</span> length = longestSubarray(nums, limit);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Longest subarray with max - min &lt;= {limit} = {length}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Shortest subarray with sum at least K — negative numbers allowed</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 862: Shortest Subarray with Sum at Least K</span></p>
+        <p><strong>Input:</strong> <code>[2,-1,2]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>This is more difficult than <em>Minimum size subarray sum</em> because negative values are allowed.</p>
+        <p class="minor-heading"><strong>Why ordinary sliding window fails</strong></p>
+        <p>Consider:</p>
+    </div>
+    <div class="code-block"><pre><code>nums = [1, -1, 5]
+target = 5</code></pre></div>
+
+    <div class="intro">
+        <p>An ordinary minimum-size positive-number algorithm sees:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, -1, 5] = 5  → length 3
+[-1, 5]    = 4  → invalid</code></pre></div>
+
+    <div class="intro">
+        <p>It stops shrinking, and may return 3.</p>
+        <p>But the optimal subarray is:</p>
+    </div>
+    <div class="code-block"><pre><code>[5] = 5 → length 1</code></pre></div>
+
+    <div class="intro">
+        <p>The underlying assumption failed: removing an element no longer necessarily reduces the sum.</p>
+        <p class="minor-heading"><strong>Solution: Prefix sums + monotonic deque</strong></p>
+        <p>Let:</p>
+        <p class="math-display"><span class="math" data-tex="P[i]=\sum_{j=0}^{i-1}a[j]" data-display="1">P[i]=∑j=0i−1a[j]</span></p>
+        <p>The sum of subarray <code>[i, j-1]</code> is:</p>
+        <p class="math-display"><span class="math" data-tex="P[j]-P[i]" data-display="1">P[j]−P[i]</span></p>
+        <p>We need:</p>
+        <p class="math-display"><span class="math" data-tex="P[j]-P[i]\ge K" data-display="1">P[j]−P[i]≥K</span></p>
+        <p>Rearranging:</p>
+        <p class="math-display"><span class="math" data-tex="P[i]\le P[j]-K" data-display="1">P[i]≤P[j]−K</span></p>
+        <p>For each ending prefix index <code>j</code>, find a suitable earlier prefix index <code>i</code> that makes the subarray as short as possible.</p>
+        <p>Maintain candidate prefix indices in a deque with increasing prefix-sum values.</p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">PREFIX SUM TRANSFORMATION</p><div class="sw-figure"><img src="../static/swindow-prefix-sums.svg" alt="Original array 2 -1 2 Accumulate prefix sums Prefix sums P 0 2 1 3 P[3] − P[0] = 3 Valid length = 3" style="width:100%;max-width:614px"></div></div>
+        <p>The two important deque operations are:</p>
+        <p><strong>Front removal:</strong> If <code>prefix[j] - prefix[front] &gt;= K</code>, record the length and remove that front index. For future endpoints, a later starting index is preferable.</p>
+        <p><strong>Back removal:</strong> If <code>prefix[j] &lt;= prefix[back]</code>, the older index at the back is dominated: the new index is both later and has an equal or smaller prefix sum.</p>
+        <p>This gives <span class="math" data-tex="O(n)">O(n)</span> time and <span class="math" data-tex="O(n)">O(n)</span> space.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> shortestSubarray(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">long</span> k) {
+    <span class="code-keyword">int</span> n = nums.length;
+
+    <span class="code-keyword">var</span> prefix = <span class="code-keyword">new</span> <span class="code-keyword">long</span>[n + <span class="code-number">1</span>];
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; n; i++)
+        prefix[i + <span class="code-number">1</span>] = prefix[i] + nums[i];
+
+    <span class="code-keyword">var</span> deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">int</span> best = n + <span class="code-number">1</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt;= n; right++) {
+
+        <span class="code-comment">// Find qualifying subarrays ending at right.</span>
+        <span class="code-keyword">while</span> (!deque.isEmpty() &amp;&amp; prefix[right] - prefix[deque.peekFirst()] &gt;= k) {
+            <span class="code-keyword">int</span> left = deque.removeFirst();
+
+            best = <span class="code-class">Math</span>.min(best, right - left);
+        }
+
+        <span class="code-comment">// Remove dominated prefix sums.</span>
+        <span class="code-keyword">while</span> (!deque.isEmpty() &amp;&amp; prefix[right] &lt;= prefix[deque.peekLast()])
+            deque.removeLast();
+
+        deque.addLast(right);
+    }
+
+    <span class="code-keyword">return</span> best == n + <span class="code-number">1</span> ? -<span class="code-number">1</span> : best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">2</span>, -<span class="code-number">1</span>, <span class="code-number">2</span>};
+    <span class="code-keyword">long</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">int</span> length = shortestSubarray(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Shortest subarray with sum &gt;= {k} = {length}"</span>);
+
+    <span class="code-comment">// Critical counterexample for naive sliding window:</span>
+    <span class="code-keyword">int</span>[] tricky = {<span class="code-number">1</span>, -<span class="code-number">1</span>, <span class="code-number">5</span>};
+    <span class="code-keyword">long</span> target = <span class="code-number">5</span>;
+    <span class="code-keyword">int</span> shortest = shortestSubarray(tricky, target);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Shortest subarray with sum &gt;= {target} = {shortest}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Number of subarrays with bounded maximum</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 795: Number of Subarrays with Bounded Maximum</span></p>
+        <p><strong>Input:</strong> <code>nums = [2,1,4,3]</code>, <code>left = 2</code>, <code>right = 3</code></p>
+        <p><strong>Output:</strong> <code>3</code></p>
+        <p>Count subarrays whose maximum is in the inclusive range <code>[left, right]</code>.</p>
+        <p>The key formula is:</p>
+        <p class="math-display"><span class="math" data-tex="\text{Answer}
+=
+\text{Count}(\max\le\text{right})
+-
+\text{Count}(\max&lt;\text{left})" data-display="1">Answer=Count(max⁡≤right)−Count(max⁡&lt;left)</span></p>
+        <p>To count subarrays with maximum at most <code>bound</code>, maintain the length of the current consecutive run containing only elements at most <code>bound</code>.</p>
+        <p>Each new element adds that run length to the answer.</p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> numSubarrayBoundedMax(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> lower, <span class="code-keyword">int</span> upper) {
+    <span class="code-keyword">if</span> (lower &gt; upper)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">return</span> countMaxAtMost(nums, upper) - countMaxAtMost(nums, (<span class="code-keyword">long</span>) lower - <span class="code-number">1</span>);
+}
+
+<span class="code-comment">// Helper: count subarrays whose maximum is at most bound.</span>
+<span class="code-keyword">public</span> <span class="code-keyword">long</span> countMaxAtMost(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">long</span> bound) {
+    <span class="code-keyword">long</span> count = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> runLength = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : nums) {
+        <span class="code-keyword">if</span> (x &lt;= bound)
+            runLength++;
+        <span class="code-keyword">else</span>
+            runLength = <span class="code-number">0</span>;
+
+        count += runLength;
+    }
+
+    <span class="code-keyword">return</span> count;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">2</span>, <span class="code-number">1</span>, <span class="code-number">4</span>, <span class="code-number">3</span>};
+    <span class="code-keyword">int</span> lower = <span class="code-number">2</span>;
+    <span class="code-keyword">int</span> upper = <span class="code-number">3</span>;
+    <span class="code-keyword">long</span> count = numSubarrayBoundedMax(nums, lower, upper);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Subarrays with maximum in [{lower}, {upper}] = {count}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Count subarrays with fixed bounds</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 2444: Count Subarrays With Fixed Bounds</span></p>
+        <p><strong>Input:</strong> <code>[1,3,5,2,7,5]</code>, <code>minK = 1</code>, <code>maxK = 5</code></p>
+        <p><strong>Output:</strong> <code>2</code></p>
+        <p>Count subarrays whose minimum is exactly <code>minK</code> and maximum is exactly <code>maxK</code>.</p>
+        <p>Maintain three indices:</p>
+        <ul><li><code>lastMin</code>: most recent occurrence of <code>minK</code>.</li><li><code>lastMax</code>: most recent occurrence of <code>maxK</code>.</li><li><code>lastInvalid</code>: most recent element outside <code>[minK, maxK]</code>.</li></ul>
+        <p>At each right endpoint:</p>
+        <p class="math-display"><span class="math" data-tex="\text{New valid subarrays}
+=
+\max(0,\min(\text{lastMin},\text{lastMax})-\text{lastInvalid})" data-display="1">New valid subarrays=max⁡(0,min⁡(lastMin,lastMax)−lastInvalid)</span></p>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(1)">O(1)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> countSubarraysFixedBounds(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> minK, <span class="code-keyword">int</span> maxK) {
+    <span class="code-keyword">if</span> (minK &gt; maxK)
+        <span class="code-keyword">return</span> <span class="code-number">0</span>;
+
+    <span class="code-keyword">int</span> lastMin = -<span class="code-number">1</span>;
+    <span class="code-keyword">int</span> lastMax = -<span class="code-number">1</span>;
+    <span class="code-keyword">int</span> lastInvalid = -<span class="code-number">1</span>;
+
+    <span class="code-keyword">long</span> answer = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        <span class="code-keyword">int</span> value = nums[right];
+
+        <span class="code-keyword">if</span> (value &lt; minK || value &gt; maxK)
+            lastInvalid = right;
+
+        <span class="code-keyword">if</span> (value == minK)
+            lastMin = right;
+
+        <span class="code-keyword">if</span> (value == maxK)
+            lastMax = right;
+
+        <span class="code-keyword">int</span> validStartLimit = <span class="code-class">Math</span>.min(lastMin, lastMax);
+
+        answer += <span class="code-class">Math</span>.max(<span class="code-number">0</span>, validStartLimit - lastInvalid);
+    }
+
+    <span class="code-keyword">return</span> answer;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">3</span>, <span class="code-number">5</span>, <span class="code-number">2</span>, <span class="code-number">7</span>, <span class="code-number">5</span>};
+    <span class="code-keyword">int</span> minK = <span class="code-number">1</span>;
+    <span class="code-keyword">int</span> maxK = <span class="code-number">5</span>;
+    <span class="code-keyword">long</span> count = countSubarraysFixedBounds(nums, minK, maxK);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Subarrays with min {minK} and max {maxK} = {count}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Substring with concatenation of all words</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 30: Substring with Concatenation of All Words</span></p>
+        <p><strong>Input:</strong> <code>s = "barfoothefoobarman"</code>, <code>words = ["foo","bar"]</code></p>
+        <p><strong>Output:</strong> <code>[0, 9]</code></p>
+        <p>Every word has the same length. Find all starting positions where a substring consists of every required word exactly once, in any order.</p>
+        <p>Instead of moving one character at a time, slide in increments of <code>wordLength</code>.</p>
+        <p>We must process every possible starting offset from <code>0</code> to <code>wordLength - 1</code>.</p>
+        <p>Use a frequency map of the required words and another map of the words in the current window.</p>
+        <p>This handles repeated words as well.</p>
+        <p>Time <span class="math" data-tex="O(nw)">O(nw)</span> expected for a straightforward Java solution, where <span class="math" data-tex="w">w</span> is the word length, because extracting and hashing each word-sized substring costs <span class="math" data-tex="O(w)">O(w)</span>. Space <span class="math" data-tex="O(Dw)">O(Dw)</span>, where <span class="math" data-tex="D">D</span> is the number of distinct words stored.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; findSubstring(<span class="code-class">String</span> s, <span class="code-class">String</span>[] words) {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">if</span> (words.length == <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> result;
+
+    <span class="code-keyword">int</span> wordLength = words[<span class="code-number">0</span>].length();
+
+    <span class="code-keyword">if</span> (wordLength == <span class="code-number">0</span>)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"Words must be nonempty"</span>);
+
+    <span class="code-keyword">for</span> (<span class="code-class">String</span> word : words) {
+        <span class="code-keyword">if</span> (word.length() != wordLength)
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"All words must have equal length"</span>);
+    }
+
+    <span class="code-keyword">int</span> wordCount = words.length;
+    <span class="code-keyword">long</span> totalLength = (<span class="code-keyword">long</span>) wordCount * wordLength;
+
+    <span class="code-keyword">if</span> (totalLength &gt; s.length())
+        <span class="code-keyword">return</span> result;
+
+    <span class="code-keyword">var</span> required = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">String</span>, <span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">for</span> (<span class="code-class">String</span> word : words)
+        required.merge(word, <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+
+    <span class="code-comment">// Process all word-boundary alignments.</span>
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> offset = <span class="code-number">0</span>; offset &lt; wordLength; offset++) {
+
+        <span class="code-keyword">var</span> window = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">String</span>, <span class="code-class">Integer</span>&gt;();
+
+        <span class="code-keyword">int</span> left = offset;
+        <span class="code-keyword">int</span> count = <span class="code-number">0</span>;
+
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = offset; right + wordLength &lt;= s.length(); right += wordLength) {
+
+            <span class="code-class">String</span> word = s.substring(right, right + wordLength);
+
+            <span class="code-comment">// An unknown word breaks the current run.</span>
+            <span class="code-keyword">if</span> (!required.containsKey(word)) {
+                window.clear();
+                count = <span class="code-number">0</span>;
+                left = right + wordLength;
+                <span class="code-keyword">continue</span>;
+            }
+
+            window.merge(word, <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+            count++;
+
+            <span class="code-comment">// Remove extra copies of this word.</span>
+            <span class="code-keyword">while</span> (window.get(word) &gt; required.get(word)) {
+
+                <span class="code-class">String</span> outgoing = s.substring(left, left + wordLength);
+
+                <span class="code-keyword">int</span> freq = window.get(outgoing) - <span class="code-number">1</span>;
+
+                <span class="code-keyword">if</span> (freq == <span class="code-number">0</span>)
+                    window.remove(outgoing);
+                <span class="code-keyword">else</span>
+                    window.put(outgoing, freq);
+
+                left += wordLength;
+                count--;
+            }
+
+            <span class="code-keyword">if</span> (count == wordCount) {
+                result.add(left);
+
+                <span class="code-class">String</span> outgoing = s.substring(left, left + wordLength);
+
+                <span class="code-keyword">int</span> freq = window.get(outgoing) - <span class="code-number">1</span>;
+
+                <span class="code-keyword">if</span> (freq == <span class="code-number">0</span>)
+                    window.remove(outgoing);
+                <span class="code-keyword">else</span>
+                    window.put(outgoing, freq);
+
+                left += wordLength;
+                count--;
+            }
+        }
+    }
+
+    <span class="code-class">Collections</span>.sort(result);
+    <span class="code-keyword">return</span> result;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">String</span> s = <span class="code-string">"barfoothefoobarman"</span>;
+    <span class="code-class">String</span>[] words = {<span class="code-string">"foo"</span>, <span class="code-string">"bar"</span>};
+    <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; starts = findSubstring(s, words);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Concatenations of all words start at {starts}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Maximum number of robots within budget</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 2398: Maximum Number of Robots Within Budget</span></p>
+        <p>Given arrays of <code>chargeTimes</code>, <code>runningCosts</code>, and a budget, find the largest contiguous group satisfying:</p>
+        <p class="math-display"><span class="math" data-tex="\max(\text{chargeTimes})+
+\text{windowLength}\times\sum\text{runningCosts}
+\le\text{budget}" data-display="1">max⁡(chargeTimes)+windowLength×∑runningCosts≤budget</span></p>
+        <p>This combines:</p>
+        <ul><li>A monotonic deque to maintain maximum charge time.</li><li>A running sum of operating costs.</li><li>A variable window to enforce the budget.</li></ul>
+        <p>Time <span class="math" data-tex="O(n)">O(n)</span>, space <span class="math" data-tex="O(n)">O(n)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> maximumRobots(<span class="code-keyword">int</span>[] chargeTimes, <span class="code-keyword">int</span>[] runningCosts, <span class="code-keyword">long</span> budget) {
+    <span class="code-keyword">if</span> (chargeTimes.length != runningCosts.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"Array lengths must match"</span>);
+
+    <span class="code-keyword">var</span> deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+
+    <span class="code-keyword">long</span> runningSum = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; chargeTimes.length; right++) {
+
+        runningSum += runningCosts[right];
+
+        <span class="code-comment">// Descending charge times.</span>
+        <span class="code-keyword">while</span> (!deque.isEmpty() &amp;&amp; chargeTimes[deque.peekLast()] &lt;= chargeTimes[right])
+            deque.removeLast();
+
+        deque.addLast(right);
+
+        <span class="code-comment">// Shrink if the current group is too expensive.</span>
+        <span class="code-keyword">while</span> (left &lt;= right &amp;&amp; !deque.isEmpty() &amp;&amp; (<span class="code-keyword">long</span>) chargeTimes[deque.peekFirst()] + (right - left + <span class="code-number">1L</span>) * runningSum &gt; budget) {
+
+            <span class="code-keyword">if</span> (deque.peekFirst() == left)
+                deque.removeFirst();
+
+            runningSum -= runningCosts[left];
+            left++;
+        }
+
+        best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> best;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] chargeTimes = {<span class="code-number">3</span>, <span class="code-number">6</span>, <span class="code-number">1</span>, <span class="code-number">3</span>, <span class="code-number">4</span>};
+    <span class="code-keyword">int</span>[] runningCosts = {<span class="code-number">2</span>, <span class="code-number">1</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>};
+    <span class="code-keyword">long</span> budget = <span class="code-number">25</span>;
+    <span class="code-keyword">int</span> robots = maximumRobots(chargeTimes, runningCosts, budget);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Maximum robots within budget {budget} = {robots}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Sliding Window Median</span><span class="sw-diff sw-hard">Hard</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 480: Sliding Window Median</span></p>
+        <p><strong>Input:</strong> <code>[1,3,-1,-3,5,3,6,7]</code>, <code>k = 3</code></p>
+        <p><strong>Output:</strong> <code>[1.0,-1.0,-1.0,3.0,5.0,6.0]</code></p>
+        <p>Unlike a maximum or minimum, the median cannot be obtained with a single monotonic deque.</p>
+        <p>We need an ordered representation of the current window.</p>
+        <p class="minor-heading"><strong>Two balanced multisets</strong></p>
+        <p>Maintain two halves:</p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">MEDIAN PARTITION</p><div class="sw-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr))"><div class="sw-grid-item"><div class="sw-box sw-bordered" style="background-color:rgba(13, 148, 136, 0.08)"><p class="sw-strong"><strong>Lower half</strong></p><div class="sw-row"><div class="sw-box sw-center" style="background-color:rgba(13, 148, 136, 0.16);flex:1 1 0"><p class="sw-strong">1</p></div><div class="sw-box sw-center" style="background-color:rgba(13, 148, 136, 0.16);flex:1 1 0"><p class="sw-strong">2</p></div><div class="sw-box sw-center" style="background-color:rgba(13, 148, 136, 0.16);flex:1 1 0"><p class="sw-strong">3</p></div></div><p class="sw-caption">Max = 3</p></div></div><div class="sw-grid-item"><div class="sw-box sw-bordered" style="background-color:rgba(99, 102, 241, 0.08)"><p class="sw-strong"><strong>Upper half</strong></p><div class="sw-row"><div class="sw-box sw-center" style="background-color:rgba(99, 102, 241, 0.15);flex:1 1 0"><p class="sw-strong">4</p></div><div class="sw-box sw-center" style="background-color:rgba(99, 102, 241, 0.15);flex:1 1 0"><p class="sw-strong">5</p></div><div class="sw-box sw-center" style="background-color:rgba(99, 102, 241, 0.15);flex:1 1 0"><p class="sw-strong">6</p></div></div><p class="sw-caption">Min = 4</p></div></div></div><p class="math-display"><span class="math" data-tex="\text{Median}=\frac{3+4}{2}=3.5" data-display="1">Median=3+42=3.5</span></p><p class="sw-caption">For odd window lengths, the lower half contains one extra element, whose maximum is the median.</p></div>
+        <p>The invariants are:</p>
+        <p class="math-display"><span class="math" data-tex="|\text{lower}|=|\text{upper}|" data-display="1">∣lower∣=∣upper∣</span></p>
+        <p>or</p>
+        <p class="math-display"><span class="math" data-tex="|\text{lower}|=|\text{upper}|+1" data-display="1">∣lower∣=∣upper∣+1</span></p>
+        <p>And every value in the lower half is at most every value in the upper half.</p>
+        <p>Java's <code>TreeMap</code> is useful for implementing these multisets because it supports sorted keys and duplicate counts.</p>
+        <p>Time <span class="math" data-tex="O(n\log k)">O(nlog⁡k)</span>, space <span class="math" data-tex="O(k)">O(k)</span>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">TreeMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt; lower = <span class="code-keyword">new</span> <span class="code-class">TreeMap</span>&lt;&gt;();
+<span class="code-class">TreeMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt; upper = <span class="code-keyword">new</span> <span class="code-class">TreeMap</span>&lt;&gt;();
+<span class="code-keyword">int</span> lowerSize = <span class="code-number">0</span>;
+<span class="code-keyword">int</span> upperSize = <span class="code-number">0</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> addTo(<span class="code-class">TreeMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt; set, <span class="code-keyword">int</span> value) {
+    set.merge(value, <span class="code-number">1</span>, <span class="code-class">Integer</span>::sum);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> removeFrom(<span class="code-class">TreeMap</span>&lt;<span class="code-class">Integer</span>, <span class="code-class">Integer</span>&gt; set, <span class="code-keyword">int</span> value) {
+    <span class="code-keyword">int</span> count = set.get(value);
+
+    <span class="code-keyword">if</span> (count == <span class="code-number">1</span>)
+        set.remove(value);
+    <span class="code-keyword">else</span>
+        set.put(value, count - <span class="code-number">1</span>);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> insert(<span class="code-keyword">int</span> value) {
+    <span class="code-keyword">if</span> (lowerSize == <span class="code-number">0</span> || value &lt;= lower.lastKey()) {
+        addTo(lower, value);
+        lowerSize++;
+    } <span class="code-keyword">else</span> {
+        addTo(upper, value);
+        upperSize++;
+    }
+
+    rebalance();
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> erase(<span class="code-keyword">int</span> value) {
+    <span class="code-keyword">if</span> (lower.containsKey(value)) {
+        removeFrom(lower, value);
+        lowerSize--;
+    } <span class="code-keyword">else</span> {
+        removeFrom(upper, value);
+        upperSize--;
+    }
+
+    rebalance();
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> rebalance() {
+    <span class="code-comment">// Lower can have at most one extra value.</span>
+    <span class="code-keyword">while</span> (lowerSize &gt; upperSize + <span class="code-number">1</span>) {
+        <span class="code-keyword">int</span> moved = lower.lastKey();
+        removeFrom(lower, moved);
+        lowerSize--;
+        addTo(upper, moved);
+        upperSize++;
+    }
+
+    <span class="code-keyword">while</span> (lowerSize &lt; upperSize) {
+        <span class="code-keyword">int</span> moved = upper.firstKey();
+        removeFrom(upper, moved);
+        upperSize--;
+        addTo(lower, moved);
+        lowerSize++;
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">double</span> median(<span class="code-keyword">int</span> windowSize) {
+    <span class="code-keyword">if</span> (windowSize % <span class="code-number">2</span> == <span class="code-number">1</span>)
+        <span class="code-keyword">return</span> lower.lastKey();
+
+    <span class="code-comment">// Use long to avoid integer overflow.</span>
+    <span class="code-keyword">return</span> ((<span class="code-keyword">long</span>) lower.lastKey() + upper.firstKey()) / <span class="code-number">2.0</span>;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">double</span>[] medianSlidingWindow(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span> || k &gt; nums.length)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AlgorithmException</span>(<span class="code-string">"Invalid k"</span>);
+
+    <span class="code-keyword">var</span> answer = <span class="code-keyword">new</span> <span class="code-keyword">double</span>[nums.length - k + <span class="code-number">1</span>];
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; k; i++)
+        insert(nums[i]);
+
+    answer[<span class="code-number">0</span>] = median(k);
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = k; right &lt; nums.length; right++) {
+        erase(nums[right - k]);
+        insert(nums[right]);
+
+        answer[right - k + <span class="code-number">1</span>] = median(k);
+    }
+
+    <span class="code-keyword">return</span> answer;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">3</span>, -<span class="code-number">1</span>, -<span class="code-number">3</span>, <span class="code-number">5</span>, <span class="code-number">3</span>, <span class="code-number">6</span>, <span class="code-number">7</span>};
+    <span class="code-keyword">int</span> k = <span class="code-number">3</span>;
+    <span class="code-keyword">double</span>[] medians = medianSlidingWindow(nums, k);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Median of each window of {k} = {medians}"</span>);
+}</code></pre></div>
+
+    <div class="subheading"><span>Minimum operations to reduce X to zero</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p><span class="sw-pressable">LeetCode 1658: Minimum Operations to Reduce X to Zero</span></p>
+        <p><strong>Input:</strong> <code>nums = [1,1,4,2,3]</code>, <code>x = 5</code></p>
+        <p><strong>Output:</strong> <code>2</code></p>
+        <p>We can remove elements from the left or right, subtracting them from <code>x</code>, and want the minimum number of removals.</p>
+        <p>Rather than searching for removals, find the longest middle subarray whose sum is:</p>
+        <p class="math-display"><span class="math" data-tex="\text{target}=\text{totalSum}-x" data-display="1">target=totalSum−x</span></p>
+        <p>Then:</p>
+        <p class="math-display"><span class="math" data-tex="\text{Minimum operations}
+=
+n-\text{longest retained length}" data-display="1">Minimum operations=n−longest retained length</span></p>
+        <p>The conventional sliding-window solution assumes positive array elements.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> minOperations(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> x) {
+    <span class="code-keyword">long</span> total = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> value : nums)
+        total += value;
+
+    <span class="code-keyword">long</span> target = total - x;
+
+    <span class="code-keyword">if</span> (target &lt; <span class="code-number">0</span>)
+        <span class="code-keyword">return</span> -<span class="code-number">1</span>;
+
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> longest = target == <span class="code-number">0</span> ? <span class="code-number">0</span> : -<span class="code-number">1</span>;
+
+    <span class="code-keyword">long</span> sum = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; nums.length; right++) {
+
+        sum += nums[right];
+
+        <span class="code-keyword">while</span> (left &lt;= right &amp;&amp; sum &gt; target)
+            sum -= nums[left++];
+
+        <span class="code-keyword">if</span> (sum == target)
+            longest = <span class="code-class">Math</span>.max(longest, right - left + <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">return</span> longest == -<span class="code-number">1</span> ? -<span class="code-number">1</span> : nums.length - longest;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, <span class="code-number">1</span>, <span class="code-number">4</span>, <span class="code-number">2</span>, <span class="code-number">3</span>};
+    <span class="code-keyword">int</span> x = <span class="code-number">5</span>;
+    <span class="code-keyword">int</span> operations = minOperations(nums, x);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Minimum operations to reduce {x} to zero = {operations}"</span>);
+}</code></pre></div>
+
+    <div class="intro">
+        <p>The 37 exercises above cover the major sliding-window families, including fixed-length windows, variable windows, frequency constraints, substring matching, at-most/exact counting, monotonic deques, prefix-sum techniques, and balanced-tree-based windows.</p>
+    </div>
+
+    <div class="subheading"><span>Bonus: Exact subarray sum with negative numbers</span><span class="sw-diff sw-medium">Medium</span></div>
+
+    <div class="intro">
+        <p>This is a valuable contrast problem: a standard shrinking window is not reliable, but prefix sums work.</p>
+        <p>Given:</p>
+    </div>
+    <div class="code-block"><pre><code>nums = [1, -1, 1]
+target = 1</code></pre></div>
+
+    <div class="intro">
+        <p>There are three qualifying subarrays:</p>
+    </div>
+    <div class="code-block"><pre><code>[1]           indices [0, 0]
+[1, -1, 1]    indices [0, 2]
+[1]           indices [2, 2]</code></pre></div>
+
+    <div class="intro">
+        <p>Instead of sliding, maintain counts of previous prefix sums.</p>
+        <p>For current prefix sum <code>prefix</code>, a previous prefix <code>prefix - target</code> identifies a matching subarray.</p>
+        <p>This alternative achieves <span class="math" data-tex="O(n)">O(n)</span> expected time and <span class="math" data-tex="O(n)">O(n)</span> space, even with negative numbers.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">long</span> countSubarraysWithSum(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">long</span> target) {
+    <span class="code-keyword">var</span> prefixFrequency = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">Long</span>, <span class="code-class">Long</span>&gt;();
+
+    <span class="code-comment">// Empty prefix sum occurs once.</span>
+    prefixFrequency.put(<span class="code-number">0L</span>, <span class="code-number">1L</span>);
+
+    <span class="code-keyword">long</span> prefix = <span class="code-number">0</span>;
+    <span class="code-keyword">long</span> answer = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> value : nums) {
+
+        prefix += value;
+
+        answer += prefixFrequency.getOrDefault(prefix - target, <span class="code-number">0L</span>);
+
+        prefixFrequency.merge(prefix, <span class="code-number">1L</span>, <span class="code-class">Long</span>::sum);
+    }
+
+    <span class="code-keyword">return</span> answer;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] nums = {<span class="code-number">1</span>, -<span class="code-number">1</span>, <span class="code-number">1</span>};
+    <span class="code-keyword">long</span> target = <span class="code-number">1</span>;
+    <span class="code-keyword">long</span> count = countSubarraysWithSum(nums, target);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Subarrays with sum {target} = {count}"</span>);
+
+    <span class="code-keyword">int</span>[] other = {<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>};
+    <span class="code-keyword">long</span> otherTarget = <span class="code-number">3</span>;
+    <span class="code-keyword">long</span> otherCount = countSubarraysWithSum(other, otherTarget);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Subarrays with sum {otherTarget} = {otherCount}"</span>);
+}</code></pre></div>
+</div>
+</body>
+</html>

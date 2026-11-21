@@ -24,9 +24,9 @@
         <p>Database design is not simply about creating tables and columns. It involves decisions about data modeling, relationships, constraints, normalization, indexing, storage structures, transactions, and scalability.</p>
     </div>
 
-    <div class="subheading">1. What is Database Design?</div>
+    <div class="subheading">What is Database Design</div>
     <div class="intro">
-        <p><strong>Database Design</strong> is the process of defining the structure and organization of data in a database, including the relationships, rules, constraints, and access mechanisms needed to satisfy application requirements.</p>
+        <p><strong>Database Design</strong> is the process of defining the structure and organization of data in a database, including the relationships, rules, constraints and access mechanisms needed to satisfy application requirements.</p>
         <p>For example, consider an e-commerce application that manages:</p>
         <ul>
             <li>Customers</li>
@@ -35,7 +35,7 @@
             <li>Payments</li>
             <li>Inventory</li>
         </ul>
-        <p>Instead of storing everything in one large table, database design determines how these entities should be represented, how they relate to each other, and how data integrity should be enforced.</p>
+        <p>Instead of storing everything in one large table, database design determines how these entities should be represented, how they relate to each other and how data integrity should be enforced.</p>
         <p>For example:</p>
         <div class="svg-diagram">
             <img src="static/database-design-entities.svg" alt="Customer places Order; Order contains Order Item, which references Product; Order has Payment; Product has Inventory" style="width:100%;max-width:720px">
@@ -53,44 +53,41 @@
         <p>Database design provides the foundation for answering these questions.</p>
     </div>
 
-    <div class="subheading">2. Concept Map of Database Design</div>
+    <div class="subheading">Concept Map of Database Design</div>
     <div class="intro">
         <p>Database design is a broad discipline containing several interrelated concepts. These can be organized into major categories.</p>
         <div class="svg-diagram">
-            <img src="static/database-design-concept-map.svg" alt="Concept map: database design splits into requirements and workload, data modeling, logical schema design, physical and performance design, transactions and integrity, scalability and distribution, and security and lifecycle, each with its two main concepts" style="width:100%;max-width:720px">
+            <img src="static/database-design-concept-map.svg" alt="Concept map: database design splits into requirements and workload, data modeling, logical schema design, physical and performance design, transactions and integrity, scalability and distribution, and security and lifecycle, each with its two main concepts" style="width:100%;max-width:910px">
         </div>
-        <p>Conceptual overview: these categories overlap. For example, choosing a primary key affects logical modeling, indexing, and distributed scalability.</p>
+        <p>Conceptual overview: these categories overlap.
+		<br>For example, choosing a primary key affects logical modeling, indexing and distributed scalability.</p>
     </div>
 
-    <div class="subheading">3. Goals of Database Design</div>
+    <div class="subheading">Goals of Database Design</div>
+    <div class="folio"><ol class="ledger">
+            <li><span class="ledger-label">Data Integrity</span><span>Prevent invalid, inconsistent, or duplicate data.</span></li>
+            <li><span class="ledger-label">Data Consistency</span><span>Ensure the database respects defined business rules and consistency guarantees.</span></li>
+            <li><span class="ledger-label">Data Efficiency</span><span>Reduce unnecessary duplication and excessive storage.</span></li>
+            <li><span class="ledger-label">Query Performance</span><span>Optimize retrieval, filtering, joins, and aggregation.</span></li>
+            <li><span class="ledger-label">Write Performance</span><span>Support efficient inserts, updates, and deletes.</span></li>
+            <li><span class="ledger-label">Scalability</span><span>Accommodate increases in data size and user traffic.</span></li>
+            <li><span class="ledger-label">Concurrency Control</span><span>Coordinate simultaneous transactions without violating correctness.</span></li>
+            <li><span class="ledger-label">Availability</span><span>Keep data accessible according to application requirements.</span></li>
+            <li><span class="ledger-label">Reliability</span><span>Protect against crashes, failures, and data loss.</span></li>
+            <li><span class="ledger-label">Security</span><span>Protect sensitive data from unauthorized access.</span></li>
+            <li><span class="ledger-label">Maintainability</span><span>Make the data model understandable and adaptable.</span></li>
+            <li><span class="ledger-label">Extensibility</span><span>Allow new features and schema changes without unnecessary disruption.</span></li>
+        </ol>
+    </div>
     <div class="intro">
-        <div class="gpt-table-wrap"><table class="gpt-table">
-            <thead>
-                <tr><th>Goal</th><th>Explanation</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>Data Integrity</td><td>Prevent invalid, inconsistent, or duplicate data</td></tr>
-                <tr><td>Data Consistency</td><td>Ensure the database respects defined business rules and consistency guarantees</td></tr>
-                <tr><td>Data Efficiency</td><td>Reduce unnecessary duplication and excessive storage</td></tr>
-                <tr><td>Query Performance</td><td>Optimize retrieval, filtering, joins, and aggregation</td></tr>
-                <tr><td>Write Performance</td><td>Support efficient inserts, updates, and deletes</td></tr>
-                <tr><td>Scalability</td><td>Accommodate increases in data size and user traffic</td></tr>
-                <tr><td>Concurrency Control</td><td>Coordinate simultaneous transactions without violating correctness</td></tr>
-                <tr><td>Availability</td><td>Keep data accessible according to application requirements</td></tr>
-                <tr><td>Reliability</td><td>Protect against crashes, failures, and data loss</td></tr>
-                <tr><td>Security</td><td>Protect sensitive data from unauthorized access</td></tr>
-                <tr><td>Maintainability</td><td>Make the data model understandable and adaptable</td></tr>
-                <tr><td>Extensibility</td><td>Allow new features and schema changes without unnecessary disruption</td></tr>
-            </tbody>
-        </table></div>
         <p><strong>Key point:</strong> Database design is about balancing correctness, performance, scalability, and maintainability. Optimizing one dimension may introduce costs in another.</p>
     </div>
 
-    <div class="subheading">4. Levels of Database Design</div>
+    <div class="subheading">Levels of Database Design</div>
     <div class="intro">
         <p>Database design is commonly divided into three major levels.</p>
         <div class="svg-diagram">
-            <img src="static/database-design-levels.svg" alt="Three levels of database design: conceptual design (what data exists and how business entities relate) leads to logical design (how entities become tables, keys, relationships, and constraints), which leads to physical design (how data is indexed, partitioned, and physically accessed)" style="width:100%;max-width:720px">
+            <img src="static/database-design-levels.svg" alt="Three levels of database design: conceptual design (what data exists and how business entities relate) leads to logical design (how entities become tables, keys, relationships, and constraints), which leads to physical design (how data is indexed, partitioned, and physically accessed)" style="width:100%;max-width:820px">
         </div>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead>

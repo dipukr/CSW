@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queue</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.katex) return; // offline: keep the plain-text fallback
+    document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Queue</div>
+
+    <div class="intro">
+        <p>A Queue is a fundamental linear data structure used in algorithms, operating systems, databases, messaging systems, and distributed applications.</p>
+        <p>This guide covers the definition, FIFO principle, internal working, operations, types, implementations in Java, algorithms, time and space complexity, real-world applications, and common interview problems.</p>
+    </div>
+
+    <div class="subheading">What is a Queue?</div>
+
+    <div class="intro">
+        <p>A Queue is a linear data structure that follows the FIFO (First In, First Out) principle.</p>
+        <p>This means:</p>
+        <ul><li>The first element inserted is the first element removed.</li><li>New elements are inserted at the Rear (Tail).</li><li>Existing elements are removed from the Front (Head).</li></ul>
+        <p>Think of people standing in a queue at a ticket counter. The person who joins first gets served first.</p>
+        <p class="minor-heading"><strong>Queue diagram</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/queue-fifo.svg" alt="A queue holding 10, 20, 30, 40: FRONT points at 10 and REAR points at 40; logical order runs from first to last" style="width:100%;max-width:680px">
+    </div>
+
+    <div class="intro">
+        <p>Dequeue / Poll · Enqueue / Offer</p>
+        <p>In the example:</p>
+        <ul><li><code>10</code> is the front element and will be removed first.</li><li><code>40</code> is the rear element and was inserted most recently.</li><li>The next enqueue operation inserts an element after <code>40</code>.</li><li>The next dequeue operation removes <code>10</code>.</li></ul>
+        <p>Unlike an array, a Queue restricts how elements are accessed. Normally, only the front element can be removed.</p>
+    </div>
+
+    <div class="subheading">Basic Queue Operations</div>
+
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Description</th><th>Typical complexity</th></tr></thead>
+            <tbody>
+                <tr><td><code>enqueue(x)</code></td><td>Insert at rear</td><td>O(1)</td></tr>
+                <tr><td><code>dequeue()</code></td><td>Remove from front</td><td>O(1)</td></tr>
+                <tr><td><code>peek()</code></td><td>Read front without removing</td><td>O(1)</td></tr>
+                <tr><td><code>isEmpty()</code></td><td>Check whether queue is empty</td><td>O(1)</td></tr>
+                <tr><td><code>isFull()</code></td><td>Check capacity (bounded queue)</td><td>O(1)</td></tr>
+                <tr><td><code>size()</code></td><td>Number of elements</td><td>O(1)</td></tr>
+            </tbody>
+        </table></div>
+        <p>These complexities assume a properly implemented queue, such as a circular array or a linked list with head and tail pointers.</p>
+        <p class="minor-heading"><strong>Interactive example: enqueue and dequeue</strong></p>
+    </div>
+    <div class="gw-card" id="queue-sim">
+        <div class="gw-status" style="margin-top:0">
+            <p class="gw-title" style="margin:0">Queue simulator</p>
+            <span class="gw-badge" id="qs-badge" style="margin:0">3 elements</span>
+        </div>
+        <div class="gw-panel">
+            <div class="gw-ends"><span>FRONT</span><span>REAR</span></div>
+            <div class="gw-cells" id="qs-cells"></div>
+            <p class="gw-small" style="text-align:center;margin:10px 0 0">Elements are removed from left and inserted on right.</p>
+        </div>
+        <div class="gw-btns" style="margin-top:12px">
+            <label class="gw-small" for="qs-value">Value</label>
+            <input type="text" inputmode="numeric" id="qs-value" value="40" placeholder="Number" style="font:inherit;font-size:14px;width:84px;padding:5px 8px;border:1px solid rgba(13,13,13,0.12);border-radius:3px">
+            <button class="gw-btn primary" id="qs-enq">Enqueue</button>
+            <button class="gw-btn" id="qs-deq">Dequeue</button>
+            <button class="gw-btn" id="qs-reset">Reset</button>
+        </div>
+        <p class="gw-note" id="qs-msg" aria-live="polite">Queue initialized with three elements.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px">
+            <div class="gw-stat"><p class="gw-k">Front</p><p class="gw-v" id="qs-front">10</p></div>
+            <div class="gw-stat"><p class="gw-k">Rear</p><p class="gw-v" id="qs-rear">30</p></div>
+            <div class="gw-stat"><p class="gw-k">Size</p><p class="gw-v" id="qs-size">3</p></div>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var CAP = 8, items;
+        var $ = function (id) { return document.getElementById(id); };
+        function render() {
+            $("qs-cells").innerHTML = items.length
+                ? items.map(function (v) { return '<div style="flex:1 1 0;min-width:0;max-width:64px;display:flex;flex-direction:column;align-items:center;gap:6px"><div class="gw-cell" style="width:100%">' + v + '</div></div>'; }).join("")
+                : '<span class="gw-small">Queue is empty</span>';
+            $("qs-badge").textContent = items.length + " elements";
+            $("qs-front").textContent = items.length ? items[0] : "Empty";
+            $("qs-rear").textContent = items.length ? items[items.length - 1] : "Empty";
+            $("qs-size").textContent = items.length;
+            $("qs-enq").disabled = items.length >= CAP;
+            $("qs-deq").disabled = items.length === 0;
+        }
+        function say(t) { $("qs-msg").textContent = t; }
+        $("qs-enq").addEventListener("click", function () {
+            var v = $("qs-value").value.trim();
+            if (v === "" || isNaN(Number(v))) return say("Enter a number to enqueue.");
+            if (items.length >= CAP) return;
+            items.push(Number(v));
+            $("qs-value").value = Number(v) + 10;
+            say("Enqueued " + Number(v) + " at the rear.");
+            render();
+        });
+        $("qs-deq").addEventListener("click", function () {
+            if (!items.length) return;
+            say("Dequeued " + items.shift() + " from the front.");
+            render();
+        });
+        $("qs-reset").addEventListener("click", function () {
+            items = [10, 20, 30]; $("qs-value").value = 40;
+            say("Queue reset.");
+            render();
+        });
+        items = [10, 20, 30];
+        render();
+    })();
+    </script>
+
+    <div class="subheading">How FIFO Works</div>
+
+    <div class="intro">
+        <p>Consider the following operations on an initially empty queue.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Step</th><th>Operation</th><th>Queue (front → rear)</th><th>Result</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td><code>enqueue(10)</code></td><td><code>[10]</code></td><td>Insert 10</td></tr>
+                <tr><td>2</td><td><code>enqueue(20)</code></td><td><code>[10, 20]</code></td><td>Insert 20</td></tr>
+                <tr><td>3</td><td><code>enqueue(30)</code></td><td><code>[10, 20, 30]</code></td><td>Insert 30</td></tr>
+                <tr><td>4</td><td><code>peek()</code></td><td><code>[10, 20, 30]</code></td><td>Return 10</td></tr>
+                <tr><td>5</td><td><code>dequeue()</code></td><td><code>[20, 30]</code></td><td>Return 10</td></tr>
+                <tr><td>6</td><td><code>enqueue(40)</code></td><td><code>[20, 30, 40]</code></td><td>Insert 40</td></tr>
+                <tr><td>7</td><td><code>dequeue()</code></td><td><code>[30, 40]</code></td><td>Return 20</td></tr>
+            </tbody>
+        </table></div>
+        <p>Notice that <code>peek()</code> does not modify the queue, whereas <code>dequeue()</code> removes its front element.</p>
+    </div>
+
+    <div class="subheading">Types of Queues</div>
+
+    <div class="intro">
+        <p>There are four major conceptual types of queues.</p>
+    </div>
+    <div class="card-grid">
+                <div class="card"><img src="../static/queue-type-linear.svg" alt="Linear queue: elements 1, 2, 3 in a row with an arrow showing one direction of flow" style="width:100%;max-width:106px"><div class="card-title">Simple (Linear) Queue</div><p>Follows normal FIFO insertion at rear and deletion at front. Can be implemented with arrays or linked lists.</p></div>
+                <div class="card"><img src="../static/queue-type-circular.svg" alt="Circular queue: storage drawn as a ring of slots" style="width:100%;max-width:106px"><div class="card-title">Circular Queue</div><p>Treats the storage as a ring. When the rear reaches the last array index, it can wrap around to index zero. Avoids wasting freed array slots.</p></div>
+                <div class="card"><img src="../static/queue-type-priority.svg" alt="Priority queue: elements labelled H, M and L for high, medium and low priority" style="width:100%;max-width:106px"><div class="card-title">Priority Queue</div><p>Removes an element according to priority rather than strictly by insertion order. Often implemented using a binary heap.</p></div>
+                <div class="card"><img src="../static/queue-type-deque.svg" alt="Deque: elements 1, 2, 3 with arrows in both directions at both ends" style="width:100%;max-width:106px"><div class="card-title">Double-Ended Queue (Deque)</div><p>Allows insertion and removal at both ends. Useful for sliding windows, caches, and work-stealing algorithms.</p></div>
+    </div>
+
+    <div class="intro">
+        <p>In addition, software systems frequently use Blocking Queues, Concurrent Queues, Bounded Queues, and Monotonic Queues, which will be explained below.</p>
+    </div>
+
+    <div class="subheading">Queue Implementation Using an Array</div>
+
+    <div class="intro">
+        <p>An array-based queue stores its elements in contiguous memory locations.</p>
+        <p>There are two main approaches:</p>
+        <ol><li>Linear array with shifting or increasing indices.</li><li>Circular array with wrap-around indexing.</li></ol>
+        <p class="minor-heading"><strong>Simple linear array implementation</strong></p>
+        <p>Suppose we have an array of capacity 5.</p>
+        <p>Initially:</p>
+    </div>
+    <div class="code-block"><pre><code>Index:   0    1    2    3    4
+       +----+----+----+----+----+
+       |    |    |    |    |    |
+       +----+----+----+----+----+</code></pre></div>
+
+    <div class="intro">
+        <p>After inserting <code>10</code>, <code>20</code>, <code>30</code>:</p>
+    </div>
+    <div class="code-block"><pre><code>Index:   0    1    2    3    4
+       +----+----+----+----+----+
+       | 10 | 20 | 30 |    |    |
+       +----+----+----+----+----+
+         ↑         ↑
+       front      rear</code></pre></div>
+
+    <div class="intro">
+        <p>After removing <code>10</code>:</p>
+    </div>
+    <div class="code-block"><pre><code>Index:   0    1    2    3    4
+       +----+----+----+----+----+
+       |    | 20 | 30 |    |    |
+       +----+----+----+----+----+
+              ↑    ↑
+            front rear</code></pre></div>
+
+    <div class="intro">
+        <p>There is a problem.</p>
+        <p>If we continue inserting elements, eventually the rear reaches the last array index even though some positions at the beginning have become empty.</p>
+        <p>Two possible approaches are:</p>
+        <ul><li>Shift remaining elements left after every removal. This makes dequeue O(n).</li><li>Advance the front without shifting and reuse freed space by wrapping around. This leads to a circular queue.</li></ul>
+        <p>The second approach is typically more efficient.</p>
+    </div>
+
+    <div class="subheading">Circular Queue (Ring Buffer)</div>
+
+    <div class="intro">
+        <p>A Circular Queue is an array-based queue where the end of the array logically connects back to its beginning.</p>
+        <p>It avoids wasting the free array positions created by dequeue operations.</p>
+        <p class="minor-heading"><strong>Understanding circular indexing</strong></p>
+        <p>For an array of capacity 5, the indices are:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/queue-circular-indexing.svg" alt="Array of capacity 5 with indexes 0 to 4; an arrow wraps around from index 4 back to index 0; next index = (current index + 1) % 5" style="width:100%;max-width:680px">
+    </div>
+
+    <div class="intro">
+        <p>The key formula is:</p>
+        <p class="math-display"><span class="math" data-tex="\text{nextIndex}=(\text{currentIndex}+1)\bmod C" data-display="1">nextIndex=(currentIndex+1) mod C</span></p>
+        <p>Where <span class="math" data-tex="C">C</span> is the capacity of the array.</p>
+        <p>Example:</p>
+    </div>
+    <div class="code-block"><pre><code>Capacity = 5
+
+(0 + 1) % 5 = 1
+(1 + 1) % 5 = 2
+(2 + 1) % 5 = 3
+(3 + 1) % 5 = 4
+(4 + 1) % 5 = 0   ← Wrap around</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Front, rear, and size</strong></p>
+        <p>We maintain three variables:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Variable</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><code>front</code></td><td>Index of the next element to remove</td></tr>
+                <tr><td><code>rear</code></td><td>Index where the next element will be inserted</td></tr>
+                <tr><td><code>size</code></td><td>Current number of elements</td></tr>
+            </tbody>
+        </table></div>
+        <p>In this implementation, <code>rear</code> points to the next free insertion position, not the last occupied element.</p>
+        <p class="minor-heading"><strong>Dry run</strong></p>
+        <p>Consider a circular queue with capacity 5.</p>
+    </div>
+    <div class="gw-card" id="queue-dry">
+        <div class="gw-status" style="margin-top:0">
+            <p class="gw-op" id="qd-title">Initial state</p>
+            <span class="gw-small" id="qd-step">Step 1 / 6</span>
+        </div>
+        <div class="gw-panel">
+            <div class="gw-cells" id="qd-cells"></div>
+            <p class="gw-small" style="text-align:center;margin:10px 0 0">F = Front &#160;·&#160; R = Next insertion</p>
+        </div>
+        <div class="gw-log">
+            <p class="gw-k" style="font-weight:500;color:#5d5d5d">Logical FIFO order</p>
+            <p id="qd-order" style="font-size:14px;font-weight:600">(empty)</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px">
+            <div class="gw-stat"><p class="gw-k">Front index</p><p class="gw-v" id="qd-front">0</p></div>
+            <div class="gw-stat"><p class="gw-k">Rear index</p><p class="gw-v" id="qd-rear">0</p></div>
+            <div class="gw-stat"><p class="gw-k">Size</p><p class="gw-v" id="qd-size">0</p></div>
+        </div>
+        <div class="gw-btns" style="margin-top:12px">
+            <button class="gw-btn" id="qd-prev">← Previous</button>
+            <button class="gw-btn primary" id="qd-next">Next step →</button>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var steps = [
+            ["Initial state",            ["", "", "", "", ""],      0, 0, 0],
+            ["Enqueue A, B, C, D",       ["A", "B", "C", "D", ""],  0, 4, 4],
+            ["Dequeue A, B",             ["", "", "C", "D", ""],    2, 4, 2],
+            ["Enqueue E",                ["", "", "C", "D", "E"],   2, 0, 3],
+            ["Enqueue F — wraps around", ["F", "", "C", "D", "E"],  2, 1, 4],
+            ["Enqueue G — queue full",   ["F", "G", "C", "D", "E"], 2, 2, 5]
+        ], i = 0;
+        var $ = function (id) { return document.getElementById(id); };
+        function render() {
+            var s = steps[i], cells = s[1], front = s[2], rear = s[3], size = s[4], html = "", order = [];
+            for (var k = 0; k < cells.length; k++) {
+                var mark = (k === front ? "F" : "") + (k === front && k === rear ? " " : "") + (k === rear ? "R" : "");
+                html += '<div style="flex:1 1 0;min-width:0;max-width:64px;display:flex;flex-direction:column;align-items:center;gap:6px"><span class="gw-small">' + k + '</span>' +
+                    '<div class="gw-cell" style="width:100%;' + (cells[k] ? '' : 'color:#8f8f8f;font-weight:400') + '">' + (cells[k] || "—") + '</div>' +
+                    '<span class="gw-small" style="min-height:1.4em;font-weight:600">' + mark + '</span></div>';
+            }
+            for (var j = 0; j < size; j++) order.push(cells[(front + j) % cells.length]);
+            $("qd-cells").innerHTML = html;
+            $("qd-title").textContent = s[0];
+            $("qd-step").textContent = "Step " + (i + 1) + " / " + steps.length;
+            $("qd-order").textContent = order.length ? order.join(" → ") : "(empty)";
+            $("qd-front").textContent = front; $("qd-rear").textContent = rear; $("qd-size").textContent = size;
+            $("qd-prev").disabled = i === 0; $("qd-next").disabled = i === steps.length - 1;
+        }
+        $("qd-prev").addEventListener("click", function () { if (i > 0) { i--; render(); } });
+        $("qd-next").addEventListener("click", function () { if (i < steps.length - 1) { i++; render(); } });
+        render();
+    })();
+    </script>
+
+    <div class="intro">
+        <p>Notice that the physical array stores:</p>
+    </div>
+    <div class="code-block"><pre><code>[F, G, C, D, E]</code></pre></div>
+
+    <div class="intro">
+        <p>But the logical queue order is:</p>
+    </div>
+    <div class="code-block"><pre><code>C → D → E → F → G</code></pre></div>
+
+    <div class="intro">
+        <p>The physical storage order is different from the FIFO order because the front has wrapped around.</p>
+        <p class="minor-heading"><strong>Circular queue conditions</strong></p>
+        <p>With an explicitly maintained <code>size</code>:</p>
+        <p>Queue is empty:</p>
+    </div>
+    <div class="code-block"><pre><code>size == <span class="code-number">0</span></code></pre></div>
+
+    <div class="intro">
+        <p>Queue is full:</p>
+    </div>
+    <div class="code-block"><pre><code>size == capacity</code></pre></div>
+
+    <div class="intro">
+        <p>Insert element:</p>
+    </div>
+    <div class="code-block"><pre><code>elements[rear] = value;
+rear = (rear + <span class="code-number">1</span>) % capacity;
+size++;</code></pre></div>
+
+    <div class="intro">
+        <p>Remove element:</p>
+    </div>
+    <div class="code-block"><pre><code>E value = elements[front];
+front = (front + <span class="code-number">1</span>) % capacity;
+size--;</code></pre></div>
+
+    <div class="intro">
+        <p>There is an alternative design without a <code>size</code> variable:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-comment">// Empty</span>
+front == rear
+
+<span class="code-comment">// Full, when one slot is deliberately left unused</span>
+(rear + <span class="code-number">1</span>) % capacity == front</code></pre></div>
+
+    <div class="intro">
+        <p>That alternative uses one array slot to distinguish full from empty. The implementation below uses <code>size</code> and therefore supports all allocated slots.</p>
+        <p class="minor-heading"><strong>Complete Java implementation: Circular Queue</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Objects</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CircularQueue</span>&lt;E&gt; {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Object</span>[] elements;
+
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> front = <span class="code-number">0</span>;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> rear = <span class="code-number">0</span>;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size = <span class="code-number">0</span>;
+
+    <span class="code-keyword">public</span> <span class="code-class">CircularQueue</span>(<span class="code-keyword">int</span> capacity) {
+        <span class="code-keyword">if</span> (capacity &lt;= <span class="code-number">0</span>) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(
+                <span class="code-string">"Capacity must be positive"</span>
+            );
+        }
+
+        elements = <span class="code-keyword">new</span> <span class="code-class">Object</span>[capacity];
+    }
+
+    <span class="code-comment">// Insert at the rear</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> offer(E value) {
+        <span class="code-class">Objects</span>.requireNonNull(value);
+
+        <span class="code-keyword">if</span> (isFull()) {
+            <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+        }
+
+        elements[rear] = value;
+
+        rear = (rear + <span class="code-number">1</span>) % elements.length;
+        size++;
+
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    }
+
+    <span class="code-comment">// Remove from the front</span>
+    <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
+    <span class="code-keyword">public</span> E poll() {
+        <span class="code-keyword">if</span> (isEmpty()) {
+            <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+        }
+
+        E value = (E) elements[front];
+
+        <span class="code-comment">// Release the reference for garbage collection</span>
+        elements[front] = <span class="code-keyword">null</span>;
+
+        front = (front + <span class="code-number">1</span>) % elements.length;
+        size--;
+
+        <span class="code-keyword">return</span> value;
+    }
+
+    <span class="code-comment">// Read front without removing</span>
+    <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
+    <span class="code-keyword">public</span> E peek() {
+        <span class="code-keyword">if</span> (isEmpty()) {
+            <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+        }
+
+        <span class="code-keyword">return</span> (E) elements[front];
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
+        <span class="code-keyword">return</span> size == <span class="code-number">0</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isFull() {
+        <span class="code-keyword">return</span> size == elements.length;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
+        <span class="code-keyword">return</span> size;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> capacity() {
+        <span class="code-keyword">return</span> elements.length;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">CircularQueue</span>&lt;<span class="code-class">Integer</span>&gt; queue =
+                <span class="code-keyword">new</span> <span class="code-class">CircularQueue</span>&lt;&gt;(<span class="code-number">3</span>);
+
+        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">10</span>)); <span class="code-comment">// true</span>
+        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">20</span>)); <span class="code-comment">// true</span>
+        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">30</span>)); <span class="code-comment">// true</span>
+
+        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">40</span>)); <span class="code-comment">// false</span>
+
+        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 10</span>
+        <span class="code-class">System</span>.out.println(queue.peek());    <span class="code-comment">// 20</span>
+
+        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">40</span>)); <span class="code-comment">// true</span>
+        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 20</span>
+        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 30</span>
+        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 40</span>
+        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// null</span>
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Complexity</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Time</th></tr></thead>
+            <tbody>
+                <tr><td>Enqueue</td><td>O(1)</td></tr>
+                <tr><td>Dequeue</td><td>O(1)</td></tr>
+                <tr><td>Peek</td><td>O(1)</td></tr>
+                <tr><td>isEmpty / isFull</td><td>O(1)</td></tr>
+                <tr><td>Space</td><td>O(C), where C is capacity</td></tr>
+            </tbody>
+        </table></div>
+        <p>Limitation: This implementation has a fixed capacity. Insertion fails when it becomes full.</p>
+        <p class="minor-heading"><strong>Dynamically resizing circular queue</strong></p>
+        <p>A dynamically growing queue can double its internal array when full, similar to an <code>ArrayList</code>.</p>
+        <p>The important detail is that elements must be copied in logical queue order, starting from <code>front</code>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">private</span> <span class="code-keyword">void</span> grow() {
+    <span class="code-class">Object</span>[] expanded =
+        <span class="code-keyword">new</span> <span class="code-class">Object</span>[elements.length * <span class="code-number">2</span>];
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; size; i++) {
+        expanded[i] =
+            elements[(front + i) % elements.length];
+    }
+
+    elements = expanded;
+    front = <span class="code-number">0</span>;
+    rear = size;
+}</code></pre></div>
+
+    <div class="intro">
+        <p>This method assumes <code>elements</code> is not <code>final</code>, the initial capacity is positive, and capacity doubling is within supported array limits.</p>
+        <p>A resize takes O(n), but if the array doubles geometrically, enqueue remains amortized O(1): the average cost over a long sequence of operations is constant.</p>
+    </div>
+
+    <div class="subheading">Queue Implementation Using a Linked List</div>
+
+    <div class="intro">
+        <p>A linked-list queue stores elements in nodes instead of contiguous array slots.</p>
+        <p>Each node contains:</p>
+    </div>
+    <div class="code-block"><pre><code>+-----------+-----------+
+|   DATA    |   NEXT    |
++-----------+-----------+</code></pre></div>
+
+    <div class="intro">
+        <p>A queue using a singly linked list maintains two references:</p>
+        <ul><li><code>head</code>: points to the first node.</li><li><code>tail</code>: points to the last node.</li></ul>
+        <p class="minor-heading"><strong>Linked-list queue diagram</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/queue-linked-list.svg" alt="Linked-list queue: nodes 10, 20, 30 linked by next references, the last pointing to null; HEAD points at 10 and TAIL at 30; dequeue at head, enqueue at tail" style="width:100%;max-width:700px">
+    </div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Enqueue algorithm</strong></p>
+        <p>To insert a new element:</p>
+        <ol><li>Create a new node.</li><li>If the queue is empty, assign both <code>head</code> and <code>tail</code> to the new node.</li><li>Otherwise, connect <code>tail.next</code> to the new node.</li><li>Update <code>tail</code>.</li></ol>
+        <p>This requires O(1) time.</p>
+        <p class="minor-heading"><strong>Dequeue algorithm</strong></p>
+        <p>To remove an element:</p>
+        <ol><li>Check whether <code>head</code> is null.</li><li>Save the value from the head node.</li><li>Move <code>head</code> to <code>head.next</code>.</li><li>If the queue becomes empty, set <code>tail = null</code>.</li><li>Return the removed value.</li></ol>
+        <p>This also requires O(1) time.</p>
+        <p class="minor-heading"><strong>Complete Java implementation</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Objects</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LinkedQueue</span>&lt;E&gt; {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;E&gt; {
+        E data;
+        <span class="code-class">Node</span>&lt;E&gt; next;
+
+        <span class="code-class">Node</span>(E data) {
+            <span class="code-keyword">this</span>.data = data;
+        }
+    }
+
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;E&gt; head;
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;E&gt; tail;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> offer(E value) {
+        <span class="code-class">Objects</span>.requireNonNull(value);
+
+        <span class="code-class">Node</span>&lt;E&gt; node = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(value);
+
+        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) {
+            head = node;
+            tail = node;
+        } <span class="code-keyword">else</span> {
+            tail.next = node;
+            tail = node;
+        }
+
+        size++;
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    }
+
+    <span class="code-keyword">public</span> E poll() {
+        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) {
+            <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+        }
+
+        E result = head.data;
+
+        head = head.next;
+
+        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) {
+            tail = <span class="code-keyword">null</span>;
+        }
+
+        size--;
+        <span class="code-keyword">return</span> result;
+    }
+
+    <span class="code-keyword">public</span> E peek() {
+        <span class="code-keyword">return</span> head == <span class="code-keyword">null</span> ? <span class="code-keyword">null</span> : head.data;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
+        <span class="code-keyword">return</span> head == <span class="code-keyword">null</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
+        <span class="code-keyword">return</span> size;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">LinkedQueue</span>&lt;<span class="code-class">Integer</span>&gt; queue =
+                <span class="code-keyword">new</span> <span class="code-class">LinkedQueue</span>&lt;&gt;();
+
+        queue.offer(<span class="code-number">10</span>);
+        queue.offer(<span class="code-number">20</span>);
+        queue.offer(<span class="code-number">30</span>);
+
+        <span class="code-class">System</span>.out.println(queue.peek()); <span class="code-comment">// 10</span>
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 10</span>
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 20</span>
+
+        queue.offer(<span class="code-number">40</span>);
+
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 30</span>
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 40</span>
+        <span class="code-class">System</span>.out.println(queue.isEmpty()); <span class="code-comment">// true</span>
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages and disadvantages</strong></p>
+        <p>Advantages</p>
+        <ul><li>No fixed capacity; grows as memory allows.</li><li>O(1) insertion at tail.</li><li>O(1) deletion at head.</li><li>No array resizing or element shifting.</li></ul>
+        <p>Disadvantages</p>
+        <ul><li>Each element requires an additional node object.</li><li>Extra references increase memory overhead.</li><li>Nodes may occupy scattered memory locations.</li><li>Poorer CPU cache locality compared with arrays.</li><li>More object allocations and potential GC overhead.</li></ul>
+    </div>
+
+    <div class="subheading">Implementing a Queue Using Two Stacks</div>
+
+    <div class="intro">
+        <p>This is a classic data-structure interview problem.</p>
+        <p>A Stack follows LIFO (Last In, First Out), whereas a Queue follows FIFO.</p>
+        <p>How can two LIFO stacks implement FIFO?</p>
+        <p class="minor-heading"><strong>Core idea</strong></p>
+        <p>Maintain two stacks:</p>
+        <ul><li><code>inStack</code>: accepts newly enqueued elements.</li><li><code>outStack</code>: supplies elements for dequeue.</li></ul>
+        <p>When <code>outStack</code> is empty, transfer all elements from <code>inStack</code> to <code>outStack</code>.</p>
+        <p>Transferring reverses their order, making the oldest element available at the top of <code>outStack</code>.</p>
+        <p class="minor-heading"><strong>Diagram: Two-stack queue</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/queue-two-stacks.svg" alt="Two-stack queue: inStack holds 10, 20, 30 with 30 on top; transferring to outStack reverses the order so 10 becomes the top" style="width:100%;max-width:680px">
+    </div>
+
+    <div class="intro">
+        <p>The transfer reverses stack order to produce FIFO order.</p>
+        <p>The transfer proceeds:</p>
+    </div>
+    <div class="code-block"><pre><code>Before transfer:
+
+inStack:  bottom [10, 20, 30] top
+outStack: empty
+
+After transfer:
+
+inStack:  empty
+outStack: bottom [30, 20, 10] top
+
+Poll → 10
+Poll → 20
+Poll → 30</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Java implementation</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">ArrayDeque</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">Deque</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">Objects</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">QueueUsingStacks</span>&lt;E&gt; {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Deque</span>&lt;E&gt; inStack =
+            <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Deque</span>&lt;E&gt; outStack =
+            <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> offer(E value) {
+        inStack.push(<span class="code-class">Objects</span>.requireNonNull(value));
+    }
+
+    <span class="code-keyword">private</span> <span class="code-keyword">void</span> moveIfNecessary() {
+        <span class="code-keyword">if</span> (outStack.isEmpty()) {
+            <span class="code-keyword">while</span> (!inStack.isEmpty()) {
+                outStack.push(inStack.pop());
+            }
+        }
+    }
+
+    <span class="code-keyword">public</span> E poll() {
+        moveIfNecessary();
+
+        <span class="code-keyword">return</span> outStack.poll();
+    }
+
+    <span class="code-keyword">public</span> E peek() {
+        moveIfNecessary();
+
+        <span class="code-keyword">return</span> outStack.peek();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
+        <span class="code-keyword">return</span> inStack.isEmpty()
+                &amp;&amp; outStack.isEmpty();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
+        <span class="code-keyword">return</span> inStack.size() + outStack.size();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">QueueUsingStacks</span>&lt;<span class="code-class">Integer</span>&gt; queue =
+                <span class="code-keyword">new</span> <span class="code-class">QueueUsingStacks</span>&lt;&gt;();
+
+        queue.offer(<span class="code-number">10</span>);
+        queue.offer(<span class="code-number">20</span>);
+        queue.offer(<span class="code-number">30</span>);
+
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 10</span>
+
+        queue.offer(<span class="code-number">40</span>);
+
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 20</span>
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 30</span>
+        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 40</span>
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Amortized time complexity</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Worst-case</th><th>Amortized</th></tr></thead>
+            <tbody>
+                <tr><td>Enqueue</td><td>O(1)</td><td>O(1)</td></tr>
+                <tr><td>Dequeue</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Peek</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Size</td><td>O(1)</td><td>O(1)</td></tr>
+            </tbody>
+        </table></div>
+        <p>Why is dequeue amortized O(1)?</p>
+        <p>Each element is:</p>
+        <ol><li>Pushed onto <code>inStack</code> once.</li><li>Popped from <code>inStack</code> at most once.</li><li>Pushed onto <code>outStack</code> at most once.</li><li>Popped from <code>outStack</code> at most once.</li></ol>
+        <p>Even though a particular dequeue may transfer n elements, each element is transferred only once.</p>
+        <p>Therefore, the total work for n inserted and removed elements is O(n), giving amortized O(1) per operation.</p>
+        <p><strong>Important:</strong> Always transfer from <code>inStack</code> only when <code>outStack</code> is empty. Otherwise, you may violate FIFO ordering.</p>
+    </div>
+
+    <div class="subheading">Priority Queue</div>
+
+    <div class="intro">
+        <p>A Priority Queue is a specialized queue in which elements are removed according to their priority rather than strictly according to FIFO.</p>
+        <p>Example: Operating-system task scheduling.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Task</th><th>Priority</th></tr></thead>
+            <tbody>
+                <tr><td>Send email</td><td>1</td></tr>
+                <tr><td>Generate report</td><td>3</td></tr>
+                <tr><td>Process payment</td><td>10</td></tr>
+                <tr><td>Update cache</td><td>2</td></tr>
+            </tbody>
+        </table></div>
+        <p>If higher numbers indicate higher priority, the processing order would be:</p>
+    </div>
+    <div class="code-block"><pre><code>Process payment  (10)
+Generate report   (3)
+Update cache      (2)
+Send email        (1)</code></pre></div>
+
+    <div class="intro">
+        <p>Priority queues are commonly implemented using a Binary Heap.</p>
+        <p class="minor-heading"><strong>Min-heap and max-heap</strong></p>
+    </div>
+    <div class="card-grid">
+                <div class="card"><div class="card-title">Min-heap</div><img src="../static/queue-min-heap.svg" alt="Min-heap: root 1 with children 3 and 2; node 3 has children 7 and 5" style="width:100%;max-width:160px"><p>Smallest element at root</p></div>
+                <div class="card"><div class="card-title">Max-heap</div><img src="../static/queue-max-heap.svg" alt="Max-heap: root 10 with children 7 and 8; node 7 has children 2 and 5" style="width:100%;max-width:160px"><p>Largest element at root</p></div>
+    </div>
+
+    <div class="intro">
+        <p>A binary heap satisfies the heap-order property, but the entire structure is not globally sorted.</p>
+        <p class="minor-heading"><strong>Java implementation</strong></p>
+        <p>Java provides <code>java.util.PriorityQueue</code>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Comparator</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">PriorityQueue</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">Queue</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PriorityQueueExample</span> {
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+
+        <span class="code-comment">// Min-priority queue (default)</span>
+        <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; minQueue =
+                <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;();
+
+        minQueue.offer(<span class="code-number">30</span>);
+        minQueue.offer(<span class="code-number">10</span>);
+        minQueue.offer(<span class="code-number">20</span>);
+
+        <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 10</span>
+        <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 20</span>
+        <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 30</span>
+
+        <span class="code-comment">// Max-priority queue</span>
+        <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; maxQueue =
+                <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;(
+                    <span class="code-class">Comparator</span>.reverseOrder()
+                );
+
+        maxQueue.offer(<span class="code-number">30</span>);
+        maxQueue.offer(<span class="code-number">10</span>);
+        maxQueue.offer(<span class="code-number">20</span>);
+
+        <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 30</span>
+        <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 20</span>
+        <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 10</span>
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Priority queue with custom objects</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Comparator</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">PriorityQueue</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">Queue</span>;
+
+<span class="code-keyword">record</span> <span class="code-class">Task</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> priority) {}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">TaskScheduler</span> {
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+
+        <span class="code-class">Queue</span>&lt;<span class="code-class">Task</span>&gt; tasks = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;(
+            <span class="code-class">Comparator</span>.comparingInt(<span class="code-class">Task</span>::priority)
+                      .reversed()
+        );
+
+        tasks.offer(<span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-string">"Email"</span>, <span class="code-number">1</span>));
+        tasks.offer(<span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-string">"Report"</span>, <span class="code-number">3</span>));
+        tasks.offer(<span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-string">"Payment"</span>, <span class="code-number">10</span>));
+
+        <span class="code-keyword">while</span> (!tasks.isEmpty()) {
+            <span class="code-class">System</span>.out.println(tasks.poll());
+        }
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="code-block"><pre><code>Task[name=Payment, priority=10]
+Task[name=Report, priority=3]
+Task[name=Email, priority=1]</code></pre></div>
+
+    <div class="intro">
+        <p><strong>Important:</strong> Java's <code>PriorityQueue</code> is not stable. Two tasks with equal priority are not guaranteed to execute in insertion order. If FIFO ordering among equal-priority tasks matters, include a monotonically increasing sequence number as a secondary comparison key.</p>
+        <p class="minor-heading"><strong>Complexity</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Time</th></tr></thead>
+            <tbody>
+                <tr><td>Offer</td><td>O(log n)</td></tr>
+                <tr><td>Poll</td><td>O(log n)</td></tr>
+                <tr><td>Peek</td><td>O(1)</td></tr>
+                <tr><td>Search for arbitrary element</td><td>O(n)</td></tr>
+                <tr><td>Space</td><td>O(n)</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Double-Ended Queue (Deque)</div>
+
+    <div class="intro">
+        <p>A Deque, pronounced deck, allows both insertion and removal at either end.</p>
+        <p>Unlike a normal Queue, a Deque supports:</p>
+    </div>
+    <div class="code-block"><pre><code>                 DEQUE
+
+          +----+----+----+
+Front ↔   | 10 | 20 | 30 |   ↔ Rear
+          +----+----+----+
+
+          Both ends support
+          insertion and removal</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Deque operations</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>addFirst(x)</code></td><td>Insert at front</td></tr>
+                <tr><td><code>addLast(x)</code></td><td>Insert at rear</td></tr>
+                <tr><td><code>pollFirst()</code></td><td>Remove from front</td></tr>
+                <tr><td><code>pollLast()</code></td><td>Remove from rear</td></tr>
+                <tr><td><code>peekFirst()</code></td><td>View front</td></tr>
+                <tr><td><code>peekLast()</code></td><td>View rear</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Java example</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">ArrayDeque</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">Deque</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">DequeExample</span> {
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+
+        <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+        deque.addLast(<span class="code-number">10</span>);
+        deque.addLast(<span class="code-number">20</span>);
+        deque.addFirst(<span class="code-number">5</span>);
+        deque.addLast(<span class="code-number">30</span>);
+
+        <span class="code-class">System</span>.out.println(deque);
+        <span class="code-comment">// [5, 10, 20, 30]</span>
+
+        <span class="code-class">System</span>.out.println(deque.pollFirst());
+        <span class="code-comment">// 5</span>
+
+        <span class="code-class">System</span>.out.println(deque.pollLast());
+        <span class="code-comment">// 30</span>
+
+        <span class="code-class">System</span>.out.println(deque);
+        <span class="code-comment">// [10, 20]</span>
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Input-restricted and output-restricted deques</strong></p>
+        <p>Two theoretical variants are sometimes discussed:</p>
+        <ul><li>Input-restricted Deque: Insertion is restricted to one end, while deletion is allowed at both ends.</li><li>Output-restricted Deque: Deletion is restricted to one end, while insertion is allowed at both ends.</li></ul>
+        <p>Most general-purpose Deque implementations support operations at both ends.</p>
+        <p class="minor-heading"><strong>Applications</strong></p>
+        <p>Deques are useful for:</p>
+        <ul><li>Sliding-window algorithms.</li><li>Implementing stacks and queues using the same structure.</li><li>Palindrome checking.</li><li>Undo/redo-related history structures.</li><li>Work-stealing schedulers.</li><li>Certain LRU cache implementations, where nodes may be moved between ends.</li></ul>
+        <p>A doubly linked list or circular array is commonly used internally to support O(1) operations at both ends.</p>
+    </div>
+
+    <div class="subheading">Java Queue API — Complete Overview</div>
+
+    <div class="intro">
+        <p>Java provides the <code>Queue&lt;E&gt;</code> interface under <code>java.util</code>.</p>
+        <p>The hierarchy is conceptually:</p>
+    </div>
+    <div class="code-block"><pre><code>                Iterable
+                   |
+                Collection
+                   |
+                  Queue
+                   |
+                  Deque</code></pre></div>
+
+    <div class="intro">
+        <p><code>Deque</code> extends <code>Queue</code>, adding operations at both ends.</p>
+        <p class="minor-heading"><strong>Methods and exception behavior</strong></p>
+        <p>Java offers two styles for the main Queue operations.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Throws exception on failure</th><th>Special return on failure</th></tr></thead>
+            <tbody>
+                <tr><td>Insert</td><td><code>add(e)</code></td><td><code>offer(e)</code></td></tr>
+                <tr><td>Remove</td><td><code>remove()</code></td><td><code>poll()</code></td></tr>
+                <tr><td>Examine</td><td><code>element()</code></td><td><code>peek()</code></td></tr>
+            </tbody>
+        </table></div>
+        <p>Examples:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+queue.offer(<span class="code-number">10</span>);
+queue.offer(<span class="code-number">20</span>);
+
+<span class="code-class">System</span>.out.println(queue.peek());    <span class="code-comment">// 10</span>
+<span class="code-class">System</span>.out.println(queue.element()); <span class="code-comment">// 10</span>
+
+<span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 10</span>
+<span class="code-class">System</span>.out.println(queue.remove());  <span class="code-comment">// 20</span>
+
+<span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// null</span>
+
+<span class="code-comment">// Throws NoSuchElementException</span>
+<span class="code-class">System</span>.out.println(queue.remove());</code></pre></div>
+
+    <div class="intro">
+        <p><code>add()</code> can throw <code>IllegalStateException</code> for a capacity-restricted queue if an element cannot be inserted because the queue is full. <code>offer()</code> instead returns <code>false</code> for that condition.</p>
+        <p><code>remove()</code> and <code>element()</code> throw <code>NoSuchElementException</code> for an empty queue, whereas <code>poll()</code> and <code>peek()</code> return <code>null</code>.</p>
+        <p>Because <code>null</code> indicates absence, avoiding null queue elements is strongly recommended. Many implementations, including <code>ArrayDeque</code>, prohibit them.</p>
+        <p class="minor-heading"><strong>Important Java Queue implementations</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Implementation</th><th>Ordering</th><th>Thread-safe?</th><th>Main use</th></tr></thead>
+            <tbody>
+                <tr><td><code>ArrayDeque</code></td><td>FIFO or LIFO</td><td>No</td><td>General-purpose queue/deque</td></tr>
+                <tr><td><code>LinkedList</code></td><td>FIFO or LIFO</td><td>No</td><td>Node-based queue/deque</td></tr>
+                <tr><td><code>PriorityQueue</code></td><td>Priority</td><td>No</td><td>Heap-based scheduling</td></tr>
+                <tr><td><code>ArrayBlockingQueue</code></td><td>FIFO</td><td>Yes</td><td>Bounded producer-consumer</td></tr>
+                <tr><td><code>LinkedBlockingQueue</code></td><td>FIFO</td><td>Yes</td><td>Producer-consumer</td></tr>
+                <tr><td><code>ConcurrentLinkedQueue</code></td><td>FIFO</td><td>Yes</td><td>Non-blocking concurrent queue</td></tr>
+                <tr><td><code>PriorityBlockingQueue</code></td><td>Priority</td><td>Yes</td><td>Concurrent priority scheduling</td></tr>
+                <tr><td><code>DelayQueue</code></td><td>Delay expiration</td><td>Yes</td><td>Delayed tasks</td></tr>
+                <tr><td><code>SynchronousQueue</code></td><td>Direct handoff</td><td>Yes</td><td>Thread rendezvous</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Which ordinary Java queue should you use?</strong></p>
+        <p>For most non-concurrent FIFO requirements, prefer:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();</code></pre></div>
+
+    <div class="intro">
+        <p><code>ArrayDeque</code> typically offers better cache locality and lower per-element memory overhead than a linked list.</p>
+        <p>Use <code>LinkedList</code> when you specifically need its linked-list behavior, not simply because you're implementing a queue.</p>
+        <p>Use <code>PriorityQueue</code> when ordering by priority is required rather than FIFO.</p>
+    </div>
+
+    <div class="subheading">Blocking Queue and Concurrent Queue</div>
+
+    <div class="intro">
+        <p>Queues are especially important in multithreaded systems.</p>
+        <p>Consider two independent threads:</p>
+        <ul><li>Producer generates tasks.</li><li>Consumer processes tasks.</li></ul>
+        <p>They communicate through a shared queue.</p>
+        <p class="minor-heading"><strong>Producer–consumer architecture</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/queue-producer-consumer.svg" alt="Producer thread puts tasks into a BlockingQueue holding 1, 2, 3; the consumer thread takes them; the queue is a shared, thread-safe task buffer" style="width:100%;max-width:700px">
+    </div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>What is a BlockingQueue?</strong></p>
+        <p>A <code>BlockingQueue</code> is a thread-safe queue that can make threads wait when a required condition is not satisfied.</p>
+        <p>For a bounded blocking queue:</p>
+        <ul><li><code>put(x)</code> waits if the queue is full.</li><li><code>take()</code> waits if the queue is empty.</li></ul>
+        <p>This behavior helps control the rate of work being submitted and processed.</p>
+        <p class="minor-heading"><strong>Java producer-consumer example</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.concurrent.<span class="code-class">ArrayBlockingQueue</span>;
+<span class="code-keyword">import</span> java.util.concurrent.<span class="code-class">BlockingQueue</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ProducerConsumerExample</span> {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">final</span> <span class="code-class">String</span> STOP = <span class="code-string">"STOP"</span>;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args)
+            <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
+
+        <span class="code-class">BlockingQueue</span>&lt;<span class="code-class">String</span>&gt; queue =
+                <span class="code-keyword">new</span> <span class="code-class">ArrayBlockingQueue</span>&lt;&gt;(<span class="code-number">2</span>);
+
+        <span class="code-class">Thread</span> producer = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
+            <span class="code-keyword">try</span> {
+                <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++) {
+                    <span class="code-class">String</span> task = <span class="code-string">"Task-"</span> + i;
+
+                    queue.put(task);
+
+                    <span class="code-class">System</span>.out.println(
+                        <span class="code-string">"Produced: "</span> + task
+                    );
+                }
+
+                queue.put(STOP);
+
+            } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
+                <span class="code-class">Thread</span>.currentThread().interrupt();
+            }
+        });
+
+        <span class="code-class">Thread</span> consumer = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
+            <span class="code-keyword">try</span> {
+                <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {
+                    <span class="code-class">String</span> task = queue.take();
+
+                    <span class="code-keyword">if</span> (STOP.equals(task)) {
+                        <span class="code-keyword">break</span>;
+                    }
+
+                    <span class="code-class">System</span>.out.println(
+                        <span class="code-string">"Consumed: "</span> + task
+                    );
+                }
+
+            } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
+                <span class="code-class">Thread</span>.currentThread().interrupt();
+            }
+        });
+
+        producer.start();
+        consumer.start();
+
+        producer.join();
+        consumer.join();
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p>The exact interleaving of printed producer/consumer messages depends on thread scheduling. The order in which the consumer receives the tasks remains FIFO.</p>
+        <p class="minor-heading"><strong>What happens when the queue becomes full?</strong></p>
+        <p>Suppose the queue capacity is 3.</p>
+    </div>
+    <div class="code-block"><pre><code>Producer inserts: A, B, C
+
+Queue:
+[A, B, C]  → FULL
+
+Producer tries to insert D
+
+put(D) blocks
+        |
+        | Consumer removes A
+        v
+Queue:
+[B, C]
+
+Producer resumes and inserts D
+
+Queue:
+[B, C, D]</code></pre></div>
+
+    <div class="intro">
+        <p>This is a form of backpressure: instead of accepting unlimited work and consuming all available memory, a bounded queue limits how far a producer can get ahead of a consumer.</p>
+        <p class="minor-heading"><strong>BlockingQueue operation behavior</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Method</th><th>Empty queue</th><th>Full queue</th></tr></thead>
+            <tbody>
+                <tr><td><code>put(e)</code></td><td>Inserts normally</td><td>Blocks</td></tr>
+                <tr><td><code>take()</code></td><td>Blocks</td><td>Removes normally</td></tr>
+                <tr><td><code>offer(e)</code></td><td>Inserts normally</td><td>Returns false</td></tr>
+                <tr><td><code>poll()</code></td><td>Returns null</td><td>Removes normally</td></tr>
+                <tr><td><code>offer(e, timeout, unit)</code></td><td>Inserts normally</td><td>Waits up to timeout</td></tr>
+                <tr><td><code>poll(timeout, unit)</code></td><td>Waits up to timeout</td><td>Removes normally</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>ConcurrentLinkedQueue</strong></p>
+        <p><code>ConcurrentLinkedQueue</code> is a non-blocking, thread-safe FIFO queue.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Queue</span>;
+<span class="code-keyword">import</span> java.util.concurrent.<span class="code-class">ConcurrentLinkedQueue</span>;
+
+<span class="code-class">Queue</span>&lt;<span class="code-class">String</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ConcurrentLinkedQueue</span>&lt;&gt;();
+
+queue.offer(<span class="code-string">"Task-A"</span>);
+queue.offer(<span class="code-string">"Task-B"</span>);
+
+<span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// Task-A</span>
+<span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// Task-B</span></code></pre></div>
+
+    <div class="intro">
+        <p>Key properties:</p>
+        <ul><li>Safe for concurrent producers and consumers.</li><li>Uses a non-blocking linked-node algorithm.</li><li>Does not block waiting for elements.</li><li><code>poll()</code> returns <code>null</code> when empty.</li><li><code>size()</code> is O(n), not O(1), and is not a reliable synchronization mechanism when the queue is changing concurrently.</li></ul>
+        <p>Choosing between them: Use <code>BlockingQueue</code> when consumers should wait for work or bounded capacity must provide backpressure. Consider <code>ConcurrentLinkedQueue</code> when non-blocking operations are required and your design handles empty queues and capacity limits separately.</p>
+        <p>A thread-safe FIFO queue also does not guarantee that tasks will finish in FIFO order when multiple consumers process tasks concurrently.</p>
+    </div>
+
+    <div class="subheading">Queue Algorithms and Practical Use Cases</div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Breadth-First Search (BFS)</strong></p>
+        <p>BFS is one of the most important algorithms built around a queue.</p>
+        <p>It explores a graph level by level.</p>
+        <p>Consider the following graph:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/queue-bfs.svg" alt="Tree for BFS: node 1 has children 2 and 3; node 2 has children 4 and 5; node 3 has children 6 and 7" style="width:100%;max-width:680px">
+    </div>
+
+    <div class="intro">
+        <ul><li>Level 0: 1</li><li>Level 1: 2, 3</li><li>Level 2: 4, 5, 6, 7</li></ul>
+        <p>The BFS traversal order, visiting neighbors from left to right, is:</p>
+    </div>
+    <div class="code-block"><pre><code>1 → 2 → 3 → 4 → 5 → 6 → 7</code></pre></div>
+
+    <div class="intro">
+        <p>Why does BFS require a queue?</p>
+        <p>When node <code>1</code> is visited, its neighboring nodes <code>2</code> and <code>3</code> enter the queue. Node <code>2</code> must be processed before its newly discovered children can overtake node <code>3</code>.</p>
+        <p>FIFO ensures vertices are explored in nondecreasing distance (number of edges) from the starting vertex.</p>
+        <p class="minor-heading"><strong>Java BFS implementation</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.*;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">BFSExample</span> {
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bfs(
+            <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph,
+            <span class="code-keyword">int</span> start) {
+
+        <span class="code-keyword">boolean</span>[] visited =
+                <span class="code-keyword">new</span> <span class="code-keyword">boolean</span>[graph.size()];
+
+        <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue =
+                <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+        visited[start] = <span class="code-keyword">true</span>;
+        queue.offer(start);
+
+        <span class="code-keyword">while</span> (!queue.isEmpty()) {
+
+            <span class="code-keyword">int</span> current = queue.poll();
+
+            <span class="code-class">System</span>.out.print(current + <span class="code-string">" "</span>);
+
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> neighbor : graph.get(current)) {
+
+                <span class="code-keyword">if</span> (!visited[neighbor]) {
+                    visited[neighbor] = <span class="code-keyword">true</span>;
+                    queue.offer(neighbor);
+                }
+            }
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+
+        <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph = <span class="code-class">List</span>.of(
+            <span class="code-class">List</span>.of(<span class="code-number">1</span>, <span class="code-number">2</span>), <span class="code-comment">// 0</span>
+            <span class="code-class">List</span>.of(<span class="code-number">3</span>, <span class="code-number">4</span>), <span class="code-comment">// 1</span>
+            <span class="code-class">List</span>.of(<span class="code-number">5</span>),    <span class="code-comment">// 2</span>
+            <span class="code-class">List</span>.of(),     <span class="code-comment">// 3</span>
+            <span class="code-class">List</span>.of(),     <span class="code-comment">// 4</span>
+            <span class="code-class">List</span>.of()      <span class="code-comment">// 5</span>
+        );
+
+        bfs(graph, <span class="code-number">0</span>);
+        <span class="code-comment">// 0 1 2 3 4 5</span>
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p>Complexity: O(V + E) time and O(V) auxiliary space, where V is the number of vertices and E is the number of edges.</p>
+        <p>BFS is used in graph traversal, unweighted shortest paths, level-order tree traversal, and many search problems.</p>
+        <p class="minor-heading"><strong>Sliding Window Maximum Using a Monotonic Deque</strong></p>
+        <p>A monotonic deque maintains candidates in increasing or decreasing value order.</p>
+        <p>Suppose:</p>
+    </div>
+    <div class="code-block"><pre><code>Array = [1, 3, -1, -3, 5, 3, 6, 7]
+Window size = 3</code></pre></div>
+
+    <div class="intro">
+        <p>Find the maximum element in every contiguous window.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Window</th><th>Maximum</th></tr></thead>
+            <tbody>
+                <tr><td>[1, 3, -1]</td><td>3</td></tr>
+                <tr><td>[3, -1, -3]</td><td>3</td></tr>
+                <tr><td>[-1, -3, 5]</td><td>5</td></tr>
+                <tr><td>[-3, 5, 3]</td><td>5</td></tr>
+                <tr><td>[5, 3, 6]</td><td>6</td></tr>
+                <tr><td>[3, 6, 7]</td><td>7</td></tr>
+            </tbody>
+        </table></div>
+        <p>Result:</p>
+    </div>
+    <div class="code-block"><pre><code>[3, 3, 5, 5, 6, 7]</code></pre></div>
+
+    <div class="intro">
+        <p>A naive approach checks all k items per window: O(nk).</p>
+        <p>Using a monotonic deque, this becomes O(n).</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">ArrayDeque</span>;
+<span class="code-keyword">import</span> java.util.<span class="code-class">Deque</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SlidingWindowMaximum</span> {
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">int</span>[] maxSlidingWindow(
+            <span class="code-keyword">int</span>[] nums,
+            <span class="code-keyword">int</span> k) {
+
+        <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span> || k &gt; nums.length) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(
+                <span class="code-string">"Invalid window size"</span>
+            );
+        }
+
+        <span class="code-keyword">int</span>[] result =
+                <span class="code-keyword">new</span> <span class="code-keyword">int</span>[nums.length - k + <span class="code-number">1</span>];
+
+        <span class="code-comment">// Stores array indices, not values</span>
+        <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; nums.length; i++) {
+
+            <span class="code-comment">// Remove indices outside the window</span>
+            <span class="code-keyword">while</span> (!deque.isEmpty()
+                    &amp;&amp; deque.peekFirst() &lt;= i - k) {
+                deque.pollFirst();
+            }
+
+            <span class="code-comment">// Remove smaller or equal candidates</span>
+            <span class="code-keyword">while</span> (!deque.isEmpty()
+                    &amp;&amp; nums[deque.peekLast()] &lt;= nums[i]) {
+                deque.pollLast();
+            }
+
+            deque.offerLast(i);
+
+            <span class="code-keyword">if</span> (i &gt;= k - <span class="code-number">1</span>) {
+                result[i - k + <span class="code-number">1</span>] =
+                        nums[deque.peekFirst()];
+            }
+        }
+
+        <span class="code-keyword">return</span> result;
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p>Each index enters the deque exactly once and is removed at most once. Therefore, the total time is O(n), with O(k) auxiliary deque space.</p>
+        <p class="minor-heading"><strong>Topological Sorting (Kahn's Algorithm)</strong></p>
+        <p>A queue is also used to perform topological sorting on a directed acyclic graph (DAG).</p>
+        <p>The algorithm:</p>
+        <ol><li>Calculate the in-degree of each vertex.</li><li>Enqueue all vertices with in-degree zero.</li><li>Remove a vertex and output it.</li><li>Decrease the in-degree of each outgoing neighbor.</li><li>Enqueue any neighbor whose in-degree becomes zero.</li><li>Repeat until the queue is empty.</li></ol>
+        <p>If fewer than V vertices are output, the graph contains a cycle.</p>
+        <p>Applications include dependency resolution, build systems, and scheduling jobs with prerequisite tasks.</p>
+        <p class="minor-heading"><strong>Other applications</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Application</th><th>How a queue is used</th></tr></thead>
+            <tbody>
+                <tr><td>Print spooler</td><td>Print requests wait to be processed</td></tr>
+                <tr><td>Thread pool</td><td>Pending tasks wait for worker threads</td></tr>
+                <tr><td>Web server</td><td>Requests may wait for available processing capacity</td></tr>
+                <tr><td>Operating system</td><td>Ready processes and round-robin scheduling</td></tr>
+                <tr><td>Network processing</td><td>Packets are buffered before transmission or processing</td></tr>
+                <tr><td>BFS</td><td>Nodes are explored layer by layer</td></tr>
+                <tr><td>Event loop</td><td>Events or callbacks await dispatch</td></tr>
+                <tr><td>Messaging systems</td><td>Messages are buffered for consumers</td></tr>
+                <tr><td>Rate limiter</td><td>Requests or timestamps can be tracked in a moving window</td></tr>
+                <tr><td>Streaming pipeline</td><td>Data items move between asynchronous stages</td></tr>
+            </tbody>
+        </table></div>
+        <p>A useful distinction in distributed systems: Kafka partitions are append-only logs with consumer offsets and retention, not simple destructive FIFO queues. They can support queue-like processing with consumer groups, but their storage and replay semantics differ from a conventional queue.</p>
+    </div>
+
+    <div class="subheading">Comparison of Queue Implementations</div>
+
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Implementation</th><th>Enqueue</th><th>Dequeue</th><th>Peek</th><th>Extra space</th></tr></thead>
+            <tbody>
+                <tr><td>Array with shifting</td><td>O(1)</td><td>O(n)</td><td>O(1)</td><td>O(C)</td></tr>
+                <tr><td>Fixed circular array</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(C)</td></tr>
+                <tr><td>Dynamic circular array</td><td>Amortized O(1)</td><td>O(1)</td><td>O(1)</td><td>O(n) capacity</td></tr>
+                <tr><td>Singly linked list</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(n)</td></tr>
+                <tr><td>Two stacks</td><td>O(1)</td><td>Amortized O(1)</td><td>Amortized O(1)</td><td>O(n)</td></tr>
+                <tr><td>Binary heap priority queue</td><td>O(log n)</td><td>O(log n)</td><td>O(1)</td><td>O(n)</td></tr>
+            </tbody>
+        </table></div>
+        <p>Here C represents allocated queue capacity and n represents the number of stored elements. Dynamic arrays can temporarily allocate more capacity than the current element count.</p>
+        <p class="minor-heading"><strong>Array-based vs. linked-list queue</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Feature</th><th>Circular array</th><th>Linked list</th></tr></thead>
+            <tbody>
+                <tr><td>Memory layout</td><td>Contiguous</td><td>Separate nodes</td></tr>
+                <tr><td>Capacity</td><td>Fixed or resizable</td><td>Grows by node allocation</td></tr>
+                <tr><td>Pointer overhead</td><td>Low</td><td>Higher</td></tr>
+                <tr><td>Cache locality</td><td>Usually better</td><td>Usually worse</td></tr>
+                <tr><td>Resize cost</td><td>Possible O(n)</td><td>Not required</td></tr>
+                <tr><td>Enqueue/dequeue</td><td>O(1) normally</td><td>O(1)</td></tr>
+                <tr><td>Memory fragmentation</td><td>Generally lower</td><td>More allocation overhead</td></tr>
+            </tbody>
+        </table></div>
+        <p>For a general-purpose, single-threaded Java FIFO queue, a dynamically resized array-based <code>ArrayDeque</code> is usually a strong default.</p>
+    </div>
+
+    <div class="subheading">Queue vs. Stack vs. Deque vs. Priority Queue</div>
+
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Structure</th><th>Removal order</th><th>Typical use</th></tr></thead>
+            <tbody>
+                <tr><td>Queue</td><td>FIFO</td><td>Task processing, BFS</td></tr>
+                <tr><td>Stack</td><td>LIFO</td><td>DFS, function calls, undo</td></tr>
+                <tr><td>Deque</td><td>Either end</td><td>Sliding window, flexible buffering</td></tr>
+                <tr><td>Priority Queue</td><td>Comparator-defined priority</td><td>Scheduling, Dijkstra's algorithm</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, inserting <code>10</code>, <code>20</code>, <code>30</code> produces different removal orders:</p>
+    </div>
+    <div class="code-block"><pre><code>QUEUE (FIFO):
+10 → 20 → 30
+
+STACK (LIFO):
+30 → 20 → 10
+
+MAX PRIORITY QUEUE:
+30 → 20 → 10
+
+MIN PRIORITY QUEUE:
+10 → 20 → 30</code></pre></div>
+
+    <div class="intro">
+        <p>A priority queue may produce the same order as a stack or queue for some inputs, but its behavior is based on priority, not insertion order.</p>
+    </div>
+
+    <div class="subheading">Important Edge Cases and Design Considerations</div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Queue overflow</strong></p>
+        <p>Overflow happens when insertion is attempted into a full bounded queue.</p>
+        <p>Possible behaviors include returning <code>false</code>, throwing an exception, blocking the producer, or growing capacity if the implementation supports resizing.</p>
+        <p class="minor-heading"><strong>Queue underflow</strong></p>
+        <p>Underflow happens when removal is attempted from an empty queue.</p>
+        <p>Depending on the API, the operation might return <code>null</code>, throw an exception, or block waiting for an element.</p>
+        <p class="minor-heading"><strong>Memory management</strong></p>
+        <p>In array-based queues, clear removed references:</p>
+    </div>
+    <div class="code-block"><pre><code>elements[front] = <span class="code-keyword">null</span>;</code></pre></div>
+
+    <div class="intro">
+        <p>Otherwise, the internal array may continue retaining objects that are no longer logically stored in the queue.</p>
+        <p class="minor-heading"><strong>Concurrency</strong></p>
+        <p>An ordinary <code>ArrayDeque</code> is not thread-safe.</p>
+        <p>Using it concurrently without proper synchronization can cause races and inconsistent results. Use an appropriate concurrent queue or external synchronization when multiple threads need access.</p>
+        <p class="minor-heading"><strong>Backpressure</strong></p>
+        <p>For a producer-consumer system, unbounded queues can accumulate unlimited pending tasks if the consumer is slower than the producer, eventually exhausting memory.</p>
+        <p>Bounded queues make overload behavior explicit.</p>
+        <p class="minor-heading"><strong>Fairness and starvation</strong></p>
+        <p>FIFO queues normally serve elements in insertion order. Priority queues can starve low-priority tasks if higher-priority tasks continue arriving.</p>
+        <p>Some schedulers use aging, which raises the effective priority of tasks that have waited a long time.</p>
+    </div>
+
+    <div class="subheading">Common Queue Interview Questions</div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Why use a circular queue instead of a linear array queue?</div><div class="step-body">It reuses vacant positions at the beginning of the array without shifting existing elements, supporting O(1) enqueue and dequeue.</div></div>
+        <div class="step"><div class="step-title">Can a queue be implemented using one or two stacks?</div><div class="step-body">Yes. Two stacks support amortized O(1) queue operations. A one-stack recursive approach is also possible but can require O(n) call-stack space and O(n) removal time.</div></div>
+        <div class="step"><div class="step-title">How do we detect a full circular queue?</div><div class="step-body">With an explicit size variable: size == capacity. With one deliberately unused slot: (rear + 1) % capacity == front.</div></div>
+        <div class="step"><div class="step-title">Why is BFS implemented using a queue?</div><div class="step-body">Because FIFO processing visits vertices in increasing discovery distance from the start, assuming each edge has equal cost.</div></div>
+        <div class="step"><div class="step-title">Why is a heap suitable for a priority queue?</div><div class="step-body">A binary heap keeps the highest- or lowest-priority element at the root, supporting O(1) peek and O(log n) insertion and removal.</div></div>
+        <div class="step"><div class="step-title">Is ArrayDeque thread-safe?</div><div class="step-body">No. For concurrent access, use a suitable concurrent or blocking queue, or provide correct synchronization.</div></div>
+        <div class="step"><div class="step-title">Does FIFO guarantee that concurrent tasks finish in FIFO order?</div><div class="step-body">No. Tasks may be dequeued in FIFO order but finish in a different order because workers run concurrently and task durations differ.</div></div>
+        <div class="step"><div class="step-title">What is the best general-purpose Java queue?</div><div class="step-body">For a normal, non-concurrent FIFO queue, ArrayDeque is typically preferred. Other requirements, such as priority, blocking, or concurrency, call for specialized implementations.</div></div>
+    </div>
+
+    <div class="subheading">Final Summary</div>
+
+    <div class="intro">
+        <p>A Queue is a FIFO abstraction, not a particular storage implementation. Its defining behavior is that elements are normally inserted at one end and removed from the other.</p>
+        <p>The main concepts to retain are:</p>
+        <ul><li>FIFO: The first inserted element is the first removed.</li><li>Circular Queue: Efficient array-based implementation with wrap-around indexing.</li><li>Linked Queue: Dynamically grows with O(1) head and tail operations.</li><li>Two-Stack Queue: Demonstrates how FIFO can be implemented using LIFO structures.</li><li>Priority Queue: Processes according to priority, often using a heap.</li><li>Deque: Supports insertions and removals at both ends.</li><li>Blocking/Concurrent Queue: Enables safe inter-thread communication, with blocking and non-blocking behaviors depending on implementation.</li></ul>
+        <p>For Java development, master <code>ArrayDeque</code>, <code>PriorityQueue</code>, and <code>BlockingQueue</code> first, then implement circular and linked-list queues yourself to understand how FIFO ordering is maintained internally.</p>
+    </div>
+</div>
+</body>
+</html>

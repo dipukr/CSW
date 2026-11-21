@@ -968,7 +968,7 @@ br {
     overflow-x: auto;
     color: #383a42;
     font-family: Consolas, "Source Code Pro", "Courier New", monospace;
-    font-size: 14px;
+    font-size: 17px;
     line-height: 1.65;
     white-space: pre;
 }
@@ -1024,7 +1024,7 @@ br {
     margin: 0;
     color: #383a42;
     font-family: Consolas, "Source Code Pro", "Courier New", monospace;
-    font-size: 14px;
+    font-size: 17px;
     line-height: 1.65;
     word-spacing: normal;
     white-space: pre;
@@ -1548,3 +1548,64 @@ strong {
 .gof-col ul { margin: 0; padding: 0; list-style: none; }
 .gof-col li { margin: 4px 0; }
 @media (max-width: 700px) { .gof-cols { grid-template-columns: 1fr; } }
+
+/* SWindow.html: layout blocks carried over from the ChatGPT "Sliding Window" chat
+   (array strips, step grids, slide cards, the mastery tracker). All classes start with sw-. */
+.sw-box { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sw-box p, .intro .sw-box p { margin: 0; }
+.sw-bordered { padding: 12px 14px; border: 1px solid #e3e6ea; border-radius: 3px; background: #ffffff; }
+.intro > .sw-box, .intro > .sw-grid, .intro > .sw-slides { margin: 12px 0 16px; }
+.sw-dir-row { flex-direction: row; }
+.sw-center { align-items: center; justify-content: center; text-align: center; }
+.sw-row { display: flex; flex-direction: row; align-items: center; gap: 6px; min-width: 0; }
+.sw-row > .sw-bordered { padding: 6px 2px; }                 /* array cells */
+.sw-row > .sw-box > .sw-row { flex-wrap: wrap; }
+.sw-box[style*="background-color:rgb("] {                      /* solid step markers: white number in a circle */
+    height: 28px; border-radius: 50%; color: #ffffff; justify-content: center; align-items: center; }
+.sw-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.sw-grid-item { min-width: 0; }
+.sw-grid-item > .sw-box { height: 100%; }
+.sw-badge { align-self: flex-start; display: inline-block; padding: 1px 9px; border: 1px solid #c9ecea; border-radius: 999px;
+    background: #effcfb; color: #155e63; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.intro > .sw-badge { margin: 2px 0 8px; }
+.sw-small { font-size: 14px; }
+.sw-muted { color: #6b7280; }
+.sw-strong { font-weight: 600; }
+.sw-caption { font-size: 14px; color: #6b7280; }
+.sw-title { font-weight: 700; color: #18212f; }
+.sw-h1 { font-size: 22px; }
+.sw-h2 { font-size: 19px; }
+.sw-h3 { font-size: 17px; }
+.sw-figure { text-align: center; }
+.sw-figure img { display: block; margin: 0 auto; height: auto; }
+.sw-slides { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.sw-slide { padding: 14px 16px; border: 1px solid #e3e6ea; border-radius: 3px; background: #ffffff; }
+.sw-slide .sw-caption { letter-spacing: 0.5px; }
+.sw-slide .math-display { margin: 4px 0; font-size: 0.85em; overflow-x: auto; overflow-y: hidden; }   /* long formulas scroll inside the card */
+.sw-slide .sw-row > .sw-bordered { padding: 6px 16px; }      /* deque values: roomy boxes, not array cells */
+.sw-quote { margin: 10px 0 14px; padding: 8px 16px; border-left: 4px solid #cbd5e1; background: #f8fafc; color: #334155; }
+.sw-quote p { margin: 0; }
+.sw-divider { width: 100%; height: 0; margin: 4px 0; border: 0; border-top: 1px solid #eceef1; }
+.sw-col { display: flex; flex-direction: column; gap: 4px; }
+.sw-pressable { text-decoration: underline dotted; text-underline-offset: 3px; }
+/* difficulty label at the top of each problem on SWindowCode.html */
+.sw-diff { display: inline-block; padding: 1px 12px; border: 1px solid; border-radius: 999px; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; }
+.sw-easy { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
+.sw-medium { background: #fffbeb; border-color: #fde68a; color: #b45309; }
+.sw-hard { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+.subheading:has(> .sw-diff) { display: flex; justify-content: space-between; align-items: center; gap: 12px; }   /* label on the right of the heading */
+.subheading > .sw-diff { flex: none; text-transform: none; }
+.sw-tracker > .sw-row:first-child { justify-content: space-between; align-items: flex-start; }
+.sw-label { display: flex; align-items: baseline; gap: 8px; font-size: 16px; cursor: pointer; }
+.sw-check { flex: none; width: 16px; height: 16px; margin: 0; accent-color: #0d9488; }
+.sw-check:checked + * , .sw-label:has(.sw-check:checked) { color: #6b7280; }
+.sw-progress { height: 6px; border-radius: 3px; background: #e5e7eb; overflow: hidden; }
+.sw-progress-fill { width: 0; height: 100%; background: #0d9488; transition: width 0.2s; }
+.sw-reset { padding: 5px 12px; border: 1px solid #d1d5db; border-radius: 3px; background: #ffffff; font: inherit; font-size: 14px; cursor: pointer; }
+.sw-reset:hover { background: #f3f4f6; }
+.intro p.math-display { overflow-x: auto; overflow-y: hidden; }   /* long formulas scroll on narrow screens instead of widening the page */
+@media (min-width: 801px) { .sw-page .code-block pre { font-size: 19px; } }   /* Sliding Window pages only; phones keep the site-wide 13px */
+@media (max-width: 640px) {
+    .sw-grid { grid-template-columns: 1fr !important; }
+    .sw-row > .sw-bordered { padding: 4px 1px; }
+}

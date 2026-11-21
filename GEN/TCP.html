@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCP</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.katex) return; // offline: keep the plain-text fallback
+    document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Transmission Control Protocol</div>
+
+    <div class="intro">
+        <p>TCP (Transmission Control Protocol) is one of the most important protocols in computer networking. It is responsible for providing reliable, ordered, error-checked, bidirectional communication between applications running on different computers.</p>
+        <p>This guide covers TCP from fundamentals to advanced concepts, including packet formats, connection establishment, sequence numbers, acknowledgments, retransmission, sliding windows, flow control, congestion control, connection termination, and practical Java examples.</p>
+    </div>
+
+    <div class="subheading">What is TCP?</div>
+
+    <div class="intro">
+        <p>TCP (Transmission Control Protocol) is a connection-oriented transport-layer protocol in the TCP/IP protocol suite.</p>
+        <p>It provides a reliable, ordered stream of bytes between two endpoints, even when the underlying IP network loses, duplicates, or delivers packets out of order.</p>
+        <p>TCP was originally specified in RFC 793 (1981), and its consolidated modern specification is <a href="https://www.rfc-editor.org/rfc/rfc9293.html" target="_blank" rel="noopener">RFC 9293 (2022)</a>.</p>
+        <p class="minor-heading"><strong>Why do we need TCP?</strong></p>
+        <p>Imagine you are transferring a 100 MB file from one computer to another.</p>
+        <p>The underlying IP network operates on a best-effort basis, meaning that:</p>
+        <ul><li>Some packets may be lost.</li><li>Packets may arrive in the wrong order.</li><li>The same data may arrive more than once.</li><li>Different packets may take different network paths.</li><li>A receiver may be slower than the sender.</li><li>The network may become congested.</li></ul>
+        <p>TCP manages these challenges using sequence numbers, acknowledgments, retransmissions, buffering, flow control, and congestion control.</p>
+        <p>TCP does not guarantee that a connection will always succeed. Instead, it ensures that bytes delivered successfully to an application are ordered and reliable, or reports a connection failure.</p>
+    </div>
+
+    <div class="subheading">Important properties of TCP</div>
+
+    <div class="folio"><ol class="ledger">
+            <li><span class="ledger-label">Connection-oriented</span><span>Establishes a logical connection before normal data transfer</span></li>
+            <li><span class="ledger-label">Reliable delivery</span><span>Uses acknowledgments and retransmissions to recover lost data</span></li>
+            <li><span class="ledger-label">Ordered delivery</span><span>Delivers bytes to the receiving application in sequence</span></li>
+            <li><span class="ledger-label">Byte-stream protocol</span><span>Transfers continuous streams of bytes rather than discrete messages</span></li>
+            <li><span class="ledger-label">Full-duplex</span><span>Both endpoints can send and receive simultaneously</span></li>
+            <li><span class="ledger-label">Error detection</span><span>Uses a 16-bit checksum to detect corruption</span></li>
+            <li><span class="ledger-label">Flow control</span><span>Prevents a sender from overwhelming the receiver</span></li>
+            <li><span class="ledger-label">Congestion control</span><span>Regulates sending to avoid overwhelming the network</span></li>
+            <li><span class="ledger-label">Sliding window</span><span>Permits multiple bytes or segments to remain unacknowledged</span></li>
+            <li><span class="ledger-label">Point-to-point</span><span>Each ordinary TCP connection has two endpoints</span></li>
+            <li><span class="ledger-label">Port-based</span><span>Uses port numbers to identify communicating applications</span></li>
+        </ol>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>What TCP does not provide</strong></p>
+        <p>TCP does not natively provide encryption, authentication, message boundaries, or guaranteed delivery deadlines. Encryption and endpoint authentication are commonly provided by TLS over TCP.</p>
+    </div>
+
+    <div class="subheading">Where TCP fits in the network stack</div>
+
+    <div class="svg-diagram">
+        <img src="../static/tcp-network-stack.svg" alt="TCP sits between applications and IP: application layer, transport layer (TCP), internet layer (IP), link and physical layers" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>TCP belongs to Layer 4 of the OSI model (the Transport layer). It uses IP to move TCP segments between hosts.</p>
+        <p class="minor-heading"><strong>Encapsulation: how application data travels</strong></p>
+        <p>Suppose a browser sends an HTTP request.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-encapsulation.svg" alt="Encapsulation: application data (HTTP request: GET /index.html); TCP adds a TCP header; IP adds an IP header; the link layer adds framing information, giving an Ethernet frame or Wi-Fi frame" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Each layer has a different responsibility.</p>
+        <ul><li>TCP: Which application should receive the data, and how can it be delivered reliably?</li><li>IP: Which host should receive the packet, and where should it be routed?</li><li>Ethernet/Wi-Fi: How are frames transmitted over the next physical or wireless link?</li></ul>
+        <p>TCP's IP protocol number is <code>6</code>.</p>
+    </div>
+
+    <div class="subheading">How TCP identifies a connection</div>
+
+    <div class="intro">
+        <p>A TCP connection is identified by a four-tuple:</p>
+    </div>
+    <div class="code-block"><pre><code>(Source IP, Source Port, Destination IP, Destination Port)</code></pre></div>
+
+    <div class="intro">
+        <p>Example:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+            <tbody>
+                <tr><td>Source IP</td><td>192.168.1.10</td></tr>
+                <tr><td>Source port</td><td>51000</td></tr>
+                <tr><td>Destination IP</td><td>203.0.113.20</td></tr>
+                <tr><td>Destination port</td><td>443</td></tr>
+            </tbody>
+        </table></div>
+        <p>The client might be a browser using ephemeral port <code>51000</code>, while the server listens on port <code>443</code>.</p>
+        <p>A server can handle thousands of TCP connections on the same listening port because the complete four-tuple distinguishes individual connections.</p>
+        <p>A TCP connection also maintains two independent byte streams, one in each direction, with separate sequence-number spaces.</p>
+    </div>
+
+    <div class="subheading">TCP segment format (TCP header)</div>
+
+    <div class="intro">
+        <p>A TCP segment consists of a TCP header and an optional data payload.</p>
+        <p>TCP header — 32 bits per row</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-header.svg" alt="TCP header, 32 bits per row: source port and destination port; sequence number; acknowledgment number; data offset, reserved, flags and window; checksum and urgent pointer; options and padding; then the data payload" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Header layout based on RFC 9293. The payload is not part of the header.</p>
+        <p>A TCP header is 20 bytes minimum and 60 bytes maximum, including optional fields.</p>
+        <p class="minor-heading"><strong>TCP header fields explained</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Field</th><th>Size</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Source port</td><td>16 bits</td><td>Identifies the sending application</td></tr>
+                <tr><td>Destination port</td><td>16 bits</td><td>Identifies the receiving application</td></tr>
+                <tr><td>Sequence number</td><td>32 bits</td><td>Identifies a position in the outgoing byte stream</td></tr>
+                <tr><td>Acknowledgment number</td><td>32 bits</td><td>Identifies the next byte expected from the peer</td></tr>
+                <tr><td>Data offset</td><td>4 bits</td><td>TCP header length in 32-bit words</td></tr>
+                <tr><td>Reserved</td><td>4 bits</td><td>Reserved for future use</td></tr>
+                <tr><td>Control flags</td><td>8 bits</td><td>Manage connection and data-transfer behavior</td></tr>
+                <tr><td>Window size</td><td>16 bits</td><td>Advertised receive window</td></tr>
+                <tr><td>Checksum</td><td>16 bits</td><td>Detects corruption</td></tr>
+                <tr><td>Urgent pointer</td><td>16 bits</td><td>Position associated with urgent data</td></tr>
+                <tr><td>Options</td><td>0–40 bytes</td><td>Optional features such as MSS, SACK, timestamps</td></tr>
+                <tr><td>Data</td><td>Variable</td><td>Actual application bytes</td></tr>
+            </tbody>
+        </table></div>
+        <p>The data offset is measured in 4-byte units. For instance, a data offset of <code>5</code> represents a 20-byte TCP header; a data offset of <code>8</code> represents a 32-byte TCP header.</p>
+        <p class="minor-heading"><strong>TCP control flags</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Flag</th><th>Full name</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>SYN</td><td>Synchronize</td><td>Establish a connection and synchronize sequence numbers</td></tr>
+                <tr><td>ACK</td><td>Acknowledgment</td><td>Indicates that the acknowledgment field is valid</td></tr>
+                <tr><td>FIN</td><td>Finish</td><td>Sender has finished sending data</td></tr>
+                <tr><td>RST</td><td>Reset</td><td>Abruptly reset a connection or reject a connection attempt</td></tr>
+                <tr><td>PSH</td><td>Push</td><td>Requests prompt delivery of buffered data</td></tr>
+                <tr><td>URG</td><td>Urgent</td><td>Indicates the urgent pointer is meaningful</td></tr>
+                <tr><td>ECE</td><td>ECN-Echo</td><td>Signals congestion notification information</td></tr>
+                <tr><td>CWR</td><td>Congestion Window Reduced</td><td>Indicates the sender responded to congestion feedback</td></tr>
+            </tbody>
+        </table></div>
+        <p>The flags are control bits, not separate TCP packet formats. For example, a segment can have both <code>PSH</code> and <code>ACK</code> enabled.</p>
+        <p class="minor-heading"><strong>TCP options</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Option</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>MSS</td><td>Negotiates maximum TCP payload size per segment in a direction</td></tr>
+                <tr><td>Window Scale</td><td>Allows advertised windows larger than 65,535 bytes</td></tr>
+                <tr><td>SACK Permitted</td><td>Negotiates Selective Acknowledgment support</td></tr>
+                <tr><td>SACK</td><td>Identifies received ranges of out-of-order data</td></tr>
+                <tr><td>Timestamp</td><td>Helps with RTT measurements and protection against old segments</td></tr>
+                <tr><td>NOP</td><td>One-byte padding/alignment</td></tr>
+                <tr><td>EOL</td><td>End of options list</td></tr>
+            </tbody>
+        </table></div>
+        <p>Window scaling and timestamps are specified in RFC 7323; SACK is specified in RFC 2018.</p>
+        <p class="minor-heading"><strong>TCP checksum</strong></p>
+        <p>TCP computes a 16-bit one's-complement checksum over the TCP header and data, together with a pseudo-header containing selected IP-layer information such as source and destination addresses.</p>
+        <p>The receiver verifies the checksum and discards invalid segments. TCP later recovers missing data through its reliability mechanisms.</p>
+        <p>The checksum detects accidental errors; it is not a cryptographic integrity check.</p>
+    </div>
+
+    <div class="subheading">How TCP works: complete lifecycle</div>
+
+    <div class="intro">
+        <p>TCP communication generally follows three major phases.</p>
+    </div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Connection establishment</div><div class="step-body">Client and server perform a three-way handshake to synchronize sequence numbers and negotiate relevant TCP options.</div></div>
+        <div class="step"><div class="step-title">Data transmission</div><div class="step-body">TCP transfers data using sequence numbers, acknowledgments, retransmissions, and sliding windows.</div></div>
+        <div class="step"><div class="step-title">Connection termination</div><div class="step-body">The endpoints close their sending directions using FIN segments, or abort the connection using RST.</div></div>
+    </div>
+    <div class="intro">
+        <p>Let's examine these operations at the packet level.</p>
+    </div>
+
+    <div class="subheading">TCP three-way handshake</div>
+
+    <div class="intro">
+        <p>A three-way handshake establishes a TCP connection.</p>
+        <p>The three messages are:</p>
+        <ol><li>SYN</li><li>SYN + ACK</li><li>ACK</li></ol>
+        <p class="minor-heading"><strong>Sequence diagram</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-1.svg" alt="Three-way handshake: client sends SYN Seq=1000, server replies SYN+ACK Seq=5000 Ack=1001, client sends ACK; both reach ESTABLISHED" style="width:100%;max-width:570px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Step 1 — Client sends SYN</strong></p>
+        <p>The client wants to connect to a server on port <code>8080</code>.</p>
+        <p>It sends:</p>
+    </div>
+    <div class="code-block"><pre><code>Client → Server
+
+Flags       = SYN
+Sequence    = 1000
+Destination = 8080</code></pre></div>
+
+    <div class="intro">
+        <p>The number <code>1000</code> is an illustrative Initial Sequence Number (ISN).</p>
+        <p>The client enters the <code>SYN-SENT</code> state.</p>
+        <p class="minor-heading"><strong>Step 2 — Server responds with SYN-ACK</strong></p>
+        <p>The server acknowledges the client's SYN and announces its own ISN.</p>
+    </div>
+    <div class="code-block"><pre><code>Server → Client
+
+Flags    = SYN, ACK
+Sequence = 5000
+Ack      = 1001</code></pre></div>
+
+    <div class="intro">
+        <p>Why is the acknowledgment number <code>1001</code>?</p>
+        <p>Because the client's SYN consumes one position in TCP's sequence-number space.</p>
+        <p>The server is effectively saying:</p>
+    </div>
+    <div class="callout callout-note"><p>I received your SYN with sequence number 1000. My next expected sequence number from you is 1001. My initial sequence number is 5000.</p></div>
+    <div class="intro">
+        <p>The server enters <code>SYN-RECEIVED</code>.</p>
+        <p class="minor-heading"><strong>Step 3 — Client sends final ACK</strong></p>
+    </div>
+    <div class="code-block"><pre><code>Client → Server
+
+Flags    = ACK
+Sequence = 1001
+Ack      = 5001</code></pre></div>
+
+    <div class="intro">
+        <p>The client acknowledges the server's SYN.</p>
+        <p>Both endpoints can now reach the <code>ESTABLISHED</code> state.</p>
+        <p class="minor-heading"><strong>Why three messages instead of two?</strong></p>
+        <p>The three messages allow both endpoints to establish that their initial sequence-number information has been exchanged and acknowledged.</p>
+        <p>A two-message exchange would not provide the same confirmation that the initiator received the responder's SYN.</p>
+        <p>The handshake also helps reject old duplicate connection requests and negotiate TCP capabilities.</p>
+        <p><strong>Important:</strong> A TCP connection is a logical connection maintained through endpoint state. TCP does not reserve a dedicated physical network path.</p>
+    </div>
+
+    <div class="subheading">TCP sequence numbers and acknowledgments</div>
+
+    <div class="intro">
+        <p>These two fields are fundamental to understanding reliability.</p>
+        <p class="minor-heading"><strong>Sequence number</strong></p>
+        <p>TCP assigns sequence numbers to bytes, not simply to packets.</p>
+        <p>Suppose the initial data sequence number is <code>1001</code>, and the client sends 10 bytes.</p>
+    </div>
+    <div class="code-block"><pre><code>Payload: ABCDEFGHIJ
+
+Byte:    A  B  C  D  E  F  G  H  I  J
+Seq:  1001 ...                         1010</code></pre></div>
+
+    <div class="intro">
+        <p>The next data byte will have sequence number <code>1011</code>.</p>
+        <p>For an ordinary data segment:</p>
+        <p class="math-display"><span class="math" data-tex="NextSeq = Seq + PayloadLength" data-display="1">NextSeq=Seq+PayloadLength</span></p>
+        <p>SYN and FIN each consume one sequence number as well; ordinary pure ACKs do not.</p>
+        <p class="minor-heading"><strong>Acknowledgment number</strong></p>
+        <p>The acknowledgment number represents the next byte expected by the receiver.</p>
+        <p>If a client sends 10 bytes beginning at sequence number <code>1001</code>:</p>
+    </div>
+    <div class="code-block"><pre><code>Client → Server
+
+SEQ = 1001
+LEN = 10</code></pre></div>
+
+    <div class="intro">
+        <p>The server can respond:</p>
+    </div>
+    <div class="code-block"><pre><code>Server → Client
+
+ACK = 1011</code></pre></div>
+
+    <div class="intro">
+        <p>This cumulatively acknowledges receipt of all bytes through sequence number <code>1010</code>.</p>
+        <p>It does not mean that only byte <code>1011</code> was received.</p>
+        <p class="minor-heading"><strong>Complete handshake and data example</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-2.svg" alt="Handshake followed by data: client sends HELLO (Seq=1001, Len=5) and gets ACK=1006; server sends OK (Seq=5001, Len=2) and gets ACK=5003" style="width:100%;max-width:551px">
+    </div>
+    <div class="intro">
+        <p>Observe that the client and server maintain independent sequence numbers.</p>
+        <p>Also, <code>ACK=1006</code> does not necessarily mean the application has processed <code>HELLO</code>. It means the receiving TCP implementation has accepted the bytes into its receive stream.</p>
+    </div>
+
+    <div class="subheading">How TCP guarantees reliable, ordered delivery</div>
+
+    <div class="intro">
+        <p>Reliability is achieved using several cooperating mechanisms.</p>
+        <p class="minor-heading"><strong>Sequence numbers</strong></p>
+        <p>Every data byte has a position in the stream. This allows TCP to detect gaps, duplicate bytes, and out-of-order arrivals.</p>
+        <p class="minor-heading"><strong>Cumulative acknowledgments</strong></p>
+        <p>TCP normally uses cumulative ACKs.</p>
+        <p>Suppose the sender transmits three segments, each containing 500 bytes.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Segment</th><th>Sequence numbers</th><th>Receiver ACK after in-order receipt</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>1001–1500</td><td>1501</td></tr>
+                <tr><td>2</td><td>1501–2000</td><td>2001</td></tr>
+                <tr><td>3</td><td>2001–2500</td><td>2501</td></tr>
+            </tbody>
+        </table></div>
+        <p>The receiver could also issue a single cumulative ACK of <code>2501</code> after all three have arrived.</p>
+        <p class="minor-heading"><strong>Retransmission when data is lost</strong></p>
+        <p>Consider a scenario where the second segment is lost.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-3.svg" alt="Segment Seq=1501 is lost; segment 2001 arrives out of order; receiver sends duplicate ACK=1501; sender retransmits 1501; receiver acknowledges 2501" style="width:100%;max-width:579px">
+    </div>
+    <div class="intro">
+        <p>Here, the receiver may buffer segment 3, but it cannot deliver those out-of-order bytes to the application ahead of the missing bytes.</p>
+        <p>Once segment 2 is recovered, it can acknowledge through byte <code>2500</code>.</p>
+        <p class="minor-heading"><strong>How does TCP detect packet loss?</strong></p>
+        <p>Two important approaches are:</p>
+        <p><strong>Retransmission timeout (RTO)</strong></p>
+        <p>The sender starts a timer for unacknowledged data. If a timeout occurs without sufficient acknowledgment, TCP retransmits outstanding data.</p>
+        <p><strong>Fast retransmit</strong></p>
+        <p>In classic TCP Reno behavior, the sender treats three duplicate ACKs as an indication of packet loss and retransmits without waiting for a timeout.</p>
+        <p>Modern TCP implementations can use more advanced loss-detection mechanisms.</p>
+        <p class="minor-heading"><strong>Selective Acknowledgment (SACK)</strong></p>
+        <p>Traditional cumulative ACKs only tell the sender which contiguous bytes have been received.</p>
+        <p>SACK adds information about out-of-order blocks.</p>
+        <p>Example:</p>
+    </div>
+    <div class="code-block"><pre><code>Received: 1001–1500
+Missing:  1501–2000
+Received: 2001–2500</code></pre></div>
+
+    <div class="intro">
+        <p>Without SACK:</p>
+    </div>
+    <div class="code-block"><pre><code>ACK = 1501</code></pre></div>
+
+    <div class="intro">
+        <p>With SACK, the receiver can communicate:</p>
+    </div>
+    <div class="code-block"><pre><code>Cumulative ACK = 1501
+SACK Block      = [2001, 2501)</code></pre></div>
+
+    <div class="intro">
+        <p>The SACK block uses a half-open interval: it includes byte <code>2001</code> but excludes byte <code>2501</code>.</p>
+        <p>The sender now knows that only the missing range requires recovery.</p>
+        <p>SACK is particularly valuable when multiple segments are lost within the same window.</p>
+        <p class="minor-heading"><strong>RTT and retransmission timeout</strong></p>
+        <p>TCP measures Round-Trip Time (RTT), which is approximately the elapsed time between sending data and receiving acknowledgment feedback.</p>
+        <p>A simplified RTT example:</p>
+    </div>
+    <div class="code-block"><pre><code>Sender sends data       t = 0 ms
+Receiver gets data      t = 25 ms
+Sender receives ACK     t = 60 ms
+
+Measured RTT ≈ 60 ms</code></pre></div>
+
+    <div class="intro">
+        <p>TCP does not simply use a fixed timeout equal to the most recent RTT. The standard RTO estimator accounts for smoothed RTT and RTT variation:</p>
+        <p class="math-display"><span class="math" data-tex="RTO = SRTT + \max(G,\ 4 \times RTTVAR)" data-display="1">RTO=SRTT+max⁡(G, 4×RTTVAR)</span></p>
+        <p>Where:</p>
+        <ul><li><code>SRTT</code>: smoothed round-trip time</li><li><code>RTTVAR</code>: variation in observed RTT</li><li><code>G</code>: clock granularity</li></ul>
+        <p>RFC 6298 specifies the standard algorithm, including retransmission-timer backoff. Actual timeout values vary across implementations and network conditions.</p>
+        <p class="minor-heading"><strong>Reliability has limits</strong></p>
+        <p>TCP can retransmit when packets are lost, but cannot guarantee delivery if the peer permanently disappears, the network remains unavailable, or the connection fails.</p>
+        <p>Even when a write succeeds locally, the remote application may not have processed the data. This distinction is important when designing payment APIs and other operations that must avoid duplicate execution.</p>
+    </div>
+
+    <div class="subheading">TCP sliding window mechanism</div>
+
+    <div class="intro">
+        <p>If TCP had to wait for an ACK after every segment, long-distance networks would perform poorly.</p>
+        <p>TCP therefore allows multiple bytes to remain outstanding before acknowledgments arrive.</p>
+        <p>This technique is called a sliding window.</p>
+        <p class="minor-heading"><strong>Visual example</strong></p>
+        <p>Suppose a sender is using a 4,000-byte sending window.</p>
+        <p>Initial window</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-window-outstanding.svg" alt="Initial window: bytes 1–1000, 1001–2000, 2001–3000 and 3001–4000 are sent; 4,000 bytes can be outstanding" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>The sender transmits bytes <code>1–4000</code>. The receiver then acknowledges the first 2,000 bytes.</p>
+        <p><code>ACK = 2001</code></p>
+        <p>Window slides forward</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-window-states.svg" alt="Window slides forward: bytes 1–2000 are ACKed, 2001–4000 are outstanding, 4001–6000 are available to send" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>When the acknowledgment advances to <code>2001</code>, the sender can remove acknowledged bytes from its outstanding-data accounting and transmit new bytes if the effective sending window permits.</p>
+        <p>Real TCP windows are byte-based, not necessarily divided into fixed 1,000-byte blocks.</p>
+        <p>Sliding windows support pipelining: multiple segments can be in transit simultaneously.</p>
+        <p>This is important because the sender's throughput may otherwise be limited by network round-trip time, even when the network has plenty of bandwidth.</p>
+    </div>
+
+    <div class="subheading">TCP flow control</div>
+
+    <div class="intro">
+        <p>Flow control answers this question:</p>
+        <p>How do we prevent a fast sender from overwhelming a slow receiver?</p>
+        <p>Consider a server sending data at 100 MB/s to a client application that can only process 10 MB/s.</p>
+        <p>Without flow control, the receiving buffer could fill up.</p>
+        <p>TCP solves this using the receiver's advertised window, commonly called <code>rwnd</code>.</p>
+        <p class="minor-heading"><strong>How the receive window works</strong></p>
+        <p>The receiver announces how much additional data it is currently willing to accept.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-4.svg" alt="Flow control: receiver advertises rwnd=3000, sender sends 2,000 bytes, receiver advertises rwnd=1000, then a window update rwnd=4000 after the application reads" style="width:100%;max-width:570px">
+    </div>
+    <div class="intro">
+        <p>The advertised window is a form of receiver-side credit. It is related to receive-buffer capacity and the amount of data already buffered but not yet consumed.</p>
+        <p>If the receiver cannot accept more data, it may advertise:</p>
+    </div>
+    <div class="code-block"><pre><code>Window Size = 0</code></pre></div>
+
+    <div class="intro">
+        <p>The sender must then respect the closed receive window.</p>
+        <p>When new space becomes available, transmission can resume. TCP's persist mechanism and zero-window probes help prevent a connection from becoming permanently stuck if a window-update message is lost.</p>
+        <p class="minor-heading"><strong>Window scaling</strong></p>
+        <p>The TCP header's window field contains only 16 bits, so its unscaled maximum is:</p>
+        <p class="math-display"><span class="math" data-tex="2^{16}-1=65,535\text{ bytes}" data-display="1">216−1=65,535 bytes</span></p>
+        <p>That is insufficient for high-bandwidth, high-latency connections.</p>
+        <p>TCP's Window Scale option allows the window value to be interpreted using a negotiated shift count:</p>
+        <p class="math-display"><span class="math" data-tex="ActualWindow = HeaderWindow \times 2^{ScaleFactor}" data-display="1">ActualWindow=HeaderWindow×2ScaleFactor</span></p>
+        <p>For example, with a window field of <code>32,000</code> and a scale factor of <code>7</code>:</p>
+        <p class="math-display"><span class="math" data-tex="ActualWindow = 32,000 \times 128" data-display="1">ActualWindow=32,000×128</span></p>
+        <p class="math-display"><span class="math" data-tex="=4,096,000\text{ bytes}" data-display="1">=4,096,000 bytes</span></p>
+        <p>The window scale factor is negotiated using SYN segments; it is not renegotiated for each data segment.</p>
+    </div>
+
+    <div class="subheading">TCP congestion control</div>
+
+    <div class="intro">
+        <p>Flow control and congestion control are different.</p>
+        <p>Flow control protects the receiver.</p>
+        <p>Congestion control protects the network.</p>
+        <p>Even if the receiver can accept 10 MB of data, routers along the network path might not have enough capacity to handle it all at once.</p>
+        <p>TCP therefore maintains a separate congestion window, called <code>cwnd</code>.</p>
+        <p class="minor-heading"><strong>Receive window vs congestion window</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Attribute</th><th>Receive window (<code>rwnd</code>)</th><th>Congestion window (<code>cwnd</code>)</th></tr></thead>
+            <tbody>
+                <tr><td>Protects</td><td>Receiver</td><td>Network</td></tr>
+                <tr><td>Controlled by</td><td>Receiving endpoint</td><td>Sending endpoint</td></tr>
+                <tr><td>Based on</td><td>Receive-buffer availability</td><td>Congestion feedback and algorithm</td></tr>
+                <tr><td>Communicated through</td><td>TCP window field</td><td>Local sender state</td></tr>
+                <tr><td>Can restrict sending?</td><td>Yes</td><td>Yes</td></tr>
+            </tbody>
+        </table></div>
+        <p>The sender is constrained by both.</p>
+        <p>A useful simplified relationship is:</p>
+        <p class="math-display"><span class="math" data-tex="EffectiveWindow = \min(rwnd,cwnd)" data-display="1">EffectiveWindow=min⁡(rwnd,cwnd)</span></p>
+        <p>If the receiver advertises 8,000 bytes but congestion control allows only 3,000 bytes, the sender's effective outstanding-data limit is 3,000 bytes.</p>
+        <p><strong>Example: which window controls transmission?</strong></p>
+    </div>
+    <div class="folio"><ol class="ledger">
+            <li><span class="ledger-label">Receiver window</span><span>8,000 B</span></li>
+            <li><span class="ledger-label">Congestion window</span><span>3,000 B</span></li>
+            <li><span class="ledger-label">Effective window</span><span><strong>3,000 bytes</strong> — Limited by congestion control</span></li>
+        </ol>
+    </div>
+    <div class="intro">
+        <p>If 1,000 bytes are already outstanding, approximately 2,000 additional bytes of window capacity remain, subject to the precise TCP sequence and window state.</p>
+        <p class="minor-heading"><strong>Slow start</strong></p>
+        <p>Slow start is a congestion-control phase used to increase the sending rate quickly while learning about network capacity.</p>
+        <p>Conceptually, with an initial congestion window of 1 MSS:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>RTT round</th><th>Congestion window</th></tr></thead>
+            <tbody>
+                <tr><td>0</td><td>1 MSS</td></tr>
+                <tr><td>1</td><td>2 MSS</td></tr>
+                <tr><td>2</td><td>4 MSS</td></tr>
+                <tr><td>3</td><td>8 MSS</td></tr>
+                <tr><td>4</td><td>16 MSS</td></tr>
+            </tbody>
+        </table></div>
+        <p>This is a simplified illustration, not the required modern initial congestion window.</p>
+        <p>As acknowledgments arrive, <code>cwnd</code> grows. In traditional slow start, its growth is roughly exponential per RTT until a threshold or congestion signal is encountered.</p>
+        <p class="minor-heading"><strong>Congestion avoidance</strong></p>
+        <p>After slow start, TCP uses a congestion-avoidance algorithm to continue increasing its sending rate more cautiously.</p>
+        <p>Classic TCP Reno uses Additive Increase / Multiplicative Decrease (AIMD).</p>
+        <p>Conceptually:</p>
+        <ul><li>Increase the congestion window gradually while data is acknowledged successfully.</li><li>Reduce the congestion window when congestion is inferred.</li><li>Recover lost data and then resume probing network capacity.</li></ul>
+        <p class="minor-heading"><strong>Fast retransmit and fast recovery</strong></p>
+        <p>In traditional Reno-style congestion control, three duplicate ACKs trigger a fast retransmission and a reduction in the congestion window.</p>
+        <p>Fast recovery allows transmission to continue without restarting at the smallest possible sending window.</p>
+        <p>A retransmission timeout generally indicates a more serious lack of delivery feedback and causes stronger recovery behavior.</p>
+        <p class="minor-heading"><strong>Modern congestion-control algorithms</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Algorithm</th><th>General approach</th></tr></thead>
+            <tbody>
+                <tr><td>TCP Reno</td><td>Classic loss-based AIMD</td></tr>
+                <tr><td>CUBIC</td><td>Cubic congestion-window growth, designed for higher-speed networks</td></tr>
+                <tr><td>BBR</td><td>Uses bandwidth and RTT estimates to model delivery capacity</td></tr>
+            </tbody>
+        </table></div>
+        <p>Different operating systems and configurations may use different congestion-control algorithms.</p>
+        <p>CUBIC is standardized in RFC 9438 and can be more aggressive than Reno during congestion avoidance.</p>
+        <p class="minor-heading"><strong>Explicit Congestion Notification (ECN)</strong></p>
+        <p>ECN permits network equipment to signal congestion by marking eligible packets rather than necessarily dropping them.</p>
+        <p>TCP can use this information to reduce its sending rate.</p>
+        <p>This can improve behavior on networks that support ECN correctly.</p>
+    </div>
+
+    <div class="subheading">MSS, MTU, and TCP segmentation</div>
+
+    <div class="intro">
+        <p>TCP is a byte-stream protocol, but IP carries packets. TCP therefore divides application data into segments suitable for transmission.</p>
+        <p class="minor-heading"><strong>MTU — Maximum Transmission Unit</strong></p>
+        <p>MTU is the maximum size of an IP packet that can be carried by a link without additional link-specific fragmentation.</p>
+        <p>A common Ethernet IP MTU is 1,500 bytes.</p>
+        <p class="minor-heading"><strong>MSS — Maximum Segment Size</strong></p>
+        <p>MSS is the maximum TCP data payload size a TCP endpoint offers to receive in one segment.</p>
+        <p>For a typical IPv4 path with a 1,500-byte MTU and no IP/TCP options:</p>
+        <p class="math-display"><span class="math" data-tex="MSS = MTU - IPHeader - TCPHeader" data-display="1">MSS=MTU−IPHeader−TCPHeader</span></p>
+        <p class="math-display"><span class="math" data-tex="MSS = 1500 - 20 - 20 = 1460\text{ bytes}" data-display="1">MSS=1500−20−20=1460 bytes</span></p>
+        <p>Example: 1,500-byte IPv4 packet</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-ipv4-packet.svg" alt="Example 1,500-byte IPv4 packet: 20 bytes IP header, 20 bytes TCP header, 1,460 bytes TCP payload" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Illustrative sizes for a simple IPv4 packet without options.</p>
+        <p>With IPv6's 40-byte base header and a 20-byte TCP header, a 1,500-byte MTU gives a typical MSS of 1,440 bytes.</p>
+        <p>Real payload sizing must account for path MTU, encapsulation, options, and other overhead.</p>
+        <p class="minor-heading"><strong>Segmentation example</strong></p>
+        <p>Suppose an application writes 5,000 bytes and the effective MSS is 1,460 bytes.</p>
+        <p>TCP might segment the data as:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Segment</th><th>Payload size</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>1,460 B</td></tr>
+                <tr><td>2</td><td>1,460 B</td></tr>
+                <tr><td>3</td><td>1,460 B</td></tr>
+                <tr><td>4</td><td>620 B</td></tr>
+                <tr><td>Total</td><td>5,000 B</td></tr>
+            </tbody>
+        </table></div>
+        <p>This is illustrative. The exact segmentation depends on the operating system, sending buffers, congestion state, and other factors.</p>
+        <p><strong>Important:</strong> A single application <code>write()</code> does not necessarily produce a single TCP segment.</p>
+    </div>
+
+    <div class="subheading">TCP connection termination: FIN and RST</div>
+
+    <div class="intro">
+        <p>TCP supports graceful shutdown as well as abrupt connection resets.</p>
+        <p class="minor-heading"><strong>Graceful termination: four-way handshake</strong></p>
+        <p>A typical graceful shutdown uses four control messages.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-5.svg" alt="Graceful close: client FIN, server ACK, server FIN, client ACK; client passes FIN-WAIT-1, FIN-WAIT-2 and TIME-WAIT; server passes CLOSE-WAIT and LAST-ACK" style="width:100%;max-width:484px">
+    </div>
+    <div class="intro">
+        <p>This example assumes the client previously sent five data bytes after its SYN, and the server sent no application data.</p>
+        <p class="minor-heading"><strong>Why four steps?</strong></p>
+        <p>Because TCP supports full-duplex communication.</p>
+        <p>Each direction can be closed independently.</p>
+        <p>When the client sends FIN, it says:</p>
+    </div>
+    <div class="callout callout-note"><p>I will not send any more data.</p></div>
+    <div class="intro">
+        <p>That does not mean the server must immediately stop sending data.</p>
+        <p>The server can acknowledge the client's FIN, finish transmitting its remaining bytes, and send its own FIN afterward.</p>
+        <p>The server may also combine its ACK and FIN when appropriate, resulting in fewer than four packets.</p>
+        <p class="minor-heading"><strong>TCP half-close</strong></p>
+        <p>TCP allows one direction to close while the other direction remains open.</p>
+        <p>Example:</p>
+    </div>
+    <div class="code-block"><pre><code>Client                         Server
+  |                              |
+  |---- Request data -----------&gt;|
+  |---- FIN --------------------&gt;|
+  |                              |
+  |&lt;------ Response data --------|
+  |&lt;------ FIN ------------------|
+  |---- ACK --------------------&gt;|</code></pre></div>
+
+    <div class="intro">
+        <p>This is useful for protocols in which one endpoint finishes submitting a request but still needs to receive a response.</p>
+        <p class="minor-heading"><strong>Why TIME-WAIT exists</strong></p>
+        <p>The endpoint performing the active close typically enters <code>TIME-WAIT</code>.</p>
+        <p>It serves two important purposes:</p>
+        <ol><li>To allow retransmission of the final ACK if the peer retransmits its FIN.</li><li>To reduce the risk that delayed segments from the old connection interfere with a later connection using the same endpoint addresses and ports.</li></ol>
+        <p>The traditional TIME-WAIT duration is twice the Maximum Segment Lifetime (2×MSL). Its actual duration is implementation-specific, not universally a fixed number of seconds.</p>
+        <p class="minor-heading"><strong>Abrupt termination with RST</strong></p>
+        <p>RST means Reset.</p>
+        <p>A TCP reset can be used to abruptly terminate a connection or reject a connection attempt.</p>
+        <p>Examples include a connection attempt to a closed port or an endpoint that aborts a connection.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>FIN</th><th>RST</th></tr></thead>
+            <tbody>
+                <tr><td>Graceful shutdown of one sending direction</td><td>Abrupt connection reset</td></tr>
+                <tr><td>Allows orderly handling of queued data</td><td>Can discard undelivered buffered data</td></tr>
+                <tr><td>Supports half-close</td><td>Aborts the connection</td></tr>
+                <tr><td>Normal stream-ending mechanism</td><td>Error or abort mechanism</td></tr>
+            </tbody>
+        </table></div>
+        <p>An application should not assume that data written immediately before an abrupt reset was delivered successfully.</p>
+    </div>
+
+    <div class="subheading">TCP connection states</div>
+
+    <div class="intro">
+        <p>TCP maintains a state machine for each connection.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td>CLOSED</td><td>No active connection</td></tr>
+                <tr><td>LISTEN</td><td>Server is waiting for incoming connections</td></tr>
+                <tr><td>SYN-SENT</td><td>SYN transmitted, awaiting handshake response</td></tr>
+                <tr><td>SYN-RECEIVED</td><td>SYN received and SYN-ACK sent</td></tr>
+                <tr><td>ESTABLISHED</td><td>Connection established; normal data transfer</td></tr>
+                <tr><td>FIN-WAIT-1</td><td>Local FIN sent, waiting for acknowledgment or peer FIN</td></tr>
+                <tr><td>FIN-WAIT-2</td><td>Local FIN acknowledged, waiting for peer FIN</td></tr>
+                <tr><td>CLOSE-WAIT</td><td>Peer FIN received; local application has not finished closing</td></tr>
+                <tr><td>CLOSING</td><td>Both endpoints initiated closing before acknowledging each other's FIN</td></tr>
+                <tr><td>LAST-ACK</td><td>Local FIN sent after peer close; waiting for final ACK</td></tr>
+                <tr><td>TIME-WAIT</td><td>Waiting before completely removing connection state</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Typical client and server transitions</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-states.svg" alt="Typical state transitions. Active closer: CLOSED, SYN-SENT, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2, TIME-WAIT, CLOSED. Passive closer: CLOSED, LISTEN, SYN-RECEIVED, ESTABLISHED, CLOSE-WAIT, LAST-ACK, CLOSED" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>These are typical paths, not the complete state-transition graph. Simultaneous open and simultaneous close introduce additional transitions.</p>
+        <p class="minor-heading"><strong>Production debugging: CLOSE-WAIT vs TIME-WAIT</strong></p>
+        <p>A large number of <code>CLOSE-WAIT</code> sockets often indicates that the application has not closed connections after the peer finished its sending direction.</p>
+        <p>A large number of <code>TIME-WAIT</code> sockets may result from frequent short-lived connections. It is not automatically evidence of a bug, but can contribute to connection-management and ephemeral-port pressure at high rates.</p>
+    </div>
+
+    <div class="subheading">TCP is a byte-stream protocol, not a message protocol</div>
+
+    <div class="intro">
+        <p>This is one of the most important TCP concepts for backend developers.</p>
+        <p>Suppose a Java application executes:</p>
+    </div>
+    <div class="code-block"><pre><code>outputStream.write(<span class="code-string">"Hello"</span>.getBytes());
+outputStream.write(<span class="code-string">"World"</span>.getBytes());</code></pre></div>
+
+    <div class="intro">
+        <p>The programmer made two write calls.</p>
+        <p>However, TCP does not preserve those two calls as separate messages.</p>
+        <p>The receiver might observe:</p>
+    </div>
+    <div class="code-block"><pre><code>read #1 → "HelloWorld"</code></pre></div>
+
+    <div class="intro">
+        <p>Or:</p>
+    </div>
+    <div class="code-block"><pre><code>read #1 → "Hel"
+read #2 → "loWor"
+read #3 → "ld"</code></pre></div>
+
+    <div class="intro">
+        <p>Or some other partition of the same ordered bytes.</p>
+        <p>All of these outcomes are valid.</p>
+        <p>TCP guarantees that the received bytes will be in the correct order, not that each <code>read()</code> corresponds to one <code>write()</code>.</p>
+        <p class="minor-heading"><strong>How applications define message boundaries</strong></p>
+        <p>Applications implement their own framing rules, such as:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Technique</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td>Fixed-length</td><td>Every message is exactly 128 bytes</td></tr>
+                <tr><td>Length-prefixed</td><td>Four bytes specify the length of the following message</td></tr>
+                <tr><td>Delimiter-based</td><td>Each message ends with <code>\n</code></td></tr>
+                <tr><td>Structured protocol framing</td><td>HTTP/2 frames, custom binary protocol frames</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, a length-prefixed protocol could transmit:</p>
+    </div>
+    <div class="code-block"><pre><code>+-------------------+------------------------+
+| Length (4 bytes)  | Message body           |
++-------------------+------------------------+
+| 00 00 00 05       | H E L L O              |
++-------------------+------------------------+</code></pre></div>
+
+    <div class="intro">
+        <p>The receiver reads exactly four bytes to determine the length and then reads the specified number of payload bytes.</p>
+        <p>This is also why a single <code>InputStream.read()</code> is not guaranteed to return all bytes requested. Applications must handle partial reads correctly.</p>
+    </div>
+
+    <div class="subheading">What happens inside the operating system?</div>
+
+    <div class="intro">
+        <p>TCP is usually implemented in the operating system's networking stack.</p>
+        <p>The application primarily interacts with it through sockets.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-6.svg" alt="Data path: application writes bytes, socket send buffer, TCP segmentation, flow and congestion control, IP, receiving TCP stack, reassembly, receive buffer, application reads; ACK feedback returns to flow and congestion control" style="width:100%;max-width:511px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Sender-side processing</strong></p>
+        <p>When an application sends data:</p>
+        <ol><li>It writes bytes through a socket.</li><li>The OS accepts bytes into the TCP send path, subject to buffer availability.</li><li>TCP assigns sequence numbers and determines how to transmit the data.</li><li>Flow and congestion-control limits influence the amount of outstanding data.</li><li>TCP sends segments through IP.</li><li>The sender tracks unacknowledged data and retransmits when needed.</li></ol>
+        <p>A successful application-level write generally means the local socket API accepted the bytes. It does not prove that the remote application processed them.</p>
+        <p class="minor-heading"><strong>Receiver-side processing</strong></p>
+        <p>When segments arrive:</p>
+        <ol><li>TCP verifies their validity, including the checksum.</li><li>It uses sequence numbers to track byte positions.</li><li>Duplicate bytes are handled appropriately.</li><li>Out-of-order data may be buffered until missing bytes arrive.</li><li>The ordered byte stream becomes available to the application.</li><li>ACKs and receive-window information are returned to the sender.</li></ol>
+        <p>Acknowledgment generation is part of the receiving TCP stack; it does not require the application to manually send ACK messages.</p>
+    </div>
+
+    <div class="subheading">Practical TCP implementation in Java</div>
+
+    <div class="intro">
+        <p>Let's implement a TCP client and server that communicate using a custom length-prefixed protocol.</p>
+        <p>This is more useful than a basic single-line echo example because it demonstrates how to handle TCP stream framing correctly.</p>
+        <p class="minor-heading"><strong>Architecture</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-7.svg" alt="Java TCP client and server exchange length-prefixed messages over a TCP connection to 127.0.0.1:9090" style="width:100%;max-width:696px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>TCP server — <code>TcpServer.java</code></strong></p>
+    </div>
+    <div class="code-block"><pre><code>
+<span class="code-keyword">import</span> java.io.*;
+<span class="code-keyword">import</span> java.net.*;
+<span class="code-keyword">import</span> java.nio.charset.<span class="code-class">StandardCharsets</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">TcpServer</span> {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">final</span> <span class="code-keyword">int</span> MAX_MESSAGE_SIZE = <span class="code-number">1024</span> * <span class="code-number">1024</span>;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">IOException</span> {
+
+        <span class="code-keyword">try</span> (<span class="code-class">ServerSocket</span> server = <span class="code-keyword">new</span> <span class="code-class">ServerSocket</span>(<span class="code-number">9090</span>)) {
+
+            <span class="code-class">System</span>.out.println(<span class="code-string">"TCP server listening on port 9090"</span>);
+
+            <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {
+
+                <span class="code-class">Socket</span> socket = server.accept();
+
+                <span class="code-class">System</span>.out.println(
+                    <span class="code-string">"Connected: "</span> + socket.getRemoteSocketAddress()
+                );
+
+                <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; handleClient(socket)).start();
+            }
+        }
+    }
+
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> handleClient(<span class="code-class">Socket</span> socket) {
+
+        <span class="code-keyword">try</span> (
+            socket;
+            <span class="code-class">DataInputStream</span> in = <span class="code-keyword">new</span> <span class="code-class">DataInputStream</span>(
+                <span class="code-keyword">new</span> <span class="code-class">BufferedInputStream</span>(socket.getInputStream())
+            );
+            <span class="code-class">DataOutputStream</span> out = <span class="code-keyword">new</span> <span class="code-class">DataOutputStream</span>(
+                <span class="code-keyword">new</span> <span class="code-class">BufferedOutputStream</span>(socket.getOutputStream())
+            )
+        ) {
+            <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {
+
+                <span class="code-keyword">int</span> length;
+
+                <span class="code-keyword">try</span> {
+                    length = in.readInt();
+                } <span class="code-keyword">catch</span> (<span class="code-class">EOFException</span> e) {
+                    <span class="code-keyword">break</span>; <span class="code-comment">// Client ended its stream</span>
+                }
+
+                <span class="code-keyword">if</span> (length &lt; <span class="code-number">0</span> || length &gt; MAX_MESSAGE_SIZE) {
+                    <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IOException</span>(<span class="code-string">"Invalid message length"</span>);
+                }
+
+                <span class="code-keyword">byte</span>[] bytes = <span class="code-keyword">new</span> <span class="code-keyword">byte</span>[length];
+                in.readFully(bytes);
+
+                <span class="code-class">String</span> message = <span class="code-keyword">new</span> <span class="code-class">String</span>(
+                    bytes, <span class="code-class">StandardCharsets</span>.UTF_8
+                );
+
+                <span class="code-class">System</span>.out.println(<span class="code-string">"Received: "</span> + message);
+
+                <span class="code-keyword">byte</span>[] response = (
+                    <span class="code-string">"Server received: "</span> + message
+                ).getBytes(<span class="code-class">StandardCharsets</span>.UTF_8);
+
+                out.writeInt(response.length);
+                out.write(response);
+                out.flush();
+            }
+
+        } <span class="code-keyword">catch</span> (<span class="code-class">IOException</span> e) {
+            <span class="code-class">System</span>.err.println(
+                <span class="code-string">"Connection ended: "</span> + e.getMessage()
+            );
+        }
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>TCP client — <code>TcpClient.java</code></strong></p>
+    </div>
+    <div class="code-block"><pre><code>
+<span class="code-keyword">import</span> java.io.*;
+<span class="code-keyword">import</span> java.net.*;
+<span class="code-keyword">import</span> java.nio.charset.<span class="code-class">StandardCharsets</span>;
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">TcpClient</span> {
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) <span class="code-keyword">throws</span> <span class="code-class">IOException</span> {
+
+        <span class="code-keyword">try</span> (<span class="code-class">Socket</span> socket = <span class="code-keyword">new</span> <span class="code-class">Socket</span>()) {
+
+            socket.connect(
+                <span class="code-keyword">new</span> <span class="code-class">InetSocketAddress</span>(<span class="code-string">"127.0.0.1"</span>, <span class="code-number">9090</span>),
+                <span class="code-number">5000</span>
+            );
+
+            socket.setSoTimeout(<span class="code-number">5000</span>);
+
+            <span class="code-class">DataOutputStream</span> out =
+                <span class="code-keyword">new</span> <span class="code-class">DataOutputStream</span>(socket.getOutputStream());
+
+            <span class="code-class">DataInputStream</span> in =
+                <span class="code-keyword">new</span> <span class="code-class">DataInputStream</span>(socket.getInputStream());
+
+            <span class="code-class">String</span>[] messages = {
+                <span class="code-string">"Hello TCP"</span>,
+                <span class="code-string">"Second message"</span>
+            };
+
+            <span class="code-keyword">for</span> (<span class="code-class">String</span> message : messages) {
+
+                <span class="code-keyword">byte</span>[] payload = message.getBytes(
+                    <span class="code-class">StandardCharsets</span>.UTF_8
+                );
+
+                out.writeInt(payload.length);
+                out.write(payload);
+                out.flush();
+
+                <span class="code-keyword">int</span> responseLength = in.readInt();
+
+                <span class="code-keyword">if</span> (responseLength &lt; <span class="code-number">0</span> ||
+                    responseLength &gt; <span class="code-number">1024</span> * <span class="code-number">1024</span>) {
+                    <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IOException</span>(<span class="code-string">"Invalid response length"</span>);
+                }
+
+                <span class="code-keyword">byte</span>[] response = <span class="code-keyword">new</span> <span class="code-keyword">byte</span>[responseLength];
+                in.readFully(response);
+
+                <span class="code-class">System</span>.out.println(
+                    <span class="code-keyword">new</span> <span class="code-class">String</span>(response, <span class="code-class">StandardCharsets</span>.UTF_8)
+                );
+            }
+        }
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Run the example</strong></p>
+        <p>In separate terminals:</p>
+    </div>
+    <div class="code-block"><pre><code>javac TcpServer.java TcpClient.java
+
+# Terminal 1
+java TcpServer
+
+# Terminal 2
+java TcpClient</code></pre></div>
+
+    <div class="intro">
+        <p>Expected client output:</p>
+    </div>
+    <div class="code-block"><pre><code>Server received: Hello TCP
+Server received: Second message</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>How this maps to TCP</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Java operation</th><th>TCP/networking behavior</th></tr></thead>
+            <tbody>
+                <tr><td><code>new ServerSocket(9090)</code></td><td>Creates and binds a listening socket</td></tr>
+                <tr><td><code>server.accept()</code></td><td>Returns a socket for an established connection</td></tr>
+                <tr><td><code>socket.connect(...)</code></td><td>Initiates connection establishment</td></tr>
+                <tr><td><code>getOutputStream().write(...)</code></td><td>Writes bytes into the TCP sending path</td></tr>
+                <tr><td><code>getInputStream().read(...)</code></td><td>Reads bytes from TCP's receive stream</td></tr>
+                <tr><td><code>readFully(...)</code></td><td>Waits for the requested byte count or throws on premature EOF</td></tr>
+                <tr><td><code>socket.close()</code></td><td>Closes the socket; normally initiates graceful shutdown</td></tr>
+                <tr><td><code>setSoTimeout(5000)</code></td><td>Sets a timeout for blocking socket reads</td></tr>
+            </tbody>
+        </table></div>
+        <p>The operating system handles TCP sequence numbers, packet-level ACKs, windows, and retransmissions automatically.</p>
+        <p>The Java application does not implement these mechanisms.</p>
+        <p>The example uses a thread per accepted connection for clarity. Production servers with large connection counts may use Java virtual threads, nonblocking NIO, Netty, or another scalable networking framework.</p>
+    </div>
+
+    <div class="subheading">TCP performance and advanced mechanisms</div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Bandwidth-delay product (BDP)</strong></p>
+        <p>BDP measures the amount of data that can be in flight on a network path if the sender is to use its available bandwidth efficiently.</p>
+        <p class="math-display"><span class="math" data-tex="BDP = Bandwidth \times RTT" data-display="1">BDP=Bandwidth×RTT</span></p>
+        <p>For a 100 Mbps path with an RTT of 100 ms:</p>
+        <p class="math-display"><span class="math" data-tex="BDP = 100,000,000 \times 0.1 / 8" data-display="1">BDP=100,000,000×0.1/8</span></p>
+        <p class="math-display"><span class="math" data-tex="BDP = 1,250,000\text{ bytes}" data-display="1">BDP=1,250,000 bytes</span></p>
+        <p>This is approximately 1.25 MB.</p>
+        <p>To utilize that path fully, TCP generally needs sufficient outstanding-data capacity, along with an appropriate congestion window, receive window, and application sending rate.</p>
+        <p>A very small window can limit throughput regardless of link speed.</p>
+        <p class="minor-heading"><strong>Nagle's algorithm</strong></p>
+        <p>Nagle's algorithm reduces the transmission of many tiny TCP segments by limiting when small amounts of new data can be transmitted while previous data remains unacknowledged.</p>
+        <p>It can improve efficiency but may add latency for some interactive workloads.</p>
+        <p>Java provides:</p>
+    </div>
+    <div class="code-block"><pre><code>socket.setTcpNoDelay(<span class="code-keyword">true</span>);</code></pre></div>
+
+    <div class="intro">
+        <p>Setting <code>TCP_NODELAY</code> disables Nagle's algorithm on supported TCP stacks.</p>
+        <p>This does not disable TCP reliability, and it does not guarantee that each write produces a separate segment.</p>
+        <p class="minor-heading"><strong>Delayed acknowledgments</strong></p>
+        <p>TCP receivers may delay certain ACKs briefly to reduce protocol overhead or allow an acknowledgment to accompany outgoing data.</p>
+        <p>The exact policy depends on the TCP implementation.</p>
+        <p>For some small-message applications, interactions between delayed ACKs and Nagle's algorithm can contribute to additional latency.</p>
+        <p class="minor-heading"><strong>TCP keepalive</strong></p>
+        <p>A TCP connection can become unusable without an endpoint immediately knowing, for example after an abrupt network failure.</p>
+        <p>TCP keepalive can send probes on idle connections to help detect unresponsive peers.</p>
+        <p>Java:</p>
+    </div>
+    <div class="code-block"><pre><code>socket.setKeepAlive(<span class="code-keyword">true</span>);</code></pre></div>
+
+    <div class="intro">
+        <p>Keepalive behavior, intervals, and retry limits depend on the operating system and configuration.</p>
+        <p>Application-level heartbeats and timeouts are often necessary when faster failure detection is required.</p>
+        <p class="minor-heading"><strong>Head-of-line blocking</strong></p>
+        <p>TCP guarantees ordered byte-stream delivery.</p>
+        <p>That means later bytes cannot be delivered to the application ahead of missing earlier bytes, even if the later segments have already arrived.</p>
+        <p>This is called transport-level head-of-line (HOL) blocking.</p>
+        <p>It is especially relevant to HTTP/2, which multiplexes multiple logical streams over a single TCP connection.</p>
+        <p>HTTP/3 instead uses QUIC, which runs over UDP and provides separate reliable streams without TCP's cross-stream transport-level ordering constraint.</p>
+        <p class="minor-heading"><strong>TCP Fast Open</strong></p>
+        <p>Traditional TCP establishment requires a three-way handshake before normal application data transfer.</p>
+        <p>TCP Fast Open is an extension that can permit data to be included during connection establishment in supported circumstances.</p>
+        <p>It has deployment, security, and replay considerations and is not a universal replacement for the standard handshake.</p>
+    </div>
+
+    <div class="subheading">Observing TCP packets in real life</div>
+
+    <div class="intro">
+        <p>The most effective way to understand TCP is to examine actual packet captures.</p>
+        <p>On Linux, two useful tools are <code>ss</code> and <code>tcpdump</code>.</p>
+        <p class="minor-heading"><strong>Inspect TCP sockets</strong></p>
+    </div>
+    <div class="code-block"><pre><code>ss -tanp</code></pre></div>
+
+    <div class="intro">
+        <p>This displays TCP socket information, including connections and their states.</p>
+        <p>For additional internal TCP statistics:</p>
+    </div>
+    <div class="code-block"><pre><code>ss -ti</code></pre></div>
+
+    <div class="intro">
+        <p>Depending on the system and connection state, this can show information such as RTT, congestion-control state, MSS, and congestion-window details.</p>
+        <p class="minor-heading"><strong>Capture TCP traffic</strong></p>
+        <p>Capture traffic on the example Java server's port:</p>
+    </div>
+    <div class="code-block"><pre><code>sudo tcpdump -i lo -nn -S 'tcp port 9090'</code></pre></div>
+
+    <div class="intro">
+        <p>Here:</p>
+        <ul><li><code>-i lo</code> captures loopback traffic.</li><li><code>-nn</code> avoids hostname and service-name resolution.</li><li><code>-S</code> prints absolute TCP sequence numbers.</li></ul>
+        <p>For other interfaces, replace <code>lo</code> with an appropriate interface or use <code>any</code> where supported.</p>
+        <p class="minor-heading"><strong>Example packet sequence</strong></p>
+        <p>A simplified capture might show:</p>
+    </div>
+    <div class="code-block"><pre><code>Client → Server  [SYN]      Seq=1000
+Server → Client  [SYN,ACK]  Seq=5000 Ack=1001
+Client → Server  [ACK]      Seq=1001 Ack=5001
+
+Client → Server  [PSH,ACK]  Seq=1001 Len=100
+Server → Client  [ACK]      Ack=1101
+
+Client → Server  [FIN,ACK]  Seq=1101
+Server → Client  [ACK]      Ack=1102
+Server → Client  [FIN,ACK]  Seq=5001
+Client → Server  [ACK]      Ack=5002</code></pre></div>
+
+    <div class="intro">
+        <p>The exact trace will vary. For instance, ACKs may be delayed or piggybacked, segmentation may differ, and FIN/ACK messages may be combined.</p>
+        <p class="minor-heading"><strong>Wireshark filters</strong></p>
+        <p>In Wireshark you can use these display filters:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Filter</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><code>tcp</code></td><td>Show TCP packets</td></tr>
+                <tr><td><code>tcp.port == 9090</code></td><td>Show traffic involving port 9090</td></tr>
+                <tr><td><code>tcp.flags.syn == 1</code></td><td>Show segments with SYN set</td></tr>
+                <tr><td><code>tcp.flags.fin == 1</code></td><td>Show FIN segments</td></tr>
+                <tr><td><code>tcp.flags.reset == 1</code></td><td>Show TCP resets</td></tr>
+                <tr><td><code>tcp.analysis.retransmission</code></td><td>Identify packets marked as retransmissions by Wireshark</td></tr>
+                <tr><td><code>tcp.analysis.duplicate_ack</code></td><td>Identify duplicate-ACK analysis events</td></tr>
+            </tbody>
+        </table></div>
+        <p>Wireshark's TCP analysis uses heuristics, so its interpretations should be considered alongside the capture location, timing, and operating-system offload behavior.</p>
+    </div>
+
+    <div class="subheading">TCP vs UDP</div>
+
+    <div class="intro">
+        <p>UDP is another major transport-layer protocol, but it provides a much simpler communication service.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Feature</th><th>TCP</th><th>UDP</th></tr></thead>
+            <tbody>
+                <tr><td>Connection</td><td>Connection-oriented</td><td>Connectionless</td></tr>
+                <tr><td>Delivery reliability</td><td>Built in</td><td>Not built in</td></tr>
+                <tr><td>Ordering</td><td>Ordered byte stream</td><td>No built-in ordering</td></tr>
+                <tr><td>Data model</td><td>Byte stream</td><td>Datagrams</td></tr>
+                <tr><td>Retransmission</td><td>Built in</td><td>Application/protocol responsibility</td></tr>
+                <tr><td>Flow control</td><td>Built in</td><td>Not built in</td></tr>
+                <tr><td>Congestion control</td><td>Built in</td><td>Not built into UDP itself</td></tr>
+                <tr><td>Header size</td><td>20–60 bytes</td><td>8 bytes</td></tr>
+                <tr><td>Handshake</td><td>Usually three-way</td><td>No UDP handshake</td></tr>
+                <tr><td>Typical applications</td><td>HTTPS over TCP, SSH, SMTP, databases</td><td>DNS, real-time applications, QUIC</td></tr>
+            </tbody>
+        </table></div>
+        <p>UDP does not inherently mean unreliable applications. A protocol running over UDP can implement its own reliability and congestion control, as QUIC does.</p>
+        <p>Use TCP when ordered, reliable byte-stream delivery is useful. Use UDP-based protocols when their datagram or custom transport semantics better match the application's needs.</p>
+    </div>
+
+    <div class="subheading">TCP security considerations</div>
+
+    <div class="intro">
+        <p>TCP's reliability features should not be confused with security.</p>
+        <p class="minor-heading"><strong>SYN flood attacks</strong></p>
+        <p>An attacker can send many SYN requests to consume resources associated with pending connections.</p>
+        <p>SYN cookies and other defensive mechanisms can help reduce the impact of these attacks.</p>
+        <p class="minor-heading"><strong>TCP reset attacks</strong></p>
+        <p>Forged or otherwise unauthorized reset segments can potentially disrupt connections under certain conditions.</p>
+        <p>Modern stacks use validation and sequence-number checks to reduce exposure.</p>
+        <p class="minor-heading"><strong>TCP session interception</strong></p>
+        <p>TCP itself does not encrypt data.</p>
+        <p>For confidential communication, applications normally use TLS:</p>
+    </div>
+    <div class="code-block"><pre><code>Application protocol
+        ↓
+       TLS
+        ↓
+       TCP
+        ↓
+        IP</code></pre></div>
+
+    <div class="intro">
+        <p>TLS provides encrypted communication and integrity protection, and commonly authenticates the server.</p>
+        <p class="minor-heading"><strong>Application-level idempotency</strong></p>
+        <p>A particularly important distributed-systems principle is that TCP's reliable byte delivery does not guarantee exactly-once business execution.</p>
+        <p>Suppose a payment client sends a request and then loses the connection before receiving the response.</p>
+        <p>The payment might have been processed successfully, even though the client did not receive confirmation.</p>
+        <p>The client cannot determine the business outcome from TCP failure alone.</p>
+        <p>Applications therefore need mechanisms such as idempotency keys, transaction identifiers, and durable processing records.</p>
+    </div>
+
+    <div class="subheading">A complete HTTP-over-TCP example</div>
+
+    <div class="intro">
+        <p>Consider a browser accessing a website using HTTPS over TCP.</p>
+    </div>
+    <div class="steps">
+        <div class="step"><div class="step-title">DNS resolution</div><div class="step-body">The browser obtains the destination IP address. DNS itself is a separate protocol and may use UDP, TCP, or encrypted transports.</div></div>
+        <div class="step"><div class="step-title">TCP connection establishment</div><div class="step-body">The browser connects to the destination server, commonly on port <code>443</code>, using a TCP three-way handshake.</div></div>
+        <div class="step"><div class="step-title">TLS handshake</div><div class="step-body">The endpoints negotiate cryptographic parameters and establish secure communication.</div></div>
+        <div class="step"><div class="step-title">HTTP request transmission</div><div class="step-body">The browser writes an HTTP request through TLS into the TCP byte stream.</div></div>
+        <div class="step"><div class="step-title">TCP delivery</div><div class="step-body">TCP handles sequencing, ACKs, flow control, congestion control, and loss recovery.</div></div>
+        <div class="step"><div class="step-title">HTTP response</div><div class="step-body">The server sends response bytes through the same bidirectional TCP connection.</div></div>
+        <div class="step"><div class="step-title">Connection reuse or closure</div><div class="step-body">HTTP may reuse the connection for additional requests. When it is no longer needed, the connection can be closed.</div></div>
+    </div>
+    <div class="intro">
+        <p>This describes HTTPS over TCP, such as HTTP/1.1 or HTTP/2. HTTP/3 uses QUIC over UDP instead.</p>
+    </div>
+
+    <div class="subheading">Frequently misunderstood TCP concepts</div>
+
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Misconception</th><th>Correct explanation</th></tr></thead>
+            <tbody>
+                <tr><td>TCP assigns sequence numbers to packets</td><td>TCP sequence numbers identify byte positions</td></tr>
+                <tr><td>One write equals one TCP segment</td><td>TCP may split or combine writes</td></tr>
+                <tr><td>One read returns one complete message</td><td>TCP has no inherent application-message boundaries</td></tr>
+                <tr><td>ACK means the application processed the request</td><td>ACK generally confirms receipt by the TCP stack</td></tr>
+                <tr><td>TCP always delivers every byte</td><td>TCP can fail; reliability does not imply perpetual connectivity</td></tr>
+                <tr><td>TCP windows and congestion windows are identical</td><td>They control receiver capacity and network congestion separately</td></tr>
+                <tr><td>SYN and FIN are ordinary data bytes</td><td>They consume sequence-number space but are control signals</td></tr>
+                <tr><td>TCP is encrypted</td><td>TLS or another security layer is needed</td></tr>
+                <tr><td>TCP connections use dedicated paths</td><td>Connections are logical endpoint state, not dedicated circuits</td></tr>
+                <tr><td>All TCP algorithms behave exactly like Reno</td><td>Congestion and loss-recovery implementations can differ</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Important TCP terminology</div>
+
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+            <tbody>
+                <tr><td>Segment</td><td>TCP header plus optional data</td></tr>
+                <tr><td>ISN</td><td>Initial Sequence Number</td></tr>
+                <tr><td>SEQ</td><td>TCP sequence number</td></tr>
+                <tr><td>ACK</td><td>TCP acknowledgment</td></tr>
+                <tr><td>MSS</td><td>Maximum Segment Size</td></tr>
+                <tr><td>MTU</td><td>Maximum Transmission Unit</td></tr>
+                <tr><td>RTT</td><td>Round-Trip Time</td></tr>
+                <tr><td>RTO</td><td>Retransmission Timeout</td></tr>
+                <tr><td><code>rwnd</code></td><td>Receiver's advertised window</td></tr>
+                <tr><td><code>cwnd</code></td><td>Sender's congestion window</td></tr>
+                <tr><td><code>ssthresh</code></td><td>Slow-start threshold</td></tr>
+                <tr><td>SACK</td><td>Selective Acknowledgment</td></tr>
+                <tr><td>ECN</td><td>Explicit Congestion Notification</td></tr>
+                <tr><td>BDP</td><td>Bandwidth-Delay Product</td></tr>
+                <tr><td>FIN</td><td>Graceful end of one sending direction</td></tr>
+                <tr><td>RST</td><td>TCP connection reset</td></tr>
+                <tr><td>TIME-WAIT</td><td>State for handling late packets/final-ACK recovery</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">TCP in one complete flow</div>
+
+    <div class="svg-diagram">
+        <img src="../static/tcp-diagram-8.svg" alt="Complete TCP flow: open socket, handshake, write, segment, apply limits, transmit, check receipt, ACK or retransmit, deliver bytes, repeat, then FIN or abort and close" style="width:100%;max-width:730px">
+    </div>
+    <div class="intro">
+        <p>Conceptual lifecycle: ACK processing, retransmission, and bidirectional sending happen concurrently in real TCP implementations.</p>
+    </div>
+
+    <div class="subheading">Official specifications for further study</div>
+
+    <div class="intro">
+        <p>These are the most useful primary references:</p>
+        <ul><li><a href="https://www.rfc-editor.org/rfc/rfc9293.html" target="_blank" rel="noopener">RFC 9293 — Transmission Control Protocol</a>: Core TCP specification, header, sequencing, states, and connection management.</li><li><a href="https://www.rfc-editor.org/rfc/rfc5681.html" target="_blank" rel="noopener">RFC 5681 — TCP Congestion Control</a>: Slow start, congestion avoidance, fast retransmit, and recovery.</li><li><a href="https://www.rfc-editor.org/rfc/rfc6298.html" target="_blank" rel="noopener">RFC 6298 — Computing TCP's Retransmission Timer</a>: RTT/RTO estimation and timer behavior.</li><li><a href="https://www.rfc-editor.org/rfc/rfc7323.html" target="_blank" rel="noopener">RFC 7323 — TCP Extensions for High Performance</a>: Window scaling and timestamps.</li><li><a href="https://www.rfc-editor.org/rfc/rfc2018.html" target="_blank" rel="noopener">RFC 2018 — TCP Selective Acknowledgment Options</a>: SACK mechanism.</li><li><a href="https://www.rfc-editor.org/rfc/rfc9438.html" target="_blank" rel="noopener">RFC 9438 — CUBIC</a>: Modern congestion control.</li></ul>
+        <p class="minor-heading"><strong>Final takeaway</strong></p>
+        <p>To understand TCP deeply, focus on five mechanisms and how they interact:</p>
+        <p><strong>Connection management</strong> establishes and closes endpoint state. <strong>Sequence numbers and acknowledgments</strong> make an ordered, reliable byte stream possible. <strong>Retransmission</strong> recovers missing data. <strong>Flow control</strong> protects the receiver. <strong>Congestion control</strong> protects the network.</p>
+        <p>Together, these mechanisms allow applications such as HTTP services, database clients, SSH sessions, and distributed-system components to exchange data reliably over an otherwise best-effort IP network.</p>
+    </div>
+</div>
+</body>
+</html>

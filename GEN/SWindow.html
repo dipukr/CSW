@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sliding Window</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.katex) return; // offline: keep the plain-text fallback
+    document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+<script>
+// Mastery tracker: ticks are remembered in this browser only.
+document.addEventListener("DOMContentLoaded", function () {
+    const tracker = document.querySelector(".sw-tracker");
+    if (!tracker) return;
+    const boxes = [...tracker.querySelectorAll(".sw-check")];
+    const key = "swindow-tracker";
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem(key) || "[]"); } catch (e) { saved = []; }
+    boxes.forEach((b, i) => { b.checked = saved[i] === 1; });
+    function update() {
+        const done = boxes.filter(b => b.checked).length;
+        tracker.querySelector(".sw-total").textContent = done + "/" + boxes.length;
+        tracker.querySelector(".sw-progress-fill").style.width = (100 * done / boxes.length) + "%";
+        tracker.querySelectorAll(".sw-count").forEach(c => {
+            const stage = [...c.closest(".sw-box").querySelectorAll(".sw-check")];
+            c.textContent = stage.filter(b => b.checked).length + "/" + stage.length;
+        });
+        try { localStorage.setItem(key, JSON.stringify(boxes.map(b => b.checked ? 1 : 0))); } catch (e) { /* storage unavailable */ }
+    }
+    boxes.forEach(b => b.addEventListener("change", update));
+    tracker.querySelector(".sw-reset").addEventListener("click", function () {
+        boxes.forEach(b => { b.checked = false; });
+        update();
+    });
+    update();
+});
+</script>
+</head>
+<body>
+<div class="note sw-page">
+    <div class="title">Sliding Window Algorithms — Complete Masterclass</div>
+
+    <div class="intro">
+        <p class="sw-muted">Java • Data Structures &amp; Algorithms • Visual Explanations • Interactive Animations • Interview Preparation</p>
+        <p>Sliding Window is one of the most important algorithmic techniques for coding interviews, especially for problems involving arrays, strings, subarrays, substrings, frequency counting, and optimization.</p>
+        <p>This guide progresses from <strong>absolute beginner to advanced interview problems</strong>, including the underlying mathematics, implementation patterns, complexity analysis, edge cases, and complete Java programs.</p>
+    </div>
+
+    <div class="subheading">1. What is the Sliding Window technique?</div>
+
+    <div class="intro">
+        <p><strong>Sliding Window</strong> is an algorithmic technique that processes a contiguous portion of an array or string by maintaining a range of elements, called a <em>window</em>, and incrementally updating information as that range moves.</p>
+        <p>Instead of recalculating information for every possible subarray or substring, we reuse information from the previous window.</p>
+        <p>For example, consider:</p>
+    </div>
+    <div class="code-block"><pre><code>Array = [2, 1, 5, 1, 3, 2]
+Window size k = 3</code></pre></div>
+
+    <div class="intro">
+        <p>We want the maximum sum among all contiguous subarrays of length 3.</p>
+        <p>A brute-force implementation calculates:</p>
+    </div>
+    <div class="code-block"><pre><code>[2, 1, 5]          Sum = 8
+   [1, 5, 1]       Sum = 7
+      [5, 1, 3]    Sum = 9
+         [1, 3, 2] Sum = 6
+
+Maximum = 9</code></pre></div>
+
+    <div class="intro">
+        <p>The sliding window optimization is to compute the first window once, then update its sum by subtracting the element leaving the window and adding the element entering.</p>
+        <p class="math-display"><span class="math" data-tex="S_{\text{next}}=S_{\text{current}}-A[\text{left}]+A[\text{right}+1]" data-display="1">Snext=Scurrent−A[left]+A[right+1]</span></p>
+        <div class="sw-box sw-bordered"><p class="sw-small sw-muted sw-strong">WINDOW MOVEMENT — FIXED SIZE 3</p><div class="sw-row"><div class="sw-box" style="width:54px"><p class="sw-small sw-muted">Step 1</p><p class="sw-strong">8</p></div><div class="sw-row" style="flex:1 1 0"><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>2</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>1</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>5</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>1</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>3</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>2</p></div></div><div class="sw-box" style="width:42px"></div></div><div class="sw-row"><div class="sw-box" style="width:54px"><p class="sw-small sw-muted">Step 2</p><p class="sw-strong">7</p></div><div class="sw-row" style="flex:1 1 0"><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>2</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>1</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>5</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>1</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>3</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>2</p></div></div><div class="sw-box" style="width:42px"></div></div><div class="sw-row"><div class="sw-box" style="width:54px"><p class="sw-small sw-muted">Step 3</p><p class="sw-strong">9</p></div><div class="sw-row" style="flex:1 1 0"><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>2</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>1</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>5</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>1</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>3</strong></p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>2</p></div></div><div class="sw-box" style="width:42px"><span class="sw-badge">Max</span></div></div><div class="sw-row"><div class="sw-box" style="width:54px"><p class="sw-small sw-muted">Step 4</p><p class="sw-strong">6</p></div><div class="sw-row" style="flex:1 1 0"><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>2</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>1</p></div><div class="sw-box sw-bordered sw-center" style="flex:1 1 0"><p>5</p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>1</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>3</strong></p></div><div class="sw-box sw-bordered sw-center" style="background-color:rgba(16, 139, 110, 0.13);flex:1 1 0"><p class="sw-strong"><strong>2</strong></p></div></div><div class="sw-box" style="width:42px"></div></div><p class="sw-caption">Each successive window removes one element on the left and adds one on the right. The maximum window is [5, 1, 3].</p></div>
+        <p class="minor-heading"><strong>Why is Sliding Window efficient?</strong></p>
+        <p>Suppose an array contains <span class="math" data-tex="n">n</span> elements and we need to find the maximum sum of any <span class="math" data-tex="k">k</span> consecutive elements.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table"><tbody><tr><th>Approach</th><th>Time complexity</th><th>Extra space</th></tr><tr><td>Brute force: recalculate each window</td><td><span class="math" data-tex="O(nk)">O(nk)</span></td><td><span class="math" data-tex="O(1)">O(1)</span></td></tr><tr><td>Sliding window: reuse previous sum</td><td><span class="math" data-tex="O(n)">O(n)</span></td><td><span class="math" data-tex="O(1)">O(1)</span></td></tr></tbody></table></div>
+        <p>For <span class="math" data-tex="n=1,000,000">n=1,000,000</span> and <span class="math" data-tex="k=1,000">k=1,000</span>, the brute-force solution may perform roughly a billion additions, whereas sliding window requires only a few million arithmetic operations.</p>
+        <p>The important principle is:</p>
+        <p><strong>Don't calculate the same information repeatedly when the result of the previous window can be updated incrementally.</strong></p>
+    </div>
+
+    <div class="subheading">2. Two fundamental types of Sliding Window</div>
+
+    <div class="intro">
+        <div class="sw-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr))"><div class="sw-grid-item"><div class="sw-box sw-bordered"><span class="sw-badge">Type 1</span><p><strong>Fixed-size window</strong></p><div class="sw-figure"><img src="../static/swindow-fixed-window.svg" alt="2 1 5 1 3 2 k = 3 Slide right" style="width:100%;max-width:288px"></div><p>The window always contains exactly <span class="math" data-tex="k">k</span> elements.</p><p class="sw-small sw-muted">Typical: maximum sum of k elements, moving average, anagram detection.</p></div></div><div class="sw-grid-item"><div class="sw-box sw-bordered"><span class="sw-badge">Type 2</span><p><strong>Variable-size window</strong></p><div class="sw-figure"><img src="../static/swindow-variable-window.svg" alt="2 1 5 1 3 2 Adjustable length Expand / shrink" style="width:100%;max-width:288px"></div><p>The window expands or contracts to satisfy a condition.</p><p class="sw-small sw-muted">Typical: longest unique substring, shortest valid subarray, at most k distinct characters.</p></div></div></div>
+        <p class="minor-heading"><strong>Fixed-size window</strong></p>
+        <p>A fixed-size window maintains the invariant:</p>
+        <p class="math-display"><span class="math" data-tex="\text{right}-\text{left}+1=k" data-display="1">right−left+1=k</span></p>
+        <p>Basic Java pattern:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; n; right++) {
+
+    <span class="code-comment">// Add arr[right] to the window.</span>
+
+    <span class="code-keyword">if</span> (right &gt;= k) {
+        <span class="code-comment">// Remove arr[right - k].</span>
+    }
+
+    <span class="code-keyword">if</span> (right &gt;= k - <span class="code-number">1</span>) {
+        <span class="code-comment">// Process the complete window.</span>
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Variable-size window</strong></p>
+        <p>A variable-size window adjusts its length dynamically.</p>
+        <p>The usual technique maintains two pointers, <code>left</code> and <code>right</code>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; n; right++) {
+
+    <span class="code-comment">// Expand: add arr[right].</span>
+
+    <span class="code-keyword">while</span> (<span class="code-comment">/* window violates condition */</span>) {
+
+        <span class="code-comment">// Shrink: remove arr[left].</span>
+        left++;
+    }
+
+    <span class="code-comment">// Process the valid window.</span>
+}</code></pre></div>
+
+    <div class="intro">
+        <p>This specific template keeps the window valid after shrinking, which is ideal for many longest-window problems.</p>
+        <p>For minimum-window problems, the loop often works in the opposite way: shrink <strong>while the window remains valid</strong>, recording the answer before removing elements.</p>
+    </div>
+
+    <div class="subheading">3. The core window invariant</div>
+
+    <div class="intro">
+        <p>An <em>invariant</em> is a property that must remain true at a defined point in every iteration.</p>
+        <p>Typical invariants include:</p>
+        <ul><li>The window always contains exactly <code>k</code> elements.</li><li>The window contains at most <code>k</code> distinct characters.</li><li>The window contains no duplicate characters.</li><li>The sum of the window is less than a threshold.</li><li>A monotonic deque contains candidate indices in decreasing order of their values.</li></ul>
+        <p>A correctly chosen invariant is often more important than the Java code itself.</p>
+        <p class="minor-heading"><strong>The four operations</strong></p>
+        <div class="sw-box sw-bordered"><div class="sw-grid" style="grid-template-columns:repeat(4, minmax(0, 1fr))"><div class="sw-grid-item"><div class="sw-box sw-center"><div class="sw-box sw-center" style="background-color:rgb(13, 148, 136);width:28px"><p class="sw-small sw-strong"><strong>1</strong></p></div><p class="sw-small sw-strong">Expand</p><p class="sw-small sw-muted">Add right</p></div></div><div class="sw-grid-item"><div class="sw-box sw-center"><div class="sw-box sw-center" style="background-color:rgb(100, 116, 139);width:28px"><p class="sw-small sw-strong"><strong>2</strong></p></div><p class="sw-small sw-strong">Validate</p><p class="sw-small sw-muted">Check rule</p></div></div><div class="sw-grid-item"><div class="sw-box sw-center"><div class="sw-box sw-center" style="background-color:rgb(217, 119, 6);width:28px"><p class="sw-small sw-strong"><strong>3</strong></p></div><p class="sw-small sw-strong">Shrink</p><p class="sw-small sw-muted">Remove left</p></div></div><div class="sw-grid-item"><div class="sw-box sw-center"><div class="sw-box sw-center" style="background-color:rgb(99, 102, 241);width:28px"><p class="sw-small sw-strong"><strong>4</strong></p></div><p class="sw-small sw-strong">Record</p><p class="sw-small sw-muted">Update answer</p></div></div></div><div class="sw-figure"><img src="../static/swindow-four-operations.svg" alt="1 right++ 2 condition 3 left++ 4 answer" style="width:100%;max-width:614px"></div></div>
+        <p>The exact ordering changes by problem. In particular, whether to update the answer before or after shrinking depends on the invariant.</p>
+    </div>
+
+    <div class="subheading">4. Interactive Sliding Window animation</div>
+
+    <div class="intro">
+        <p>Use the animation to observe how <code>left</code>, <code>right</code>, the current window, and the maintained state change at each step.</p>
+        <div class="callout callout-note"><p>Code execution is disabled for this workspace.</p></div>
+        <p class="minor-heading"><strong>What to observe</strong></p>
+        <p>In the fixed-size animation, <code>left</code> and <code>right</code> move together, so the window length never changes.</p>
+        <p>In the longest-unique-substring animation, <code>right</code> expands the window and <code>left</code> moves only when a duplicate makes the window invalid.</p>
+        <p>In the minimum-length animation, the window first expands until its sum reaches the target, then shrinks as much as possible while still meeting the target.</p>
+        <p>These represent three of the most useful sliding window behaviors in interviews.</p>
+    </div>
+
+    <div class="subheading">5. Sliding Window — visual slide deck</div>
+
+    <div class="intro">
+        <div class="sw-slides"><div class="sw-slide"><div class="sw-box"><p class="sw-caption">SLIDE 01 / 07 · THE IDEA</p><p class="sw-title sw-h1">Reuse previous work</p><div class="sw-figure"><img src="../static/swindow-reuse-work.svg" alt="4 2 7 1 5" style="width:100%;max-width:298px"></div><p>Move the window one position rather than recomputing everything.</p><span class="sw-badge">Often O(n)</span></div></div><div class="sw-slide"><div class="sw-box"><p class="sw-caption">SLIDE 02 / 07 · FIXED WINDOW</p><p class="sw-title sw-h1">One enters, one leaves</p><p class="math-display"><span class="math" data-tex="S'=S-a[L]+a[R+1]" data-display="1">S′=S−a[L]+a[R+1]</span></p><p>Maintain a constant window length. Useful for sums, averages, frequencies, and fixed-length constraints.</p><span class="sw-badge">Exact k elements</span></div></div><div class="sw-slide"><div class="sw-box"><p class="sw-caption">SLIDE 03 / 07 · VARIABLE WINDOW</p><p class="sw-title sw-h1">Expand and shrink</p><div class="sw-figure"><img src="../static/swindow-expand-shrink.svg" alt="Valid window Expand Shrink" style="width:100%;max-width:298px"></div><p>Window size is controlled by a condition, not a constant.</p><span class="sw-badge">Longest / shortest</span></div></div><div class="sw-slide"><div class="sw-box"><p class="sw-caption">SLIDE 04 / 07 · COUNTING</p><p class="sw-title sw-h1">At most vs exactly k</p><p class="math-display"><span class="math" data-tex="\operatorname{exact}(k)=\operatorname{atMost}(k)-\operatorname{atMost}(k-1)" data-display="1">exact⁡(k)=atMost⁡(k)−atMost⁡(k−1)</span></p><p>A powerful technique for counting subarrays with exactly k distinct values or exactly k odd numbers.</p><span class="sw-badge">Counting pattern</span></div></div><div class="sw-slide"><div class="sw-box"><p class="sw-caption">SLIDE 05 / 07 · MONOTONIC DEQUE</p><p class="sw-title sw-h1">Track the maximum</p><div class="sw-row"><div class="sw-box sw-bordered" style="background-color:rgba(13, 148, 136, 0.16)"><p class="sw-title sw-h2">9</p></div><div class="sw-box sw-bordered"><p class="sw-title sw-h2">5</p></div><div class="sw-box sw-bordered"><p class="sw-title sw-h2">3</p></div></div><p>Maintain candidate indices in decreasing value order. The deque's front is the maximum for the current window.</p><span class="sw-badge">O(n) total</span></div></div><div class="sw-slide"><div class="sw-box"><p class="sw-caption">SLIDE 06 / 07 · IMPORTANT LIMIT</p><p class="sw-title sw-h1">Negative numbers change everything</p><p class="math-display"><span class="math" data-tex="[2,-5,8,-1]" data-display="1">[2,−5,8,−1]</span></p><p>For sum-based conditions, adding an element is not always monotonic when negative numbers are allowed.</p><p>Ordinary shrink/expand logic can fail. Prefix sums and monotonic deques may be needed.</p><span class="sw-badge">Watch constraints</span></div></div><div class="sw-slide"><div class="sw-box"><p class="sw-caption">SLIDE 07 / 07 · INTERVIEW STRATEGY</p><p class="sw-title sw-h1">Choose your invariant</p><p>Ask three questions:</p><p>1. What information does the window maintain?</p><p>2. When is shrinking safe or required?</p><p>3. When should the answer be updated?</p><span class="sw-badge">Correctness before code</span></div></div></div>
+    </div>
+
+    <div class="subheading">6. Sliding Window pattern classification</div>
+
+    <div class="intro">
+        <p>Use this table to recognize the correct algorithm quickly.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table"><tbody><tr><th>Pattern</th><th>Typical problem</th><th>Main data structure</th><th>Time</th></tr><tr><td>Fixed sum</td><td>Max sum of k elements</td><td>Running sum</td><td>O(n)</td></tr><tr><td>Fixed frequency</td><td>Anagram detection</td><td>Frequency array/map</td><td>O(n) for fixed alphabet</td></tr><tr><td>Variable longest</td><td>Longest substring without repeats</td><td>Set / last-seen map</td><td>O(n)</td></tr><tr><td>Variable shortest</td><td>Minimum size subarray sum, positive numbers</td><td>Running sum</td><td>O(n)</td></tr><tr><td>At most k</td><td>Longest substring with k distinct chars</td><td>Frequency map</td><td>O(n)</td></tr><tr><td>Exactly k</td><td>Count subarrays with k distinct values</td><td>Two at-most windows</td><td>O(n)</td></tr><tr><td>Replacement budget</td><td>Max consecutive ones III</td><td>Zero counter</td><td>O(n)</td></tr><tr><td>Product constraint</td><td>Subarray product below k, positive numbers</td><td>Running product</td><td>O(n)</td></tr><tr><td>Monotonic max/min</td><td>Sliding window maximum</td><td>Monotonic deque</td><td>O(n)</td></tr><tr><td>Negative numbers</td><td>Shortest subarray sum at least K</td><td>Prefix sum + deque</td><td>O(n)</td></tr><tr><td>Sliding median</td><td>Median of every k elements</td><td>Two multisets / balanced trees</td><td>O(n log k)</td></tr><tr><td>Pattern matching</td><td>Concatenation of all words</td><td>Frequency maps</td><td>O(n × word length) in a straightforward implementation</td></tr></tbody></table></div>
+        <p><strong>Important:</strong> Sliding Window is not always <span class="math" data-tex="O(n)">O(n)</span>. Its complexity depends on how efficiently window state is updated and on the data structures used.</p>
+    </div>
+
+    <div class="title">Part II — Java Coding Interview Problems</div>
+
+    <div class="intro">
+        <p>The 37 Java coding interview problems, each with its description and a complete Java 25 program, are on a separate page: <a href="SWindowCode.html">Sliding Window — Java Coding Interview Problems</a>.</p>
+    </div>
+
+    <div class="title">Part III — Deep Understanding, Proofs, and Interview Techniques</div>
+
+    <div class="subheading">7. Why two nested loops can still be O(n)</div>
+
+    <div class="intro">
+        <p>One of the most common interview questions is:</p>
+        <blockquote class="sw-quote"><p>A sliding window contains a <code>for</code> loop and an inner <code>while</code> loop. Why is the complexity O(n), not O(n²)?</p></blockquote>
+        <p>Consider:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; n; right++) {
+
+    <span class="code-keyword">while</span> (invalidWindow(left, right)) {
+        left++;
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p>The important fact is that <code>left</code> never moves backward.</p>
+        <p>Over the entire execution:</p>
+        <ul><li><code>right</code> increments at most <code>n</code> times.</li><li><code>left</code> increments at most <code>n</code> times.</li></ul>
+        <p>Therefore, the total pointer movement is at most:</p>
+        <p class="math-display"><span class="math" data-tex="n+n=2n" data-display="1">n+n=2n</span></p>
+        <p>So:</p>
+        <p class="math-display"><span class="math" data-tex="T(n)=O(n)" data-display="1">T(n)=O(n)</span></p>
+        <p>This is <strong>amortized analysis</strong>.</p>
+        <div class="sw-box sw-bordered"><p class="sw-strong">Pointer movement over the entire algorithm</p><div class="sw-figure"><img src="../static/swindow-pointer-movement.svg" alt="0 1 2 3 4 5 6 7 Indices Right pointer: advances at most n times Left pointer: advances at most n times" style="width:100%;max-width:614px"></div><p class="sw-caption">Even if the left pointer advances many times in one iteration, it has only n positions to traverse in total.</p></div>
+        <p>This argument requires efficient work per pointer movement. If each movement performs an <span class="math" data-tex="O(k)">O(k)</span> operation, such as scanning a large map or sorting the window, the total complexity changes.</p>
+        <p class="minor-heading"><strong>Formal amortized proof</strong></p>
+        <p>Let <span class="math" data-tex="R">R</span> be the total number of right-pointer increments and <span class="math" data-tex="L">L</span> the total number of left-pointer increments.</p>
+        <p>Because both pointers are monotonic:</p>
+        <p class="math-display"><span class="math" data-tex="0\le R\le n" data-display="1">0≤R≤n</span></p>
+        <p class="math-display"><span class="math" data-tex="0\le L\le n" data-display="1">0≤L≤n</span></p>
+        <p>If each increment involves constant-time work:</p>
+        <p class="math-display"><span class="math" data-tex="T(n)\le c_1R+c_2L+c_3n" data-display="1">T(n)≤c1R+c2L+c3n</span></p>
+        <p class="math-display"><span class="math" data-tex="T(n)\le(c_1+c_2+c_3)n=O(n)" data-display="1">T(n)≤(c1+c2+c3)n=O(n)</span></p>
+        <p>This is why the inner <code>while</code> loop does not automatically make the algorithm quadratic.</p>
+    </div>
+
+    <div class="subheading">8. Why <code>while</code> is often necessary instead of <code>if</code></div>
+
+    <div class="intro">
+        <p>Consider the minimum-size subarray sum problem:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">while</span> (sum &gt;= target) {
+    best = <span class="code-class">Math</span>.min(best, right - left + <span class="code-number">1</span>);
+    sum -= nums[left++];
+}</code></pre></div>
+
+    <div class="intro">
+        <p>Why not use <code>if</code>?</p>
+        <p>Suppose:</p>
+    </div>
+    <div class="code-block"><pre><code>nums = [1, 1, 1, 10]
+target = 10</code></pre></div>
+
+    <div class="intro">
+        <p>After adding <code>10</code>:</p>
+    </div>
+    <div class="code-block"><pre><code>Window = [1, 1, 1, 10]
+Sum = 13</code></pre></div>
+
+    <div class="intro">
+        <p>If you shrink only once, you obtain:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 1, 10]
+Sum = 12</code></pre></div>
+
+    <div class="intro">
+        <p>But that is still valid and can be shortened further:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 10]   Sum = 11
+[10]      Sum = 10</code></pre></div>
+
+    <div class="intro">
+        <p>The optimal result has length 1.</p>
+        <p>A <code>while</code> loop keeps shrinking until further shrinking would violate the condition.</p>
+        <p><strong>Important nuance:</strong> Some longest-window solutions can use a single <code>if</code> deliberately, with a different invariant or a deferred-shrinking argument. That is not a universal replacement for <code>while</code>. Use <code>while</code> when correctness requires fully restoring the stated invariant.</p>
+    </div>
+
+    <div class="subheading">9. The three most important variable-window templates</div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Template A — Longest valid window</strong></p>
+        <p>Use this when the goal is the maximum length satisfying a condition.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+<span class="code-keyword">int</span> best = <span class="code-number">0</span>;
+
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; n; right++) {
+
+    <span class="code-comment">// Include element at right.</span>
+    add(right);
+
+    <span class="code-comment">// Restore validity.</span>
+    <span class="code-keyword">while</span> (!valid()) {
+        remove(left);
+        left++;
+    }
+
+    <span class="code-comment">// The current window is valid.</span>
+    best = <span class="code-class">Math</span>.max(best, right - left + <span class="code-number">1</span>);
+}</code></pre></div>
+
+    <div class="intro">
+        <p>Examples: longest unique substring, fruit baskets, max consecutive ones III, at most K distinct characters.</p>
+        <p class="minor-heading"><strong>Template B — Shortest valid window</strong></p>
+        <p>Use this when the goal is the minimum length satisfying a condition.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+<span class="code-keyword">int</span> best = <span class="code-class">Integer</span>.MAX_VALUE;
+
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; n; right++) {
+
+    add(right);
+
+    <span class="code-comment">// Window is valid: try to shorten it.</span>
+    <span class="code-keyword">while</span> (valid()) {
+
+        best = <span class="code-class">Math</span>.min(
+            best, right - left + <span class="code-number">1</span>);
+
+        remove(left);
+        left++;
+    }
+}</code></pre></div>
+
+    <div class="intro">
+        <p>Examples: minimum window substring, minimum size subarray sum with positive elements.</p>
+        <p class="minor-heading"><strong>Template C — Count valid subarrays</strong></p>
+        <p>When the constraint is hereditary under removing elements from the left, every suffix of a valid window is also valid.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> left = <span class="code-number">0</span>;
+<span class="code-keyword">long</span> count = <span class="code-number">0</span>;
+
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> right = <span class="code-number">0</span>; right &lt; n; right++) {
+
+    add(right);
+
+    <span class="code-keyword">while</span> (!valid()) {
+        remove(left);
+        left++;
+    }
+
+    count += right - left + <span class="code-number">1</span>;
+}</code></pre></div>
+
+    <div class="intro">
+        <p>Examples: at most K distinct values, binary subarrays with sum at most K, positive subarrays with product less than K.</p>
+        <p>The expression:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{\text{right}-\text{left}+1}" data-display="1">right−left+1</span></p>
+        <p>is especially important when <em>counting</em> subarrays.</p>
+        <p class="minor-heading"><strong>Counting example</strong></p>
+        <p>Suppose the current valid window is <code>[2, 4, 3]</code>.</p>
+        <p>All valid suffixes ending at the current right index are:</p>
+    </div>
+    <div class="code-block"><pre><code>[3]
+[4, 3]
+[2, 4, 3]</code></pre></div>
+
+    <div class="intro">
+        <p>There are three such subarrays, exactly equal to the window length.</p>
+    </div>
+
+    <div class="subheading">10. When Sliding Window does not work</div>
+
+    <div class="intro">
+        <p>The classic two-pointer method depends on a monotonic relationship between window changes and the constraint.</p>
+        <p>For example, with strictly positive numbers:</p>
+        <ul><li>Expanding a window increases its sum.</li><li>Shrinking a window decreases its sum.</li></ul>
+        <p>This permits safe decisions about when to expand and shrink.</p>
+        <p>With negative numbers, those properties no longer hold.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table"><tbody><tr><th>Problem</th><th>Ordinary window?</th><th>Better approach</th></tr><tr><td>Minimum length with sum ≥ K, positive numbers</td><td>Yes</td><td>Two pointers</td></tr><tr><td>Minimum length with sum ≥ K, arbitrary integers</td><td>Not generally</td><td>Prefix sums + monotonic deque</td></tr><tr><td>Count subarrays with exact sum, binary array</td><td>Yes</td><td>At-most difference</td></tr><tr><td>Count subarrays with exact sum, arbitrary integers</td><td>Not generally</td><td>Prefix-sum frequency map</td></tr><tr><td>Maximum sum of exactly K elements, arbitrary integers</td><td>Yes</td><td>Fixed window</td></tr><tr><td>Longest substring without repeats</td><td>Yes</td><td>Last-seen indices / frequency map</td></tr><tr><td>Sliding maximum</td><td>Not with sum-style state alone</td><td>Monotonic deque</td></tr><tr><td>Sliding median</td><td>Not with a simple sum or deque</td><td>Balanced multisets / heaps</td></tr></tbody></table></div>
+    </div>
+
+    <div class="subheading">11. Sliding Window vs Two Pointers vs Prefix Sums</div>
+
+    <div class="intro">
+        <p>These concepts overlap, but they are not identical.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table"><tbody><tr><th>Technique</th><th>Central idea</th><th>Common use</th></tr><tr><td>Two pointers</td><td>Use two indices to traverse or partition data</td><td>Sorted pair sum, array merging, partitioning</td></tr><tr><td>Sliding window</td><td>Maintain information about a contiguous interval as it moves</td><td>Substring optimization, subarray constraints</td></tr><tr><td>Prefix sums</td><td>Precompute cumulative values to obtain range sums</td><td>Range-sum queries, arbitrary-integer exact-sum counts</td></tr><tr><td>Monotonic deque</td><td>Maintain undominated candidates in sorted order</td><td>Range max/min, constrained prefix sums</td></tr><tr><td>Binary search + window</td><td>Search a parameter while checking feasibility</td><td>Some optimization and answer-search problems</td></tr></tbody></table></div>
+        <p>Every sliding window algorithm uses an interval, commonly expressed using two pointers, but not every two-pointer algorithm is a sliding window.</p>
+        <p>For example, finding two numbers that sum to a target in a sorted array is a two-pointer algorithm, not normally classified as sliding window.</p>
+    </div>
+
+    <div class="subheading">12. Common interview mistakes</div>
+
+    <div class="intro">
+        <div class="sw-box sw-bordered"><div class="sw-row"><div class="sw-box" style="flex:1 1 0"><p><strong>Mistake 1: Off-by-one errors</strong></p><p>The inclusive window length is <code>right - left + 1</code>, not <code>right - left</code>.</p></div></div><hr class="sw-divider"><div class="sw-row"><div class="sw-box" style="flex:1 1 0"><p><strong>Mistake 2: Updating the answer at the wrong time</strong></p><p>In longest-valid-window problems, record the answer after restoring validity. In shortest-covering-window problems, record it before removing an element from a currently valid window.</p></div></div><hr class="sw-divider"><div class="sw-row"><div class="sw-box" style="flex:1 1 0"><p><strong>Mistake 3: Forgetting frequency-map cleanup</strong></p><p>When a count becomes zero, remove the key if <code>map.size()</code> is supposed to represent the number of distinct elements.</p></div></div><hr class="sw-divider"><div class="sw-row"><div class="sw-box" style="flex:1 1 0"><p><strong>Mistake 4: Assuming all sliding windows are O(n)</strong></p><p>Sorting every window, scanning all its elements repeatedly, or performing expensive map operations can increase complexity.</p></div></div><hr class="sw-divider"><div class="sw-row"><div class="sw-box" style="flex:1 1 0"><p><strong>Mistake 5: Integer overflow</strong></p><p>Sums, products, and subarray counts can exceed <code>int</code>. Use <code>long</code> where needed, especially for multiplication such as <code>nums[right] * windowLength</code>.</p></div></div><hr class="sw-divider"><div class="sw-row"><div class="sw-box" style="flex:1 1 0"><p><strong>Mistake 6: Ignoring input assumptions</strong></p><p>An algorithm for positive values may be wrong for negative values. An <code>int[26]</code> frequency array only works when the input really is restricted to the expected alphabet.</p></div></div></div>
+    </div>
+
+    <div class="subheading">13. Algorithm-selection decision tree</div>
+
+    <div class="intro">
+        <div class="svg-diagram"><img src="../static/swindow-decision-tree.svg" alt="Algorithm-selection decision tree: array or string problem; if not a contiguous range, consider other techniques. For a fixed range length, choose by what is maintained: running sum or frequency, monotonic deque for maximum or minimum, ordered multisets for the median. For a variable length with a monotonic condition: expand then shrink invalid for longest, expand then shrink valid for shortest, at-most counting or suffix counts for counting. Otherwise use prefix sums, a deque, a map or another approach." style="width:100%"></div>
+        <p>This decision tree is a guide, not a correctness proof. Even a monotonic constraint requires a careful invariant, and some optimization problems need transformations before a sliding window becomes applicable.</p>
+    </div>
+
+    <div class="title">Part IV — Interview Preparation and Practice</div>
+
+    <div class="subheading">14. Practice roadmap: from beginner to expert</div>
+
+    <div class="intro">
+        <p>Work through the problems in this order. You can mark them as completed while studying.</p>
+        <div class="sw-box sw-bordered sw-tracker"><div class="sw-row"><div class="sw-box"><p class="sw-title sw-h2">Sliding Window mastery tracker</p><p class="sw-small sw-muted">Practice implementing each solution without looking at the code.</p></div><div class="sw-box"><p class="sw-title sw-h1 sw-total">0/37</p><p class="sw-caption">Completed</p></div></div><div class="sw-progress"><div class="sw-progress-fill"></div></div><div class="sw-box"><div class="sw-row"><p class="sw-strong"><strong>Stage 1 — Fixed windows</strong></p><p class="sw-small sw-muted sw-count">0/9</p></div><div class="sw-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr))"><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Maximum sum of K elements</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Maximum average subarray</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> First negative number in every window</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Distinct elements in a K-sized window</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Maximum vowels in length K</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Minimum recolors</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Maximum points from cards</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Contains duplicate II</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Minimum swaps to group ones</label></div></div><hr class="sw-divider"></div><div class="sw-box"><div class="sw-row"><p class="sw-strong"><strong>Stage 2 — Variable windows</strong></p><p class="sw-small sw-muted sw-count">0/8</p></div><div class="sw-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr))"><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Longest substring without repeating characters</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Minimum size subarray sum</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Max consecutive ones III</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Fruit into baskets</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Longest repeating character replacement</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Longest substring with at most K distinct</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Longest ones after deleting one</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Subarray product less than K</label></div></div><hr class="sw-divider"></div><div class="sw-box"><div class="sw-row"><p class="sw-strong"><strong>Stage 3 — Advanced counting</strong></p><p class="sw-small sw-muted sw-count">0/5</p></div><div class="sw-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr))"><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Subarrays with exactly K distinct</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Binary subarrays with sum</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Count nice subarrays</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Substrings containing a, b, c</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Maximum erasure value</label></div></div><hr class="sw-divider"></div><div class="sw-box"><div class="sw-row"><p class="sw-strong"><strong>Stage 4 — Pattern matching and optimization</strong></p><p class="sw-small sw-muted sw-count">0/6</p></div><div class="sw-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr))"><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Find all anagrams</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Permutation in string</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Minimum window substring</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Maximum sum with K distinct elements</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Frequency of the most frequent element</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Take K of each character from ends</label></div></div><hr class="sw-divider"></div><div class="sw-box"><div class="sw-row"><p class="sw-strong"><strong>Stage 5 — Advanced data structures</strong></p><p class="sw-small sw-muted sw-count">0/9</p></div><div class="sw-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr))"><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Sliding window maximum</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Longest subarray with absolute difference limit</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Shortest subarray with sum at least K (negatives)</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Count subarrays with bounded maximum</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Count subarrays with fixed bounds</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Substring concatenation of all words</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Maximum robots within budget</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Sliding window median</label></div><div class="sw-grid-item"><label class="sw-label"><input type="checkbox" class="sw-check"> Minimum operations to reduce X to zero</label></div></div></div><div class="sw-row"><button type="button" class="sw-reset">Reset progress</button></div></div>
+    </div>
+
+    <div class="subheading">15. Test cases every implementation should handle</div>
+
+    <div class="intro">
+        <p>Writing the optimal algorithm is only one part of a successful interview. Test its behavior at boundaries.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table"><tbody><tr><th>Edge case</th><th>Example</th><th>What to verify</th></tr><tr><td>Empty input</td><td><code>[]</code></td><td>Return appropriate empty result or reject invalid k</td></tr><tr><td>Single element</td><td><code>[7]</code>, <code>k=1</code></td><td>Correct window length</td></tr><tr><td>Window equals array size</td><td><code>[1,2,3]</code>, <code>k=3</code></td><td>Exactly one window</td></tr><tr><td>Repeated values</td><td><code>[2,2,2,2]</code></td><td>Frequencies and duplicate handling</td></tr><tr><td>All distinct</td><td><code>[1,2,3,4]</code></td><td>Correct longest unique window</td></tr><tr><td>All zeros</td><td><code>[0,0,0]</code></td><td>Counting zero-sum subarrays</td></tr><tr><td>Negative numbers</td><td><code>[-2,3,-1,4]</code></td><td>Correct algorithm assumptions</td></tr><tr><td>No qualifying window</td><td><code>[1,1]</code>, target 10</td><td>Defined impossible result</td></tr><tr><td>Duplicate required characters</td><td><code>t="AABC"</code></td><td>Required multiplicities</td></tr><tr><td>Large values</td><td><code>[2_000_000_000, 2_000_000_000]</code></td><td>Prevent overflow</td></tr><tr><td>K larger than n</td><td><code>n=2</code>, <code>k=5</code></td><td>Correct validation</td></tr><tr><td>K equals zero</td><td><code>k=0</code></td><td>Problem-specific behavior</td></tr></tbody></table></div>
+        <p>For Java solutions, pay particular attention to <code>int</code> overflow and whether the problem's alphabet justifies indexing directly into a fixed-size frequency array.</p>
+    </div>
+
+    <div class="subheading">16. What you should be able to explain in an interview</div>
+
+    <div class="intro">
+        <p>A strong sliding window solution should come with a clear explanation of four things.</p>
+        <p><strong>1. Why is the window sufficient?</strong></p>
+        <p>Explain what information the window stores and why all other information can be discarded.</p>
+        <p><strong>2. Why is shrinking safe?</strong></p>
+        <p>For example, in a nonnegative-array sum constraint, once a window exceeds a maximum permitted sum, increasing <code>right</code> cannot repair it. Removing elements from the left is therefore necessary.</p>
+        <p><strong>3. Why does the algorithm find the optimum?</strong></p>
+        <p>For longest-window problems, show that you consider the longest valid suffix ending at each <code>right</code>. For minimum-window problems, show that every feasible ending index is explored and that shrinking identifies its shortest valid starting position.</p>
+        <p><strong>4. Why is the complexity O(n)?</strong></p>
+        <p>Explain that each pointer moves forward at most <code>n</code> times. For monotonic deques, show that each index is inserted once and removed once.</p>
+    </div>
+
+    <div class="subheading">17. Final cheat sheet</div>
+
+    <div class="intro">
+        <div class="sw-box sw-bordered"><p class="sw-title sw-h2">Sliding Window — Quick Revision</p><div class="gpt-table-wrap"><table class="gpt-table"><tbody><tr><td><strong>Question clue</strong></td><td><strong>Technique</strong></td></tr><tr><td>Exactly K consecutive elements</td><td>Fixed window</td></tr><tr><td>Longest substring with a restriction</td><td>Expand, shrink when invalid</td></tr><tr><td>Shortest substring satisfying requirement</td><td>Expand, shrink while valid</td></tr><tr><td>Exactly K distinct / odd values</td><td>AtMost(K) − AtMost(K−1)</td></tr><tr><td>Count all valid subarrays</td><td>Add window length, if suffixes stay valid</td></tr><tr><td>Maximum/minimum in every window</td><td>Monotonic deque</td></tr><tr><td>Minimum length, arbitrary integer sums</td><td>Prefix sum + deque</td></tr><tr><td>Exact sum, arbitrary integers</td><td>Prefix sum + HashMap</td></tr><tr><td>Median in every window</td><td>Two balanced multisets</td></tr><tr><td>Pick from both ends</td><td>Transform to retained middle window</td></tr></tbody></table></div></div>
+        <p class="minor-heading"><strong>Five formulas worth memorizing</strong></p>
+        <p><strong>Fixed window length</strong></p>
+        <p class="math-display"><span class="math" data-tex="\text{length}=\text{right}-\text{left}+1" data-display="1">length=right−left+1</span></p>
+        <p><strong>Fixed window sum update</strong></p>
+        <p class="math-display"><span class="math" data-tex="S'=S-\text{outgoing}+\text{incoming}" data-display="1">S′=S−outgoing+incoming</span></p>
+        <p><strong>Count subarrays with exactly K of something</strong></p>
+        <p class="math-display"><span class="math" data-tex="\text{Exactly}(K)=\text{AtMost}(K)-\text{AtMost}(K-1)" data-display="1">Exactly(K)=AtMost(K)−AtMost(K−1)</span></p>
+        <p><strong>Count valid subarrays ending at right</strong></p>
+        <p class="math-display"><span class="math" data-tex="\text{New count}=\text{right}-\text{left}+1" data-display="1">New count=right−left+1</span></p>
+        <p><strong>Subarray sum using prefix sums</strong></p>
+        <p class="math-display"><span class="math" data-tex="\text{sum}(i,j)=P[j+1]-P[i]" data-display="1">sum(i,j)=P[j+1]−P[i]</span></p>
+        <p>The most important skill is not memorizing all 37 implementations. It is recognizing the underlying <strong>window invariant</strong>, deciding when information enters and leaves the window, and understanding why that movement preserves correctness.</p>
+        <p>Once those principles are familiar, many seemingly different interview problems reduce to a handful of reusable techniques.</p>
+        <div class="sw-col"><hr class="sw-divider"><p>If you want, I can:</p><ul><li>Add monotonic deque pattern with code and examples</li><li>Explain minimum covering window and exact counting</li><li>Provide complete Java code for sliding window problems in ascending difficulty</li></ul></div>
+    </div>
+</div>
+</body>
+</html>

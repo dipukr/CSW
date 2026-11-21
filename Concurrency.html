@@ -150,7 +150,7 @@
         <p>For example, a single CPU core can execute three threads by rapidly switching between them.</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/concurrency2-interleaved.svg" alt="Concurrency on a single CPU core: threads A, B and C take turns, so only one executes at any instant" style="width:100%;max-width:720px">
+        <img src="static/concurrency2-interleaved.svg" alt="Concurrency on a single CPU core: threads A, B and C take turns, so only one executes at any instant" style="width:100%;max-width:720px">
     </div>
     <div class="intro">
         <p>Only one thread executes at any instant, but all three make progress through interleaving.</p>
@@ -158,7 +158,7 @@
         <p>Parallelism means two or more tasks execute simultaneously, usually on different CPU cores.</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/concurrency2-parallel.svg" alt="Parallelism on three CPU cores: threads A, B and C run at the same time, each on its own core" style="width:100%;max-width:720px">
+        <img src="static/concurrency2-parallel.svg" alt="Parallelism on three CPU cores: threads A, B and C run at the same time, each on its own core" style="width:100%;max-width:720px">
     </div>
     <div class="intro">
         <p>All three threads execute at the same time on separate cores.</p>
@@ -249,7 +249,7 @@
         <p>Deadlock occurs when threads cannot proceed because they are waiting for resources held by each other.</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/concurrency2-deadlock.svg" alt="Deadlock: Thread A holds Lock 1 and waits for Lock 2, while Thread B holds Lock 2 and waits for Lock 1" style="width:100%;max-width:720px">
+        <img src="static/concurrency2-deadlock.svg" alt="Deadlock: Thread A holds Lock 1 and waits for Lock 2, while Thread B holds Lock 2 and waits for Lock 1" style="width:100%;max-width:720px">
     </div>
     <div class="intro">
         <p>Four necessary conditions for classical resource deadlock (Coffman conditions):</p>
@@ -267,7 +267,7 @@
         <p>Creating a new OS thread for every task can be expensive. <a href="ThreadPool.html">Thread pools</a> reuse worker threads.</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/concurrency2-thread-pool.svg" alt="Thread pool: incoming tasks enter a task queue, the pool hands them to worker threads 1, 2 and 3, and they become completed tasks" style="width:100%;max-width:720px">
+        <img src="static/concurrency2-thread-pool.svg" alt="Thread pool: incoming tasks enter a task queue, the pool hands them to worker threads 1, 2 and 3, and they become completed tasks" style="width:100%;max-width:720px">
     </div>
 
 	<div class="subheading">Synchronization mechanisms</div>

@@ -1,0 +1,11 @@
+<svg width="720" height="112" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 112" role="img" aria-label="Initial window: bytes 1–1000, 1001–2000, 2001–3000 and 3001–4000 are sent; 4,000 bytes can be outstanding">
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222" text-anchor="middle">
+        <g fill="#FFFFFF" stroke="#222222" stroke-width="1.2">
+            <rect x="45" y="16" width="150" height="44" rx="3"/><rect x="205" y="16" width="150" height="44" rx="3"/>
+            <rect x="365" y="16" width="150" height="44" rx="3"/><rect x="525" y="16" width="150" height="44" rx="3"/>
+        </g>
+        <g font-size="13"><text x="120" y="42.5">1–1000</text><text x="280" y="42.5">1001–2000</text><text x="440" y="42.5">2001–3000</text><text x="600" y="42.5">3001–4000</text></g>
+        <path d="M45 72 V80 H675 V72" fill="none" stroke="#555555" stroke-width="1.4"/>
+        <text x="360" y="100" font-size="13" fill="#555555">4,000 bytes can be outstanding</text>
+    </g>
+</svg>

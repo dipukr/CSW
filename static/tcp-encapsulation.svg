@@ -1,0 +1,26 @@
+<svg width="720" height="306" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 306" role="img" aria-label="Encapsulation: application data (HTTP request: GET /index.html); TCP adds a TCP header; IP adds an IP header; the link layer adds framing information, giving an Ethernet frame or Wi-Fi frame">
+    <defs><marker id="tenc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222" text-anchor="middle">
+        <rect x="240" y="12" width="240" height="52" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="360" y="34" font-size="14" font-weight="600">Application data</text>
+        <text x="360" y="53" font-size="12" fill="#555555">HTTP request: GET /index.html</text>
+        <path d="M360 64 V92" stroke="#555555" stroke-width="1.5" marker-end="url(#tenc-a)"/>
+        <text x="372" y="83" font-size="12" fill="#555555" text-anchor="start">TCP adds a TCP header</text>
+
+        <rect x="180" y="96" width="120" height="40" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <rect x="300" y="96" width="240" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="240" y="120.5" font-size="13" font-weight="600">TCP header</text><text x="420" y="120.5" font-size="13">Application data</text>
+        <path d="M360 136 V164" stroke="#555555" stroke-width="1.5" marker-end="url(#tenc-a)"/>
+        <text x="372" y="155" font-size="12" fill="#555555" text-anchor="start">IP adds an IP header</text>
+
+        <rect x="120" y="168" width="120" height="40" rx="3" fill="#E5E7EB" stroke="#222222" stroke-width="1.2"/>
+        <rect x="240" y="168" width="120" height="40" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <rect x="360" y="168" width="240" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="180" y="192.5" font-size="13" font-weight="600">IP header</text><text x="300" y="192.5" font-size="13" font-weight="600">TCP header</text><text x="480" y="192.5" font-size="13">Application data</text>
+        <path d="M360 208 V236" stroke="#555555" stroke-width="1.5" marker-end="url(#tenc-a)"/>
+        <text x="372" y="227" font-size="12" fill="#555555" text-anchor="start">Link layer adds framing information</text>
+
+        <rect x="120" y="240" width="480" height="40" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2" stroke-dasharray="5 3"/>
+        <text x="360" y="264.5" font-size="13" font-weight="600">Ethernet frame / Wi-Fi frame</text>
+    </g>
+</svg>

@@ -1,0 +1,19 @@
+<svg width="720" height="440" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" role="img" aria-label="Typical state transitions. Active closer: CLOSED, SYN-SENT, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2, TIME-WAIT, CLOSED. Passive closer: CLOSED, LISTEN, SYN-RECEIVED, ESTABLISHED, CLOSE-WAIT, LAST-ACK, CLOSED.">
+    <defs><marker id="tst-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222" text-anchor="middle">
+        <text x="200" y="22" font-size="14" font-weight="600">Active closer</text>
+        <text x="520" y="22" font-size="14" font-weight="600">Passive closer</text>
+        <g fill="#FFFFFF" stroke="#222222" stroke-width="1.2">
+            <rect x="90" y="36" width="220" height="36" rx="3"/><rect x="90" y="94" width="220" height="36" rx="3"/><rect x="90" y="152" width="220" height="36" rx="3" fill="#F3F4F6"/><rect x="90" y="210" width="220" height="36" rx="3"/><rect x="90" y="268" width="220" height="36" rx="3"/><rect x="90" y="326" width="220" height="36" rx="3"/><rect x="90" y="384" width="220" height="36" rx="3"/>
+            <rect x="410" y="36" width="220" height="36" rx="3"/><rect x="410" y="94" width="220" height="36" rx="3"/><rect x="410" y="152" width="220" height="36" rx="3"/><rect x="410" y="210" width="220" height="36" rx="3" fill="#F3F4F6"/><rect x="410" y="268" width="220" height="36" rx="3"/><rect x="410" y="326" width="220" height="36" rx="3"/><rect x="410" y="384" width="220" height="36" rx="3"/>
+        </g>
+        <g stroke="#555555" stroke-width="1.5" marker-end="url(#tst-a)">
+            <path d="M200 72 V92"/><path d="M200 130 V150"/><path d="M200 188 V208"/><path d="M200 246 V266"/><path d="M200 304 V324"/><path d="M200 362 V382"/>
+            <path d="M520 72 V92"/><path d="M520 130 V150"/><path d="M520 188 V208"/><path d="M520 246 V266"/><path d="M520 304 V324"/><path d="M520 362 V382"/>
+        </g>
+        <g font-size="13">
+            <text x="200" y="58.5">CLOSED</text><text x="200" y="116.5">SYN-SENT</text><text x="200" y="174.5">ESTABLISHED</text><text x="200" y="232.5">FIN-WAIT-1</text><text x="200" y="290.5">FIN-WAIT-2</text><text x="200" y="348.5">TIME-WAIT</text><text x="200" y="406.5">CLOSED</text>
+            <text x="520" y="58.5">CLOSED</text><text x="520" y="116.5">LISTEN</text><text x="520" y="174.5">SYN-RECEIVED</text><text x="520" y="232.5">ESTABLISHED</text><text x="520" y="290.5">CLOSE-WAIT</text><text x="520" y="348.5">LAST-ACK</text><text x="520" y="406.5">CLOSED</text>
+        </g>
+    </g>
+</svg>
