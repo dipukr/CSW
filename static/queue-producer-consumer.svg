@@ -1,1 +1,24 @@
-<svg width="350" height="165" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-weight="400" fill="currentColor" viewBox="0 0 350 165"><rect x="8" y="47" width="86" height="68" rx="8" fill="#FFFFFF" stroke="#222222"/><text x="51" y="75" fill="#222222" text-anchor="middle" font-size="12" font-weight="600">Producer</text><text x="51" y="91" fill="#222222" text-anchor="middle" font-size="11">Thread</text><rect x="125" y="30" width="100" height="100" rx="8" fill="#FFFFFF" stroke="#222222"/><text x="175" y="47" text-anchor="middle" font-size="11" fill="#222222">BlockingQueue</text><rect x="136" y="65" width="24" height="28" rx="3" fill="#FFFFFF" stroke="#222222"/><text x="148" y="83" text-anchor="middle" font-size="12" fill="#222222">1</text><rect x="163" y="65" width="24" height="28" rx="3" fill="#FFFFFF" stroke="#222222"/><text x="175" y="83" text-anchor="middle" font-size="12" fill="#222222">2</text><rect x="190" y="65" width="24" height="28" rx="3" fill="#FFFFFF" stroke="#222222"/><text x="202" y="83" text-anchor="middle" font-size="12" fill="#222222">3</text><rect x="256" y="47" width="86" height="68" rx="8" fill="#FFFFFF" stroke="#222222"/><text x="299" y="75" fill="#222222" text-anchor="middle" font-size="12" font-weight="600">Consumer</text><text x="299" y="91" fill="#222222" text-anchor="middle" font-size="11">Thread</text><path d="M96 80 H123 M226 80 H254" stroke="#555555" stroke-width="2" fill="none"/><path d="M117 75 L124 80 L117 85 M248 75 L255 80 L248 85" stroke="#555555" stroke-width="2" fill="none"/><text x="110" y="68" text-anchor="middle" font-size="10" fill="#222222">put</text><text x="240" y="68" text-anchor="middle" font-size="10" fill="#222222">take</text><text x="175" y="152" text-anchor="middle" font-size="11" fill="#222222">Shared, thread-safe task buffer</text></svg>
+<svg width="720" height="230" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 230" role="img" aria-label="Producer thread puts tasks into a BlockingQueue holding 1, 2, 3; the consumer thread takes them; the queue is a shared, thread-safe task buffer">
+    <defs><marker id="qp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <rect x="30" y="70" width="160" height="90" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="110" y="110" font-size="15" text-anchor="middle" font-weight="600">Producer</text>
+        <text x="110" y="132" font-size="13" text-anchor="middle" fill="#6B7280">Thread</text>
+        <rect x="260" y="50" width="200" height="130" rx="6" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="360" y="78" font-size="14" text-anchor="middle" font-weight="600">BlockingQueue</text>
+        <rect x="284" y="100" width="44" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="306" y="130" font-size="16" text-anchor="middle" font-weight="600">1</text>
+        <rect x="336" y="100" width="44" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="358" y="130" font-size="16" text-anchor="middle" font-weight="600">2</text>
+        <rect x="388" y="100" width="44" height="48" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="410" y="130" font-size="16" text-anchor="middle" font-weight="600">3</text>
+        <rect x="530" y="70" width="160" height="90" rx="6" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="610" y="110" font-size="15" text-anchor="middle" font-weight="600">Consumer</text>
+        <text x="610" y="132" font-size="13" text-anchor="middle" fill="#6B7280">Thread</text>
+        <path d="M192 115 H256" fill="none" stroke="#555555" stroke-width="2" marker-end="url(#qp-a)"/>
+        <text x="224" y="104" font-size="13" text-anchor="middle">put</text>
+        <path d="M462 115 H526" fill="none" stroke="#555555" stroke-width="2" marker-end="url(#qp-a)"/>
+        <text x="494" y="104" font-size="13" text-anchor="middle">take</text>
+        <text x="360" y="212" font-size="13" text-anchor="middle" fill="#6B7280">Shared, thread-safe task buffer</text>
+    </g>
+</svg>

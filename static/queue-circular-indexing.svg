@@ -1,1 +1,32 @@
-<svg width="340" height="235" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-weight="400" fill="currentColor" viewBox="0 0 340 235"><rect x="20" y="74" width="56" height="53" rx="6" fill="#FFFFFF" stroke="#222222"/><text x="48" y="91" font-size="12" fill="#222222" text-anchor="middle">[0]</text><text x="48" y="114" font-size="19" font-weight="600" fill="#222222" text-anchor="middle">0</text><rect x="81" y="74" width="56" height="53" rx="6" fill="#FFFFFF" stroke="#222222"/><text x="109" y="91" font-size="12" fill="#222222" text-anchor="middle">[1]</text><text x="109" y="114" font-size="19" font-weight="600" fill="#222222" text-anchor="middle">1</text><rect x="142" y="74" width="56" height="53" rx="6" fill="#FFFFFF" stroke="#222222"/><text x="170" y="91" font-size="12" fill="#222222" text-anchor="middle">[2]</text><text x="170" y="114" font-size="19" font-weight="600" fill="#222222" text-anchor="middle">2</text><rect x="203" y="74" width="56" height="53" rx="6" fill="#FFFFFF" stroke="#222222"/><text x="231" y="91" font-size="12" fill="#222222" text-anchor="middle">[3]</text><text x="231" y="114" font-size="19" font-weight="600" fill="#222222" text-anchor="middle">3</text><rect x="264" y="74" width="56" height="53" rx="6" fill="#FFFFFF" stroke="#222222"/><text x="292" y="91" font-size="12" fill="#222222" text-anchor="middle">[4]</text><text x="292" y="114" font-size="19" font-weight="600" fill="#222222" text-anchor="middle">4</text><path d="M48 69 V52 Q48 30 70 30 H270 Q292 30 292 52 V69" stroke="#222222" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/><path d="M287 62 L292 70 L297 62" stroke="#222222" stroke-width="1.5" fill="none"/><path d="M292 133 V162 Q292 187 269 187 H71 Q48 187 48 162 V133" stroke="#222222" stroke-width="2.5" fill="none"/><path d="M43 141 L48 132 L53 141" stroke="#222222" fill="none" stroke-width="2"/><text x="170" y="178" font-size="12" font-weight="600" text-anchor="middle" fill="#222222">Wrap around: index 4 → index 0</text><text x="170" y="214" font-size="12" text-anchor="middle" fill="#222222">Next index = (current index + 1) % 5</text></svg>
+<svg width="720" height="280" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 280" role="img" aria-label="Array of capacity 5 with indexes 0 to 4; each step moves +1 to the next index, and index 4 wraps around to index 0; next index = (current index + 1) % 5">
+    <defs><marker id="qc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <rect x="78" y="96" width="100" height="64" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="128" y="116" font-size="12" text-anchor="middle" fill="#6B7280">[0]</text>
+        <text x="128" y="144" font-size="22" text-anchor="middle" font-weight="600">0</text>
+        <rect x="194" y="96" width="100" height="64" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="244" y="116" font-size="12" text-anchor="middle" fill="#6B7280">[1]</text>
+        <text x="244" y="144" font-size="22" text-anchor="middle" font-weight="600">1</text>
+        <rect x="310" y="96" width="100" height="64" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="360" y="116" font-size="12" text-anchor="middle" fill="#6B7280">[2]</text>
+        <text x="360" y="144" font-size="22" text-anchor="middle" font-weight="600">2</text>
+        <rect x="426" y="96" width="100" height="64" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="476" y="116" font-size="12" text-anchor="middle" fill="#6B7280">[3]</text>
+        <text x="476" y="144" font-size="22" text-anchor="middle" font-weight="600">3</text>
+        <rect x="542" y="96" width="100" height="64" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="592" y="116" font-size="12" text-anchor="middle" fill="#6B7280">[4]</text>
+        <text x="592" y="144" font-size="22" text-anchor="middle" font-weight="600">4</text>
+        <path d="M128 90 Q186 54 244 90" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#qc-a)"/>
+        <text x="186" y="66" font-size="12" text-anchor="middle" fill="#6B7280">+1</text>
+        <path d="M244 90 Q302 54 360 90" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#qc-a)"/>
+        <text x="302" y="66" font-size="12" text-anchor="middle" fill="#6B7280">+1</text>
+        <path d="M360 90 Q418 54 476 90" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#qc-a)"/>
+        <text x="418" y="66" font-size="12" text-anchor="middle" fill="#6B7280">+1</text>
+        <path d="M476 90 Q534 54 592 90" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#qc-a)"/>
+        <text x="534" y="66" font-size="12" text-anchor="middle" fill="#6B7280">+1</text>
+        <path d="M592 166 V200 Q592 218 574 218 H146 Q128 218 128 200 V166" fill="none" stroke="#555555" stroke-width="2.2" marker-end="url(#qc-a)"/>
+        <text x="360" y="210" font-size="13" text-anchor="middle" font-weight="600">Wrap around: index 4 → index 0</text>
+        <rect x="190" y="236" width="340" height="34" rx="3" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="1.2"/>
+        <text x="360" y="258" font-size="14" text-anchor="middle">Next index = (current index + 1) % 5</text>
+    </g>
+</svg>

@@ -1,1 +1,33 @@
-<svg width="350" height="170" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-weight="400" fill="currentColor" viewBox="0 0 350 170"><rect x="14" y="60" width="84" height="45" rx="4" fill="#FFFFFF" stroke="#222222" stroke-width="1.4"/><path d="M70 60 V105" stroke="#222222" stroke-width="1.2"/><text x="42" y="87" font-size="17" text-anchor="middle" fill="#222222" font-weight="600">10</text><path d="M82 82 H119" stroke="#222222" stroke-width="2" fill="none"/><path d="M113 77 L120 82 L113 87" stroke="#222222" stroke-width="1.8" fill="none"/><rect x="126" y="60" width="84" height="45" rx="4" fill="#FFFFFF" stroke="#222222" stroke-width="1.4"/><path d="M182 60 V105" stroke="#222222" stroke-width="1.2"/><text x="154" y="87" font-size="17" text-anchor="middle" fill="#222222" font-weight="600">20</text><path d="M194 82 H231" stroke="#222222" stroke-width="2" fill="none"/><path d="M225 77 L232 82 L225 87" stroke="#222222" stroke-width="1.8" fill="none"/><rect x="238" y="60" width="84" height="45" rx="4" fill="#FFFFFF" stroke="#222222" stroke-width="1.4"/><path d="M294 60 V105" stroke="#222222" stroke-width="1.2"/><text x="266" y="87" font-size="17" text-anchor="middle" fill="#222222" font-weight="600">30</text><text x="320" y="87" font-size="14" fill="#222222" text-anchor="middle">∅</text><text x="42" y="23" fill="#222222" text-anchor="middle" font-size="13" font-weight="600">HEAD</text><path d="M42 29 V55" stroke="#222222" stroke-width="1.7"/><path d="M37 49 L42 57 L47 49" stroke="#222222" stroke-width="1.7" fill="none"/><text x="266" y="23" fill="#555555" text-anchor="middle" font-size="13" font-weight="600">TAIL</text><path d="M266 29 V55" stroke="#222222" stroke-width="1.7"/><path d="M261 49 L266 57 L271 49" stroke="#222222" stroke-width="1.7" fill="none"/><text x="175" y="144" text-anchor="middle" font-size="12" fill="#222222">Dequeue at head · Enqueue at tail</text></svg>
+<svg width="720" height="224" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 224" role="img" aria-label="Linked-list queue: nodes 10, 20, 30, each with data and a next reference; the last next is null; HEAD points at 10, where dequeue happens, and TAIL at 30, where enqueue happens">
+    <defs><marker id="ql-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <rect x="40" y="92" width="144" height="60" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <path d="M136 92 V152" fill="none" stroke="#222222" stroke-width="1.2"/>
+        <text x="88" y="129" font-size="20" text-anchor="middle" font-weight="600">10</text>
+        <text x="88" y="172" font-size="11" text-anchor="middle" fill="#6B7280">data</text>
+        <text x="160" y="172" font-size="11" text-anchor="middle" fill="#6B7280">next</text>
+        <circle cx="160" cy="122" r="4" fill="#222222"/>
+        <path d="M160 122 H250" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ql-a)"/>
+        <rect x="254" y="92" width="144" height="60" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <path d="M350 92 V152" fill="none" stroke="#222222" stroke-width="1.2"/>
+        <text x="302" y="129" font-size="20" text-anchor="middle" font-weight="600">20</text>
+        <text x="302" y="172" font-size="11" text-anchor="middle" fill="#6B7280">data</text>
+        <text x="374" y="172" font-size="11" text-anchor="middle" fill="#6B7280">next</text>
+        <circle cx="374" cy="122" r="4" fill="#222222"/>
+        <path d="M374 122 H464" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ql-a)"/>
+        <rect x="468" y="92" width="144" height="60" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <path d="M564 92 V152" fill="none" stroke="#222222" stroke-width="1.2"/>
+        <text x="516" y="129" font-size="20" text-anchor="middle" font-weight="600">30</text>
+        <text x="516" y="172" font-size="11" text-anchor="middle" fill="#6B7280">data</text>
+        <text x="588" y="172" font-size="11" text-anchor="middle" fill="#6B7280">next</text>
+        <circle cx="588" cy="122" r="4" fill="#222222"/>
+        <path d="M588 122 H662" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ql-a)"/>
+        <text x="688" y="128" font-size="14" text-anchor="middle" fill="#6B7280">null</text>
+        <text x="88" y="30" font-size="13" text-anchor="middle" font-weight="600">HEAD</text>
+        <path d="M88 38 V86" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ql-a)"/>
+        <text x="516" y="30" font-size="13" text-anchor="middle" font-weight="600">TAIL</text>
+        <path d="M516 38 V86" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ql-a)"/>
+        <text x="88" y="206" font-size="13" text-anchor="middle">Dequeue at head</text>
+        <text x="516" y="206" font-size="13" text-anchor="middle">Enqueue at tail</text>
+    </g>
+</svg>

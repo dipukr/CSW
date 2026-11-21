@@ -35,11 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
         <p class="minor-heading"><strong>Queue diagram</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/queue-fifo.svg" alt="A queue holding 10, 20, 30, 40: FRONT points at 10 and REAR points at 40; logical order runs from first to last" style="width:100%;max-width:680px">
+        <img src="../static/queue-fifo.svg" alt="A queue holding 10, 20, 30, 40: FRONT points at 10, which dequeue (poll) removes; REAR points at 40, after which enqueue (offer) adds; logical order runs from first to last" style="width:100%;max-width:720px">
     </div>
 
     <div class="intro">
-        <p>Dequeue / Poll · Enqueue / Offer</p>
         <p>In the example:</p>
         <ul><li><code>10</code> is the front element and will be removed first.</li><li><code>40</code> is the rear element and was inserted most recently.</li><li>The next enqueue operation inserts an element after <code>40</code>.</li><li>The next dequeue operation removes <code>10</code>.</li></ul>
         <p>Unlike an array, a Queue restricts how elements are accessed. Normally, only the front element can be removed.</p>
@@ -151,10 +150,10 @@ document.addEventListener("DOMContentLoaded", function () {
         <p>There are four major conceptual types of queues.</p>
     </div>
     <div class="card-grid">
-                <div class="card"><img src="../static/queue-type-linear.svg" alt="Linear queue: elements 1, 2, 3 in a row with an arrow showing one direction of flow" style="width:100%;max-width:106px"><div class="card-title">Simple (Linear) Queue</div><p>Follows normal FIFO insertion at rear and deletion at front. Can be implemented with arrays or linked lists.</p></div>
-                <div class="card"><img src="../static/queue-type-circular.svg" alt="Circular queue: storage drawn as a ring of slots" style="width:100%;max-width:106px"><div class="card-title">Circular Queue</div><p>Treats the storage as a ring. When the rear reaches the last array index, it can wrap around to index zero. Avoids wasting freed array slots.</p></div>
-                <div class="card"><img src="../static/queue-type-priority.svg" alt="Priority queue: elements labelled H, M and L for high, medium and low priority" style="width:100%;max-width:106px"><div class="card-title">Priority Queue</div><p>Removes an element according to priority rather than strictly by insertion order. Often implemented using a binary heap.</p></div>
-                <div class="card"><img src="../static/queue-type-deque.svg" alt="Deque: elements 1, 2, 3 with arrows in both directions at both ends" style="width:100%;max-width:106px"><div class="card-title">Double-Ended Queue (Deque)</div><p>Allows insertion and removal at both ends. Useful for sliding windows, caches, and work-stealing algorithms.</p></div>
+                <div class="card"><img src="../static/queue-type-linear.svg" alt="Linear queue: elements 1, 2, 3 in a row; elements leave at the front and enter at the rear" style="width:100%;max-width:160px"><div class="card-title">Simple (Linear) Queue</div><p>Follows normal FIFO insertion at rear and deletion at front. Can be implemented with arrays or linked lists.</p></div>
+                <div class="card"><img src="../static/queue-type-circular.svg" alt="Circular queue: storage drawn as a ring of slots that wraps around" style="width:100%;max-width:160px"><div class="card-title">Circular Queue</div><p>Treats the storage as a ring. When the rear reaches the last array index, it can wrap around to index zero. Avoids wasting freed array slots.</p></div>
+                <div class="card"><img src="../static/queue-type-priority.svg" alt="Priority queue: elements H, M and L for high, medium and low priority; the highest priority leaves first" style="width:100%;max-width:160px"><div class="card-title">Priority Queue</div><p>Removes an element according to priority rather than strictly by insertion order. Often implemented using a binary heap.</p></div>
+                <div class="card"><img src="../static/queue-type-deque.svg" alt="Deque: elements 1, 2, 3 with insertion and removal at both the front and the rear" style="width:100%;max-width:160px"><div class="card-title">Double-Ended Queue (Deque)</div><p>Allows insertion and removal at both ends. Useful for sliding windows, caches, and work-stealing algorithms.</p></div>
     </div>
 
     <div class="intro">
@@ -213,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <p>For an array of capacity 5, the indices are:</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/queue-circular-indexing.svg" alt="Array of capacity 5 with indexes 0 to 4; an arrow wraps around from index 4 back to index 0; next index = (current index + 1) % 5" style="width:100%;max-width:680px">
+        <img src="../static/queue-circular-indexing.svg" alt="Array of capacity 5 with indexes 0 to 4; each step moves +1 to the next index, and index 4 wraps around to index 0; next index = (current index + 1) % 5" style="width:100%;max-width:720px">
     </div>
 
     <div class="intro">
@@ -504,7 +503,7 @@ front == rear
         <p class="minor-heading"><strong>Linked-list queue diagram</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/queue-linked-list.svg" alt="Linked-list queue: nodes 10, 20, 30 linked by next references, the last pointing to null; HEAD points at 10 and TAIL at 30; dequeue at head, enqueue at tail" style="width:100%;max-width:700px">
+        <img src="../static/queue-linked-list.svg" alt="Linked-list queue: nodes 10, 20, 30, each with data and a next reference; the last next is null; HEAD points at 10, where dequeue happens, and TAIL at 30, where enqueue happens" style="width:100%;max-width:720px">
     </div>
 
     <div class="intro">
@@ -623,7 +622,7 @@ front == rear
         <p class="minor-heading"><strong>Diagram: Two-stack queue</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/queue-two-stacks.svg" alt="Two-stack queue: inStack holds 10, 20, 30 with 30 on top; transferring to outStack reverses the order so 10 becomes the top" style="width:100%;max-width:680px">
+        <img src="../static/queue-two-stacks.svg" alt="Two-stack queue: inStack holds 10, 20, 30 with 30 on top; transferring pops each element and pushes it onto outStack, reversing the order so 10 becomes the top" style="width:100%;max-width:720px">
     </div>
 
     <div class="intro">
@@ -755,8 +754,8 @@ Send email        (1)</code></pre></div>
         <p class="minor-heading"><strong>Min-heap and max-heap</strong></p>
     </div>
     <div class="card-grid">
-                <div class="card"><div class="card-title">Min-heap</div><img src="../static/queue-min-heap.svg" alt="Min-heap: root 1 with children 3 and 2; node 3 has children 7 and 5" style="width:100%;max-width:160px"><p>Smallest element at root</p></div>
-                <div class="card"><div class="card-title">Max-heap</div><img src="../static/queue-max-heap.svg" alt="Max-heap: root 10 with children 7 and 8; node 7 has children 2 and 5" style="width:100%;max-width:160px"><p>Largest element at root</p></div>
+                <div class="card"><div class="card-title">Min-heap</div><img src="../static/queue-min-heap.svg" alt="Min-heap: root 1 with children 3 and 2; node 3 has children 7 and 5" style="width:100%;max-width:250px"><p>Smallest element at root</p></div>
+                <div class="card"><div class="card-title">Max-heap</div><img src="../static/queue-max-heap.svg" alt="Max-heap: root 10 with children 7 and 8; node 7 has children 2 and 5" style="width:100%;max-width:250px"><p>Largest element at root</p></div>
     </div>
 
     <div class="intro">
@@ -1003,7 +1002,7 @@ queue.offer(<span class="code-number">20</span>);
         <p class="minor-heading"><strong>Producer–consumer architecture</strong></p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/queue-producer-consumer.svg" alt="Producer thread puts tasks into a BlockingQueue holding 1, 2, 3; the consumer thread takes them; the queue is a shared, thread-safe task buffer" style="width:100%;max-width:700px">
+        <img src="../static/queue-producer-consumer.svg" alt="Producer thread puts tasks into a BlockingQueue holding 1, 2, 3; the consumer thread takes them; the queue is a shared, thread-safe task buffer" style="width:100%;max-width:720px">
     </div>
 
     <div class="intro">
@@ -1141,7 +1140,7 @@ queue.offer(<span class="code-string">"Task-B"</span>);
         <p>Consider the following graph:</p>
     </div>
     <div class="svg-diagram">
-        <img src="../static/queue-bfs.svg" alt="Tree for BFS: node 1 has children 2 and 3; node 2 has children 4 and 5; node 3 has children 6 and 7" style="width:100%;max-width:680px">
+        <img src="../static/queue-bfs.svg" alt="Tree for BFS: level 0 is node 1; level 1 is nodes 2 and 3; level 2 is nodes 4, 5, 6 and 7, with 4 and 5 under 2 and 6 and 7 under 3" style="width:100%;max-width:720px">
     </div>
 
     <div class="intro">

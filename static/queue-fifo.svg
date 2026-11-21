@@ -1,1 +1,25 @@
-<svg width="340" height="155" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-weight="400" fill="currentColor" viewBox="0 0 340 155"><rect x="46" y="55" width="57" height="49" rx="7" fill="#FFFFFF" stroke="#222222" stroke-width="1.5"/><text x="74.5" y="85" fill="#222222" text-anchor="middle" font-size="17" font-weight="600">10</text><rect x="110" y="55" width="57" height="49" rx="7" fill="#FFFFFF" stroke="#222222" stroke-width="1.5"/><text x="138.5" y="85" fill="#222222" text-anchor="middle" font-size="17" font-weight="600">20</text><rect x="174" y="55" width="57" height="49" rx="7" fill="#FFFFFF" stroke="#222222" stroke-width="1.5"/><text x="202.5" y="85" fill="#222222" text-anchor="middle" font-size="17" font-weight="600">30</text><rect x="238" y="55" width="57" height="49" rx="7" fill="#FFFFFF" stroke="#222222" stroke-width="1.5"/><text x="266.5" y="85" fill="#222222" text-anchor="middle" font-size="17" font-weight="600">40</text><text x="74" y="21" fill="#222222" text-anchor="middle" font-size="13" font-weight="600">FRONT</text><path d="M74 27 V49" stroke="#222222" stroke-width="2" stroke-linecap="round"/><path d="M69 43 L74 50 L79 43" stroke="#222222" stroke-width="2" fill="none"/><text x="266" y="21" fill="#555555" text-anchor="middle" font-size="13" font-weight="600">REAR</text><path d="M266 27 V49" stroke="#222222" stroke-width="2" stroke-linecap="round"/><path d="M261 43 L266 50 L271 43" stroke="#222222" stroke-width="2" fill="none"/><path d="M45 125 H296" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.5"/><path d="M289 120 L299 125 L289 130" stroke="#555555" fill="none" stroke-width="1.5"/><text x="170" y="147" font-size="12" text-anchor="middle" fill="#222222">Logical order: first → last</text></svg>
+<svg width="720" height="230" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 230" role="img" aria-label="A queue holding 10, 20, 30, 40: FRONT points at 10, which dequeue (poll) removes; REAR points at 40, after which enqueue (offer) adds; logical order runs from first to last">
+    <defs><marker id="qf-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <rect x="150" y="84" width="96" height="56" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="198" y="119" font-size="20" text-anchor="middle" font-weight="600">10</text>
+        <rect x="258" y="84" width="96" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="306" y="119" font-size="20" text-anchor="middle" font-weight="600">20</text>
+        <rect x="366" y="84" width="96" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="414" y="119" font-size="20" text-anchor="middle" font-weight="600">30</text>
+        <rect x="474" y="84" width="96" height="56" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <text x="522" y="119" font-size="20" text-anchor="middle" font-weight="600">40</text>
+        <text x="198" y="30" font-size="13" text-anchor="middle" font-weight="600">FRONT</text>
+        <path d="M198 38 V78" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#qf-a)"/>
+        <text x="522" y="30" font-size="13" text-anchor="middle" font-weight="600">REAR</text>
+        <path d="M522 38 V78" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#qf-a)"/>
+        <path d="M144 112 H36" fill="none" stroke="#555555" stroke-width="2" marker-end="url(#qf-a)"/>
+        <text x="36" y="140" font-size="13" text-anchor="start">Dequeue / Poll</text>
+        <path d="M684 112 H576" fill="none" stroke="#555555" stroke-width="2" marker-end="url(#qf-a)"/>
+        <text x="684" y="140" font-size="13" text-anchor="end">Enqueue / Offer</text>
+        <text x="36" y="160" font-size="12" text-anchor="start" fill="#6B7280">removes the oldest element</text>
+        <text x="684" y="160" font-size="12" text-anchor="end" fill="#6B7280">adds after the newest element</text>
+        <path d="M150 188 H570" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#qf-a)"/>
+        <text x="360" y="214" font-size="13" text-anchor="middle">Logical order: first → last</text>
+    </g>
+</svg>

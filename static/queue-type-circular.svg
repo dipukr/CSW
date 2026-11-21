@@ -1,1 +1,9 @@
-<svg width="106" height="78" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-weight="400" fill="currentColor" viewBox="0 0 106 78"><circle cx="53" cy="38" r="26" fill="none" stroke="#E5E7EB" stroke-width="15" stroke-dasharray="36 6 36 6 36 6 36 6" transform="rotate(-90 53 38)"/><circle cx="53" cy="38" r="26" fill="none" stroke="#222222" stroke-width="15" stroke-dasharray="36 148" transform="rotate(-90 53 38)"/><path d="M46 39 L52 45 L64 30" stroke="#222222" stroke-width="2" fill="none"/></svg>
+<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" role="img" aria-label="Circular queue: storage drawn as a ring of slots that wraps around">
+    <defs><marker id="tc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <circle cx="100" cy="50" r="34" fill="none" stroke="#E5E7EB" stroke-width="16" stroke-dasharray="32.4 3.2" transform="rotate(-90 100 50)"/>
+        <circle cx="100" cy="50" r="34" fill="none" stroke="#222222" stroke-width="16" stroke-dasharray="32.4 181.2" transform="rotate(-90 100 50)"/>
+        <path d="M146 30 A50 50 0 0 1 146 70" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tc-a)"/>
+        <path d="M54 70 A50 50 0 0 1 54 30" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#tc-a)"/>
+    </g>
+</svg>
