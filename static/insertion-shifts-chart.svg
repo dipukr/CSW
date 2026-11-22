@@ -1,0 +1,45 @@
+<svg width="760" height="400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" role="img" aria-label="Line chart of shifts against array size n: expected shifts for a random permutation (average) are 22.5, 95, 390, 885, 1,580 and 2,475 for n = 10, 20, 40, 60, 80 and 100; worst-case shifts for reverse order are 45, 190, 780, 1,770, 3,160 and 4,950. Both curves grow quadratically">
+    <defs><marker id="sc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="sc-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="sc-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="26" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Growth in shifts as array size increases</text>
+    <text x="40" y="46" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">Expected shifts for a random permutation versus worst-case shifts for reverse order.</text>
+    <path d="M90 320.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="324.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0</text>
+    <path d="M90 272.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="276.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">1,000</text>
+    <path d="M90 224.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="228.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">2,000</text>
+    <path d="M90 176.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="180.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">3,000</text>
+    <path d="M90 128.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="132.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">4,000</text>
+    <path d="M90 80.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="84.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">5,000</text>
+    <path d="M90 320 H720" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">10</text>
+    <text x="216.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">20</text>
+    <text x="342.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">40</text>
+    <text x="468.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">60</text>
+    <text x="594.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">80</text>
+    <text x="720.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">100</text>
+    <text x="405.0" y="364" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">array size n</text>
+    <polyline points="90.0,318.9 216.0,315.4 342.0,301.3 468.0,277.5 594.0,244.2 720.0,201.2" fill="none" stroke="#0D9488" stroke-width="2.4" stroke-linejoin="round"/>
+    <circle cx="90.0" cy="318.9" r="3.5" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="216.0" cy="315.4" r="3.5" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="342.0" cy="301.3" r="3.5" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="468.0" cy="277.5" r="3.5" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="594.0" cy="244.2" r="3.5" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="720.0" cy="201.2" r="3.5" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <path d="M40 64 h24" fill="none" stroke="#0D9488" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="70" y="68" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Average (expected)</text>
+    <polyline points="90.0,317.8 216.0,310.9 342.0,282.6 468.0,235.0 594.0,168.3 720.0,82.4" fill="none" stroke="#B45309" stroke-width="2.4" stroke-linejoin="round"/>
+    <circle cx="90.0" cy="317.8" r="3.5" fill="#FFFFFF" stroke="#B45309" stroke-width="2"/>
+    <circle cx="216.0" cy="310.9" r="3.5" fill="#FFFFFF" stroke="#B45309" stroke-width="2"/>
+    <circle cx="342.0" cy="282.6" r="3.5" fill="#FFFFFF" stroke="#B45309" stroke-width="2"/>
+    <circle cx="468.0" cy="235.0" r="3.5" fill="#FFFFFF" stroke="#B45309" stroke-width="2"/>
+    <circle cx="594.0" cy="168.3" r="3.5" fill="#FFFFFF" stroke="#B45309" stroke-width="2"/>
+    <circle cx="720.0" cy="82.4" r="3.5" fill="#FFFFFF" stroke="#B45309" stroke-width="2"/>
+    <path d="M210 64 h24" fill="none" stroke="#B45309" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="240" y="68" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Worst case</text>
+    <text x="714.0" y="72.4" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">4,950</text>
+    <text x="714.0" y="191.2" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#0D9488">2,475</text>
+</svg>

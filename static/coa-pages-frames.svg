@@ -1,0 +1,67 @@
+<svg width="800" height="360" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-label="Paging: process A's four pages are loaded into any free frames of main memory, here frames 13, 14, 15 and 18, and the process's page table records each page's frame number. Frames in use by other processes and free frames lie in between">
+    <defs><marker id="pf-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="pf-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="pf-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="100" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Process A</text>
+    <path d="M43 60 H157 A3 3 0 0 1 160 63 V100 A0 0 0 0 1 160 100 H40 A0 0 0 0 1 40 100 V63 A3 3 0 0 1 43 60 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="100.0" y="84.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Page 0</text>
+    <path d="M40 100 H160 A0 0 0 0 1 160 100 V140 A0 0 0 0 1 160 140 H40 A0 0 0 0 1 40 140 V100 A0 0 0 0 1 40 100 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="100.0" y="124.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Page 1</text>
+    <path d="M40 140 H160 A0 0 0 0 1 160 140 V180 A0 0 0 0 1 160 180 H40 A0 0 0 0 1 40 180 V140 A0 0 0 0 1 40 140 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="100.0" y="164.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Page 2</text>
+    <path d="M40 180 H160 A0 0 0 0 1 160 180 V217 A3 3 0 0 1 157 220 H43 A3 3 0 0 1 40 217 V180 A0 0 0 0 1 40 180 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="100.0" y="204.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Page 3</text>
+    <text x="350" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Page table of A</text>
+    <path d="M293 60 H337 A3 3 0 0 1 340 63 V100 A0 0 0 0 1 340 100 H290 A0 0 0 0 1 290 100 V63 A3 3 0 0 1 293 60 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M340 60 H410 A0 0 0 0 1 410 60 V100 A0 0 0 0 1 410 100 H340 A0 0 0 0 1 340 100 V60 A0 0 0 0 1 340 60 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="315" y="85" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">0</text>
+    <text x="375" y="85" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">13</text>
+    <path d="M290 100 H340 A0 0 0 0 1 340 100 V140 A0 0 0 0 1 340 140 H290 A0 0 0 0 1 290 140 V100 A0 0 0 0 1 290 100 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M340 100 H410 A0 0 0 0 1 410 100 V140 A0 0 0 0 1 410 140 H340 A0 0 0 0 1 340 140 V100 A0 0 0 0 1 340 100 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="315" y="125" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">1</text>
+    <text x="375" y="125" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">14</text>
+    <path d="M290 140 H340 A0 0 0 0 1 340 140 V180 A0 0 0 0 1 340 180 H290 A0 0 0 0 1 290 180 V140 A0 0 0 0 1 290 140 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M340 140 H410 A0 0 0 0 1 410 140 V180 A0 0 0 0 1 410 180 H340 A0 0 0 0 1 340 180 V140 A0 0 0 0 1 340 140 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="315" y="165" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">2</text>
+    <text x="375" y="165" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">15</text>
+    <path d="M290 180 H340 A0 0 0 0 1 340 180 V217 A3 3 0 0 1 337 220 H293 A3 3 0 0 1 290 217 V180 A0 0 0 0 1 290 180 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M340 180 H410 A0 0 0 0 1 410 180 V220 A0 0 0 0 1 410 220 H340 A0 0 0 0 1 340 220 V180 A0 0 0 0 1 340 180 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="315" y="205" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">3</text>
+    <text x="375" y="205" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">18</text>
+    <text x="315" y="52" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">page</text>
+    <text x="375" y="52" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">frame</text>
+    <path d="M160 140 H286" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#pf-a)"/>
+    <text x="640" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Main memory</text>
+    <path d="M603 40 H697 A3 3 0 0 1 700 43 V70 A0 0 0 0 1 700 70 H600 A0 0 0 0 1 600 70 V43 A3 3 0 0 1 603 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="60" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#1E293B">in use</text>
+    <text x="590" y="60" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 12</text>
+    <path d="M600 70 H700 A0 0 0 0 1 700 70 V100 A0 0 0 0 1 700 100 H600 A0 0 0 0 1 600 100 V70 A0 0 0 0 1 600 70 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="650" y="90" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">A · page 0</text>
+    <text x="590" y="90" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 13</text>
+    <path d="M600 100 H700 A0 0 0 0 1 700 100 V130 A0 0 0 0 1 700 130 H600 A0 0 0 0 1 600 130 V100 A0 0 0 0 1 600 100 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="650" y="120" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">A · page 1</text>
+    <text x="590" y="120" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 14</text>
+    <path d="M600 130 H700 A0 0 0 0 1 700 130 V160 A0 0 0 0 1 700 160 H600 A0 0 0 0 1 600 160 V130 A0 0 0 0 1 600 130 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="650" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">A · page 2</text>
+    <text x="590" y="150" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 15</text>
+    <path d="M600 160 H700 A0 0 0 0 1 700 160 V190 A0 0 0 0 1 700 190 H600 A0 0 0 0 1 600 190 V160 A0 0 0 0 1 600 160 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="180" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#1E293B">in use</text>
+    <text x="590" y="180" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 16</text>
+    <path d="M600 190 H700 A0 0 0 0 1 700 190 V220 A0 0 0 0 1 700 220 H600 A0 0 0 0 1 600 220 V190 A0 0 0 0 1 600 190 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="210" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#64748B">free</text>
+    <text x="590" y="210" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 17</text>
+    <path d="M600 220 H700 A0 0 0 0 1 700 220 V250 A0 0 0 0 1 700 250 H600 A0 0 0 0 1 600 250 V220 A0 0 0 0 1 600 220 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="650" y="240" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">A · page 3</text>
+    <text x="590" y="240" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 18</text>
+    <path d="M600 250 H700 A0 0 0 0 1 700 250 V280 A0 0 0 0 1 700 280 H600 A0 0 0 0 1 600 280 V250 A0 0 0 0 1 600 250 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="270" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#1E293B">in use</text>
+    <text x="590" y="270" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 19</text>
+    <path d="M600 280 H700 A0 0 0 0 1 700 280 V310 A0 0 0 0 1 700 310 H600 A0 0 0 0 1 600 310 V280 A0 0 0 0 1 600 280 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="300" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#64748B">free</text>
+    <text x="590" y="300" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 20</text>
+    <path d="M600 310 H700 A0 0 0 0 1 700 310 V337 A3 3 0 0 1 697 340 H603 A3 3 0 0 1 600 337 V310 A0 0 0 0 1 600 310 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="400" fill="#1E293B">in use</text>
+    <text x="590" y="330" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame 21</text>
+    <path d="M410 80 C470 80 470 85 520 85" fill="none" stroke="#B45309" stroke-width="1.2" marker-end="url(#pf-h)"/>
+    <path d="M410 120 C470 120 470 115 520 115" fill="none" stroke="#B45309" stroke-width="1.2" marker-end="url(#pf-h)"/>
+    <path d="M410 160 C470 160 470 145 520 145" fill="none" stroke="#B45309" stroke-width="1.2" marker-end="url(#pf-h)"/>
+    <path d="M410 200 C470 200 470 235 520 235" fill="none" stroke="#B45309" stroke-width="1.2" marker-end="url(#pf-h)"/>
+</svg>

@@ -1,0 +1,38 @@
+<svg width="820" height="340" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 340" role="img" aria-label="Internal structure of the CPU: a register set and an arithmetic and logic unit (status flags, shifter, complementer, arithmetic and Boolean logic) share an internal CPU bus with the control unit, which drives control paths to the registers and ALU">
+    <defs><marker id="cpu-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="cpu-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="cpu-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="20" y="40" width="190" height="250" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="115.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Registers</text>
+    <path d="M43 56 H187 A3 3 0 0 1 190 59 V92 A0 0 0 0 1 190 92 H40 A0 0 0 0 1 40 92 V59 A3 3 0 0 1 43 56 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="115.0" y="78.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">General purpose</text>
+    <path d="M40 92 H190 A0 0 0 0 1 190 92 V128 A0 0 0 0 1 190 128 H40 A0 0 0 0 1 40 128 V92 A0 0 0 0 1 40 92 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="115.0" y="114.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">General purpose</text>
+    <path d="M40 128 H190 A0 0 0 0 1 190 128 V164 A0 0 0 0 1 190 164 H40 A0 0 0 0 1 40 164 V128 A0 0 0 0 1 40 128 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="115.0" y="150.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">⋮</text>
+    <path d="M40 164 H190 A0 0 0 0 1 190 164 V200 A0 0 0 0 1 190 200 H40 A0 0 0 0 1 40 200 V164 A0 0 0 0 1 40 164 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="115.0" y="186.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">PC</text>
+    <path d="M40 200 H190 A0 0 0 0 1 190 200 V236 A0 0 0 0 1 190 236 H40 A0 0 0 0 1 40 236 V200 A0 0 0 0 1 40 200 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="115.0" y="222.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">IR</text>
+    <path d="M40 236 H190 A0 0 0 0 1 190 236 V269 A3 3 0 0 1 187 272 H43 A3 3 0 0 1 40 269 V236 A0 0 0 0 1 40 236 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="115.0" y="258.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">PSW</text>
+    <path d="M260 40 V300" fill="none" stroke="#0D9488" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text transform="rotate(-90 246 170)" x="246" y="170" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#0D9488">internal CPU bus</text>
+    <rect x="320" y="40" width="280" height="190" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="460.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Arithmetic and logic unit</text>
+    <rect x="340" y="56" width="240" height="34" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#cpu-s)"/>
+    <text x="460.0" y="77.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Status flags</text>
+    <rect x="340" y="98" width="240" height="34" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#cpu-s)"/>
+    <text x="460.0" y="119.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Shifter</text>
+    <rect x="340" y="140" width="240" height="34" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#cpu-s)"/>
+    <text x="460.0" y="161.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Complementer</text>
+    <rect x="340" y="182" width="240" height="34" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#cpu-s)"/>
+    <text x="460.0" y="203.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Arithmetic and Boolean logic</text>
+    <rect x="320" y="250" width="280" height="50" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#cpu-s)"/>
+    <text x="460.0" y="279.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Control unit</text>
+    <path d="M210 165 H260" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M260 135 H320" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M260 275 H320" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M460 250 V230" fill="none" stroke="#B45309" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <path d="M600 275 H650 V135 H600" fill="none" stroke="#B45309" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <path d="M420 300 V325 H115 V290" fill="none" stroke="#B45309" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="655" y="205" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">control paths</text>
+</svg>

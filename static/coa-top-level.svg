@@ -1,0 +1,36 @@
+<svg width="900" height="320" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" role="img" aria-label="Top-level structure, zooming in: a computer contains I/O, main memory, a system interconnect and the CPU; the CPU contains registers, an ALU, an internal interconnect and the control unit; the control unit contains sequencing logic, control-unit registers and decoders, and control memory">
+    <defs><marker id="tls-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="tls-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="tls-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="20" y="40" width="260" height="260" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="150.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Computer</text>
+    <rect x="320" y="40" width="260" height="260" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="450.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">CPU</text>
+    <rect x="620" y="40" width="260" height="260" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="750.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Control unit</text>
+    <rect x="40" y="70" width="105" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="92.5" y="99.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">I/O</text>
+    <rect x="155" y="70" width="105" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="207.5" y="99.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Main memory</text>
+    <rect x="40" y="140" width="220" height="40" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="150.0" y="164.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">System interconnect</text>
+    <rect x="95" y="205" width="110" height="60" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="150.0" y="239.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">CPU</text>
+    <rect x="340" y="70" width="105" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="392.5" y="99.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Registers</text>
+    <rect x="455" y="70" width="105" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="507.5" y="99.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">ALU</text>
+    <rect x="340" y="140" width="220" height="40" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="450.0" y="164.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Internal CPU interconnect</text>
+    <rect x="395" y="205" width="110" height="60" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="450.0" y="239.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Control unit</text>
+    <rect x="640" y="70" width="220" height="50" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="750.0" y="99.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Sequencing logic</text>
+    <rect x="640" y="140" width="220" height="50" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="750.0" y="161.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Control unit registers</text>
+    <text x="750.0" y="177.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">and decoders</text>
+    <rect x="640" y="210" width="220" height="50" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#tls-s)"/>
+    <text x="750.0" y="239.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Control memory</text>
+    <path d="M205 205 L320 40" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 3"/>
+    <path d="M205 265 L320 300" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 3"/>
+    <path d="M505 205 L620 40" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 3"/>
+    <path d="M505 265 L620 300" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 3"/>
+</svg>

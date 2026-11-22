@@ -1,0 +1,56 @@
+<svg width="680" height="330" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 330" role="img" aria-label="Computer components, top-level view: the CPU holds the PC, IR, MAR, MBR, I/O address and I/O buffer registers and an execution unit. It connects over the system bus to main memory, whose numbered locations hold instructions and data, and to an I/O module with buffers">
+    <defs><marker id="cmp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="cmp-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="cmp-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="20" y="30" width="300" height="285" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="170.0" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">CPU</text>
+    <rect x="40" y="50" width="120" height="38" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cmp-s)"/>
+    <text x="100.0" y="73.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">PC</text>
+    <rect x="180" y="50" width="120" height="38" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cmp-s)"/>
+    <text x="240.0" y="73.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">IR</text>
+    <rect x="40" y="108" width="120" height="38" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cmp-s)"/>
+    <text x="100.0" y="131.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">MAR</text>
+    <rect x="180" y="108" width="120" height="38" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cmp-s)"/>
+    <text x="240.0" y="131.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">MBR</text>
+    <rect x="40" y="166" width="120" height="38" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cmp-s)"/>
+    <text x="100.0" y="189.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">I/O AR</text>
+    <rect x="180" y="166" width="120" height="38" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cmp-s)"/>
+    <text x="240.0" y="189.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">I/O BR</text>
+    <rect x="40" y="235" width="260" height="60" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#cmp-s)"/>
+    <text x="170.0" y="269.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1E293B">Execution unit</text>
+    <path d="M380 30 V315" fill="none" stroke="#0D9488" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text transform="rotate(-90 372 175)" x="372" y="175" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#0D9488">system bus</text>
+    <text x="540" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Main memory</text>
+    <path d="M443 32 H497 A3 3 0 0 1 500 35 V58 A0 0 0 0 1 500 58 H440 A0 0 0 0 1 440 58 V35 A3 3 0 0 1 443 32 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M500 32 H640 A0 0 0 0 1 640 32 V58 A0 0 0 0 1 640 58 H500 A0 0 0 0 1 500 58 V32 A0 0 0 0 1 500 32 Z" fill="#E7F6F4" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="470" y="50" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="500" fill="#1E293B">0</text>
+    <text x="570" y="50" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Instruction</text>
+    <path d="M440 58 H500 A0 0 0 0 1 500 58 V84 A0 0 0 0 1 500 84 H440 A0 0 0 0 1 440 84 V58 A0 0 0 0 1 440 58 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M500 58 H640 A0 0 0 0 1 640 58 V84 A0 0 0 0 1 640 84 H500 A0 0 0 0 1 500 84 V58 A0 0 0 0 1 500 58 Z" fill="#E7F6F4" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="470" y="76" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="500" fill="#1E293B">1</text>
+    <text x="570" y="76" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Instruction</text>
+    <path d="M440 84 H500 A0 0 0 0 1 500 84 V110 A0 0 0 0 1 500 110 H440 A0 0 0 0 1 440 110 V84 A0 0 0 0 1 440 84 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M500 84 H640 A0 0 0 0 1 640 84 V110 A0 0 0 0 1 640 110 H500 A0 0 0 0 1 500 110 V84 A0 0 0 0 1 500 84 Z" fill="#E7F6F4" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="470" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="500" fill="#1E293B">2</text>
+    <text x="570" y="102" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Instruction</text>
+    <path d="M440 110 H500 A0 0 0 0 1 500 110 V136 A0 0 0 0 1 500 136 H440 A0 0 0 0 1 440 136 V110 A0 0 0 0 1 440 110 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M500 110 H640 A0 0 0 0 1 640 110 V136 A0 0 0 0 1 640 136 H500 A0 0 0 0 1 500 136 V110 A0 0 0 0 1 500 110 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="470" y="128" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="500" fill="#1E293B">⋮</text>
+    <text x="570" y="128" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B"></text>
+    <path d="M440 136 H500 A0 0 0 0 1 500 136 V162 A0 0 0 0 1 500 162 H440 A0 0 0 0 1 440 162 V136 A0 0 0 0 1 440 136 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M500 136 H640 A0 0 0 0 1 640 136 V162 A0 0 0 0 1 640 162 H500 A0 0 0 0 1 500 162 V136 A0 0 0 0 1 500 136 Z" fill="#F5F3FF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="470" y="154" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="500" fill="#1E293B">n − 2</text>
+    <text x="570" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Data</text>
+    <path d="M440 162 H500 A0 0 0 0 1 500 162 V185 A3 3 0 0 1 497 188 H443 A3 3 0 0 1 440 185 V162 A0 0 0 0 1 440 162 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M500 162 H640 A0 0 0 0 1 640 162 V188 A0 0 0 0 1 640 188 H500 A0 0 0 0 1 500 188 V162 A0 0 0 0 1 500 162 Z" fill="#F5F3FF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="470" y="180" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="500" fill="#1E293B">n − 1</text>
+    <text x="570" y="180" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Data</text>
+    <text x="540" y="225" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">I/O module</text>
+    <path d="M443.0 240 H506.6 A0 0 0 0 1 506.6 240 V274 A0 0 0 0 1 506.6 274 H443.0 A3 3 0 0 1 440.0 271 V243 A3 3 0 0 1 443.0 240 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="473.3" y="261.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">buffer</text>
+    <path d="M506.6 240 H573.2 A0 0 0 0 1 573.2 240 V274 A0 0 0 0 1 573.2 274 H506.6 A0 0 0 0 1 506.6 274 V240 A0 0 0 0 1 506.6 240 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="539.9" y="261.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">buffer</text>
+    <path d="M573.2 240 H636.8000000000001 A3 3 0 0 1 639.8000000000001 243 V271 A3 3 0 0 1 636.8000000000001 274 H573.2 A0 0 0 0 1 573.2 274 V240 A0 0 0 0 1 573.2 240 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="606.5" y="261.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">buffer</text>
+    <path d="M320 140 H380" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M380 110 H440" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M380 257 H440" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

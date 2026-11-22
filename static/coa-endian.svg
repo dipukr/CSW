@@ -1,0 +1,26 @@
+<svg width="720" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" role="img" aria-label="Byte ordering of the 32-bit value 12345678 hex stored at address 184. Big-endian puts the most significant byte 12 at address 184, then 34, 56, 78. Little-endian puts the least significant byte 78 at address 184, then 56, 34, 12">
+    <defs><marker id="en-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="en-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="en-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="20" y="74" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Big-endian</text>
+    <path d="M183 50 H290 A0 0 0 0 1 290 50 V88 A0 0 0 0 1 290 88 H183 A3 3 0 0 1 180 85 V53 A3 3 0 0 1 183 50 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="235" y="75" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">12</text>
+    <text x="235" y="38" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">address 184</text>
+    <path d="M290 50 H400 A0 0 0 0 1 400 50 V88 A0 0 0 0 1 400 88 H290 A0 0 0 0 1 290 88 V50 A0 0 0 0 1 290 50 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="345" y="75" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">34</text>
+    <text x="345" y="38" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">address 185</text>
+    <path d="M400 50 H510 A0 0 0 0 1 510 50 V88 A0 0 0 0 1 510 88 H400 A0 0 0 0 1 400 88 V50 A0 0 0 0 1 400 50 Z" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2"/>
+    <text x="455" y="75" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">56</text>
+    <text x="455" y="38" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">address 186</text>
+    <path d="M510 50 H617 A3 3 0 0 1 620 53 V85 A3 3 0 0 1 617 88 H510 A0 0 0 0 1 510 88 V50 A0 0 0 0 1 510 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="565" y="75" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">78</text>
+    <text x="565" y="38" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">address 187</text>
+    <text x="20" y="154" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Little-endian</text>
+    <path d="M183 130 H290 A0 0 0 0 1 290 130 V168 A0 0 0 0 1 290 168 H183 A3 3 0 0 1 180 165 V133 A3 3 0 0 1 183 130 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="235" y="155" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">78</text>
+    <path d="M290 130 H400 A0 0 0 0 1 400 130 V168 A0 0 0 0 1 400 168 H290 A0 0 0 0 1 290 168 V130 A0 0 0 0 1 290 130 Z" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2"/>
+    <text x="345" y="155" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">56</text>
+    <path d="M400 130 H510 A0 0 0 0 1 510 130 V168 A0 0 0 0 1 510 168 H400 A0 0 0 0 1 400 168 V130 A0 0 0 0 1 400 130 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="455" y="155" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">34</text>
+    <path d="M510 130 H617 A3 3 0 0 1 620 133 V165 A3 3 0 0 1 617 168 H510 A0 0 0 0 1 510 168 V130 A0 0 0 0 1 510 130 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="565" y="155" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="700" fill="#1E293B">12</text>
+    <text x="400" y="190" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">value 0x12345678 · 12 is the most significant byte</text>
+</svg>

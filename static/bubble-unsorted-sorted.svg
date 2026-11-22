@@ -1,0 +1,36 @@
+<svg width="560" height="250" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 250" role="img" aria-label="Bubble Sort in ascending order turns the unsorted array 5, 1, 4, 2, 3 into 1, 2, 3, 4, 5, in place; the index of each position, 0 to 4, stays the same">
+    <defs><marker id="us-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="us-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="us-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="22" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">UNSORTED ARRAY</text>
+    <rect x="40" y="34" width="86" height="44" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="83" y="63" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">5</text>
+    <text x="83" y="94" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0</text>
+    <rect x="138" y="34" width="86" height="44" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="181" y="63" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">1</text>
+    <text x="181" y="94" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">1</text>
+    <rect x="236" y="34" width="86" height="44" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="279" y="63" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">4</text>
+    <text x="279" y="94" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">2</text>
+    <rect x="334" y="34" width="86" height="44" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="377" y="63" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">2</text>
+    <text x="377" y="94" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">3</text>
+    <rect x="432" y="34" width="86" height="44" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="475" y="63" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">3</text>
+    <text x="475" y="94" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">4</text>
+    <rect x="40" y="158" width="86" height="44" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="83" y="187" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">1</text>
+    <text x="83" y="218" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0</text>
+    <rect x="138" y="158" width="86" height="44" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="181" y="187" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">2</text>
+    <text x="181" y="218" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">1</text>
+    <rect x="236" y="158" width="86" height="44" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="279" y="187" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">3</text>
+    <text x="279" y="218" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">2</text>
+    <rect x="334" y="158" width="86" height="44" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="377" y="187" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">4</text>
+    <text x="377" y="218" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">3</text>
+    <rect x="432" y="158" width="86" height="44" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#us-s)"/>
+    <text x="475" y="187" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">5</text>
+    <text x="475" y="218" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">4</text>
+    <path d="M280 104 V146" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#us-a)"/>
+    <text x="292" y="130" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">Bubble Sort (ascending)</text>
+</svg>

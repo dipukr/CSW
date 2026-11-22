@@ -1,0 +1,50 @@
+<svg width="980" height="270" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 270" role="img" aria-label="Instruction cycle state diagram. Memory and I/O accesses (top): instruction fetch, operand fetch, operand store, interrupt. Internal operations (bottom): instruction address calculation, instruction operation decoding, operand address calculation, data operation, operand address calculation and interrupt check. With no interrupt the cycle returns to instruction address calculation for the next instruction">
+    <defs><marker id="ics-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="ics-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="ics-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="20" y="160" width="120" height="62" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="80.0" y="180.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction</text>
+    <text x="80.0" y="195.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">address</text>
+    <text x="80.0" y="210.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">calculation</text>
+    <rect x="170" y="160" width="120" height="62" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="230.0" y="180.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction</text>
+    <text x="230.0" y="195.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">operation</text>
+    <text x="230.0" y="210.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">decoding</text>
+    <rect x="320" y="160" width="120" height="62" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="380.0" y="180.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Operand</text>
+    <text x="380.0" y="195.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">address</text>
+    <text x="380.0" y="210.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">calculation</text>
+    <rect x="470" y="160" width="120" height="62" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="530.0" y="187.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Data</text>
+    <text x="530.0" y="202.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">operation</text>
+    <rect x="620" y="160" width="120" height="62" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="680.0" y="180.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Operand</text>
+    <text x="680.0" y="195.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">address</text>
+    <text x="680.0" y="210.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">calculation</text>
+    <rect x="830" y="160" width="120" height="62" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="890.0" y="187.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Interrupt</text>
+    <text x="890.0" y="202.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">check</text>
+    <rect x="95" y="40" width="120" height="56" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="155.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction</text>
+    <text x="155.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">fetch</text>
+    <rect x="395" y="40" width="120" height="56" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="455.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Operand</text>
+    <text x="455.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">fetch</text>
+    <rect x="695" y="40" width="120" height="56" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="755.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Operand</text>
+    <text x="755.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">store</text>
+    <rect x="830" y="40" width="120" height="56" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#ics-s)"/>
+    <text x="890.0" y="72.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Interrupt</text>
+    <path d="M110 160 L140 100" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M185 96 L215 156" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M290 191 H316" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M410 160 L440 100" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M485 96 L515 156" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M590 191 H616" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M710 160 L740 100" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M785 96 L860 156" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M890 160 V100" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <path d="M890 40 V18 H60 V156" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <text x="470" y="13" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">interrupt serviced, next instruction</text>
+    <path d="M890 222 V250 H45 V226" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ics-a)"/>
+    <text x="470" y="245" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">no interrupt: fetch next instruction</text>
+    <text x="905" y="135" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">interrupt</text>
+</svg>

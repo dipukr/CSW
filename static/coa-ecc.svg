@@ -1,0 +1,32 @@
+<svg width="880" height="280" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 280" role="img" aria-label="Error-correcting code function: when an M-bit word is written, a function f computes K check bits that are stored with it. On a read, f is applied again to the M data bits, and the new check bits are compared with the stored ones. The comparison result (the syndrome) drives a corrector that fixes the data, or signals an uncorrectable error">
+    <defs><marker id="ecc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="ecc-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="ecc-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="300" y="30" width="140" height="200" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ecc-s)"/>
+    <text x="370.0" y="134.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Memory</text>
+    <rect x="150" y="130" width="80" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ecc-s)"/>
+    <text x="190.0" y="157.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">f</text>
+    <path d="M30 70 H296" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <text x="50" y="62" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">data in</text>
+    <text x="270" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">M</text>
+    <path d="M110 70 V152 H146" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <path d="M230 152 H296" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <text x="270" y="144" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">K</text>
+    <rect x="500" y="120" width="70" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#ecc-s)"/>
+    <text x="535.0" y="147.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">f</text>
+    <rect x="620" y="170" width="100" height="50" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#ecc-s)"/>
+    <text x="670.0" y="199.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Compare</text>
+    <rect x="690" y="45" width="120" height="50" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#ecc-s)"/>
+    <text x="750.0" y="74.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Corrector</text>
+    <path d="M440 70 H686" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <text x="470" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">M</text>
+    <path d="M470 70 V142 H496" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <path d="M570 142 H660 V166" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <text x="600" y="134" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">K</text>
+    <path d="M440 195 H616" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <text x="470" y="187" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">K (stored)</text>
+    <path d="M720 195 H750 V99" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <text x="758" y="150" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">syndrome</text>
+    <path d="M810 70 H860" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ecc-a)"/>
+    <text x="838" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">data out</text>
+    <path d="M670 220 V258" fill="none" stroke="#B45309" stroke-width="1.5" marker-end="url(#ecc-h)"/>
+    <text x="680" y="252" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">error signal</text>
+</svg>

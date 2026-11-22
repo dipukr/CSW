@@ -1,0 +1,32 @@
+<svg width="900" height="210" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 210" role="img" aria-label="Conceptual depiction of superscalar processing: the static program goes through instruction fetch and branch prediction, then dispatch into a window of execution, issue to the execution units, execution, and finally instruction reorder and commit in program order">
+    <defs><marker id="scp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="scp-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="scp-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="20" y="50" width="125" height="70" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#scp-s)"/>
+    <text x="82.5" y="81.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Static</text>
+    <text x="82.5" y="96.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">program</text>
+    <rect x="167" y="50" width="125" height="70" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#scp-s)"/>
+    <text x="229.5" y="74.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction fetch</text>
+    <text x="229.5" y="89.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">and branch</text>
+    <text x="229.5" y="104.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">prediction</text>
+    <path d="M145 85 H163" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#scp-a)"/>
+    <rect x="314" y="50" width="125" height="70" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#scp-s)"/>
+    <text x="376.5" y="81.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction</text>
+    <text x="376.5" y="96.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">dispatch</text>
+    <path d="M292 85 H310" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#scp-a)"/>
+    <rect x="461" y="50" width="125" height="70" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#scp-s)"/>
+    <text x="523.5" y="81.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction</text>
+    <text x="523.5" y="96.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">issue</text>
+    <path d="M439 85 H457" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#scp-a)"/>
+    <rect x="608" y="50" width="125" height="70" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#scp-s)"/>
+    <text x="670.5" y="81.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction</text>
+    <text x="670.5" y="96.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">execution</text>
+    <path d="M586 85 H604" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#scp-a)"/>
+    <rect x="755" y="50" width="125" height="70" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#scp-s)"/>
+    <text x="817.5" y="74.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Instruction</text>
+    <text x="817.5" y="89.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">reorder and</text>
+    <text x="817.5" y="104.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">commit</text>
+    <path d="M733 85 H751" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#scp-a)"/>
+    <rect x="306" y="38" width="435" height="94" rx="3" fill="none" stroke="#0D9488" stroke-width="1.4" stroke-dasharray="5 3"/>
+    <text x="524" y="152" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#0D9488">window of execution: instructions run out of order as their operands become ready</text>
+    <text x="817" y="152" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#B45309">in program order</text>
+    <text x="229" y="152" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1D4ED8">in program order</text>
+</svg>

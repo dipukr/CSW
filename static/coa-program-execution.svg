@@ -1,0 +1,214 @@
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-label="Example of program execution on a hypothetical machine with 16-bit instructions (4-bit opcode, 12-bit address). Locations 300 to 302 hold LOAD 940, ADD 941 and STORE 941; locations 940 and 941 hold 3 and 2. Six snapshots show PC, AC, IR and memory after each fetch and execute: AC becomes 3, then 5, and 5 is stored in location 941">
+    <defs><marker id="px-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="px-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="px-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="450" y="18" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">opcodes: 1 = load AC from memory · 5 = add to AC from memory · 2 = store AC to memory (values in hex)</text>
+    <rect x="20" y="72" width="280" height="185" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="160" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Step 1 · fetch LOAD</text>
+    <path d="M38 88 H82 A3 3 0 0 1 85 91 V114 A0 0 0 0 1 85 114 H35 A0 0 0 0 1 35 114 V91 A3 3 0 0 1 38 88 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 88 H155 A0 0 0 0 1 155 88 V114 A0 0 0 0 1 155 114 H85 A0 0 0 0 1 85 114 V88 A0 0 0 0 1 85 88 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="106" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">300</text>
+    <text x="120" y="106" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">1940</text>
+    <path d="M35 114 H85 A0 0 0 0 1 85 114 V140 A0 0 0 0 1 85 140 H35 A0 0 0 0 1 35 140 V114 A0 0 0 0 1 35 114 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 114 H155 A0 0 0 0 1 155 114 V140 A0 0 0 0 1 155 140 H85 A0 0 0 0 1 85 140 V114 A0 0 0 0 1 85 114 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="132" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">301</text>
+    <text x="120" y="132" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">5941</text>
+    <path d="M35 140 H85 A0 0 0 0 1 85 140 V166 A0 0 0 0 1 85 166 H35 A0 0 0 0 1 35 166 V140 A0 0 0 0 1 35 140 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 140 H155 A0 0 0 0 1 155 140 V166 A0 0 0 0 1 155 166 H85 A0 0 0 0 1 85 166 V140 A0 0 0 0 1 85 140 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="158" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">302</text>
+    <text x="120" y="158" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">2941</text>
+    <path d="M35 166 H85 A0 0 0 0 1 85 166 V192 A0 0 0 0 1 85 192 H35 A0 0 0 0 1 35 192 V166 A0 0 0 0 1 35 166 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 166 H155 A0 0 0 0 1 155 166 V192 A0 0 0 0 1 155 192 H85 A0 0 0 0 1 85 192 V166 A0 0 0 0 1 85 166 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="184" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">⋮</text>
+    <text x="120" y="184" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B"></text>
+    <path d="M35 192 H85 A0 0 0 0 1 85 192 V218 A0 0 0 0 1 85 218 H35 A0 0 0 0 1 35 218 V192 A0 0 0 0 1 35 192 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 192 H155 A0 0 0 0 1 155 192 V218 A0 0 0 0 1 155 218 H85 A0 0 0 0 1 85 218 V192 A0 0 0 0 1 85 192 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="210" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">940</text>
+    <text x="120" y="210" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0003</text>
+    <path d="M35 218 H85 A0 0 0 0 1 85 218 V241 A3 3 0 0 1 82 244 H38 A3 3 0 0 1 35 241 V218 A0 0 0 0 1 35 218 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 218 H155 A0 0 0 0 1 155 218 V244 A0 0 0 0 1 155 244 H85 A0 0 0 0 1 85 244 V218 A0 0 0 0 1 85 218 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="236" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">941</text>
+    <text x="120" y="236" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0002</text>
+    <text x="205" y="121" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">PC</text>
+    <rect x="215" y="100" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="250" y="121" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">300</text>
+    <text x="205" y="167" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">AC</text>
+    <rect x="215" y="146" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="250" y="167" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B"></text>
+    <text x="205" y="213" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">IR</text>
+    <rect x="215" y="192" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="250" y="213" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">1940</text>
+    <rect x="315" y="72" width="280" height="185" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="455" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Step 2 · execute: AC ← (940)</text>
+    <path d="M333 88 H377 A3 3 0 0 1 380 91 V114 A0 0 0 0 1 380 114 H330 A0 0 0 0 1 330 114 V91 A3 3 0 0 1 333 88 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 88 H450 A0 0 0 0 1 450 88 V114 A0 0 0 0 1 450 114 H380 A0 0 0 0 1 380 114 V88 A0 0 0 0 1 380 88 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="106" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">300</text>
+    <text x="415" y="106" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">1940</text>
+    <path d="M330 114 H380 A0 0 0 0 1 380 114 V140 A0 0 0 0 1 380 140 H330 A0 0 0 0 1 330 140 V114 A0 0 0 0 1 330 114 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 114 H450 A0 0 0 0 1 450 114 V140 A0 0 0 0 1 450 140 H380 A0 0 0 0 1 380 140 V114 A0 0 0 0 1 380 114 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="132" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">301</text>
+    <text x="415" y="132" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">5941</text>
+    <path d="M330 140 H380 A0 0 0 0 1 380 140 V166 A0 0 0 0 1 380 166 H330 A0 0 0 0 1 330 166 V140 A0 0 0 0 1 330 140 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 140 H450 A0 0 0 0 1 450 140 V166 A0 0 0 0 1 450 166 H380 A0 0 0 0 1 380 166 V140 A0 0 0 0 1 380 140 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="158" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">302</text>
+    <text x="415" y="158" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">2941</text>
+    <path d="M330 166 H380 A0 0 0 0 1 380 166 V192 A0 0 0 0 1 380 192 H330 A0 0 0 0 1 330 192 V166 A0 0 0 0 1 330 166 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 166 H450 A0 0 0 0 1 450 166 V192 A0 0 0 0 1 450 192 H380 A0 0 0 0 1 380 192 V166 A0 0 0 0 1 380 166 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="184" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">⋮</text>
+    <text x="415" y="184" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B"></text>
+    <path d="M330 192 H380 A0 0 0 0 1 380 192 V218 A0 0 0 0 1 380 218 H330 A0 0 0 0 1 330 218 V192 A0 0 0 0 1 330 192 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 192 H450 A0 0 0 0 1 450 192 V218 A0 0 0 0 1 450 218 H380 A0 0 0 0 1 380 218 V192 A0 0 0 0 1 380 192 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="210" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">940</text>
+    <text x="415" y="210" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0003</text>
+    <path d="M330 218 H380 A0 0 0 0 1 380 218 V241 A3 3 0 0 1 377 244 H333 A3 3 0 0 1 330 241 V218 A0 0 0 0 1 330 218 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 218 H450 A0 0 0 0 1 450 218 V244 A0 0 0 0 1 450 244 H380 A0 0 0 0 1 380 244 V218 A0 0 0 0 1 380 218 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="236" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">941</text>
+    <text x="415" y="236" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0002</text>
+    <text x="500" y="121" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">PC</text>
+    <rect x="510" y="100" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="545" y="121" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">301</text>
+    <text x="500" y="167" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">AC</text>
+    <rect x="510" y="146" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="545" y="167" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">0003</text>
+    <text x="500" y="213" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">IR</text>
+    <rect x="510" y="192" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="545" y="213" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">1940</text>
+    <rect x="610" y="72" width="280" height="185" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="750" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Step 3 · fetch ADD</text>
+    <path d="M628 88 H672 A3 3 0 0 1 675 91 V114 A0 0 0 0 1 675 114 H625 A0 0 0 0 1 625 114 V91 A3 3 0 0 1 628 88 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 88 H745 A0 0 0 0 1 745 88 V114 A0 0 0 0 1 745 114 H675 A0 0 0 0 1 675 114 V88 A0 0 0 0 1 675 88 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="106" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">300</text>
+    <text x="710" y="106" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">1940</text>
+    <path d="M625 114 H675 A0 0 0 0 1 675 114 V140 A0 0 0 0 1 675 140 H625 A0 0 0 0 1 625 140 V114 A0 0 0 0 1 625 114 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 114 H745 A0 0 0 0 1 745 114 V140 A0 0 0 0 1 745 140 H675 A0 0 0 0 1 675 140 V114 A0 0 0 0 1 675 114 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="132" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">301</text>
+    <text x="710" y="132" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">5941</text>
+    <path d="M625 140 H675 A0 0 0 0 1 675 140 V166 A0 0 0 0 1 675 166 H625 A0 0 0 0 1 625 166 V140 A0 0 0 0 1 625 140 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 140 H745 A0 0 0 0 1 745 140 V166 A0 0 0 0 1 745 166 H675 A0 0 0 0 1 675 166 V140 A0 0 0 0 1 675 140 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="158" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">302</text>
+    <text x="710" y="158" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">2941</text>
+    <path d="M625 166 H675 A0 0 0 0 1 675 166 V192 A0 0 0 0 1 675 192 H625 A0 0 0 0 1 625 192 V166 A0 0 0 0 1 625 166 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 166 H745 A0 0 0 0 1 745 166 V192 A0 0 0 0 1 745 192 H675 A0 0 0 0 1 675 192 V166 A0 0 0 0 1 675 166 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="184" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">⋮</text>
+    <text x="710" y="184" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B"></text>
+    <path d="M625 192 H675 A0 0 0 0 1 675 192 V218 A0 0 0 0 1 675 218 H625 A0 0 0 0 1 625 218 V192 A0 0 0 0 1 625 192 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 192 H745 A0 0 0 0 1 745 192 V218 A0 0 0 0 1 745 218 H675 A0 0 0 0 1 675 218 V192 A0 0 0 0 1 675 192 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="210" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">940</text>
+    <text x="710" y="210" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0003</text>
+    <path d="M625 218 H675 A0 0 0 0 1 675 218 V241 A3 3 0 0 1 672 244 H628 A3 3 0 0 1 625 241 V218 A0 0 0 0 1 625 218 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 218 H745 A0 0 0 0 1 745 218 V244 A0 0 0 0 1 745 244 H675 A0 0 0 0 1 675 244 V218 A0 0 0 0 1 675 218 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="236" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">941</text>
+    <text x="710" y="236" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0002</text>
+    <text x="795" y="121" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">PC</text>
+    <rect x="805" y="100" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="840" y="121" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">301</text>
+    <text x="795" y="167" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">AC</text>
+    <rect x="805" y="146" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="840" y="167" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">0003</text>
+    <text x="795" y="213" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">IR</text>
+    <rect x="805" y="192" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="840" y="213" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">5941</text>
+    <rect x="20" y="297" width="280" height="185" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="160" y="287" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Step 4 · execute: AC ← AC + (941)</text>
+    <path d="M38 313 H82 A3 3 0 0 1 85 316 V339 A0 0 0 0 1 85 339 H35 A0 0 0 0 1 35 339 V316 A3 3 0 0 1 38 313 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 313 H155 A0 0 0 0 1 155 313 V339 A0 0 0 0 1 155 339 H85 A0 0 0 0 1 85 339 V313 A0 0 0 0 1 85 313 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="331" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">300</text>
+    <text x="120" y="331" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">1940</text>
+    <path d="M35 339 H85 A0 0 0 0 1 85 339 V365 A0 0 0 0 1 85 365 H35 A0 0 0 0 1 35 365 V339 A0 0 0 0 1 35 339 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 339 H155 A0 0 0 0 1 155 339 V365 A0 0 0 0 1 155 365 H85 A0 0 0 0 1 85 365 V339 A0 0 0 0 1 85 339 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="357" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">301</text>
+    <text x="120" y="357" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">5941</text>
+    <path d="M35 365 H85 A0 0 0 0 1 85 365 V391 A0 0 0 0 1 85 391 H35 A0 0 0 0 1 35 391 V365 A0 0 0 0 1 35 365 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 365 H155 A0 0 0 0 1 155 365 V391 A0 0 0 0 1 155 391 H85 A0 0 0 0 1 85 391 V365 A0 0 0 0 1 85 365 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="383" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">302</text>
+    <text x="120" y="383" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">2941</text>
+    <path d="M35 391 H85 A0 0 0 0 1 85 391 V417 A0 0 0 0 1 85 417 H35 A0 0 0 0 1 35 417 V391 A0 0 0 0 1 35 391 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 391 H155 A0 0 0 0 1 155 391 V417 A0 0 0 0 1 155 417 H85 A0 0 0 0 1 85 417 V391 A0 0 0 0 1 85 391 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="409" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">⋮</text>
+    <text x="120" y="409" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B"></text>
+    <path d="M35 417 H85 A0 0 0 0 1 85 417 V443 A0 0 0 0 1 85 443 H35 A0 0 0 0 1 35 443 V417 A0 0 0 0 1 35 417 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 417 H155 A0 0 0 0 1 155 417 V443 A0 0 0 0 1 155 443 H85 A0 0 0 0 1 85 443 V417 A0 0 0 0 1 85 417 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="435" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">940</text>
+    <text x="120" y="435" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0003</text>
+    <path d="M35 443 H85 A0 0 0 0 1 85 443 V466 A3 3 0 0 1 82 469 H38 A3 3 0 0 1 35 466 V443 A0 0 0 0 1 35 443 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M85 443 H155 A0 0 0 0 1 155 443 V469 A0 0 0 0 1 155 469 H85 A0 0 0 0 1 85 469 V443 A0 0 0 0 1 85 443 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="60" y="461" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">941</text>
+    <text x="120" y="461" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0002</text>
+    <text x="205" y="346" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">PC</text>
+    <rect x="215" y="325" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="250" y="346" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">302</text>
+    <text x="205" y="392" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">AC</text>
+    <rect x="215" y="371" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="250" y="392" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">0005</text>
+    <text x="205" y="438" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">IR</text>
+    <rect x="215" y="417" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="250" y="438" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">5941</text>
+    <rect x="315" y="297" width="280" height="185" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="455" y="287" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Step 5 · fetch STORE</text>
+    <path d="M333 313 H377 A3 3 0 0 1 380 316 V339 A0 0 0 0 1 380 339 H330 A0 0 0 0 1 330 339 V316 A3 3 0 0 1 333 313 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 313 H450 A0 0 0 0 1 450 313 V339 A0 0 0 0 1 450 339 H380 A0 0 0 0 1 380 339 V313 A0 0 0 0 1 380 313 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="331" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">300</text>
+    <text x="415" y="331" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">1940</text>
+    <path d="M330 339 H380 A0 0 0 0 1 380 339 V365 A0 0 0 0 1 380 365 H330 A0 0 0 0 1 330 365 V339 A0 0 0 0 1 330 339 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 339 H450 A0 0 0 0 1 450 339 V365 A0 0 0 0 1 450 365 H380 A0 0 0 0 1 380 365 V339 A0 0 0 0 1 380 339 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="357" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">301</text>
+    <text x="415" y="357" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">5941</text>
+    <path d="M330 365 H380 A0 0 0 0 1 380 365 V391 A0 0 0 0 1 380 391 H330 A0 0 0 0 1 330 391 V365 A0 0 0 0 1 330 365 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 365 H450 A0 0 0 0 1 450 365 V391 A0 0 0 0 1 450 391 H380 A0 0 0 0 1 380 391 V365 A0 0 0 0 1 380 365 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="383" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">302</text>
+    <text x="415" y="383" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">2941</text>
+    <path d="M330 391 H380 A0 0 0 0 1 380 391 V417 A0 0 0 0 1 380 417 H330 A0 0 0 0 1 330 417 V391 A0 0 0 0 1 330 391 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 391 H450 A0 0 0 0 1 450 391 V417 A0 0 0 0 1 450 417 H380 A0 0 0 0 1 380 417 V391 A0 0 0 0 1 380 391 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="409" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">⋮</text>
+    <text x="415" y="409" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B"></text>
+    <path d="M330 417 H380 A0 0 0 0 1 380 417 V443 A0 0 0 0 1 380 443 H330 A0 0 0 0 1 330 443 V417 A0 0 0 0 1 330 417 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 417 H450 A0 0 0 0 1 450 417 V443 A0 0 0 0 1 450 443 H380 A0 0 0 0 1 380 443 V417 A0 0 0 0 1 380 417 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="435" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">940</text>
+    <text x="415" y="435" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0003</text>
+    <path d="M330 443 H380 A0 0 0 0 1 380 443 V466 A3 3 0 0 1 377 469 H333 A3 3 0 0 1 330 466 V443 A0 0 0 0 1 330 443 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M380 443 H450 A0 0 0 0 1 450 443 V469 A0 0 0 0 1 450 469 H380 A0 0 0 0 1 380 469 V443 A0 0 0 0 1 380 443 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="355" y="461" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">941</text>
+    <text x="415" y="461" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0002</text>
+    <text x="500" y="346" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">PC</text>
+    <rect x="510" y="325" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="545" y="346" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">302</text>
+    <text x="500" y="392" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">AC</text>
+    <rect x="510" y="371" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="545" y="392" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">0005</text>
+    <text x="500" y="438" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">IR</text>
+    <rect x="510" y="417" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="545" y="438" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">2941</text>
+    <rect x="610" y="297" width="280" height="185" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="750" y="287" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Step 6 · execute: (941) ← AC</text>
+    <path d="M628 313 H672 A3 3 0 0 1 675 316 V339 A0 0 0 0 1 675 339 H625 A0 0 0 0 1 625 339 V316 A3 3 0 0 1 628 313 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 313 H745 A0 0 0 0 1 745 313 V339 A0 0 0 0 1 745 339 H675 A0 0 0 0 1 675 339 V313 A0 0 0 0 1 675 313 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="331" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">300</text>
+    <text x="710" y="331" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">1940</text>
+    <path d="M625 339 H675 A0 0 0 0 1 675 339 V365 A0 0 0 0 1 675 365 H625 A0 0 0 0 1 625 365 V339 A0 0 0 0 1 625 339 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 339 H745 A0 0 0 0 1 745 339 V365 A0 0 0 0 1 745 365 H675 A0 0 0 0 1 675 365 V339 A0 0 0 0 1 675 339 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="357" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">301</text>
+    <text x="710" y="357" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">5941</text>
+    <path d="M625 365 H675 A0 0 0 0 1 675 365 V391 A0 0 0 0 1 675 391 H625 A0 0 0 0 1 625 391 V365 A0 0 0 0 1 625 365 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 365 H745 A0 0 0 0 1 745 365 V391 A0 0 0 0 1 745 391 H675 A0 0 0 0 1 675 391 V365 A0 0 0 0 1 675 365 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="383" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">302</text>
+    <text x="710" y="383" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">2941</text>
+    <path d="M625 391 H675 A0 0 0 0 1 675 391 V417 A0 0 0 0 1 675 417 H625 A0 0 0 0 1 625 417 V391 A0 0 0 0 1 625 391 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 391 H745 A0 0 0 0 1 745 391 V417 A0 0 0 0 1 745 417 H675 A0 0 0 0 1 675 417 V391 A0 0 0 0 1 675 391 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="409" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">⋮</text>
+    <text x="710" y="409" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B"></text>
+    <path d="M625 417 H675 A0 0 0 0 1 675 417 V443 A0 0 0 0 1 675 443 H625 A0 0 0 0 1 625 443 V417 A0 0 0 0 1 625 417 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 417 H745 A0 0 0 0 1 745 417 V443 A0 0 0 0 1 745 443 H675 A0 0 0 0 1 675 443 V417 A0 0 0 0 1 675 417 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="650" y="435" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">940</text>
+    <text x="710" y="435" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#1E293B">0003</text>
+    <path d="M625 443 H675 A0 0 0 0 1 675 443 V466 A3 3 0 0 1 672 469 H628 A3 3 0 0 1 625 466 V443 A0 0 0 0 1 625 443 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M675 443 H745 A0 0 0 0 1 745 443 V469 A0 0 0 0 1 745 469 H675 A0 0 0 0 1 675 469 V443 A0 0 0 0 1 675 443 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="650" y="461" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11.5" font-weight="500" fill="#1E293B">941</text>
+    <text x="710" y="461" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#B45309">0005</text>
+    <text x="795" y="346" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">PC</text>
+    <rect x="805" y="325" width="70" height="32" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="840" y="346" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">303</text>
+    <text x="795" y="392" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">AC</text>
+    <rect x="805" y="371" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="840" y="392" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">0005</text>
+    <text x="795" y="438" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">IR</text>
+    <rect x="805" y="417" width="70" height="32" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#px-s)"/>
+    <text x="840" y="438" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#1E293B">2941</text>
+</svg>

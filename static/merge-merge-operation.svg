@@ -1,0 +1,39 @@
+<svg width="640" height="230" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" role="img" aria-label="Merge operation: the left sorted array 12, 27, 38, 43 and the right sorted array 9, 18, 25, 31 combine into the final merged array 9, 12, 18, 25, 27, 31, 38, 43">
+    <defs><marker id="mo-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="mo-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="mo-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="22" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">LEFT SORTED ARRAY</text>
+    <text x="360" y="22" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">RIGHT SORTED ARRAY</text>
+    <path d="M43.0 34 H100.0 A0 0 0 0 1 100.0 34 V70 A0 0 0 0 1 100.0 70 H43.0 A3 3 0 0 1 40.0 67 V37 A3 3 0 0 1 43.0 34 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="70.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">12</text>
+    <path d="M100.0 34 H160.0 A0 0 0 0 1 160.0 34 V70 A0 0 0 0 1 160.0 70 H100.0 A0 0 0 0 1 100.0 70 V34 A0 0 0 0 1 100.0 34 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="130.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">27</text>
+    <path d="M160.0 34 H220.0 A0 0 0 0 1 220.0 34 V70 A0 0 0 0 1 220.0 70 H160.0 A0 0 0 0 1 160.0 70 V34 A0 0 0 0 1 160.0 34 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="190.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">38</text>
+    <path d="M220.0 34 H277.0 A3 3 0 0 1 280.0 37 V67 A3 3 0 0 1 277.0 70 H220.0 A0 0 0 0 1 220.0 70 V34 A0 0 0 0 1 220.0 34 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="250.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">43</text>
+    <path d="M363.0 34 H420.0 A0 0 0 0 1 420.0 34 V70 A0 0 0 0 1 420.0 70 H363.0 A3 3 0 0 1 360.0 67 V37 A3 3 0 0 1 363.0 34 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="390.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">9</text>
+    <path d="M420.0 34 H480.0 A0 0 0 0 1 480.0 34 V70 A0 0 0 0 1 480.0 70 H420.0 A0 0 0 0 1 420.0 70 V34 A0 0 0 0 1 420.0 34 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="450.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">18</text>
+    <path d="M480.0 34 H540.0 A0 0 0 0 1 540.0 34 V70 A0 0 0 0 1 540.0 70 H480.0 A0 0 0 0 1 480.0 70 V34 A0 0 0 0 1 480.0 34 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="510.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">25</text>
+    <path d="M540.0 34 H597.0 A3 3 0 0 1 600.0 37 V67 A3 3 0 0 1 597.0 70 H540.0 A0 0 0 0 1 540.0 70 V34 A0 0 0 0 1 540.0 34 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="570.0" y="56.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">31</text>
+    <path d="M320 84 V124" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mo-a)"/>
+    <text x="80" y="146" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">FINAL MERGED ARRAY</text>
+    <path d="M83.0 158 H140.0 A0 0 0 0 1 140.0 158 V194 A0 0 0 0 1 140.0 194 H83.0 A3 3 0 0 1 80.0 191 V161 A3 3 0 0 1 83.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="110.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">9</text>
+    <path d="M140.0 158 H200.0 A0 0 0 0 1 200.0 158 V194 A0 0 0 0 1 200.0 194 H140.0 A0 0 0 0 1 140.0 194 V158 A0 0 0 0 1 140.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="170.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">12</text>
+    <path d="M200.0 158 H260.0 A0 0 0 0 1 260.0 158 V194 A0 0 0 0 1 260.0 194 H200.0 A0 0 0 0 1 200.0 194 V158 A0 0 0 0 1 200.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="230.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">18</text>
+    <path d="M260.0 158 H320.0 A0 0 0 0 1 320.0 158 V194 A0 0 0 0 1 320.0 194 H260.0 A0 0 0 0 1 260.0 194 V158 A0 0 0 0 1 260.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="290.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">25</text>
+    <path d="M320.0 158 H380.0 A0 0 0 0 1 380.0 158 V194 A0 0 0 0 1 380.0 194 H320.0 A0 0 0 0 1 320.0 194 V158 A0 0 0 0 1 320.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="350.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">27</text>
+    <path d="M380.0 158 H440.0 A0 0 0 0 1 440.0 158 V194 A0 0 0 0 1 440.0 194 H380.0 A0 0 0 0 1 380.0 194 V158 A0 0 0 0 1 380.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="410.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">31</text>
+    <path d="M440.0 158 H500.0 A0 0 0 0 1 500.0 158 V194 A0 0 0 0 1 500.0 194 H440.0 A0 0 0 0 1 440.0 194 V158 A0 0 0 0 1 440.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="470.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">38</text>
+    <path d="M500.0 158 H557.0 A3 3 0 0 1 560.0 161 V191 A3 3 0 0 1 557.0 194 H500.0 A0 0 0 0 1 500.0 194 V158 A0 0 0 0 1 500.0 158 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="530.0" y="180.9" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="500" fill="#1E293B">43</text>
+</svg>

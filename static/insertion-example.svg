@@ -1,0 +1,36 @@
+<svg width="640" height="222" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 222" role="img" aria-label="Example of Insertion Sort in ascending order: in the array 7, 3, 8, 2, 6, 4, 5 the first element, 7, forms the sorted portion; each next element is inserted in its correct place, giving 2, 3, 4, 5, 6, 7, 8">
+    <defs><marker id="ex-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="ex-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="ex-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="22" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">EXAMPLE: SORTING IN ASCENDING ORDER</text>
+    <rect x="40" y="36" width="72" height="46" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#ex-s)"/>
+    <text x="76" y="66" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#047857">7</text>
+    <rect x="122" y="36" width="72" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ex-s)"/>
+    <text x="158" y="66" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">3</text>
+    <rect x="204" y="36" width="72" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ex-s)"/>
+    <text x="240" y="66" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">8</text>
+    <rect x="286" y="36" width="72" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ex-s)"/>
+    <text x="322" y="66" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">2</text>
+    <rect x="368" y="36" width="72" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ex-s)"/>
+    <text x="404" y="66" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">6</text>
+    <rect x="450" y="36" width="72" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ex-s)"/>
+    <text x="486" y="66" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">4</text>
+    <rect x="532" y="36" width="72" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ex-s)"/>
+    <text x="568" y="66" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" fill="#1E293B">5</text>
+    <text x="76" y="100" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#047857">Sorted</text>
+    <path d="M76 108 V124 H568" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M568 124 V150" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ex-a)"/>
+    <text x="320" y="146" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#1E293B">Insert each next element in its correct place</text>
+    <path d="M43 162 H112 A0 0 0 0 1 112 162 V202 A0 0 0 0 1 112 202 H43 A3 3 0 0 1 40 199 V165 A3 3 0 0 1 43 162 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="76" y="188" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#047857">2</text>
+    <path d="M122 162 H194 A0 0 0 0 1 194 162 V202 A0 0 0 0 1 194 202 H122 A0 0 0 0 1 122 202 V162 A0 0 0 0 1 122 162 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="158" y="188" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#047857">3</text>
+    <path d="M204 162 H276 A0 0 0 0 1 276 162 V202 A0 0 0 0 1 276 202 H204 A0 0 0 0 1 204 202 V162 A0 0 0 0 1 204 162 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="240" y="188" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#047857">4</text>
+    <path d="M286 162 H358 A0 0 0 0 1 358 162 V202 A0 0 0 0 1 358 202 H286 A0 0 0 0 1 286 202 V162 A0 0 0 0 1 286 162 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="322" y="188" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#047857">5</text>
+    <path d="M368 162 H440 A0 0 0 0 1 440 162 V202 A0 0 0 0 1 440 202 H368 A0 0 0 0 1 368 202 V162 A0 0 0 0 1 368 162 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="404" y="188" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#047857">6</text>
+    <path d="M450 162 H522 A0 0 0 0 1 522 162 V202 A0 0 0 0 1 522 202 H450 A0 0 0 0 1 450 202 V162 A0 0 0 0 1 450 162 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="486" y="188" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#047857">7</text>
+    <path d="M532 162 H601 A3 3 0 0 1 604 165 V199 A3 3 0 0 1 601 202 H532 A0 0 0 0 1 532 202 V162 A0 0 0 0 1 532 162 Z" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2"/>
+    <text x="568" y="188" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#047857">8</text>
+</svg>

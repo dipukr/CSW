@@ -1,0 +1,36 @@
+<svg width="760" height="520" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" role="img" aria-label="Cache read operation: receive address RA from the CPU. If the block containing RA is in the cache, fetch the word and deliver it to the CPU. Otherwise access main memory for the block, allocate a cache line for it, load the block into the line and deliver the word to the CPU. Then done">
+    <defs><marker id="cr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="cr-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="cr-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="300" y="10" width="160" height="38" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#cr-s)"/>
+    <text x="380.0" y="33.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">START</text>
+    <rect x="280" y="75" width="200" height="50" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cr-s)"/>
+    <text x="380.0" y="96.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Receive address RA</text>
+    <text x="380.0" y="112.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">from CPU</text>
+    <path d="M380 150.0 L500.0 200 L380 250.0 L260.0 200 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" stroke-linejoin="round"/>
+    <text x="380" y="196.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#1E293B">Is block containing</text>
+    <text x="380" y="212.1" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#1E293B">RA in cache?</text>
+    <rect x="280" y="290" width="200" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#cr-s)"/>
+    <text x="380.0" y="311.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Access main memory for</text>
+    <text x="380.0" y="327.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">block containing RA</text>
+    <rect x="280" y="365" width="200" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#cr-s)"/>
+    <text x="380.0" y="386.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Allocate cache line for</text>
+    <text x="380.0" y="402.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">main memory block</text>
+    <rect x="280" y="440" width="200" height="60" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#cr-s)"/>
+    <text x="380.0" y="458.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Load block into the line</text>
+    <text x="380.0" y="474.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">and deliver RA word</text>
+    <text x="380.0" y="490.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">to CPU</text>
+    <rect x="560" y="175" width="180" height="50" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#cr-s)"/>
+    <text x="650.0" y="196.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Fetch RA word and</text>
+    <text x="650.0" y="212.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">deliver it to CPU</text>
+    <rect x="580" y="452" width="140" height="38" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#cr-s)"/>
+    <text x="650.0" y="475.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">DONE</text>
+    <path d="M380 48 V71" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <path d="M380 125 V146" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <path d="M380 250 V286" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <path d="M380 340 V361" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <path d="M380 415 V436" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <path d="M500 200 H556" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <path d="M650 225 V448" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <path d="M480 471 H576" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#cr-a)"/>
+    <text x="528" y="192" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#0D9488">yes</text>
+    <text x="392" y="272" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#B45309">no</text>
+</svg>

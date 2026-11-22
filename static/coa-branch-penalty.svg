@@ -1,0 +1,109 @@
+<svg width="806" height="370" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 806 370" role="img" aria-label="Effect of a conditional branch on a six-stage pipeline: instruction 3 branches to instruction 15. Its outcome is known only after its execute stage in cycle 7, so instructions 4 to 7, already partly processed, are discarded, and instruction 15 starts in cycle 8. Nine instructions take 14 cycles instead of 9 + 5 = 14 minus the 4 wasted fetches">
+    <defs><marker id="bp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="bp-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="bp-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="192.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">1</text>
+    <text x="236.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">2</text>
+    <text x="280.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">3</text>
+    <text x="324.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">4</text>
+    <text x="368.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">5</text>
+    <text x="412.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">6</text>
+    <text x="456.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">7</text>
+    <text x="500.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">8</text>
+    <text x="544.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">9</text>
+    <text x="588.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">10</text>
+    <text x="632.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">11</text>
+    <text x="676.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">12</text>
+    <text x="720.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">13</text>
+    <text x="764.0" y="32" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">14</text>
+    <text x="478.0" y="14" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">clock cycle</text>
+    <text x="158" y="61" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Instruction 1</text>
+    <rect x="172" y="44" width="40" height="24" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1"/>
+    <text x="192.0" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FI</text>
+    <rect x="216" y="44" width="40" height="24" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="236.0" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">DI</text>
+    <rect x="260" y="44" width="40" height="24" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+    <text x="280.0" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">CO</text>
+    <rect x="304" y="44" width="40" height="24" rx="3" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+    <text x="324.0" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FO</text>
+    <rect x="348" y="44" width="40" height="24" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+    <text x="368.0" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">EI</text>
+    <rect x="392" y="44" width="40" height="24" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+    <text x="412.0" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">WO</text>
+    <text x="158" y="91" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Instruction 2</text>
+    <rect x="216" y="74" width="40" height="24" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1"/>
+    <text x="236.0" y="91" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FI</text>
+    <rect x="260" y="74" width="40" height="24" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="280.0" y="91" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">DI</text>
+    <rect x="304" y="74" width="40" height="24" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+    <text x="324.0" y="91" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">CO</text>
+    <rect x="348" y="74" width="40" height="24" rx="3" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+    <text x="368.0" y="91" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FO</text>
+    <rect x="392" y="74" width="40" height="24" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+    <text x="412.0" y="91" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">EI</text>
+    <rect x="436" y="74" width="40" height="24" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+    <text x="456.0" y="91" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">WO</text>
+    <text x="158" y="121" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#B45309">Instruction 3 (branch)</text>
+    <rect x="260" y="104" width="40" height="24" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1"/>
+    <text x="280.0" y="121" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FI</text>
+    <rect x="304" y="104" width="40" height="24" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="324.0" y="121" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">DI</text>
+    <rect x="348" y="104" width="40" height="24" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+    <text x="368.0" y="121" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">CO</text>
+    <rect x="392" y="104" width="40" height="24" rx="3" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+    <text x="412.0" y="121" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FO</text>
+    <rect x="436" y="104" width="40" height="24" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+    <text x="456.0" y="121" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">EI</text>
+    <rect x="480" y="104" width="40" height="24" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+    <text x="500.0" y="121" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">WO</text>
+    <text x="158" y="151" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Instruction 4</text>
+    <rect x="304" y="134" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="324.0" y="151" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">FI</text>
+    <rect x="348" y="134" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="368.0" y="151" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">DI</text>
+    <rect x="392" y="134" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="412.0" y="151" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">CO</text>
+    <rect x="436" y="134" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="456.0" y="151" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">FO</text>
+    <text x="158" y="181" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Instruction 5</text>
+    <rect x="348" y="164" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="368.0" y="181" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">FI</text>
+    <rect x="392" y="164" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="412.0" y="181" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">DI</text>
+    <rect x="436" y="164" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="456.0" y="181" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">CO</text>
+    <text x="158" y="211" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Instruction 6</text>
+    <rect x="392" y="194" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="412.0" y="211" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">FI</text>
+    <rect x="436" y="194" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="456.0" y="211" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">DI</text>
+    <text x="158" y="241" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Instruction 7</text>
+    <rect x="436" y="224" width="40" height="24" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="456.0" y="241" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#94A3B8">FI</text>
+    <text x="158" y="271" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Instruction 15</text>
+    <rect x="480" y="254" width="40" height="24" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1"/>
+    <text x="500.0" y="271" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FI</text>
+    <rect x="524" y="254" width="40" height="24" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="544.0" y="271" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">DI</text>
+    <rect x="568" y="254" width="40" height="24" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+    <text x="588.0" y="271" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">CO</text>
+    <rect x="612" y="254" width="40" height="24" rx="3" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+    <text x="632.0" y="271" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FO</text>
+    <rect x="656" y="254" width="40" height="24" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+    <text x="676.0" y="271" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">EI</text>
+    <rect x="700" y="254" width="40" height="24" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+    <text x="720.0" y="271" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">WO</text>
+    <text x="158" y="301" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Instruction 16</text>
+    <rect x="524" y="284" width="40" height="24" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1"/>
+    <text x="544.0" y="301" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FI</text>
+    <rect x="568" y="284" width="40" height="24" rx="3" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="588.0" y="301" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">DI</text>
+    <rect x="612" y="284" width="40" height="24" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+    <text x="632.0" y="301" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">CO</text>
+    <rect x="656" y="284" width="40" height="24" rx="3" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+    <text x="676.0" y="301" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">FO</text>
+    <rect x="700" y="284" width="40" height="24" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+    <text x="720.0" y="301" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">EI</text>
+    <rect x="744" y="284" width="40" height="24" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+    <text x="764.0" y="301" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">WO</text>
+    <path d="M478 38 V312" fill="none" stroke="#B45309" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="484" y="330" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">branch resolved: instructions 4–7 discarded (branch penalty)</text>
+</svg>

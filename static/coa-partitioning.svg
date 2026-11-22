@@ -1,0 +1,88 @@
+<svg width="800" height="370" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 370" role="img" aria-label="Memory partitioning of a 64-MB memory. (a) Fixed partitioning with equal 8-MB partitions. (b) Fixed partitioning with unequal partitions of 2, 4, 6, 8, 8, 12 and 16 MB. (c) Dynamic partitioning over time: processes of 20, 14 and 18 MB are loaded; process 2 is swapped out and process 4 (8 MB) takes part of its space, leaving small holes that cause external fragmentation">
+    <defs><marker id="part-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="part-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="part-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="130" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Fixed partitioning</text>
+    <text x="560" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(c) Dynamic partitioning over time</text>
+    <path d="M43 50 H117 A3 3 0 0 1 120 53 V82 A0 0 0 0 1 120 82 H40 A0 0 0 0 1 40 82 V53 A3 3 0 0 1 43 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="80" y="70.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">OS 8M</text>
+    <path d="M40 82 H120 A0 0 0 0 1 120 82 V114 A0 0 0 0 1 120 114 H40 A0 0 0 0 1 40 114 V82 A0 0 0 0 1 40 82 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="80" y="102.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M40 114 H120 A0 0 0 0 1 120 114 V146 A0 0 0 0 1 120 146 H40 A0 0 0 0 1 40 146 V114 A0 0 0 0 1 40 114 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="80" y="134.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M40 146 H120 A0 0 0 0 1 120 146 V178 A0 0 0 0 1 120 178 H40 A0 0 0 0 1 40 178 V146 A0 0 0 0 1 40 146 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="80" y="166.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M40 178 H120 A0 0 0 0 1 120 178 V210 A0 0 0 0 1 120 210 H40 A0 0 0 0 1 40 210 V178 A0 0 0 0 1 40 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="80" y="198.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M40 210 H120 A0 0 0 0 1 120 210 V242 A0 0 0 0 1 120 242 H40 A0 0 0 0 1 40 242 V210 A0 0 0 0 1 40 210 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="80" y="230.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M40 242 H120 A0 0 0 0 1 120 242 V274 A0 0 0 0 1 120 274 H40 A0 0 0 0 1 40 274 V242 A0 0 0 0 1 40 242 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="80" y="262.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M40 274 H120 A0 0 0 0 1 120 274 V303 A3 3 0 0 1 117 306 H43 A3 3 0 0 1 40 303 V274 A0 0 0 0 1 40 274 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="80" y="294.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <text x="80" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">(a) Equal</text>
+    <text x="80" y="344" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">size</text>
+    <path d="M143 50 H217 A3 3 0 0 1 220 53 V82 A0 0 0 0 1 220 82 H140 A0 0 0 0 1 140 82 V53 A3 3 0 0 1 143 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="180" y="70.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">OS 8M</text>
+    <path d="M140 82 H220 A0 0 0 0 1 220 82 V90 A0 0 0 0 1 220 90 H140 A0 0 0 0 1 140 90 V82 A0 0 0 0 1 140 82 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M140 90 H220 A0 0 0 0 1 220 90 V106 A0 0 0 0 1 220 106 H140 A0 0 0 0 1 140 106 V90 A0 0 0 0 1 140 90 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180" y="102.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">4M</text>
+    <path d="M140 106 H220 A0 0 0 0 1 220 106 V130 A0 0 0 0 1 220 130 H140 A0 0 0 0 1 140 130 V106 A0 0 0 0 1 140 106 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180" y="122.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">6M</text>
+    <path d="M140 130 H220 A0 0 0 0 1 220 130 V162 A0 0 0 0 1 220 162 H140 A0 0 0 0 1 140 162 V130 A0 0 0 0 1 140 130 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180" y="150.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M140 162 H220 A0 0 0 0 1 220 162 V194 A0 0 0 0 1 220 194 H140 A0 0 0 0 1 140 194 V162 A0 0 0 0 1 140 162 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180" y="182.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">8M</text>
+    <path d="M140 194 H220 A0 0 0 0 1 220 194 V242 A0 0 0 0 1 220 242 H140 A0 0 0 0 1 140 242 V194 A0 0 0 0 1 140 194 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180" y="222.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">12M</text>
+    <path d="M140 242 H220 A0 0 0 0 1 220 242 V303 A3 3 0 0 1 217 306 H143 A3 3 0 0 1 140 303 V242 A0 0 0 0 1 140 242 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="180" y="278.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B">16M</text>
+    <text x="180" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">(b) Unequal</text>
+    <text x="180" y="344" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">size</text>
+    <path d="M283 50 H357 A3 3 0 0 1 360 53 V82 A0 0 0 0 1 360 82 H280 A0 0 0 0 1 280 82 V53 A3 3 0 0 1 283 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="320" y="70.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">OS 8M</text>
+    <path d="M280 82 H360 A0 0 0 0 1 360 82 V303 A3 3 0 0 1 357 306 H283 A3 3 0 0 1 280 303 V82 A0 0 0 0 1 280 82 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="320" y="198.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#64748B">free 56M</text>
+    <text x="320" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">step 1</text>
+    <path d="M383 50 H457 A3 3 0 0 1 460 53 V82 A0 0 0 0 1 460 82 H380 A0 0 0 0 1 380 82 V53 A3 3 0 0 1 383 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="420" y="70.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">OS 8M</text>
+    <path d="M380 82 H460 A0 0 0 0 1 460 82 V162 A0 0 0 0 1 460 162 H380 A0 0 0 0 1 380 162 V82 A0 0 0 0 1 380 82 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="420" y="126.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P1 20M</text>
+    <path d="M380 162 H460 A0 0 0 0 1 460 162 V303 A3 3 0 0 1 457 306 H383 A3 3 0 0 1 380 303 V162 A0 0 0 0 1 380 162 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="420" y="238.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#64748B">free 36M</text>
+    <text x="420" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">step 2</text>
+    <path d="M483 50 H557 A3 3 0 0 1 560 53 V82 A0 0 0 0 1 560 82 H480 A0 0 0 0 1 480 82 V53 A3 3 0 0 1 483 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="520" y="70.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">OS 8M</text>
+    <path d="M480 82 H560 A0 0 0 0 1 560 82 V162 A0 0 0 0 1 560 162 H480 A0 0 0 0 1 480 162 V82 A0 0 0 0 1 480 82 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="520" y="126.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P1 20M</text>
+    <path d="M480 162 H560 A0 0 0 0 1 560 162 V218 A0 0 0 0 1 560 218 H480 A0 0 0 0 1 480 218 V162 A0 0 0 0 1 480 162 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="520" y="194.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P2 14M</text>
+    <path d="M480 218 H560 A0 0 0 0 1 560 218 V290 A0 0 0 0 1 560 290 H480 A0 0 0 0 1 480 290 V218 A0 0 0 0 1 480 218 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="520" y="258.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P3 18M</text>
+    <path d="M480 290 H560 A0 0 0 0 1 560 290 V303 A3 3 0 0 1 557 306 H483 A3 3 0 0 1 480 303 V290 A0 0 0 0 1 480 290 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="520" y="302.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#64748B">4M</text>
+    <text x="520" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">step 3</text>
+    <path d="M583 50 H657 A3 3 0 0 1 660 53 V82 A0 0 0 0 1 660 82 H580 A0 0 0 0 1 580 82 V53 A3 3 0 0 1 583 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="620" y="70.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">OS 8M</text>
+    <path d="M580 82 H660 A0 0 0 0 1 660 82 V162 A0 0 0 0 1 660 162 H580 A0 0 0 0 1 580 162 V82 A0 0 0 0 1 580 82 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="620" y="126.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P1 20M</text>
+    <path d="M580 162 H660 A0 0 0 0 1 660 162 V218 A0 0 0 0 1 660 218 H580 A0 0 0 0 1 580 218 V162 A0 0 0 0 1 580 162 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="620" y="194.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#64748B">free 14M</text>
+    <path d="M580 218 H660 A0 0 0 0 1 660 218 V290 A0 0 0 0 1 660 290 H580 A0 0 0 0 1 580 290 V218 A0 0 0 0 1 580 218 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="620" y="258.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P3 18M</text>
+    <path d="M580 290 H660 A0 0 0 0 1 660 290 V303 A3 3 0 0 1 657 306 H583 A3 3 0 0 1 580 303 V290 A0 0 0 0 1 580 290 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="620" y="302.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#64748B">4M</text>
+    <text x="620" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">step 4</text>
+    <path d="M683 50 H757 A3 3 0 0 1 760 53 V82 A0 0 0 0 1 760 82 H680 A0 0 0 0 1 680 82 V53 A3 3 0 0 1 683 50 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="720" y="70.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">OS 8M</text>
+    <path d="M680 82 H760 A0 0 0 0 1 760 82 V162 A0 0 0 0 1 760 162 H680 A0 0 0 0 1 680 162 V82 A0 0 0 0 1 680 82 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="720" y="126.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P1 20M</text>
+    <path d="M680 162 H760 A0 0 0 0 1 760 162 V194 A0 0 0 0 1 760 194 H680 A0 0 0 0 1 680 194 V162 A0 0 0 0 1 680 162 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="720" y="182.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P4 8M</text>
+    <path d="M680 194 H760 A0 0 0 0 1 760 194 V218 A0 0 0 0 1 760 218 H680 A0 0 0 0 1 680 218 V194 A0 0 0 0 1 680 194 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="720" y="210.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#64748B">6M</text>
+    <path d="M680 218 H760 A0 0 0 0 1 760 218 V290 A0 0 0 0 1 760 290 H680 A0 0 0 0 1 680 290 V218 A0 0 0 0 1 680 218 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="720" y="258.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">P3 18M</text>
+    <path d="M680 290 H760 A0 0 0 0 1 760 290 V303 A3 3 0 0 1 757 306 H683 A3 3 0 0 1 680 303 V290 A0 0 0 0 1 680 290 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="720" y="302.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#64748B">4M</text>
+    <text x="720" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">step 5</text>
+    <path d="M250 40 V320" fill="none" stroke="#E2E8F0" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Organization and Architecture</title>
+<link rel="stylesheet" href="src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Computer Organization and Architecture</div>
+
+    <div class="intro">
+        <p>This note walks through how a computer is built and how it runs programs. It starts at the top level, with the processor, memory and I/O joined by an interconnect. It then goes down into caches, memory chips, disks, instruction sets, pipelines and control units, and back up to parallel machines and the operating-system support that hardware provides.</p>
+        <p>The topics follow the order of the lecture deck it is based on: <strong>overview and performance, system interconnection, the memory hierarchy, I/O, instruction sets, processor structure, RISC and superscalar design, parallel and multicore organization, the control unit and operating-system support</strong>.</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="subheading">Architecture vs Organization</div>
+    <div class="intro">
+        <p>The two terms describe one machine from two sides. <strong>Architecture</strong> is what a programmer can see and rely on. <strong>Organization</strong> is how the hardware delivers it.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Aspect</th><th>Computer architecture</th><th>Computer organization</th></tr></thead>
+        <tbody>
+            <tr><td>Definition</td><td>Attributes visible to the programmer that directly affect how a program executes logically</td><td>The operational units and their interconnections that realize the architecture</td></tr>
+            <tr><td>Examples</td><td>Instruction set, word size and data-type widths, addressing modes, I/O mechanisms</td><td>Control signals, interfaces to peripherals, memory technology, whether multiply is a hardware unit or repeated addition</td></tr>
+            <tr><td>Question answered</td><td>“Does the machine have a multiply instruction?”</td><td>“How is that multiply carried out?”</td></tr>
+            <tr><td>Rate of change</td><td>Kept stable for decades so software keeps running</td><td>Changes with each technology generation</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Separating the two lets a manufacturer sell a <strong>family</strong> of models. Every model shares one architecture and so runs the same software, while the organizations differ in price and speed. IBM System/360 (1964) was the first major example, and the x86 line still follows the same idea.</p>
+        <p><strong>Structure</strong> is how components relate. <strong>Function</strong> is what each component does. A computer has four basic functions: data processing, data storage, data movement and control.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-top-level.svg" alt="Top-level structure, zooming in: a computer contains I/O, main memory, a system interconnect and the CPU; the CPU contains registers, an ALU, an internal interconnect and the control unit; the control unit contains sequencing logic, control-unit registers and decoders, and control memory" style="width:100%;max-width:900px">
+    </div>
+
+    <!-- 2 -->
+    <div class="subheading">Evolution of Computers</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Generation</th><th>Technology</th><th>Notable points</th></tr></thead>
+        <tbody>
+            <tr><td>First (1946–1957)</td><td>Vacuum tubes</td><td>ENIAC; the IAS computer, built on von Neumann's stored-program concept (first described in 1945 for the EDVAC and completed at Princeton in 1952)</td></tr>
+            <tr><td>Second (1958–1964)</td><td>Transistors</td><td>Invented at Bell Labs in 1947. Smaller, cheaper, cooler, solid-state. Brought more complex ALUs and control units, high-level languages and system software</td></tr>
+            <tr><td>Third (1965–1971)</td><td>Small- and medium-scale integrated circuits</td><td>Many transistors on one silicon chip. IBM System/360 and DEC PDP-8, which used a single shared bus called the Omnibus</td></tr>
+            <tr><td>Later generations</td><td>LSI, VLSI and ULSI</td><td>Semiconductor main memory, then the microprocessor (Intel 4004 in 1971, followed by 8008, 8080, 8086 and so on)</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>The IAS (von Neumann) machine</strong></p>
+        <p>The IAS design fixed the template that almost every later general-purpose computer follows:</p>
+        <ul>
+            <li>Programs and data are stored together in one <strong>read–write main memory</strong>.</li>
+            <li>An <strong>arithmetic and logic unit</strong> operates on binary data.</li>
+            <li>A <strong>control unit</strong> fetches instructions from memory, interprets them and has them executed.</li>
+            <li><strong>I/O equipment</strong> runs under the control unit.</li>
+        </ul>
+        <p class="minor-heading"><strong>Integrated circuits</strong></p>
+        <p>A computer is built from two kinds of element. <strong>Gates</strong> compute Boolean functions. <strong>Memory cells</strong> store one bit each. Wires between them move data and carry control signals. Integrated circuits made it possible to fabricate thousands, and later billions, of transistors at once on a silicon wafer. The wafer is cut into chips, and each chip holds many gates and cells.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-elements.svg" alt="Fundamental computer elements: (a) a gate takes inputs, computes a Boolean logic function when activated by a control signal, and produces an output; (b) a memory cell stores one binary value, written from its input under a write signal and sensed at its output under a read signal" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Moore's law</strong></p>
+        <p>In 1965 Gordon Moore observed that the number of transistors on a chip was doubling every year. The pace slowed to about every 18 months in the 1970s and held there for decades. Its consequences:</p>
+        <ul>
+            <li>Logic and memory got steadily cheaper.</li>
+            <li>Shorter electrical paths made circuits faster.</li>
+            <li>Computers got smaller and could be used in more places.</li>
+            <li>They needed less power and cooling.</li>
+            <li>Fewer connections between chips made them more reliable.</li>
+        </ul>
+    </div>
+
+    <!-- 3 -->
+    <div class="subheading">Designing for Performance</div>
+    <div class="intro">
+        <p>Raw transistor speed is only part of the story. Modern processors keep their execution units busy with techniques that overlap or reorder work.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Pipelining</span><span>Different stages of several instructions run at the same time, like an assembly line</span></li>
+        <li><span class="ledger-label">Branch prediction</span><span>The processor guesses which way a branch will go and fetches along that path before the branch resolves</span></li>
+        <li><span class="ledger-label">Superscalar execution</span><span>More than one instruction is issued per clock cycle, through several parallel pipelines</span></li>
+        <li><span class="ledger-label">Data-flow analysis</span><span>The hardware works out which instructions depend on which results and schedules the work around those dependencies</span></li>
+        <li><span class="ledger-label">Speculative execution</span><span>Instructions are run ahead of their place in the program, and their results are held aside until it is certain they are needed</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Performance balance</strong></p>
+        <p>Processor speed has grown much faster than memory speed. Designers close that gap in several ways:</p>
+        <ul>
+            <li>Make DRAM “wider” rather than “deeper”, and use wide data paths, so more bits arrive per access.</li>
+            <li>Add more and larger caches.</li>
+            <li>Put buffering or caching into the DRAM interface itself.</li>
+            <li>Use faster interconnects and a hierarchy of buses.</li>
+        </ul>
+        <p>I/O devices need the same care, because their data rates range from a keyboard to multi-gigabit network cards.</p>
+        <p class="minor-heading"><strong>Limits on clock speed</strong></p>
+        <ul>
+            <li><strong>Power:</strong> power density rises with logic density and clock rate, and the heat becomes hard to remove.</li>
+            <li><strong>RC delay:</strong> thinner, more closely packed wires have higher resistance and capacitance, so signals slow down.</li>
+            <li><strong>Memory latency:</strong> memory cannot keep up with the processor.</li>
+        </ul>
+        <p>For these reasons the industry moved to <strong>multicore</strong> chips, with several simpler processors on one die and large shared caches, instead of ever-faster single cores. <strong>Many Integrated Core (MIC)</strong> chips push this to dozens of general-purpose cores. <strong>GPUs</strong> offer hundreds or thousands of simple cores built for data-parallel work.</p>
+    </div>
+
+    <div class="intro">
+        <p class="minor-heading"><strong>Basic performance measures</strong></p>
+        <p>A clock with frequency <em>f</em> has cycle time τ = 1/<em>f</em>. A program of <em>I<sub>c</sub></em> instructions, averaging <em>CPI</em> cycles per instruction, takes:</p>
+        <p class="math-display"><span class="math" data-tex="T = I_c \times CPI \times \tau" data-display="1">T = Ic × CPI × τ</span></p>
+        <p class="math-display"><span class="math" data-tex="\text{MIPS rate} = \frac{I_c}{T \times 10^6} = \frac{f}{CPI \times 10^6}" data-display="1">MIPS rate = Ic / (T × 10^6) = f / (CPI × 10^6)</span></p>
+        <p>MIPS and MFLOPS are easy to quote but misleading across different instruction sets, because one CISC instruction may do the work of several RISC ones. Measured run times of real programs are a better comparison.</p>
+        <p class="minor-heading"><strong>Amdahl's law</strong></p>
+        <p>Suppose a fraction <em>f</em> of a program's time can be sped up by a factor <em>N</em>, for example by running on <em>N</em> processors, and the rest (1 − <em>f</em>) cannot. Then:</p>
+        <p class="math-display"><span class="math" data-tex="\text{Speedup} = \frac{1}{(1-f) + \dfrac{f}{N}}" data-display="1">Speedup = 1 / ((1 − f) + f / N)</span></p>
+        <p>As <em>N</em> grows, the speedup approaches 1/(1 − <em>f</em>). With 90% of the work parallel, no number of cores gives more than a 10× speedup. The serial part dominates, which is why software must be redesigned to exploit many cores. The same formula applies to any enhancement that affects only part of a system.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-amdahl.svg" alt="Amdahl's law: speedup against number of processors (1 to 1024, log scale) for parallel fractions f = 0.5, 0.75, 0.9 and 0.95. Each curve flattens toward its limit 1/(1-f): 2, 4, 10 and 20" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Benchmarks and SPEC</strong></p>
+        <p>A good benchmark program:</p>
+        <ul>
+            <li>is written in a high-level language, so it is portable;</li>
+            <li>is representative of a kind of programming, such as systems, numeric or commercial;</li>
+            <li>is easy to measure;</li>
+            <li>is widely distributed.</li>
+        </ul>
+        <p>The <strong>System Performance Evaluation Corporation (SPEC)</strong> maintains the best-known suites, such as SPEC CPU.</p>
+        <p>Each result is a ratio of the <em>reference machine's</em> time to the <em>system under test's</em> time. The ratios across the programs in a suite are combined with a <strong>geometric mean</strong>, so the overall score does not depend on which machine is chosen as the reference.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>SPEC term</th><th>Meaning</th></tr></thead>
+        <tbody>
+            <tr><td>Speed metric</td><td>Time to finish one copy of a benchmark: how fast the machine does a single task</td></tr>
+            <tr><td>Rate metric</td><td>Tasks completed per unit time with several copies running at once: throughput, which exploits multiple processors</td></tr>
+            <tr><td>Base metric</td><td>Required in every report, with strict, uniform compiler settings</td></tr>
+            <tr><td>Peak metric</td><td>Optional, allowing per-benchmark compiler tuning</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Several programs' results can be averaged in different ways:</p>
+        <ul>
+            <li><strong>Arithmetic mean</strong> suits times, because it tracks total run time.</li>
+            <li><strong>Harmonic mean</strong> suits rates such as MIPS.</li>
+            <li><strong>Geometric mean</strong> suits normalized ratios.</li>
+        </ul>
+    </div>
+
+    <!-- 4 -->
+    <div class="subheading">Embedded Systems, IoT and Cloud</div>
+    <div class="intro">
+        <p>Most processors sold are not in PCs but <strong>embedded</strong> in products: cars, appliances, network gear and medical devices. An embedded system is designed for one function within a larger system. Its typical constraints:</p>
+        <ul>
+            <li>real-time deadlines;</li>
+            <li>low power and cost;</li>
+            <li>small memory;</li>
+            <li>long lifetimes.</li>
+        </ul>
+        <p>Many embedded systems sense and act on the physical world through sensors, actuators, A/D and D/A converters and timers.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-embedded.svg" alt="Embedded system organization: sensors feed A/D conversion into the processor, which drives D/A conversion to actuators and indicators. Around the processor are memory, custom logic, a human interface and a diagnostic port" style="width:100%;max-width:830px">
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Microcontroller</span><span>Processor, flash memory, RAM, timers and I/O ports on one chip. Used in deeply embedded devices that run a single dedicated program</span></li>
+        <li><span class="ledger-label">Application processor</span><span>Runs a general OS such as Linux or Android, as in smartphones</span></li>
+        <li><span class="ledger-label">Dedicated processor</span><span>Built for one task, possibly with its own hardware assists</span></li>
+        <li><span class="ledger-label">ARM</span><span>A family of RISC architectures licensed to chip makers. Cortex-A cores serve applications, Cortex-R cores real-time work and Cortex-M cores microcontrollers. Dominant in mobile and embedded devices</span></li>
+    </ol></div>
+    <div class="intro">
+        <p>The <strong>Internet of Things (IoT)</strong> connects such devices to the Internet, mostly for machine-to-machine traffic. At the other end of the network, <strong>cloud computing</strong> provides computing, storage and networking as on-demand services from large data centres. The cloud models are covered under parallel processing below.</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="subheading">Top-Level View: Components and the Instruction Cycle</div>
+    <div class="intro">
+        <p>In the von Neumann model the <strong>CPU</strong> contains the control unit, ALU and registers. It works with <strong>main memory</strong>, which holds instructions and data, and <strong>I/O modules</strong>. Control comes from a stored sequence of instructions rather than rewiring: the hardware is general-purpose and the program is software.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">PC</span><span>Program counter: the address of the next instruction to fetch</span></li>
+        <li><span class="ledger-label">IR</span><span>Instruction register: the instruction currently being decoded and executed</span></li>
+        <li><span class="ledger-label">MAR</span><span>Memory address register: the address for the next memory read or write</span></li>
+        <li><span class="ledger-label">MBR</span><span>Memory buffer register: data being written to, or just read from, memory</span></li>
+        <li><span class="ledger-label">AC</span><span>Accumulator: temporary storage for operands and results</span></li>
+        <li><span class="ledger-label">I/O AR / I/O BR</span><span>Address and buffer registers for exchanges with an I/O module</span></li>
+    </ol></div>
+    <div class="svg-diagram">
+        <img src="static/coa-components.svg" alt="Computer components, top-level view: the CPU holds the PC, IR, MAR, MBR, I/O address and I/O buffer registers and an execution unit. It connects over the system bus to main memory, whose numbered locations hold instructions and data, and to an I/O module with buffers" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>The instruction cycle</strong></p>
+        <p>Each instruction goes through a <strong>fetch cycle</strong> and an <strong>execute cycle</strong>.</p>
+        <p>In the fetch cycle the processor reads the instruction at the address in the PC into the IR, then increments the PC.</p>
+        <p>In the execute cycle it carries out the instruction, which falls into one of four categories:</p>
+        <ul>
+            <li><strong>processor–memory</strong> data transfer;</li>
+            <li><strong>processor–I/O</strong> data transfer;</li>
+            <li><strong>data processing</strong> in the ALU;</li>
+            <li><strong>control</strong>, which changes the sequence, for example a jump that loads a new value into the PC.</li>
+        </ul>
+        <p>A single instruction may need several operand fetches and stores, so the execute part can include steps such as address calculation, operand fetch and operand store.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-program-execution.svg" alt="Example of program execution on a hypothetical machine with 16-bit instructions (4-bit opcode, 12-bit address). Locations 300 to 302 hold LOAD 940, ADD 941 and STORE 941; locations 940 and 941 hold 3 and 2. Six snapshots show PC, AC, IR and memory after each fetch and execute: AC becomes 3, then 5, and 5 is stored in location 941" style="width:100%;max-width:900px">
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-instruction-cycle-states.svg" alt="Instruction cycle state diagram. Memory and I/O accesses (top): instruction fetch, operand fetch, operand store, interrupt. Internal operations (bottom): instruction address calculation, instruction operation decoding, operand address calculation, data operation, operand address calculation and interrupt check. With no interrupt the cycle returns to instruction address calculation for the next instruction" style="width:100%;max-width:980px">
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-instruction-cycle.svg" alt="Instruction cycle with interrupts: from START the processor fetches the next instruction and executes it. If interrupts are enabled it then checks for an interrupt and runs the interrupt cycle, which loads the handler address into the PC, before fetching again. With interrupts disabled it returns straight to fetch. Execution can end in HALT" style="width:100%;max-width:840px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Interrupts</strong></p>
+        <p>An interrupt lets another module break into the normal sequence. Its main purpose is efficiency: the processor keeps running other work instead of waiting idle for a slow device.</p>
+        <p>After each execute cycle the processor checks for a pending interrupt. If there is one, it:</p>
+        <ol>
+            <li>suspends the current program;</li>
+            <li>saves its context, at least the PC and status;</li>
+            <li>loads the PC with the start address of an <strong>interrupt handler</strong>.</li>
+        </ol>
+        <p>When the handler finishes, the saved context is restored and the program resumes as if nothing had happened.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-interrupt-transfer.svg" alt="Transfer of control via interrupts: the user program runs instructions 1 to i; an interrupt occurs after instruction i, control passes to the interrupt handler, which runs to completion, and the user program resumes at instruction i + 1" style="width:100%;max-width:640px">
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Class</th><th>Raised by</th></tr></thead>
+        <tbody>
+            <tr><td>Program</td><td>A condition arising from an instruction: overflow, division by zero, illegal instruction, memory protection violation</td></tr>
+            <tr><td>Timer</td><td>A timer inside the processor, letting the OS act on a regular schedule</td></tr>
+            <tr><td>I/O</td><td>An I/O controller, to signal that an operation completed normally or with an error</td></tr>
+            <tr><td>Hardware failure</td><td>Power failure, memory parity error and similar faults</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>A second interrupt can arrive while one is being handled. There are two ways to deal with it:</p>
+        <ul>
+            <li><strong>Sequential processing:</strong> interrupts are disabled while a handler runs, so pending interrupts wait their turn. This is simple, but ignores urgency.</li>
+            <li><strong>Nested processing:</strong> each interrupt has a priority, and a higher-priority one may interrupt a lower-priority handler. For example, a communications line that would lose data pre-empts a printer handler.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-multiple-interrupts.svg" alt="Multiple interrupts: (a) sequential processing, where interrupts are disabled in a handler, so handler Y runs only after handler X returns; (b) nested processing, where higher-priority interrupt Y interrupts handler X, then X resumes before control returns to the user program" style="width:100%;max-width:880px">
+    </div>
+
+    <!-- 6 -->
+    <div class="subheading">Interconnection Structures</div>
+    <div class="intro">
+        <p>The interconnect must support these transfers:</p>
+        <ul>
+            <li>memory to processor (reads of instructions and data);</li>
+            <li>processor to memory (writes);</li>
+            <li>I/O to processor and processor to I/O;</li>
+            <li>I/O to or from memory directly, which is DMA.</li>
+        </ul>
+        <p class="minor-heading"><strong>Bus interconnection</strong></p>
+        <p>A <strong>bus</strong> is a shared communication pathway. A signal one device puts on it can be seen by all the others, but only one device can transmit successfully at a time. A system bus has three functional groups of lines:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-bus.svg" alt="System bus: the CPU, main memory and two I/O modules each connect to three shared buses: the data bus, the address bus and the control bus" style="width:100%;max-width:800px">
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Data bus</span><span>Carries the data. Its width, such as 32 or 64 lines, sets how many bits move per transfer and strongly affects performance</span></li>
+        <li><span class="ledger-label">Address bus</span><span>Names the source or destination of the data. Its width sets the maximum memory size, and its high-order bits can also select I/O ports</span></li>
+        <li><span class="ledger-label">Control bus</span><span>Carries commands and timing: memory read/write, I/O read/write, transfer acknowledge, bus request and grant, interrupt request and acknowledge, clock and reset</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Point-to-point interconnect</strong></p>
+        <p>A shared bus becomes a bottleneck at high data rates, especially with several cores sharing it. Bus arbitration and electrical limits get worse as speed rises. Modern systems therefore use dedicated <strong>point-to-point links</strong> with layered protocols, packets and serial lanes.</p>
+        <p><strong>Intel QuickPath Interconnect (QPI)</strong> is one example. It gives each processor and I/O hub direct links and is organized in four layers:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-qpi.svg" alt="Multicore configuration using QuickPath Interconnect: four cores, each with its own DRAM on a memory bus, are joined pairwise by QPI links; two cores also link over QPI to I/O hubs, which connect to I/O devices over PCI Express" style="width:100%;max-width:780px">
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>QPI layer</th><th>Role</th></tr></thead>
+        <tbody>
+            <tr><td>Physical</td><td>Wires and circuits. Each direction has 20 data lanes plus a clock, and moves 20-bit units called <em>phits</em></td></tr>
+            <tr><td>Link</td><td>Moves 80-bit <em>flits</em>, with flow control (credits) and error control (CRC with retransmission)</td></tr>
+            <tr><td>Routing</td><td>Chooses the path a packet takes through the interconnect</td></tr>
+            <tr><td>Protocol</td><td>Packet-level rules, including the cache-coherence protocol between processors</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p><strong>PCI Express (PCIe)</strong> is the point-to-point successor to the PCI bus. A <em>root complex</em> connects the processor and memory to switches and devices. Each link has one or more full-duplex <strong>lanes</strong>, and data is striped across the lanes. PCIe has three layers:</p>
+        <ul>
+            <li><strong>Physical layer:</strong> lanes and encoding, for example 128b/130b.</li>
+            <li><strong>Data link layer:</strong> sequence numbers, CRC and acknowledgements for reliable delivery.</li>
+            <li><strong>Transaction layer:</strong> packetizes read and write requests, mostly as <em>split transactions</em>, where the request and its completion travel separately. It supports four address spaces: memory, I/O, configuration and message.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-pcie.svg" alt="Typical PCI Express configuration: two cores and memory attach to the root complex. The root complex links to a PCIe endpoint, a PCIe-to-PCI bridge, and a switch; the switch fans out to further PCIe endpoints and a legacy endpoint" style="width:100%;max-width:780px">
+    </div>
+
+    <!-- 7 -->
+    <div class="subheading">The Memory System</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Characteristic</th><th>Possibilities</th></tr></thead>
+        <tbody>
+            <tr><td>Location</td><td>Internal (registers, cache, main memory) or external (disks and other devices reached through I/O controllers)</td></tr>
+            <tr><td>Capacity</td><td>Number of bytes or words</td></tr>
+            <tr><td>Unit of transfer</td><td>Word, block or record. For internal memory it usually equals the number of data lines into the module</td></tr>
+            <tr><td>Access method</td><td>Sequential, direct, random or associative</td></tr>
+            <tr><td>Performance</td><td>Access time, cycle time, transfer rate</td></tr>
+            <tr><td>Physical type</td><td>Semiconductor, magnetic, optical, magneto-optical</td></tr>
+            <tr><td>Physical characteristics</td><td>Volatile or non-volatile, erasable or non-erasable</td></tr>
+            <tr><td>Organization</td><td>How bits are arranged into words, a key design issue for random-access memory</td></tr>
+        </tbody>
+    </table></div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Access method</th><th>How a location is reached</th><th>Example</th></tr></thead>
+        <tbody>
+            <tr><td>Sequential</td><td>Records are passed in order until the right one comes along, so access time varies widely</td><td>Magnetic tape</td></tr>
+            <tr><td>Direct</td><td>A shared read–write head jumps to the right neighbourhood, then searches or waits within it</td><td>Magnetic disk</td></tr>
+            <tr><td>Random</td><td>Every location has its own wired-in address, and access time is constant</td><td>Main memory</td></tr>
+            <tr><td>Associative</td><td>A word is found by comparing part of its contents against all words at once</td><td>Cache tag lookup</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Performance parameters</strong></p>
+        <ul>
+            <li><strong>Access time (latency):</strong> for random-access memory, the time to complete one read or write. For other memories, the time to position the read–write mechanism.</li>
+            <li><strong>Memory cycle time:</strong> access time plus any recovery time before the next access can start, for example while signal lines settle or after a destructive read.</li>
+            <li><strong>Transfer rate:</strong> for random-access memory, 1/(cycle time). For non-random-access memory, the time to read or write <em>N</em> bits is <em>T<sub>N</sub></em> = <em>T<sub>A</sub></em> + <em>n</em>/<em>R</em>, where <em>T<sub>A</sub></em> is the average access time, <em>n</em> the number of bits and <em>R</em> the transfer rate in bits per second.</li>
+        </ul>
+        <p class="minor-heading"><strong>The memory hierarchy</strong></p>
+        <p>Every memory design trades off three things:</p>
+        <ul>
+            <li>faster access costs more per bit;</li>
+            <li>more capacity costs less per bit;</li>
+            <li>more capacity means slower access.</li>
+        </ul>
+        <p>No single technology is both big and fast, so systems stack several levels.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-memory-hierarchy.svg" alt="Memory hierarchy from top to bottom: registers, L1 cache, L2 and L3 cache, main memory (DRAM), solid-state and magnetic disk, and off-line storage such as tape and optical disc. Going down, capacity grows and cost per bit falls; going up, access time falls and cost per bit rises" style="width:100%;max-width:820px">
+    </div>
+    <div class="intro">
+        <p>Going down the hierarchy:</p>
+        <ul>
+            <li>cost per bit falls;</li>
+            <li>capacity rises;</li>
+            <li>access time rises;</li>
+            <li>the processor accesses that level less often.</li>
+        </ul>
+        <p>The last point is what makes the hierarchy work. It holds because of <strong>locality of reference</strong>: over short periods, programs cluster their accesses.</p>
+        <ul>
+            <li><strong>Temporal locality:</strong> recently used items are likely to be used again soon, for example loop code and counters.</li>
+            <li><strong>Spatial locality:</strong> items near recently used ones are likely to be used soon, for example sequential instructions and array elements.</li>
+        </ul>
+        <p>With a two-level memory, hit ratio <em>H</em>, upper-level time <em>T</em><sub>1</sub> and lower-level time <em>T</em><sub>2</sub>, the average access time is:</p>
+        <p class="math-display"><span class="math" data-tex="T_{avg} = H \cdot T_1 + (1-H)(T_1 + T_2)" data-display="1">Tavg = H·T1 + (1 − H)(T1 + T2)</span></p>
+        <p>A high hit ratio makes the whole system nearly as fast as the upper level and nearly as cheap as the lower one.</p>
+    </div>
+
+    <!-- 8 -->
+    <div class="subheading">Cache Memory</div>
+    <div class="intro">
+        <p>A <strong>cache</strong> is a small, fast memory between the processor and main memory. It holds copies of recently used main-memory <strong>blocks</strong>. Each cache <strong>line</strong> stores one block plus a <strong>tag</strong> that identifies which block it is, along with control bits such as valid and dirty.</p>
+        <p>The processor asks for a word:</p>
+        <ul>
+            <li>On a <strong>hit</strong>, the cache supplies the word quickly.</li>
+            <li>On a <strong>miss</strong>, the whole block containing the word is read from main memory into a line, and the word is delivered to the processor.</li>
+        </ul>
+        <p>Fetching the whole block makes use of spatial locality.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-cache-structure.svg" alt="Cache and main memory: words move between CPU and cache quickly, whole blocks move between cache and main memory more slowly. Each cache line holds a tag and a block of K words; main memory's 2^n words are grouped into blocks of K words" style="width:100%;max-width:860px">
+    </div>
+    <div class="intro">
+        <p>Main memory has 2<sup><em>n</em></sup> addressable words, grouped into blocks of <em>K</em> words. The cache has <em>m</em> lines, far fewer than the number of blocks. So the cache needs a rule for which line a block may occupy, and a way to tell which block is there now.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-cache-read.svg" alt="Cache read operation: receive address RA from the CPU. If the block containing RA is in the cache, fetch the word and deliver it to the CPU. Otherwise access main memory for the block, allocate a cache line for it, load the block into the line and deliver the word to the CPU. Then done" style="width:100%;max-width:760px">
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Design element</th><th>Choices</th></tr></thead>
+        <tbody>
+            <tr><td>Cache addresses</td><td>Logical (virtual) or physical</td></tr>
+            <tr><td>Cache size</td><td>Big enough for a good hit ratio, small enough to stay fast and cheap</td></tr>
+            <tr><td>Mapping function</td><td>Direct, fully associative, set associative</td></tr>
+            <tr><td>Replacement algorithm</td><td>LRU, FIFO, LFU, random</td></tr>
+            <tr><td>Write policy</td><td>Write-through, write-back</td></tr>
+            <tr><td>Line size</td><td>Bytes per block</td></tr>
+            <tr><td>Number of caches</td><td>Single or multilevel; unified or split</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Logical vs physical caches</strong></p>
+        <p>With virtual memory, a memory management unit (MMU) translates each virtual address to a physical one.</p>
+        <ul>
+            <li>A <strong>logical cache</strong> sits before the MMU and uses virtual addresses. It is faster, because there is no translation on a hit. But two processes can use the same virtual address for different data, so it must be flushed or tagged with an address-space ID on each context switch.</li>
+            <li>A <strong>physical cache</strong> sits after the MMU and avoids that problem.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-logical-physical-cache.svg" alt="Logical versus physical cache: (a) a logical cache sits before the MMU and is indexed with logical (virtual) addresses; (b) a physical cache sits after the MMU and is indexed with physical addresses" style="width:100%;max-width:820px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Mapping functions</strong></p>
+        <p>A main-memory address is split into fields. The low bits pick the word within a block. The rest is the block number, which the mapping function splits again.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-cache-mapping.svg" alt="How a 24-bit main-memory address is split by each cache mapping function (4-byte blocks, 16K-line cache). Direct mapping: 8-bit tag, 14-bit line, 2-bit word. Fully associative: 22-bit tag, 2-bit word. Two-way set associative: 9-bit tag, 13-bit set, 2-bit word" style="width:100%;max-width:780px">
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Mapping</th><th>Rule</th><th>Strength</th><th>Weakness</th></tr></thead>
+        <tbody>
+            <tr><td>Direct</td><td>Block <em>j</em> may go only in line <em>i</em> = <em>j</em> mod <em>m</em></td><td>Simple and cheap: one tag comparison</td><td>Two busy blocks that map to the same line keep evicting each other (<em>thrashing</em>)</td></tr>
+            <tr><td>Fully associative</td><td>A block may go in any line. All tags are compared in parallel</td><td>Most flexible, highest hit ratio for a given size</td><td>Comparison logic for every line is expensive</td></tr>
+            <tr><td><em>k</em>-way set associative</td><td>Cache split into <em>v</em> sets of <em>k</em> lines (<em>m</em> = <em>v</em> × <em>k</em>). Block <em>j</em> goes in set <em>j</em> mod <em>v</em>, in any of its <em>k</em> lines</td><td>Most of associativity's benefit for <em>k</em> comparators only. 2- and 4-way are common</td><td>More logic than direct mapping. Returns diminish beyond about 8–16 ways</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-placement.svg" alt="Where blocks may go. Direct mapping: with 4 cache lines, block j goes only to line j mod 4, so blocks 0 and 4 compete for line 0. Two-way set associative: with 2 sets of 2 lines, block j goes to set j mod 2, into either of its lines" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p>A <strong>victim cache</strong> is a small fully associative buffer, typically 4–16 lines, that holds lines recently evicted from a direct-mapped cache. It recovers many conflict misses cheaply.</p>
+        <p class="minor-heading"><strong>Replacement algorithms</strong></p>
+        <p>Direct mapping has no choice to make. Associative and set-associative caches must pick a victim, in hardware, at full speed.</p>
+        <ul>
+            <li><strong>LRU (least recently used):</strong> evict the line in the set that has gone longest without a reference. It is the most effective and the most popular. For 2-way sets a single USE bit per set is enough.</li>
+            <li><strong>FIFO:</strong> evict the line that has been in the cache longest, a simple round-robin.</li>
+            <li><strong>LFU (least frequently used):</strong> evict the line with the fewest references, which needs a counter per line.</li>
+            <li><strong>Random:</strong> pick any line. It is only slightly worse than the usage-based schemes in simulations.</li>
+        </ul>
+        <p class="minor-heading"><strong>Write policy</strong></p>
+        <p>An unmodified line can simply be overwritten. A modified line must reach main memory first. Two complications arise: I/O modules may access memory directly, and other processors have their own caches.</p>
+        <ul>
+            <li><strong>Write-through:</strong> every write goes to the cache and to main memory. Memory is always valid, but write traffic is heavy and can become a bottleneck.</li>
+            <li><strong>Write-back:</strong> writes go only to the cache, and a <em>dirty</em> bit marks modified lines. A dirty line is written to memory only when it is replaced. This means far fewer memory writes, but parts of memory are stale, so I/O must go through the cache and the circuitry gets more complex.</li>
+        </ul>
+        <p>On a write miss, a cache can use <em>write allocate</em>, which fetches the block and then writes it and is usual with write-back. Or it can use <em>no-write allocate</em>, which writes straight to memory and is usual with write-through.</p>
+        <p>With several caches, coherence also needs bus watching, hardware transparency, or non-cacheable regions. Multiprocessor coherence is covered under parallel processing below.</p>
+        <p class="minor-heading"><strong>Line size</strong></p>
+        <p>As the block size grows from very small, the hit ratio first rises, because more neighbouring words are brought in. It then falls, for two reasons:</p>
+        <ul>
+            <li>Fewer blocks fit in the cache, so blocks are evicted soon after being loaded.</li>
+            <li>The extra words lie further from the requested word and are less likely to be used.</li>
+        </ul>
+        <p>Sizes of 64 to 128 bytes are typical.</p>
+        <p class="minor-heading"><strong>Multilevel and split caches</strong></p>
+        <p>An <strong>on-chip L1</strong> cache removes most external bus traffic. Behind it, <strong>L2</strong> and usually <strong>L3</strong> catch L1 misses before they reach DRAM. Today all three levels sit on the processor chip, and L3 is often shared between cores.</p>
+        <p>Caches are either unified or split:</p>
+        <ul>
+            <li>A <strong>unified</strong> cache holds instructions and data together, which balances the load between them automatically.</li>
+            <li>A <strong>split</strong> cache has separate instruction and data caches. Pipelines prefer this at L1, because instruction fetch and operand access can then happen in the same cycle without contention.</li>
+        </ul>
+        <p>The usual design is a split L1 with a unified L2 and L3.</p>
+    </div>
+
+    <!-- 9 -->
+    <div class="subheading">Internal Memory</div>
+    <div class="intro">
+        <p>Semiconductor main memory is built from <strong>cells</strong>, each with two stable states, 0 and 1. A cell can be written to set its state and read to sense it.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Aspect</th><th>DRAM (dynamic)</th><th>SRAM (static)</th></tr></thead>
+        <tbody>
+            <tr><td>Storage</td><td>Charge on a capacitor, gated by one transistor</td><td>A flip-flop of about six transistors</td></tr>
+            <tr><td>Refresh</td><td>Needed: the charge leaks away, so every row is periodically read and rewritten</td><td>Not needed while powered</td></tr>
+            <tr><td>Density and cost</td><td>Smaller cells, denser, cheaper per bit</td><td>Larger cells, more expensive</td></tr>
+            <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+            <tr><td>Nature</td><td>Analogue: a sense amplifier compares the charge against a threshold</td><td>Digital</td></tr>
+            <tr><td>Typical use</td><td>Main memory</td><td>Caches and registers</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Both are volatile and lose their contents without power.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Memory type</th><th>Category</th><th>Erasure</th><th>Write mechanism</th></tr></thead>
+        <tbody>
+            <tr><td>RAM</td><td>Read–write</td><td>Electrically, byte level</td><td>Electrically</td></tr>
+            <tr><td>ROM</td><td>Read-only</td><td>Not possible</td><td>Masks, at manufacture</td></tr>
+            <tr><td>PROM</td><td>Read-only</td><td>Not possible</td><td>Electrically, once, after manufacture</td></tr>
+            <tr><td>EPROM</td><td>Read-mostly</td><td>Ultraviolet light, whole chip</td><td>Electrically</td></tr>
+            <tr><td>EEPROM</td><td>Read-mostly</td><td>Electrically, byte level</td><td>Electrically (slow writes)</td></tr>
+            <tr><td>Flash</td><td>Read-mostly</td><td>Electrically, block level</td><td>Electrically</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>ROM holds permanent data: microprograms, library routines, system programs such as BIOS, and function tables. Mask ROM is cheap in large volumes. PROM suits small runs.</p>
+        <p class="minor-heading"><strong>Chip organization</strong></p>
+        <p>Inside a DRAM chip the cells form a square array. The address is sent in two halves over the same pins:</p>
+        <ul>
+            <li>the <strong>row address</strong>, latched by RAS (row address strobe);</li>
+            <li>then the <strong>column address</strong>, latched by CAS (column address strobe).</li>
+        </ul>
+        <p>Multiplexing halves the number of address pins, and each added pin quadruples the capacity. Write-enable and output-enable lines control the direction of transfer. Chips are combined into modules: for example, enough chips side by side to supply all the bits of a word.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-dram.svg" alt="Typical 16-megabit DRAM (4M x 4): address pins A0 to A10 carry the row address into the row address buffer and then the column address into the column address buffer. A multiplexer chooses between the row address and the refresh counter; the row decoder selects a row of the 2048 x 2048 x 4 memory array and the column decoder selects the bits, which pass through the data input and output buffers on D1 to D4. Timing and control logic is driven by RAS, CAS, WE and OE" style="width:100%;max-width:800px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Interleaved memory</strong></p>
+        <p>Main memory can be split into several independent <strong>banks</strong>. With <em>K</em> banks and consecutive words placed in different banks, up to <em>K</em> requests can be in progress at once. This raises the effective transfer rate for sequential access.</p>
+        <p class="minor-heading"><strong>Error correction</strong></p>
+        <p>Memory suffers two kinds of error:</p>
+        <ul>
+            <li><strong>hard failures:</strong> permanent defects;</li>
+            <li><strong>soft errors:</strong> random, non-destructive bit flips caused by power glitches or radiation.</li>
+        </ul>
+        <p>An <strong>error-correcting code</strong> stores <em>K</em> check bits alongside each <em>M</em>-bit data word. On a read, the check bits are recomputed and compared with the stored ones, and the result, called the <strong>syndrome</strong>, shows whether an error occurred and which bit to flip.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-ecc.svg" alt="Error-correcting code function: when an M-bit word is written, a function f computes K check bits that are stored with it. On a read, f is applied again to the M data bits, and the new check bits are compared with the stored ones. The comparison result (the syndrome) drives a corrector that fixes the data, or signals an uncorrectable error" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p>A <strong>Hamming code</strong> corrects any single-bit error when:</p>
+        <p class="math-display"><span class="math" data-tex="2^K - 1 \ge M + K" data-display="1">2^K − 1 ≥ M + K</span></p>
+        <p>For 8 data bits that means 4 check bits, and for 64 data bits it means 7. Adding one overall parity bit gives the usual <strong>SEC-DED</strong> code: single-error correcting, double-error detecting. That is 8 check bits per 64-bit word.</p>
+        <p class="minor-heading"><strong>Advanced DRAM</strong></p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">SDRAM</span><span>Synchronous DRAM moves data in step with the system clock. The processor issues a request and does other work while the chip handles it. A programmable <em>burst mode</em> streams a run of consecutive words, and internal banks overlap accesses</span></li>
+        <li><span class="ledger-label">DDR SDRAM</span><span>Double data rate: data moves on both the rising and falling clock edges. Each generation (DDR2, DDR3, DDR4, DDR5) raises the bus clock and prefetch buffer size</span></li>
+        <li><span class="ledger-label">Flash memory</span><span>Each cell is a transistor with a <em>floating gate</em> that traps charge, so it is non-volatile. Erasure is per block and the number of program/erase cycles is limited</span></li>
+        <li><span class="ledger-label">NOR flash</span><span>Random access to individual words, so code can execute in place. Used for firmware and BIOS</span></li>
+        <li><span class="ledger-label">NAND flash</span><span>Organized in pages and blocks. Denser, cheaper and faster to write. Used in SSDs, USB drives and memory cards</span></li>
+    </ol></div>
+
+    <!-- 10 -->
+    <div class="subheading">External Memory</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Magnetic disk</strong></p>
+        <p>A disk is a platter of non-magnetic substrate, nowadays usually glass, coated with magnetizable material. A conductive coil, the <strong>head</strong>, writes by magnetizing the surface and reads by sensing it, through magneto-resistive sensors in modern drives.</p>
+        <p>The surface is organized as follows:</p>
+        <ul>
+            <li>Data lies in concentric <strong>tracks</strong>, separated by gaps.</li>
+            <li>Each track is divided into <strong>sectors</strong>, typically 512 bytes or 4 KB.</li>
+            <li>The tracks at the same position on all platters form a <strong>cylinder</strong>.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-disk.svg" alt="Disk data layout: a platter surface holds concentric tracks separated by inter-track gaps; each track is divided into sectors separated by inter-sector gaps; the spindle turns the platter. Side view: several platters on one spindle, with a read-write head per surface on a moving arm; the tracks under all heads at one arm position form a cylinder" style="width:100%;max-width:860px">
+    </div>
+    <div class="intro">
+        <p>On how the tracks are laid out:</p>
+        <ul>
+            <li><strong>Constant angular velocity</strong> keeps every track at the same number of bits, wasting space on the outer tracks.</li>
+            <li><strong>Multiple zone recording</strong> puts more sectors on the outer zones.</li>
+        </ul>
+        <p>Drive types differ in several ways:</p>
+        <ul>
+            <li>fixed-head or movable-head;</li>
+            <li>removable or non-removable;</li>
+            <li>single- or double-sided;</li>
+            <li>single or multiple platter.</li>
+        </ul>
+        <p class="minor-heading"><strong>Disk performance</strong></p>
+        <p>To read a sector the drive must do three things:</p>
+        <ol>
+            <li><strong>Seek:</strong> move the arm to the track, taking time <em>T<sub>s</sub></em>.</li>
+            <li><strong>Rotate:</strong> wait for the sector to come under the head. On average this is half a revolution.</li>
+            <li><strong>Transfer:</strong> read the data as it passes.</li>
+        </ol>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-disk-timing.svg" alt="Timing of a disk I/O transfer: wait for device, wait for channel, seek, rotational delay, data transfer. The device is busy from seek through data transfer" style="width:100%;max-width:820px">
+    </div>
+    <div class="intro">
+        <p>With rotation speed <em>r</em> revolutions per second, <em>b</em> bytes to transfer and <em>N</em> bytes per track:</p>
+        <p class="math-display"><span class="math" data-tex="T_a = T_s + \frac{1}{2r} + \frac{b}{rN}" data-display="1">Ta = Ts + 1/(2r) + b/(rN)</span></p>
+        <p>Seek and rotational delay dominate, so random reads of scattered sectors are much slower than sequential reads of the same amount of data.</p>
+        <p class="minor-heading"><strong>Solid-state drives</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Aspect</th><th>NAND-flash SSD</th><th>Hard disk drive</th></tr></thead>
+        <tbody>
+            <tr><td>Random I/O</td><td>Far higher I/O operations per second: no seek or rotation</td><td>Limited by mechanical seek and rotation</td></tr>
+            <tr><td>Durability</td><td>No moving parts, resistant to shock</td><td>Moving heads and platters</td></tr>
+            <tr><td>Power and noise</td><td>Low power, silent, runs cooler</td><td>Higher power, audible</td></tr>
+            <tr><td>Cost per bit</td><td>Higher</td><td>Lower, so better for bulk capacity</td></tr>
+            <tr><td>Wear</td><td>Limited program/erase cycles per block</td><td>No write-wear limit of this kind</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>An SSD contains a controller, buffers and cache, error correction and many flash chips. Two practical issues:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-ssd.svg" alt="Solid-state drive architecture: the host's operating system, file system and I/O driver reach the SSD through an interface. Inside the SSD, the controller, addressing logic, data buffer and cache, and error correction manage an array of flash memory components" style="width:100%;max-width:860px">
+    </div>
+    <div class="intro">
+        <ul>
+            <li><strong>Write slowdown:</strong> flash is written in pages but erased in whole blocks. As the drive fills, writes slow down, because a block's valid pages must be copied elsewhere before the block can be erased.</li>
+            <li><strong>Wear:</strong> cells wear out with use. Controllers use <em>wear-levelling</em>, over-provisioning, write caching and the TRIM command to extend the drive's life.</li>
+        </ul>
+        <p class="minor-heading"><strong>Optical and tape</strong></p>
+        <ul>
+            <li><strong>CD-ROM</strong> stores data as pits in a single spiral track, read by a laser at <em>constant linear velocity</em>. It is good for mass distribution but slow to access randomly.</li>
+            <li><strong>CD-R</strong> is write-once. <strong>CD-RW</strong> uses phase-change material, so it can be rewritten.</li>
+            <li><strong>DVD</strong> and <strong>Blu-ray</strong> raise capacity with shorter-wavelength lasers, smaller pits and multiple layers.</li>
+            <li><strong>Magnetic tape</strong> is sequential-access and the cheapest per bit. It is still used for backup and archives, today mostly in LTO cartridges.</li>
+        </ul>
+    </div>
+
+    <!-- 11 -->
+    <div class="subheading">Input/Output</div>
+    <div class="intro">
+        <p>Peripherals are not wired straight to the system bus, for three reasons:</p>
+        <ul>
+            <li>They work in very different ways.</li>
+            <li>Their data rates differ from the processor's, mostly being far slower.</li>
+            <li>They use their own data formats.</li>
+        </ul>
+        <p>An <strong>I/O module</strong> sits between them and the bus. External devices fall into three groups: <em>human-readable</em> (screens, keyboards, printers), <em>machine-readable</em> (disks, sensors) and <em>communication</em> (links to remote devices). Each device exchanges control, status and data signals with its module.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Control and timing</span><span>Coordinates the flow of traffic between internal resources and external devices</span></li>
+        <li><span class="ledger-label">Processor communication</span><span>Decodes commands, exchanges data, reports status and recognizes its own addresses</span></li>
+        <li><span class="ledger-label">Device communication</span><span>Exchanges commands, status and data with the device</span></li>
+        <li><span class="ledger-label">Data buffering</span><span>Absorbs the speed difference between memory and the device</span></li>
+        <li><span class="ledger-label">Error detection</span><span>Reports mechanical faults and transmission errors, for example with parity bits</span></li>
+    </ol></div>
+    <div class="svg-diagram">
+        <img src="static/coa-io-module.svg" alt="Block diagram of an I/O module: on the system-bus side, data lines connect to data registers and status/control registers, and address and control lines go to I/O logic. On the device side, one external device interface logic block per device exchanges data, status and control signals with that device" style="width:100%;max-width:820px">
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Technique</th><th>Who moves the data</th><th>How completion is noticed</th><th>Processor cost</th></tr></thead>
+        <tbody>
+            <tr><td>Programmed I/O</td><td>Processor, word by word</td><td>Processor polls the module's status bits</td><td>High: busy-waiting wastes processor time</td></tr>
+            <tr><td>Interrupt-driven I/O</td><td>Processor, word by word</td><td>Module raises an interrupt when ready</td><td>Lower: no polling, but every word still passes through the processor</td></tr>
+            <tr><td>Direct memory access (DMA)</td><td>DMA module, directly to and from memory</td><td>One interrupt when the whole block is done</td><td>Lowest: the processor only sets up the transfer and handles the final interrupt</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-io-techniques.svg" alt="Three techniques for reading a block of data. (a) Programmed I/O: issue a read command, read the I/O module's status repeatedly until it is ready, read a word, write it to memory, and repeat until done. (b) Interrupt-driven I/O: issue a read command, do something else, and on the interrupt read the status, read the word, write it to memory, and repeat. (c) DMA: issue a read-block command to the DMA module, do something else, and on the interrupt read the DMA module's status, then go on to the next instruction" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Programmed I/O</strong></p>
+        <p>The processor issues a command and then waits by checking the status register again and again. I/O commands fall into four types:</p>
+        <ul>
+            <li><strong>control:</strong> activate a device and tell it what to do;</li>
+            <li><strong>test:</strong> check the module's and device's status;</li>
+            <li><strong>read:</strong> get data from the module;</li>
+            <li><strong>write:</strong> send data to the module.</li>
+        </ul>
+        <p>Devices can be addressed in two ways:</p>
+        <ul>
+            <li><strong>Memory-mapped I/O:</strong> devices share the memory address space and are accessed with ordinary load and store instructions. This gives a large repertoire of instructions but uses up address space.</li>
+            <li><strong>Isolated I/O:</strong> a separate I/O address space with dedicated IN and OUT instructions.</li>
+        </ul>
+        <p class="minor-heading"><strong>Interrupt-driven I/O</strong></p>
+        <p>The processor issues a command and goes on with other work. When the module is ready, it interrupts. The processor saves its context and runs the handler, which moves the data, and then resumes.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-interrupt-processing.svg" alt="Simple interrupt processing. Hardware: a device controller issues an interrupt; the processor finishes the current instruction, signals acknowledgment, pushes the PSW and PC onto the control stack, and loads a new PC based on the interrupt. Software: save the rest of the process state, process the interrupt, restore the process state, and restore the old PSW and PC" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p>The design must answer two questions: which device interrupted, and which one to serve first when several do.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Device identification</th><th>How it works</th></tr></thead>
+        <tbody>
+            <tr><td>Multiple interrupt lines</td><td>Each device has its own line. Practical only for a few devices</td></tr>
+            <tr><td>Software poll</td><td>One shared line. The handler queries each module in turn. Simple but slow</td></tr>
+            <tr><td>Daisy chain (hardware poll, vectored)</td><td>The acknowledge signal passes from module to module. The first requester puts its <em>vector</em> (identifier) on the data bus. Position in the chain sets priority</td></tr>
+            <tr><td>Bus arbitration (vectored)</td><td>A module must win control of the bus before it raises its interrupt and places its vector</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>An interrupt controller such as the Intel 8259A collects many interrupt lines, assigns priorities and passes one interrupt and its vector at a time to the processor. Several controllers can be cascaded.</p>
+        <p class="minor-heading"><strong>Direct memory access</strong></p>
+        <p>For block transfers, the processor programs a <strong>DMA module</strong> with four things:</p>
+        <ul>
+            <li>whether to read or write;</li>
+            <li>the device address;</li>
+            <li>the starting memory address;</li>
+            <li>the word count.</li>
+        </ul>
+        <p>The DMA module then moves the data itself, taking the bus for one word at a time (<em>cycle stealing</em>) while the processor carries on. The processor is only paused for those bus cycles, not interrupted. At the end, the DMA module raises one interrupt.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-dma.svg" alt="Typical DMA block diagram: data lines connect to a data register and address lines to an address register; a data count register tracks the remaining words; control logic exchanges DMA request and acknowledge with the I/O device and interrupt, read and write signals with the system bus" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p>A <strong>fly-by</strong> DMA controller transfers data directly between the device and memory in a single bus cycle, rather than reading it in and writing it out again.</p>
+        <p class="minor-heading"><strong>Direct cache access</strong></p>
+        <p>At 10–100 Gbps network speeds, even DMA has a problem. Incoming packets land in main memory and then miss in the cache when the processor touches them. <strong>Direct cache access (DCA)</strong> lets the I/O device place data directly into the processor's cache, usually the shared last-level cache. Intel's Data Direct I/O (DDIO) is one implementation. It cuts memory traffic and latency for packet processing.</p>
+        <p class="minor-heading"><strong>Evolution of the I/O function</strong></p>
+        <p>The I/O function has steadily taken work away from the CPU:</p>
+        <ol>
+            <li>The CPU controls the device directly.</li>
+            <li>An I/O module is added, used with programmed I/O.</li>
+            <li>Interrupts are added.</li>
+            <li>DMA is added.</li>
+            <li>The I/O module becomes a processor with its own instruction set, called an <strong>I/O channel</strong>.</li>
+            <li>The module gets its own local memory, becoming an <strong>I/O processor</strong>.</li>
+        </ol>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>External interface</th><th>Summary</th></tr></thead>
+        <tbody>
+            <tr><td>USB</td><td>General peripheral bus with a host-controlled, tiered-star topology. Data rates have grown generation by generation, and the bus also carries power</td></tr>
+            <tr><td>Thunderbolt</td><td>High-speed link that carries PCIe and DisplayPort traffic, plus power, over one cable</td></tr>
+            <tr><td>PCI Express</td><td>Point-to-point lanes, also used for external expansion</td></tr>
+            <tr><td>SATA</td><td>Serial ATA: the common interface for internal disks and SSDs</td></tr>
+            <tr><td>Ethernet</td><td>Wired LAN technology. It moved from a shared bus to switched point-to-point links, and from 10 Mbps to 100 Gbps and beyond</td></tr>
+            <tr><td>Wi-Fi (IEEE 802.11)</td><td>Wireless LAN, with each generation raising throughput</td></tr>
+        </tbody>
+    </table></div>
+
+    <!-- 12 -->
+    <div class="subheading">Instruction Sets</div>
+    <div class="intro">
+        <p>The <strong>instruction set</strong> is the boundary where hardware designer and programmer meet. A machine instruction contains four elements:</p>
+        <ul>
+            <li>an <strong>operation code (opcode)</strong>, which says what to do;</li>
+            <li>a <strong>source operand reference</strong>;</li>
+            <li>a <strong>result operand reference</strong>;</li>
+            <li>a <strong>next-instruction reference</strong>, usually implicit: it is the PC.</li>
+        </ul>
+        <p>An operand can be in main memory, virtual memory, a register, an I/O device, or the instruction itself (an immediate value). Instructions are written symbolically as mnemonics such as <code>ADD</code>, <code>LOAD</code> and <code>STOR</code>, and are encoded in binary as fields.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-instruction-format.svg" alt="A simple 16-bit instruction format: a 4-bit opcode followed by two 6-bit operand references" style="width:100%;max-width:660px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Number of addresses</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Addresses</th><th>Form</th><th>Meaning</th><th>Trade-off</th></tr></thead>
+        <tbody>
+            <tr><td>3</td><td><code>OP A, B, C</code></td><td>A ← B OP C</td><td>Short programs, but long instructions</td></tr>
+            <tr><td>2</td><td><code>OP A, B</code></td><td>A ← A OP B</td><td>One operand is both source and result</td></tr>
+            <tr><td>1</td><td><code>OP A</code></td><td>AC ← AC OP A</td><td>An implicit accumulator holds the other operand</td></tr>
+            <tr><td>0</td><td><code>OP</code></td><td>Operates on the top of a stack</td><td>Very short instructions, more of them</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Fewer addresses mean simpler, shorter instructions but longer programs. Several design decisions interact:</p>
+        <ul>
+            <li>the operation repertoire;</li>
+            <li>the data types;</li>
+            <li>the instruction format;</li>
+            <li>the number of registers;</li>
+            <li>the addressing modes.</li>
+        </ul>
+        <p class="minor-heading"><strong>Types of operands</strong></p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Addresses</span><span>Unsigned integers that name locations</span></li>
+        <li><span class="ledger-label">Numbers</span><span>Binary integers (fixed point), floating point (IEEE 754) and packed decimal, where each 4-bit nibble holds one decimal digit</span></li>
+        <li><span class="ledger-label">Characters</span><span>Text in codes such as ASCII and Unicode</span></li>
+        <li><span class="ledger-label">Logical data</span><span>A word treated as a set of independent bits or Boolean flags</span></li>
+    </ol></div>
+    <div class="intro">
+        <p>x86 adds specialized types, such as packed SIMD vectors for its MMX, SSE and AVX instructions. ARM supports 8-, 16- and 32-bit data and, in 64-bit mode, 64-bit data, with optional floating-point and NEON SIMD units.</p>
+        <p class="minor-heading"><strong>Types of operations</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Type</th><th>Examples</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Data transfer</td><td>MOVE, LOAD, STORE, PUSH, POP, EXCHANGE</td><td>Specify source, destination, length and addressing mode</td></tr>
+            <tr><td>Arithmetic</td><td>ADD, SUBTRACT, MULTIPLY, DIVIDE, INCREMENT, NEGATE, ABSOLUTE</td><td>May update condition flags. Floating-point versions may run on a separate unit</td></tr>
+            <tr><td>Logical</td><td>AND, OR, NOT, XOR, TEST, COMPARE, SHIFT, ROTATE</td><td>Logical shift fills with zeros. Arithmetic shift keeps the sign bit. Rotate wraps bits around</td></tr>
+            <tr><td>Conversion</td><td>Translate, convert format</td><td>Example: binary to decimal, or a table lookup</td></tr>
+            <tr><td>Input/output</td><td>INPUT (read), OUTPUT (write), START I/O, TEST I/O</td><td>Absent when I/O is memory-mapped</td></tr>
+            <tr><td>System control</td><td>Privileged instructions: alter control registers, protection keys</td><td>Executable only in kernel mode</td></tr>
+            <tr><td>Transfer of control</td><td>JUMP / BRANCH (conditional or unconditional), SKIP, CALL, RETURN</td><td>Change the PC</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-shift-rotate.svg" alt="Shift and rotate operations by 3 bits on the input 10100110. Logical right shift gives 00010100; logical left shift gives 00110000; arithmetic right shift copies the sign bit, giving 11110100; arithmetic left shift keeps the sign bit, giving 10110000; right rotate gives 11010100; left rotate gives 00110101. Bits shifted or rotated in are highlighted" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p>Conditional branches test <strong>condition codes</strong> or flags set by earlier instructions, such as zero, negative, carry and overflow. The alternative is for the branch instruction itself to compare operands.</p>
+        <p><strong>Procedure calls</strong> need the return address saved somewhere: in a register, at the start of the called procedure, or most flexibly on a <strong>stack</strong>, which also supports nesting and recursion. Each call pushes a <em>stack frame</em> holding the return address, the parameters, the saved frame pointer and the local variables.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-stack-frames.svg" alt="Stack frame growth for nested calls. (a) While P is active the stack holds P's frame: return point, old frame pointer, parameters and local variables, with the frame pointer at the base of P's frame and the stack pointer at its top. (b) After P calls Q, Q's frame is pushed on top, and the frame and stack pointers move to Q's frame" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Byte order</strong></p>
+        <ul>
+            <li><strong>Big-endian:</strong> the most significant byte is stored at the lowest address.</li>
+            <li><strong>Little-endian:</strong> the least significant byte is stored at the lowest address.</li>
+        </ul>
+        <p>x86 is little-endian. ARM can run either way. Byte order matters when data is exchanged between machines or read byte by byte.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-endian.svg" alt="Byte ordering of the 32-bit value 12345678 hex stored at address 184. Big-endian puts the most significant byte 12 at address 184, then 34, 56, 78. Little-endian puts the least significant byte 78 at address 184, then 56, 34, 12" style="width:100%;max-width:720px">
+    </div>
+
+    <!-- 13 -->
+    <div class="subheading">Addressing Modes and Instruction Formats</div>
+    <div class="intro">
+        <p>An address field is usually too small to name every location directly. <strong>Addressing modes</strong> let the same bits be used in different ways. Notation used below:</p>
+        <ul>
+            <li><em>A</em>: the contents of the instruction's address field;</li>
+            <li><em>R</em>: a register named by the instruction;</li>
+            <li><em>EA</em>: the effective address of the operand;</li>
+            <li>(<em>X</em>): the contents of location or register <em>X</em>.</li>
+        </ul>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Mode</th><th>Operand / EA</th><th>Advantage</th><th>Disadvantage</th></tr></thead>
+        <tbody>
+            <tr><td>Immediate</td><td>Operand = <em>A</em></td><td>No memory reference for the operand</td><td>Operand size limited by the field</td></tr>
+            <tr><td>Direct</td><td>EA = <em>A</em></td><td>Simple</td><td>Limited address space</td></tr>
+            <tr><td>Indirect</td><td>EA = (<em>A</em>)</td><td>Large address space</td><td>An extra memory reference</td></tr>
+            <tr><td>Register</td><td>EA = <em>R</em></td><td>No memory reference, short field</td><td>Few registers</td></tr>
+            <tr><td>Register indirect</td><td>EA = (<em>R</em>)</td><td>Large address space, one memory reference fewer than indirect</td><td>Still one memory reference</td></tr>
+            <tr><td>Displacement</td><td>EA = <em>A</em> + (<em>R</em>)</td><td>Flexible</td><td>More complex address arithmetic</td></tr>
+            <tr><td>Stack</td><td>EA = top of stack</td><td>No address field</td><td>Limited applicability</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-addressing-modes.svg" alt="Addressing modes. (a) Immediate: the operand is in the instruction. (b) Direct: the address field points to the operand in memory. (c) Indirect: the address field points to a memory word that holds the operand's address. (d) Register: the field names a register holding the operand. (e) Register indirect: the named register holds the operand's memory address. (f) Displacement: a register's contents plus the address field give the operand's address. (g) Stack: the operand is implicitly on top of the stack" style="width:100%;max-width:905px">
+    </div>
+    <div class="intro">
+        <p>Displacement addressing has three common uses:</p>
+        <ul>
+            <li><strong>Relative addressing</strong> uses the PC as <em>R</em>. Branch targets are encoded as offsets from the current instruction, which suits locality and makes code relocatable.</li>
+            <li><strong>Base-register addressing</strong> takes the base address from <em>R</em> and an offset from <em>A</em>. It is used for segmentation and for accessing structures.</li>
+            <li><strong>Indexing</strong> takes the base address from <em>A</em> and an index from <em>R</em>, which is ideal for arrays. <em>Auto-indexing</em> increments or decrements the register automatically. <em>Pre-index</em> and <em>post-index</em> variants combine indexing with indirection.</li>
+        </ul>
+        <p>x86 offers a rich set of modes. Its fullest form computes the address as segment base + base register + index register × scale (1, 2, 4 or 8) + displacement. ARM, as a load/store architecture, uses offset, pre-index and post-index forms with immediate or register offsets.</p>
+        <p class="minor-heading"><strong>Instruction formats</strong></p>
+        <p>A format defines the layout of an instruction's bits. The design questions are these:</p>
+        <ul>
+            <li><strong>Instruction length:</strong> a trade-off between a rich repertoire and compact, fast-to-fetch code. The length should be a multiple of the character size and relate sensibly to the memory transfer width.</li>
+            <li><strong>Allocation of bits:</strong> more opcode bits give more operations but fewer address bits. The choice also depends on how many addressing modes there are, how many operands, register or memory operands, the number of register sets, address range and address granularity.</li>
+            <li><strong>Fixed or variable length:</strong> variable-length formats, as in x86, encode common cases compactly and allow rich modes, at the cost of harder decoding. Fixed 32-bit formats, as in classic ARM and RISC, decode quickly and pipeline well.</li>
+        </ul>
+        <p>An x86 instruction can have up to four kinds of prefix: instruction, segment override, operand size and address size. They are followed by:</p>
+        <ul>
+            <li>the opcode;</li>
+            <li>a ModR/M byte;</li>
+            <li>a scale-index-base (SIB) byte;</li>
+            <li>a displacement;</li>
+            <li>an immediate value.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-x86-format.svg" alt="x86 instruction format: optional instruction prefixes (0 to 4 bytes), opcode (1 to 3 bytes), optional ModR/M byte, optional SIB byte, displacement (0, 1, 2 or 4 bytes) and immediate (0, 1, 2 or 4 bytes). ModR/M splits into Mod (2 bits), Reg/Opcode (3 bits) and R/M (3 bits); SIB splits into Scale (2), Index (3) and Base (3). The prefixes are instruction prefix, segment override, operand size override and address size override, each 0 or 1 byte" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p>ARM instructions carry a 4-bit <strong>condition field</strong>, so almost any instruction can be made conditional. The compact <strong>Thumb</strong> instruction set packs common operations into 16 bits.</p>
+    </div>
+
+    <!-- 14 -->
+    <div class="subheading">Processor Structure and Pipelining</div>
+    <div class="intro">
+        <p>A processor must do five things:</p>
+        <ul>
+            <li>fetch instructions;</li>
+            <li>interpret them;</li>
+            <li>fetch data;</li>
+            <li>process data;</li>
+            <li>write data.</li>
+        </ul>
+        <p>For this it needs an ALU, a control unit, internal buses and a set of <strong>registers</strong> as fast scratch storage.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-cpu-internal.svg" alt="Internal structure of the CPU: a register set and an arithmetic and logic unit (status flags, shifter, complementer, arithmetic and Boolean logic) share an internal CPU bus with the control unit, which drives control paths to the registers and ALU" style="width:100%;max-width:820px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Register organization</strong></p>
+        <p><strong>User-visible registers</strong> are the ones programs can reference:</p>
+        <ul>
+            <li>general-purpose registers;</li>
+            <li>data registers;</li>
+            <li>address registers: segment, index and stack pointer;</li>
+            <li>condition codes, also called flags.</li>
+        </ul>
+        <p>The design questions are general-purpose versus specialized registers, how many to provide (8 to 32 is common), and how long they should be.</p>
+        <p><strong>Control and status registers</strong> include the PC, IR, MAR and MBR, and the <strong>program status word (PSW)</strong>. The PSW holds these fields:</p>
+        <ul>
+            <li>the sign, zero, carry, equal and overflow flags;</li>
+            <li>the interrupt-enable bit;</li>
+            <li>the supervisor bit, which selects kernel or user mode.</li>
+        </ul>
+        <p class="minor-heading"><strong>The full instruction cycle</strong></p>
+        <p>With indirect addressing, an extra <strong>indirect cycle</strong> fetches the operand's address before the execute cycle. So the cycle runs fetch → (indirect) → execute → (interrupt).</p>
+        <p>Data moves through MAR, MBR and the PC in each sub-cycle. In the fetch cycle, for example:</p>
+        <ol>
+            <li>The PC goes to MAR.</li>
+            <li>Memory returns the instruction through MBR into IR.</li>
+            <li>The PC is incremented.</li>
+        </ol>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-fetch-dataflow.svg" alt="Data flow in the fetch cycle: (1) the PC is copied to MAR; (2) MAR is placed on the address bus; (3) the control unit issues a memory read on the control bus; (4) memory places the instruction on the data bus and it is copied into MBR; (5) MBR is moved to IR; (6) the control unit increments the PC" style="width:100%;max-width:840px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pipelining</strong></p>
+        <p>Like an assembly line, a pipeline splits instruction processing into stages and works on several instructions at once, each in a different stage. A six-stage version has these stages:</p>
+        <ol>
+            <li>FI: fetch instruction;</li>
+            <li>DI: decode instruction;</li>
+            <li>CO: calculate operands;</li>
+            <li>FO: fetch operands;</li>
+            <li>EI: execute instruction;</li>
+            <li>WO: write operand.</li>
+        </ol>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-pipeline.svg" alt="Timing of a six-stage instruction pipeline (fetch instruction, decode instruction, calculate operands, fetch operands, execute instruction, write operand). Five instructions start one cycle apart and overlap, so all five finish after 10 clock cycles instead of 30" style="width:100%;max-width:650px">
+    </div>
+    <div class="intro">
+        <p>With <em>k</em> stages, cycle time τ and <em>n</em> instructions, the time and speedup are:</p>
+        <p class="math-display"><span class="math" data-tex="T_{k,n} = [\,k + (n-1)\,]\,\tau \qquad S_k = \frac{n\,k}{k + (n-1)}" data-display="1">T(k,n) = [k + (n − 1)]τ;  Sk = nk / (k + n − 1)</span></p>
+        <p>The speedup approaches <em>k</em> for long instruction streams. In practice it is limited by three things:</p>
+        <ul>
+            <li>stages of unequal length;</li>
+            <li>overhead from latching data between stages;</li>
+            <li>above all, <strong>hazards</strong>, which stall the pipeline.</li>
+        </ul>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Hazard</th><th>Cause</th><th>Typical remedies</th></tr></thead>
+        <tbody>
+            <tr><td>Resource (structural)</td><td>Two instructions need the same hardware in the same cycle, such as a single memory port</td><td>Duplicate resources, for example split instruction and data caches</td></tr>
+            <tr><td>Data</td><td>An instruction needs a result that is not yet written. The cases are RAW (read after write, a true dependency), WAR (write after read, an antidependency) and WAW (write after write, an output dependency)</td><td>Stalls, operand forwarding (bypassing), compiler scheduling, register renaming</td></tr>
+            <tr><td>Control (branch)</td><td>The pipeline fetches the wrong instructions because a branch has not yet resolved</td><td>The branch-handling techniques below</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-branch-penalty.svg" alt="Effect of a conditional branch on a six-stage pipeline: instruction 3 branches to instruction 15. Its outcome is known only after its execute stage in cycle 7, so instructions 4 to 7, already partly processed, are discarded, and instruction 15 starts in cycle 8. Nine instructions take 14 cycles instead of 9 + 5 = 14 minus the 4 wasted fetches" style="width:100%;max-width:806px">
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Multiple streams</span><span>Fetch both paths of a branch with duplicated pipeline front ends. Costly, and nested branches multiply the streams</span></li>
+        <li><span class="ledger-label">Prefetch branch target</span><span>Fetch the target as well as the next instruction, and keep it until the branch resolves</span></li>
+        <li><span class="ledger-label">Loop buffer</span><span>A small, fast memory holding the most recently fetched instructions, so tight loops run without repeated fetches</span></li>
+        <li><span class="ledger-label">Branch prediction</span><span>Guess the outcome and fetch along the predicted path</span></li>
+        <li><span class="ledger-label">Delayed branch</span><span>The compiler fills the slot after a branch with a useful instruction that runs whichever way the branch goes. Used in RISC</span></li>
+    </ol></div>
+    <div class="intro">
+        <p><strong>Static prediction</strong> uses a fixed rule that ignores history. The options are:</p>
+        <ul>
+            <li>always predict “not taken”;</li>
+            <li>always predict “taken”;</li>
+            <li>decide by the opcode;</li>
+            <li>use a hint the compiler sets.</li>
+        </ul>
+        <p><strong>Dynamic prediction</strong> uses each branch's own history:</p>
+        <ul>
+            <li>A <em>taken/not-taken switch</em> with 1 or 2 history bits. The 2-bit scheme changes its prediction only after two wrong guesses in a row, so a loop's final exit does not upset it.</li>
+            <li>A <strong>branch history table</strong> (also called a branch target buffer), which caches each branch's target address and its prediction state.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-branch-predict.svg" alt="Two-bit branch prediction state machine. Four states in a row: strongly predict taken, weakly predict taken, weakly predict not taken, strongly predict not taken. Each not-taken outcome moves one step toward not taken; each taken outcome moves one step toward taken; the end states stay put on a matching outcome. The prediction changes only after two wrong guesses in a row" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Examples</strong></p>
+        <p>The <strong>Intel 80486</strong> used a five-stage pipeline: fetch, decode 1, decode 2, execute, write-back. Forwarding and early branch-target calculation reduced stalls.</p>
+        <p>The x86 architecture has these registers:</p>
+        <ul>
+            <li>general registers;</li>
+            <li>segment registers;</li>
+            <li>EFLAGS, which holds status and control flags;</li>
+            <li>control registers CR0–CR4, which control paging, caching and protection;</li>
+            <li>floating-point, MMX, SSE and AVX register files.</li>
+        </ul>
+        <p>Interrupts and exceptions are dispatched through a vector table of up to 256 entries.</p>
+        <p>The <strong>ARM</strong> processor has the following features:</p>
+        <ul>
+            <li>16 visible general registers, R13 as the stack pointer, R14 as the link register and R15 as the PC;</li>
+            <li>a current program status register (CPSR) with condition flags;</li>
+            <li>several <em>processor modes</em>: user, system, supervisor, abort, undefined, IRQ and FIQ;</li>
+            <li>banked copies of some registers for each exception mode, so handlers can start quickly.</li>
+        </ul>
+    </div>
+
+    <!-- 15 -->
+    <div class="subheading">Reduced Instruction Set Computers (RISC)</div>
+    <div class="intro">
+        <p>Studies of compiled high-level-language programs found that operations are dominated by <strong>assignment, conditional statements and procedure call/return</strong>. Procedure call/return was the most time-consuming, because of operand passing and saving state. Most operands are simple scalar variables, mostly local ones.</p>
+        <p>So instead of adding ever more complex instructions to close the “semantic gap” with high-level languages, RISC optimizes the simple, frequent cases:</p>
+        <ul>
+            <li>a large number of registers, or compiler-based register allocation;</li>
+            <li>careful pipeline design;</li>
+            <li>a simple instruction set.</li>
+        </ul>
+        <p class="minor-heading"><strong>Register windows</strong></p>
+        <p>Each procedure call gets a fresh window of registers from a large register file. Each window has three parts:</p>
+        <ul>
+            <li><strong>parameter registers</strong>, which overlap with the caller's temporary registers;</li>
+            <li><strong>local registers</strong>;</li>
+            <li><strong>temporary registers</strong>, which overlap with the next callee's parameter registers.</li>
+        </ul>
+        <p>Because of the overlap, parameters pass between procedures with no memory traffic. The windows form a circular buffer. Only when the nesting gets too deep do the oldest windows spill to memory. Global variables live in a separate fixed set of registers or in memory.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-register-windows.svg" alt="Overlapping register windows: each procedure's window has parameter, local and temporary registers. The temporary registers of procedure A are the same physical registers as the parameter registers of procedure B, which it calls, so parameters pass with no memory traffic. Global registers are shared by all procedures" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p>The alternative is <strong>compiler-based optimization</strong>. The compiler assigns variables to a modest number of registers by <em>graph colouring</em>: variables whose live ranges overlap must get different registers.</p>
+        <p class="minor-heading"><strong>Characteristics of RISC</strong></p>
+        <ul>
+            <li>One instruction completes per machine cycle.</li>
+            <li>Operations are register to register. Only LOAD and STORE touch memory.</li>
+            <li>Few, simple addressing modes.</li>
+            <li>Few, simple, fixed-length instruction formats, with fields in fixed positions for fast decoding.</li>
+            <li>Hardwired control rather than microcode.</li>
+        </ul>
+        <p class="minor-heading"><strong>Why CISC was attractive</strong></p>
+        <p>Complex instruction sets aimed to make compilers simpler and programs smaller and faster. In practice:</p>
+        <ul>
+            <li>Compilers struggled to use the complex instructions.</li>
+            <li>Programs were not much smaller in bits.</li>
+            <li>The extra control logic slowed down even the simple instructions.</li>
+        </ul>
+        <p class="minor-heading"><strong>Pipelining in RISC</strong></p>
+        <p>Regular instructions pipeline well. Compilers add these optimizations:</p>
+        <ul>
+            <li><strong>Delayed branch:</strong> the branch takes effect after the following instruction, so the compiler moves a useful instruction, or else a NOP, into that delay slot.</li>
+            <li><strong>Delayed load:</strong> the instruction after a load must not use the loaded register, and the compiler reorders the code to satisfy this.</li>
+            <li><strong>Loop unrolling:</strong> the loop body is replicated so there are fewer branches and more instructions available for scheduling.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-delayed-branch.svg" alt="Normal and delayed branch. Normal: LOAD, ADD, JUMP 105, then the skipped ADD and SUB, then STORE at 105. Delayed branch: a NOP is placed in the slot after the jump, so the jump target becomes 106. Optimized delayed branch: the ADD 1, rA that preceded the jump is moved into the delay slot, so useful work is done while the jump takes effect" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p>The MIPS R4000 deepened its pipeline into a <em>superpipeline</em> of eight stages by splitting the cache accesses.</p>
+        <p class="minor-heading"><strong>RISC versus CISC today</strong></p>
+        <p>The debate never got a clean answer. Programs, compilers and technology differ too much for fair comparisons. The two designs have also converged:</p>
+        <ul>
+            <li>RISC chips gained more instructions and features.</li>
+            <li>CISC chips such as x86 translate their instructions internally into RISC-like <strong>micro-operations</strong> and execute those on a pipelined, superscalar core.</li>
+        </ul>
+    </div>
+
+    <!-- 16 -->
+    <div class="subheading">Instruction-Level Parallelism and Superscalar Processors</div>
+    <div class="intro">
+        <p>A <strong>superscalar</strong> processor has several independent pipelines and issues more than one instruction per cycle. That is different from <strong>superpipelining</strong>, which splits stages into finer pieces so the clock can run faster, with one issue per (shorter) cycle. The two approaches can be combined.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-superscalar-vs-superpipelined.svg" alt="Comparison of pipelines over ten base clock cycles. (a) A simple four-stage pipeline issues one instruction per cycle, each stage taking one cycle. (b) A superpipelined design of degree 2 splits each stage in half and issues one instruction every half cycle. (c) A superscalar design of degree 2 issues two instructions per cycle into two parallel pipelines" style="width:100%;max-width:830px">
+    </div>
+    <div class="intro">
+        <p>How much parallelism is available depends on two things:</p>
+        <ul>
+            <li><strong>Instruction-level parallelism:</strong> how independent the program's instructions are.</li>
+            <li><strong>Machine parallelism:</strong> how many pipelines the hardware has and how far ahead it can look.</li>
+        </ul>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Limitation</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td>True data dependency (RAW)</td><td>An instruction needs a value the previous one produces. It must wait</td></tr>
+            <tr><td>Procedural dependency</td><td>Instructions after a branch depend on its outcome. Variable-length instructions also block parallel decoding</td></tr>
+            <tr><td>Resource conflict</td><td>Two instructions compete for one functional unit, port or bus. Fixed by duplicating hardware</td></tr>
+            <tr><td>Output dependency (WAW)</td><td>Two instructions write the same register, and the later write must land last</td></tr>
+            <tr><td>Antidependency (WAR)</td><td>An instruction must not overwrite a register before an earlier instruction has read it</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Instruction issue policies</strong></p>
+        <ul>
+            <li><strong>In-order issue, in-order completion:</strong> the simplest policy. Any stall holds everything behind it.</li>
+            <li><strong>In-order issue, out-of-order completion:</strong> long operations no longer block short ones that follow, but output dependencies must be checked.</li>
+            <li><strong>Out-of-order issue, out-of-order completion:</strong> decoded instructions wait in an <strong>instruction window</strong>, a buffer from which any ready instruction can issue. This gives the most lookahead, but antidependencies now matter too.</li>
+        </ul>
+        <p class="minor-heading"><strong>Register renaming</strong></p>
+        <p>WAR and WAW hazards are <em>name</em> conflicts: they arise only because registers are reused, not because data truly flows between the instructions. The hardware removes them by giving each new result its own physical register. Later readers are pointed at the right physical copy. Only true dependencies are left.</p>
+        <p class="minor-heading"><strong>Superscalar execution</strong></p>
+        <ol>
+            <li>Fetch several instructions per cycle, with branch prediction.</li>
+            <li>Decode them, rename registers and identify dependencies.</li>
+            <li>Dispatch ready instructions to functional units, out of order.</li>
+            <li>Execute them, speculatively where predictions are involved.</li>
+            <li>Retire (commit) results in program order through a <strong>reorder buffer</strong>, so exceptions and mispredictions can be undone cleanly.</li>
+        </ol>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-superscalar-processing.svg" alt="Conceptual depiction of superscalar processing: the static program goes through instruction fetch and branch prediction, then dispatch into a window of execution, issue to the execution units, execution, and finally instruction reorder and commit in program order" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Intel Core microarchitecture</strong></p>
+        <p>The pipeline has three parts.</p>
+        <ul>
+            <li><strong>Front end.</strong> A branch prediction unit, an instruction fetch and predecode unit, an instruction queue, and decoders that translate x86 instructions into micro-ops. A micro-op cache and a loop stream detector add further help.</li>
+            <li><strong>Out-of-order engine.</strong> Register renaming, a reorder buffer and a scheduler that dispatches micro-ops to several execution ports.</li>
+            <li><strong>Back end.</strong> Integer, floating-point, SIMD and load/store units, backed by an L1 data cache.</li>
+        </ul>
+        <p class="minor-heading"><strong>ARM Cortex-A8</strong></p>
+        <p>The Cortex-A8 is a dual-issue, <em>in-order</em> superscalar core. Its pipeline has four parts:</p>
+        <ul>
+            <li>a 13-stage integer pipeline;</li>
+            <li>an instruction fetch unit with a branch predictor;</li>
+            <li>a decode unit that pairs instructions when the rules allow it;</li>
+            <li>two ALU pipelines and one load/store pipeline, plus the NEON SIMD unit.</li>
+        </ul>
+        <p>Keeping issue in order saves power and area, which matters for mobile designs. The smaller <strong>Cortex-M3</strong> uses a simple three-stage pipeline (fetch, decode, execute) for microcontrollers.</p>
+    </div>
+
+    <!-- 17 -->
+    <div class="subheading">Parallel Processor Organizations</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Flynn's class</th><th>Meaning</th><th>Examples</th></tr></thead>
+        <tbody>
+            <tr><td>SISD</td><td>Single instruction stream, single data stream</td><td>A classic uniprocessor</td></tr>
+            <tr><td>SIMD</td><td>One instruction stream operates on many data elements in lockstep</td><td>Vector and array processors, SIMD extensions, GPUs</td></tr>
+            <tr><td>MISD</td><td>Several instruction streams on one data stream</td><td>Never built commercially</td></tr>
+            <tr><td>MIMD</td><td>Several processors each run their own instructions on their own data</td><td>SMPs, NUMA machines, clusters</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-parallel-taxonomy.svg" alt="Taxonomy of parallel processor architectures: processor organizations divide into SISD (uniprocessor), SIMD (vector processor, array processor), MISD, and MIMD. MIMD splits into shared memory (tightly coupled), containing SMP and NUMA, and distributed memory (loosely coupled), containing clusters" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p>MIMD machines are either <strong>tightly coupled</strong> or <strong>loosely coupled</strong>:</p>
+        <ul>
+            <li><strong>Tightly coupled</strong> machines have shared memory. They are either SMP, with uniform access time, or NUMA, with non-uniform access time.</li>
+            <li><strong>Loosely coupled</strong> machines have distributed memory. These are clusters, which communicate over a network.</li>
+        </ul>
+        <p class="minor-heading"><strong>Symmetric multiprocessors (SMP)</strong></p>
+        <p>An SMP has two or more similar processors that share main memory and I/O through a bus or other interconnect. Access time to any memory location is about the same for every processor. All processors can perform the same functions, and a single OS controls the whole system.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-smp.svg" alt="Symmetric multiprocessor organization: several processors, each with its own L1 and L2 caches, share a bus to main memory and to an I/O subsystem with several I/O adapters" style="width:100%;max-width:820px">
+    </div>
+    <div class="intro">
+        <p>Compared with a uniprocessor, an SMP offers:</p>
+        <ul>
+            <li>better performance for parallel workloads;</li>
+            <li>availability, because one processor failing does not halt the system;</li>
+            <li>incremental growth by adding processors;</li>
+            <li>scaling, with a range of products at different prices.</li>
+        </ul>
+        <p>The OS must handle several things:</p>
+        <ul>
+            <li>simultaneous concurrent processes, with re-entrant kernel code;</li>
+            <li>scheduling across processors;</li>
+            <li>synchronization;</li>
+            <li>memory management;</li>
+            <li>reliability and fault tolerance.</li>
+        </ul>
+        <p class="minor-heading"><strong>Cache coherence</strong></p>
+        <p>With a private cache per processor, several copies of one line can exist. A write to one copy makes the others stale. There are two families of solution:</p>
+        <ul>
+            <li><strong>Software solutions:</strong> the compiler and OS mark shared data as non-cacheable, or manage it carefully. This is cheap in hardware, but conservative.</li>
+            <li><strong>Hardware protocols</strong>, which are transparent to software, of two kinds:
+                <ul>
+                    <li><strong>Directory protocols:</strong> a central directory records which caches hold which lines. They scale to large systems with many buses or complex interconnects.</li>
+                    <li><strong>Snoopy protocols:</strong> every cache watches (snoops) the shared bus and reacts to others' transactions. Natural for bus-based SMPs.</li>
+                </ul>
+            </li>
+        </ul>
+        <p>Snoopy protocols use one of two strategies:</p>
+        <ul>
+            <li><strong>Write-invalidate:</strong> a writer first invalidates all other copies, then owns the line exclusively. Most common.</li>
+            <li><strong>Write-update:</strong> a writer broadcasts the new data to all copies.</li>
+        </ul>
+        <p class="minor-heading"><strong>The MESI protocol</strong></p>
+        <p>MESI is the classic write-invalidate protocol. Each line carries two state bits, giving four states:</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>State</th><th>Meaning</th><th>Memory copy</th><th>Other caches</th></tr></thead>
+        <tbody>
+            <tr><td>Modified (M)</td><td>Line changed. This cache owns the only valid copy</td><td>Stale</td><td>No copies</td></tr>
+            <tr><td>Exclusive (E)</td><td>Line clean, present only in this cache</td><td>Valid</td><td>No copies</td></tr>
+            <tr><td>Shared (S)</td><td>Line clean, possibly present in other caches</td><td>Valid</td><td>May hold copies</td></tr>
+            <tr><td>Invalid (I)</td><td>Line holds no valid data</td><td>—</td><td>—</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-mesi.svg" alt="MESI cache-coherence state transitions for one cache line. This processor's accesses (solid): from Invalid, a read miss goes to Shared if another cache holds the line, or to Exclusive if none does; a write miss goes to Modified. A write hit in Shared (after invalidating other copies) or in Exclusive goes to Modified. Snooped bus activity (dashed): another processor's read moves Exclusive and Modified lines to Shared, with Modified data written back; another processor's write invalidates the line from any state" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p>Some typical transitions:</p>
+        <ul>
+            <li>A read miss loads the line as <strong>E</strong> if no other cache has it, or as <strong>S</strong> if another does.</li>
+            <li>Writing a line in <strong>S</strong> first sends an invalidate to the other caches, then moves the line to <strong>M</strong>. Writing a line in <strong>E</strong> moves it to <strong>M</strong> silently.</li>
+            <li>If a cache snoops another processor reading a line it holds in <strong>M</strong>, it supplies or writes back the data and drops to <strong>S</strong>.</li>
+        </ul>
+        <p class="minor-heading"><strong>Multithreading and chip multiprocessors</strong></p>
+        <p>Some terms first:</p>
+        <ul>
+            <li>A <strong>process</strong> owns resources such as an address space and open files.</li>
+            <li>A <strong>thread</strong> is a dispatchable unit of work within a process.</li>
+            <li><strong>Explicit multithreading</strong> runs instructions from different threads, either user threads or OS threads, at the same time in hardware.</li>
+            <li><strong>Implicit multithreading</strong> extracts threads from one sequential program, through the compiler or speculation.</li>
+        </ul>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Approach</th><th>How threads share the processor</th></tr></thead>
+        <tbody>
+            <tr><td>Interleaved (fine-grained)</td><td>Switches threads every clock cycle, skipping threads that are stalled</td></tr>
+            <tr><td>Blocked (coarse-grained)</td><td>Runs one thread until it hits a long-latency event, such as a cache miss, then switches</td></tr>
+            <tr><td>Simultaneous (SMT)</td><td>A superscalar core issues instructions from several threads in the same cycle. Intel calls this Hyper-Threading</td></tr>
+            <tr><td>Chip multiprocessing</td><td>Several complete cores on one chip, each running its own thread: multicore</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-multithreading.svg" alt="Approaches to executing multiple threads, shown as issue slots (columns) per clock cycle (rows), coloured by thread A to D, blank when idle: single-threaded scalar; interleaved multithreading scalar, switching thread every cycle; blocked multithreading scalar, switching on a long stall; superscalar with one thread, leaving many slots empty; interleaved multithreading superscalar; simultaneous multithreading, filling slots from several threads in one cycle; and a chip multiprocessor, with two cores each running its own thread" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Clusters</strong></p>
+        <p>A <strong>cluster</strong> is a group of whole computers (<em>nodes</em>) joined by a fast network that work together as one unified resource. Clusters offer:</p>
+        <ul>
+            <li>absolute scalability;</li>
+            <li>incremental scalability;</li>
+            <li>high availability;</li>
+            <li>superior price/performance, because they are built from commodity parts.</li>
+        </ul>
+        <p>Clusters are configured in several ways: passive standby, active secondary, separate servers, servers connected to disks, and servers sharing disks.</p>
+        <p>Cluster design must address <strong>failure management</strong>, through failover and failback, and <strong>load balancing</strong>. Computations are parallelized by a parallelizing compiler, by parallelized applications, or by running the same program over many inputs (<em>parametric computing</em>). <em>Middleware</em> presents a single-system image across the cluster.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-cluster.svg" alt="Cluster computer architecture: sequential applications and parallel applications (through a parallel programming environment) run on cluster middleware that gives a single system image and availability infrastructure. Underneath, several PCs or workstations, each with communication software and network interface hardware, are joined by a high-speed network or switch" style="width:100%;max-width:860px">
+    </div>
+    <div class="intro">
+        <p>Compared with an SMP:</p>
+        <ul>
+            <li>An SMP is easier to manage, closer to uniprocessor programming, smaller and lower in power.</li>
+            <li>A cluster scales further and is more available.</li>
+        </ul>
+        <p class="minor-heading"><strong>Non-uniform memory access (NUMA)</strong></p>
+        <p>In a NUMA machine, every processor can reach all memory through one shared address space, but access to its own node's memory is faster than access to remote nodes' memory. <strong>CC-NUMA</strong> adds cache coherence, typically through directories.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-numa.svg" alt="CC-NUMA organization: each node holds processors with their own L1 and L2 caches, a local main memory, a directory for cache coherence and I/O, all on a local bus; nodes are joined by an interconnect network. Local memory is faster to reach than another node's memory" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p>NUMA keeps the SMP programming model while scaling past the point where a single bus saturates. It works well only if most accesses stay local, which needs good locality and OS page placement and migration.</p>
+        <p class="minor-heading"><strong>Cloud computing</strong></p>
+        <p>NIST lists five essential characteristics of cloud computing:</p>
+        <ul>
+            <li>broad network access;</li>
+            <li>rapid elasticity;</li>
+            <li>measured service;</li>
+            <li>on-demand self-service;</li>
+            <li>resource pooling.</li>
+        </ul>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Service model</th><th>Provider manages</th><th>Customer controls</th></tr></thead>
+        <tbody>
+            <tr><td>SaaS (software)</td><td>Everything, including the application</td><td>Use of the application and limited settings</td></tr>
+            <tr><td>PaaS (platform)</td><td>Infrastructure, OS and runtime</td><td>Their own deployed applications</td></tr>
+            <tr><td>IaaS (infrastructure)</td><td>Physical hardware and virtualization</td><td>OS, storage, deployed applications and some networking</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-cloud-models.svg" alt="Who manages each layer in the cloud service models. SaaS: the provider manages everything. PaaS: the customer manages applications and data; the provider manages runtime down to networking. IaaS: the customer manages applications, data, runtime, middleware and operating system; the provider manages virtualization, servers, storage and networking" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p>There are four <strong>deployment models</strong>:</p>
+        <ul>
+            <li><strong>public:</strong> owned by a provider and open to anyone;</li>
+            <li><strong>private:</strong> run for a single organization;</li>
+            <li><strong>community:</strong> shared by organizations with common concerns;</li>
+            <li><strong>hybrid:</strong> a combination of these.</li>
+        </ul>
+        <p>The NIST reference architecture names five actors: <strong>consumer, provider, auditor, broker and carrier</strong>.</p>
+    </div>
+
+    <!-- 18 -->
+    <div class="subheading">Multicore Computers and GPUs</div>
+    <div class="intro">
+        <p>A <strong>multicore</strong> chip puts several cores on one die. Pipelining and superscalar issue had reached diminishing returns. Power grows faster than performance as single-core complexity rises, and memory takes an ever-larger share of the transistor budget.</p>
+        <p>Several simpler cores can deliver close to linear gains, if the software is parallel. Amdahl's law and the overheads of communication and coherence limit those gains.</p>
+        <p>Multicore helps most with these kinds of application:</p>
+        <ul>
+            <li>multithreaded native applications;</li>
+            <li>multi-process applications;</li>
+            <li>Java applications, whose virtual machine is itself multithreaded;</li>
+            <li>multi-instance applications;</li>
+            <li>virtualized servers.</li>
+        </ul>
+        <p class="minor-heading"><strong>Multicore organization</strong></p>
+        <p>The main design variables are these:</p>
+        <ul>
+            <li>the number of cores;</li>
+            <li>the number of cache levels;</li>
+            <li>which caches are private and which are shared.</li>
+        </ul>
+        <p>A common layout gives each core private L1 and L2 caches and shares one L3. A shared L3 brings four advantages:</p>
+        <ul>
+            <li>It cuts overall miss rates.</li>
+            <li>Data shared between cores is stored only once.</li>
+            <li>Capacity is reallocated dynamically between cores.</li>
+            <li>Communication between cores is easy.</li>
+        </ul>
+        <p>Many designs also use simultaneous multithreading on each core.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-multicore-org.svg" alt="Multicore organization alternatives: (a) dedicated L1 caches only; (b) dedicated L1 and L2 caches per core; (c) dedicated L1 caches with a shared L2 cache; (d) dedicated L1 and L2 caches with a shared L3 cache. In every case the chip connects to main memory and I/O" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Heterogeneous multicore</strong></p>
+        <p>Cores need not be identical. Common combinations:</p>
+        <ul>
+            <li>CPUs paired with <strong>GPUs</strong> on one chip, as in AMD APUs;</li>
+            <li>CPUs paired with DSPs;</li>
+            <li>big and small CPU cores of the same instruction set, such as ARM big.LITTLE, which trades performance against power.</li>
+        </ul>
+        <p><strong>Heterogeneous System Architecture (HSA)</strong> lets CPU and GPU share one virtual address space and coherent memory. Work can then be handed over by passing pointers rather than copying data.</p>
+        <p>The <strong>ARM Cortex-A15 MPCore</strong> is a multicore example. It uses a Generic Interrupt Controller (GIC) to route and prioritize interrupts across cores, and a Snoop Control Unit to keep the L1 data caches coherent, using a MESI-based protocol. In the same way, <strong>Intel Core i7</strong> parts have private L1 and L2 caches per core, a shared L3, SMT, and on-chip memory controllers and interconnect.</p>
+        <p class="minor-heading"><strong>GPUs and CUDA</strong></p>
+        <p>A GPU dedicates most of its transistors to arithmetic units rather than to caches and control logic. Thousands of lightweight threads hide memory latency: while some threads wait for memory, others run. GPUs suit data-parallel work with high arithmetic intensity, such as graphics, scientific simulation and machine learning, and fit the SIMD model.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-cpu-gpu.svg" alt="CPU versus GPU use of transistors: a CPU spends much of its area on control logic and cache with a few powerful ALUs; a GPU fills its area with many simple ALUs, each row of them sharing a small control unit and cache. Both use off-chip DRAM" style="width:100%;max-width:800px">
+    </div>
+    <div class="intro">
+        <p>NVIDIA's <strong>CUDA</strong> (Compute Unified Device Architecture) organizes the work in a hierarchy:</p>
+        <ul>
+            <li>A program launches a <em>kernel</em> over a <strong>grid</strong> of thread <strong>blocks</strong>.</li>
+            <li>Each block contains many <strong>threads</strong>.</li>
+            <li>The threads of a block are scheduled in groups of 32 called <strong>warps</strong>, which run in lockstep.</li>
+        </ul>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>CUDA term</th><th>GPU hardware</th></tr></thead>
+        <tbody>
+            <tr><td>Grid (kernel)</td><td>The whole GPU</td></tr>
+            <tr><td>Block</td><td>A streaming multiprocessor (SM)</td></tr>
+            <tr><td>Thread</td><td>A CUDA core, also called a streaming processor</td></tr>
+            <tr><td>Warp</td><td>A group of 32 threads that the SM's warp schedulers issue together</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-cuda.svg" alt="CUDA thread hierarchy: a kernel runs as a grid of thread blocks, here 3 x 2 blocks; each block, such as block (1, 1), is a 4 x 3 group of threads. Threads of a block are scheduled in warps of 32" style="width:100%;max-width:860px">
+    </div>
+    <div class="intro">
+        <p>Each SM contains the following:</p>
+        <ul>
+            <li>many CUDA cores, each with integer and floating-point units;</li>
+            <li>special function units;</li>
+            <li>load/store units;</li>
+            <li>warp schedulers;</li>
+            <li>a large register file;</li>
+            <li>an L1 cache and shared memory, which the threads of a block can share.</li>
+        </ul>
+        <p>Beyond the SMs come a shared L2 cache, constant and texture memory, and off-chip global memory (DRAM).</p>
+    </div>
+
+    <!-- 19 -->
+    <div class="subheading">The Control Unit</div>
+    <div class="intro">
+        <p>Every instruction cycle is a sequence of <strong>micro-operations</strong>: register transfers, ALU operations and memory or bus actions, each finished within one clock period. The control unit's job is to issue the <strong>control signals</strong> that make each micro-operation happen at the right time.</p>
+        <p class="minor-heading"><strong>Micro-operation sequences</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Cycle</th><th>Time step</th><th>Micro-operations</th></tr></thead>
+        <tbody>
+            <tr><td>Fetch</td><td>t1</td><td>MAR ← (PC)</td></tr>
+            <tr><td></td><td>t2</td><td>MBR ← Memory; PC ← (PC) + I</td></tr>
+            <tr><td></td><td>t3</td><td>IR ← (MBR)</td></tr>
+            <tr><td>Indirect</td><td>t1</td><td>MAR ← (IR(Address))</td></tr>
+            <tr><td></td><td>t2</td><td>MBR ← Memory</td></tr>
+            <tr><td></td><td>t3</td><td>IR(Address) ← (MBR(Address))</td></tr>
+            <tr><td>Interrupt</td><td>t1</td><td>MBR ← (PC)</td></tr>
+            <tr><td></td><td>t2</td><td>MAR ← Save-address; PC ← Routine-address</td></tr>
+            <tr><td></td><td>t3</td><td>Memory ← (MBR)</td></tr>
+            <tr><td>Execute (ADD R1, X)</td><td>t1</td><td>MAR ← (IR(Address))</td></tr>
+            <tr><td></td><td>t2</td><td>MBR ← Memory</td></tr>
+            <tr><td></td><td>t3</td><td>R1 ← (R1) + (MBR)</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>In the table, <em>I</em> is the instruction length. Two rules govern how micro-operations are grouped into time steps:</p>
+        <ul>
+            <li>The proper sequence of events must be followed. For example, MAR must be loaded before memory is read.</li>
+            <li>Conflicts must be avoided. For example, the same register must not be read and written in one step.</li>
+        </ul>
+        <p>Execute-cycle sequences vary by opcode. ISZ (increment and skip if zero) and BSA (branch and save address) are two classic examples. A 2-bit <strong>instruction cycle code (ICC)</strong> records which of the four cycles comes next: fetch, indirect, execute or interrupt.</p>
+        <p class="minor-heading"><strong>Control unit inputs and outputs</strong></p>
+        <p>The control unit takes four inputs:</p>
+        <ul>
+            <li>the clock;</li>
+            <li>the instruction register;</li>
+            <li>the flags;</li>
+            <li>control signals from the control bus, such as interrupt requests.</li>
+        </ul>
+        <p>It produces three kinds of output:</p>
+        <ul>
+            <li>control signals within the processor, which gate data paths and select ALU functions;</li>
+            <li>control signals to the control bus, such as memory read and write;</li>
+            <li>acknowledgements.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-control-unit.svg" alt="Model of the control unit: inputs are the instruction register, the flags, the clock and control signals from the control bus; outputs are control signals within the CPU and control signals to the control bus" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p>The Intel 8085 is a worked example of the external signals involved: address and data, timing and control, memory and I/O initiated, interrupt-related, and CPU initialization.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Aspect</th><th>Hardwired control</th><th>Microprogrammed control</th></tr></thead>
+        <tbody>
+            <tr><td>Implementation</td><td>A combinational logic circuit. The opcode is decoded and combined with a timing counter (T1, T2, …) and flags, and Boolean equations generate the control signals</td><td>Each instruction's control-signal patterns are stored as <strong>microinstructions</strong> in a control memory. A microprogram sequencer steps through them</td></tr>
+            <tr><td>Speed</td><td>Fast</td><td>Slower, because control memory must be read for each step</td></tr>
+            <tr><td>Design and change</td><td>Hard to design and test for complex instruction sets, and inflexible</td><td>Systematic. Easy to change or extend by rewriting the microcode</td></tr>
+            <tr><td>Typical use</td><td>RISC processors</td><td>CISC processors, emulation, and machine families with one instruction set across different hardware</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-hardwired.svg" alt="Hardwired control unit: the opcode in the instruction register is decoded into one line per instruction (I0 to Ik). A timing generator driven by the clock produces timing signals T1 to Tn. Combinational logic in the control unit combines decoded instruction, timing signals and flags into control signals C0 to Cm" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Microprogrammed control</strong></p>
+        <p>A microinstruction holds control bits and a <em>next-address</em> or <em>jump condition</em> field.</p>
+        <ul>
+            <li>In <strong>horizontal</strong> microcode, each bit drives one control line directly. This gives wide microinstructions with a lot of parallelism.</li>
+            <li>In <strong>vertical</strong> microcode, fields are encoded and decoded into signals. This gives narrower microinstructions with less parallelism.</li>
+        </ul>
+        <p>The control unit loops through these steps:</p>
+        <ol>
+            <li>The sequencing logic places an address in the <strong>control address register</strong>.</li>
+            <li>The addressed microinstruction is read into the <strong>control buffer register</strong>.</li>
+            <li>Its control bits are issued.</li>
+            <li>The next address is chosen: the next sequential address, a jump target from the microinstruction, or the start of the routine for the opcode in IR.</li>
+        </ol>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-microprogrammed.svg" alt="Microprogrammed control unit: the instruction register and flags feed sequencing logic, which, with the clock, loads the control address register. That address reads a microinstruction from control memory into the control buffer register. A decoder turns its control bits into control signals within the CPU and to the system bus, and its next-address information returns to the sequencing logic" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p><strong>Microinstruction sequencing</strong> has two goals: keep microinstructions small and make address generation fast. The next-address techniques are:</p>
+        <ul>
+            <li>two address fields;</li>
+            <li>one address field;</li>
+            <li>variable format.</li>
+        </ul>
+        <p>The next address can be generated in several ways:</p>
+        <ul>
+            <li>explicitly, from a field;</li>
+            <li>by mapping from the opcode;</li>
+            <li>by adding to the current address;</li>
+            <li>from a residual control register;</li>
+            <li>implicitly, by incrementing.</li>
+        </ul>
+        <p>The DEC <strong>LSI-11</strong> is a classic microprogrammed processor. It uses a fairly vertical microinstruction format and a control store of a few thousand words.</p>
+    </div>
+
+    <!-- 20 -->
+    <div class="subheading">Operating System Support</div>
+    <div class="intro">
+        <p>The OS is the program that controls application execution and acts as an interface between applications and hardware. Its two aims are <strong>convenience</strong> and <strong>efficiency</strong>.</p>
+        <p>It provides these services:</p>
+        <ul>
+            <li>program creation, through editors and debuggers;</li>
+            <li>program execution;</li>
+            <li>access to I/O devices;</li>
+            <li>controlled access to files;</li>
+            <li>system access and protection;</li>
+            <li>error detection and response;</li>
+            <li>accounting.</li>
+        </ul>
+        <p>It sits behind three interfaces: the <strong>ISA</strong>, the <strong>ABI</strong> (application binary interface) and the <strong>API</strong>.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-os-layers.svg" alt="Computer hardware and software structure: application programs sit on libraries and utilities, which sit on the operating system, which runs on the execution hardware (with memory translation, I/O devices and networking, main memory and the system interconnect). The API is the boundary below the application programs, the ABI is the boundary at the operating system, and the ISA is the boundary between software and hardware" style="width:100%;max-width:860px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Types of operating system</strong></p>
+        <ul>
+            <li>Systems are either <strong>interactive</strong>, where the user works with the program directly, or <strong>batch</strong>, where jobs are queued and run without the user.</li>
+            <li>Systems are either <strong>uniprogrammed</strong>, running one program at a time, or <strong>multiprogrammed</strong>, keeping several programs in memory and switching between them.</li>
+        </ul>
+        <p>Early systems had no OS: the programmer loaded and ran jobs by hand. <strong>Simple batch systems</strong> then added a resident <em>monitor</em>, which read jobs from an input device and controlled the sequence through a job control language.</p>
+        <p>The monitor needed four hardware features:</p>
+        <ul>
+            <li><strong>memory protection</strong>, so user programs cannot alter the monitor;</li>
+            <li>a <strong>timer</strong>, so no job can monopolize the machine;</li>
+            <li><strong>privileged instructions</strong>, which only the monitor can execute;</li>
+            <li><strong>interrupts</strong>.</li>
+        </ul>
+        <p><strong>Multiprogramming</strong> keeps the processor busy: when one job waits for I/O, another runs. <strong>Time sharing</strong> extends this to many interactive users, giving each a slice of processor time.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-multiprogramming.svg" alt="Uniprogramming versus multiprogramming. (a) With one program, the processor runs program A, then sits idle while A waits for I/O. (b) With two programs, B runs while A waits, so idle time shrinks. (c) With three programs, A, B and C take turns and the processor is busy the whole time" style="width:100%;max-width:730px">
+    </div>
+    <div class="intro">
+        <p>The two differ in what they aim for:</p>
+        <ul>
+            <li>Batch multiprogramming aims to <em>maximize processor use</em> and takes its directives from job control language.</li>
+            <li>Time sharing aims to <em>minimize response time</em> and takes its commands from a terminal.</li>
+        </ul>
+        <p class="minor-heading"><strong>Scheduling</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Level</th><th>Decision</th></tr></thead>
+        <tbody>
+            <tr><td>Long-term</td><td>Which jobs to admit to the system as processes. Controls the degree of multiprogramming</td></tr>
+            <tr><td>Medium-term</td><td>Which processes to swap into or out of main memory</td></tr>
+            <tr><td>Short-term (dispatcher)</td><td>Which ready process runs next on the processor. Runs very often</td></tr>
+            <tr><td>I/O</td><td>Which pending I/O request a device handles next</td></tr>
+        </tbody>
+    </table></div>
+    <div class="svg-diagram">
+        <img src="static/coa-process-states.svg" alt="Five-state process model: a New process is admitted to Ready, dispatched to Running, and released to Exit. A Running process returns to Ready on a timeout, or moves to Blocked while it waits for an event; when the event occurs it goes back to Ready" style="width:100%;max-width:800px">
+    </div>
+    <div class="intro">
+        <p>The OS keeps a <strong>process control block (PCB)</strong> for each process. It holds:</p>
+        <ul>
+            <li>an identifier;</li>
+            <li>the state;</li>
+            <li>the priority;</li>
+            <li>the program counter;</li>
+            <li>memory pointers;</li>
+            <li>context data, the saved register contents;</li>
+            <li>I/O status;</li>
+            <li>accounting information.</li>
+        </ul>
+        <p>Processes waiting for the processor sit in queues. An interrupt or service call passes control to the OS, which then dispatches the next ready process.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-scheduling-queues.svg" alt="Queuing diagram for processor scheduling: admitted jobs wait in the long-term queue, then the short-term queue, then run on the processor until release. A timeout returns the process to the short-term queue. An I/O request places it in the queue for that device; when the I/O completes it returns to the short-term queue" style="width:100%;max-width:880px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Memory management</strong></p>
+        <p>In a uniprogramming system, memory holds just the OS and the current program. In a multiprogramming system, the user part of memory is subdivided among processes, and keeping enough ready processes in memory is the OS's main memory task.</p>
+        <p>These techniques evolved in order:</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Swapping</span><span>Blocked processes are moved out to disk to make room for ready ones</span></li>
+        <li><span class="ledger-label">Fixed partitioning</span><span>Memory is split into fixed-size regions, of equal or unequal size. Wastes space inside partitions (<em>internal fragmentation</em>)</span></li>
+        <li><span class="ledger-label">Variable partitioning</span><span>Each process gets exactly what it needs. Holes appear between processes over time (<em>external fragmentation</em>), and <em>compaction</em> is needed to merge them</span></li>
+        <li><span class="ledger-label">Paging</span><span>Memory is divided into small equal <strong>frames</strong> and each process into equal <strong>pages</strong>. Any page can go in any free frame, and a per-process <strong>page table</strong> maps pages to frames. Logical addresses (page, offset) are translated in hardware into physical addresses (frame, offset)</span></li>
+        <li><span class="ledger-label">Virtual memory</span><span>Demand paging: only the pages in use need be in memory, and a missing page causes a <em>page fault</em> that the OS services from disk. A process can then be larger than main memory. If replacement is poor the system <em>thrashes</em>, spending its time moving pages</span></li>
+        <li><span class="ledger-label">Segmentation</span><span>Memory is divided into variable-size, programmer-visible segments (code, data, stack), each with its own protection and sharing. Usually combined with paging</span></li>
+    </ol></div>
+    <div class="svg-diagram">
+        <img src="static/coa-partitioning.svg" alt="Memory partitioning of a 64-MB memory. (a) Fixed partitioning with equal 8-MB partitions. (b) Fixed partitioning with unequal partitions of 2, 4, 6, 8, 8, 12 and 16 MB. (c) Dynamic partitioning over time: processes of 20, 14 and 18 MB are loaded; process 2 is swapped out and process 4 (8 MB) takes part of its space, leaving small holes that cause external fragmentation" style="width:100%;max-width:800px">
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-pages-frames.svg" alt="Paging: process A's four pages are loaded into any free frames of main memory, here frames 13, 14, 15 and 18, and the process's page table records each page's frame number. Frames in use by other processes and free frames lie in between" style="width:100%;max-width:800px">
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-paging.svg" alt="Paged address translation: the page number of a virtual address is looked up in the TLB. On a hit the TLB gives the frame number directly; on a miss the page table in main memory supplies it and the TLB is updated. The frame number and the unchanged offset form the physical address used to access main memory. If the page is not in memory a page fault makes the OS load it from disk" style="width:100%;max-width:860px">
+    </div>
+    <div class="intro">
+        <p>Page tables live in main memory, and for large address spaces they are themselves paged (multilevel tables) or replaced by an <strong>inverted page table</strong> hashed on the page number.</p>
+        <p>Every memory reference therefore needs a table lookup first. The <strong>translation lookaside buffer (TLB)</strong> is a small cache of recent page-table entries that makes most translations take no extra memory access. After translation, the physical address goes to the cache and, on a cache miss, to main memory.</p>
+        <p class="minor-heading"><strong>x86 and ARM memory management</strong></p>
+        <p>x86 offers both segmentation and paging. In <strong>segmentation</strong>:</p>
+        <ul>
+            <li>A logical address is a segment selector plus an offset.</li>
+            <li>Segment descriptors hold each segment's base, limit and access rights.</li>
+            <li>There are four <em>privilege levels</em> (rings 0–3).</li>
+        </ul>
+        <p>In <strong>paging</strong>:</p>
+        <ul>
+            <li>The linear address that segmentation produces is translated through a multilevel page directory and page tables.</li>
+            <li>Page sizes are 4 KB, or larger with large pages.</li>
+            <li>Each page has protection bits, read/write and user/supervisor.</li>
+        </ul>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/coa-x86-translation.svg" alt="x86 address translation: a logical address (segment selector and offset) is turned by the segmentation unit, using segment descriptors, into a linear address; the paging unit then translates the linear address through the page directory and page tables into a physical address in main memory" style="width:100%;max-width:900px">
+    </div>
+    <div class="intro">
+        <p>ARM uses a similar page-table walk for its virtual addresses. Memory is divided into <em>sections</em> (1 MB) and <em>pages</em> (4 KB or 64 KB), with separate TLBs for instructions and data. <em>Domains</em> and access-permission bits provide access control.</p>
+    </div>
+</div>
+</body>
+</html>

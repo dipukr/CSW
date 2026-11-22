@@ -1,0 +1,29 @@
+<svg width="780" height="330" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 330" role="img" aria-label="Typical DMA block diagram: data lines connect to a data register and address lines to an address register; a data count register tracks the remaining words; control logic exchanges DMA request and acknowledge with the I/O device and interrupt, read and write signals with the system bus">
+    <defs><marker id="dma-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="dma-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="dma-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="230" y="30" width="300" height="285" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="380.0" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">DMA module</text>
+    <rect x="250" y="50" width="260" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#dma-s)"/>
+    <text x="380.0" y="74.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Data count</text>
+    <rect x="250" y="105" width="260" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#dma-s)"/>
+    <text x="380.0" y="129.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Data register</text>
+    <rect x="250" y="160" width="260" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#dma-s)"/>
+    <text x="380.0" y="184.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Address register</text>
+    <rect x="250" y="220" width="260" height="80" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#dma-s)"/>
+    <text x="380.0" y="264.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1E293B">Control logic</text>
+    <path d="M20 125 H246" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#dma-a)" marker-end="url(#dma-a)"/>
+    <text x="22" y="117" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Data lines</text>
+    <path d="M20 180 H246" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#dma-a)" marker-end="url(#dma-a)"/>
+    <text x="22" y="172" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Address lines</text>
+    <path d="M110 236 H246" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#dma-a)" marker-end="url(#dma-a)"/>
+    <text x="100" y="240" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">Interrupt</text>
+    <path d="M110 262 H246" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#dma-a)" marker-end="url(#dma-a)"/>
+    <text x="100" y="266" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">Read</text>
+    <path d="M110 288 H246" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#dma-a)" marker-end="url(#dma-a)"/>
+    <text x="100" y="292" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#64748B">Write</text>
+    <path d="M510 245 H700" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#dma-a)" marker-end="url(#dma-a)"/>
+    <text x="605" y="239" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">DMA request</text>
+    <path d="M510 275 H700" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#dma-a)" marker-end="url(#dma-a)"/>
+    <text x="605" y="269" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">DMA acknowledge</text>
+    <text x="720" y="264" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">I/O</text>
+    <text x="720" y="280" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">device</text>
+</svg>

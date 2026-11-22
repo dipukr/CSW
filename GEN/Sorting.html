@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorting - Notes</title>
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+/* step-by-step sorting visualizer (page-specific) */
+.sort-lab { margin: 16px 0 24px; padding: 16px 18px; border: 1px solid #e3e6ea; border-radius: 3px; background: #ffffff; }
+.sort-lab-top { display: flex; flex-wrap: wrap; gap: 16px; }
+.sort-lab-top label { display: block; font-family: Arial, Helvetica, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #155e63; margin-bottom: 4px; }
+.sort-lab select, .sort-controls button { font: inherit; font-size: 15px; padding: 5px 10px; border: 1px solid #cbd5e1; border-radius: 3px; background: #ffffff; color: #1e293b; cursor: pointer; }
+.sort-bars { display: flex; align-items: flex-end; justify-content: center; gap: 10px; height: 230px; margin: 18px 0 6px; padding: 10px; background: #f8fafc; border-radius: 3px; }
+.sort-bars .barouter { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.sort-bars .bar { width: 46px; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; border-radius: 3px 3px 0 0; background: #dbeafe; border: 1px solid #93c5fd; color: #1e3a8a; font-weight: 600; font-size: 14px; transition: height .25s; }
+.sort-bars .bar.active { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+.sort-bars .bar.done { background: #d1fae5; border-color: #34d399; color: #065f46; }
+.sort-bars .bar.pivot { background: #fce7f3; border-color: #db2777; color: #9d174d; }
+.sort-bars .idx { font-size: 12px; color: #64748b; }
+.sort-caption { margin: 8px 0; font-weight: 500; }
+.sort-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.sort-controls button.primary { background: #0d9488; border-color: #0d9488; color: #ffffff; }
+.sort-counter { font-size: 14px; color: #64748b; padding: 0 6px; }
+.sort-progress { height: 4px; margin: 12px 0 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+.sort-progress > div { height: 100%; width: 0; background: #0d9488; transition: width .25s; }
+.sort-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.sort-tags span { font-family: Consolas, monospace; font-size: 13px; padding: 1px 7px; border: 1px solid #e3e6ea; border-radius: 3px; color: #475569; }
+</style>
+</head>
+<body>
+<div class="note">
+    <div class="title">Sorting Algorithms, from First Principles</div>
+
+    <div class="intro">
+        <p class="sw-muted sw-small">Algorithms • Java • Interactive diagrams</p>
+        <p>A detailed, visual reference to 21 implemented algorithms—with interactive steps, complexity trade-offs, stability, and tested Java code.</p>
+        <p class="sw-muted sw-small">21 Java implementations · Interactive stepper · Offline-friendly · Randomized test harness</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 120px minmax(0, 1fr)">
+        <li><span class="ledger-label">21</span><span>Implementations in a single testable Java class</span></li>
+        <li><span class="ledger-label">4</span><span>Core properties: time, space, stability, adaptivity</span></li>
+        <li><span class="ledger-label">100%</span><span>Offline page: HTML, CSS, and JavaScript bundled</span></li>
+    </ol></div>
+
+    <div class="subheading" id="fundamentals">Foundations</div>
+    <div class="intro">
+        <p>Sorting transforms a sequence such as [5, 3, 8, 4, 2] into [2, 3, 4, 5, 8]. Different algorithms trade comparisons, element moves, memory, and input assumptions.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/sort-array.svg" alt="Array sorting illustration" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">Same elements, new order; a correct sorting algorithm never loses or duplicates values.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Stable vs. unstable</span><span>Stable sorting preserves the prior order of records with equal keys. Sorting (Alice, 25), (Bob, 20), (Carol, 25) by age keeps Alice before Carol.</span></li>
+        <li><span class="ledger-label">In-place vs. out-of-place</span><span>Selection, Insertion, Heap and standard partition-based Quick sort use constant or small auxiliary memory; array Merge Sort usually needs an O(n) buffer.</span></li>
+        <li><span class="ledger-label">Adaptive vs. non-adaptive</span><span>Insertion Sort and TimSort exploit existing order. Optimized Bubble Sort exits early if a complete pass makes no swap.</span></li>
+        <li><span class="ledger-label">Comparison vs. distribution</span><span>Comparison-based sorting has an Ω(n log n) worst-case lower bound. Counting/Radix exploit bounded or structured keys to achieve different bounds.</span></li>
+    </ol></div>
+
+    <div class="subheading" id="comparison">Complexity comparison</div>
+    <div class="intro">
+        <p>n = elements; k = key range / number of buckets; d = digit passes; b = radix base. Bounds and storage can depend on implementations.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Stable</th></tr></thead>
+        <tbody>
+            <tr><td><a href="#bubble-sort">Bubble Sort</a></td><td>O(n) best · O(n²) worst</td><td>O(1)</td><td>Yes</td></tr>
+            <tr><td><a href="#selection-sort">Selection Sort</a></td><td>O(n²) in all cases</td><td>O(1)</td><td>No</td></tr>
+            <tr><td><a href="#insertion-sort">Insertion Sort</a></td><td>O(n) best · O(n²) worst</td><td>O(1)</td><td>Yes</td></tr>
+            <tr><td><a href="#binary-insertion-sort">Binary Insertion Sort</a></td><td>O(n log n) comparisons · O(n²) movements</td><td>O(1)</td><td>Yes</td></tr>
+            <tr><td><a href="#shell-sort">Shell Sort</a></td><td>Gap-sequence dependent; O(n²) worst with halving</td><td>O(1)</td><td>No</td></tr>
+            <tr><td><a href="#merge-sort">Merge Sort</a></td><td>Θ(n log n) all cases</td><td>O(n)</td><td>Yes</td></tr>
+            <tr><td><a href="#quick-sort">Quick Sort</a></td><td>O(n log n) avg · O(n²) worst</td><td>O(log n) avg stack</td><td>No</td></tr>
+            <tr><td><a href="#three-way-quick-sort">Three-way Quick Sort</a></td><td>O(n log n) typical · O(n²) worst</td><td>O(log n) typical stack</td><td>No</td></tr>
+            <tr><td><a href="#heap-sort">Heap Sort</a></td><td>Θ(n log n) worst</td><td>O(1)</td><td>No</td></tr>
+            <tr><td><a href="#counting-sort">Counting Sort</a></td><td>Θ(n+k)</td><td>O(n+k)</td><td>Yes</td></tr>
+            <tr><td><a href="#radix-sort-lsd">Radix Sort (LSD)</a></td><td>Θ(d(n+b)), base b</td><td>O(n+b)</td><td>Yes</td></tr>
+            <tr><td><a href="#bucket-sort">Bucket Sort</a></td><td>O(n+k) expected under uniform spread · O(n²) worst</td><td>O(n+k)</td><td>Depends</td></tr>
+            <tr><td><a href="#cocktail-shaker-sort">Cocktail Shaker Sort</a></td><td>O(n) best · O(n²) worst</td><td>O(1)</td><td>Yes</td></tr>
+            <tr><td><a href="#comb-sort">Comb Sort</a></td><td>Typically subquadratic in practice · O(n²) worst</td><td>O(1)</td><td>No</td></tr>
+            <tr><td><a href="#gnome-sort">Gnome Sort</a></td><td>O(n) best · O(n²) worst</td><td>O(1)</td><td>Yes</td></tr>
+            <tr><td><a href="#odd-even-sort">Odd–Even Sort</a></td><td>O(n) best with early exit · O(n²) worst</td><td>O(1)</td><td>Yes</td></tr>
+            <tr><td><a href="#cycle-sort">Cycle Sort</a></td><td>Θ(n²)</td><td>O(1)</td><td>No</td></tr>
+            <tr><td><a href="#pancake-sort">Pancake Sort</a></td><td>Θ(n²)</td><td>O(1)</td><td>No</td></tr>
+            <tr><td><a href="#tree-sort">Tree Sort</a></td><td>O(n log n) average · O(n²) worst</td><td>O(n)</td><td>Usually no</td></tr>
+            <tr><td><a href="#introsort">IntroSort</a></td><td>O(n log n) guaranteed</td><td>O(log n) stack</td><td>No</td></tr>
+            <tr><td><a href="#bitonic-sort">Bitonic Sort</a></td><td>Θ(n log² n)</td><td>O(log n) recursion</td><td>No</td></tr>
+        </tbody>
+    </table></div>
+    <div class="callout callout-note"><p><strong>Big-O is not a stopwatch.</strong> Cache locality, branch prediction, comparison cost, write cost, input shape and memory allocation matter greatly. O(n log n) algorithms differ significantly in real deployments.</p></div>
+
+    <div class="subheading" id="visualizer">Interactive step-by-step visualizer</div>
+    <div class="intro">
+        <p>Choose an algorithm. The bars depict array positions after a meaningful operation or pass; highlighted bars show the working region, pivot, or sorted output. Use Next/Previous or autoplay.</p>
+    </div>
+    <div class="sort-lab">
+        <div class="sort-lab-top">
+            <div><label for="algoSelect">Algorithm</label><select id="algoSelect"><option value="bubble">Bubble Sort</option><option value="selection">Selection Sort</option><option value="insertion">Insertion Sort</option><option value="shell">Shell Sort</option><option value="merge">Merge Sort</option><option value="quick">Quick Sort</option><option value="heap">Heap Sort</option><option value="counting">Counting Sort</option><option value="radix">Radix Sort</option><option value="cocktail">Cocktail Shaker Sort</option><option value="gnome">Gnome Sort</option><option value="pancake">Pancake Sort</option><option value="tree">Tree Sort</option></select></div>
+            <div><label for="speed">Playback speed</label><select id="speed"><option value="1100">Slow</option><option value="650" selected>Normal</option><option value="280">Fast</option></select></div>
+        </div>
+        <div id="bars" class="sort-bars" role="img" aria-label="Sorting array visualization"></div>
+        <p class="sort-caption" id="stepDesc">Choose an algorithm and press Next.</p>
+        <div class="sort-controls"><button id="reset">↺ Reset</button><button id="prev">← Previous</button><span id="counter" class="sort-counter">Step 1/1</span><button class="primary" id="next">Next →</button><button id="play">▶ Play</button></div>
+        <div class="sort-progress"><div id="progressInner"></div></div>
+        <p class="sw-muted sw-small" id="labInfo"></p>
+        <div class="sort-tags" id="stepTags"></div>
+    </div>
+
+    <div class="subheading" id="decision">Which algorithm should I choose?</div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Small / nearly sorted</div><div class="step-body">Insertion Sort, or TimSort if using a library.</div></div>
+        <div class="step"><div class="step-title">Stable records in memory</div><div class="step-body">TimSort / stable library sort, or Merge Sort.</div></div>
+        <div class="step"><div class="step-title">Large primitive arrays</div><div class="step-body">Use the platform's optimized sort rather than reimplementing one.</div></div>
+        <div class="step"><div class="step-title">Strict memory limit + worst-case guarantee</div><div class="step-body">Heap Sort (O(1) array auxiliary memory).</div></div>
+        <div class="step"><div class="step-title">Dense bounded integer keys</div><div class="step-body">Counting Sort if the range k is manageable.</div></div>
+        <div class="step"><div class="step-title">Fixed-width numeric keys</div><div class="step-body">Radix Sort when digit processing is advantageous.</div></div>
+    </div>
+    <div class="callout callout-note"><p><strong>Java default:</strong> start with <code>Arrays.sort(array)</code> or <code>List.sort(comparator)</code>. For very large independent primitive arrays, benchmark <code>Arrays.parallelSort(array)</code>. Exact JDK internals are implementation/version dependent; these APIs provide the meaningful contract.</p></div>
+
+    <div class="subheading" id="algorithms">Algorithm-by-algorithm explanations</div>
+    <div class="intro">
+        <p>The sections below include a mechanism, worked array transformation, use cases, trade-offs, and Java implementation. The complete Java companion source contains helpers, imports, and randomized tests.</p>
+    </div>
+
+    <div class="subheading" id="bubble-sort">Bubble Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 01 · Quadratic / exchange</p>
+        <p>Swap adjacent out-of-order elements; the maximum bubbles to the end each pass.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n) best · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>Pass 1: [5,3,8,4,2] → [3,5,4,2,8]. Pass 2: [3,4,2,5,8]. Pass 3: [3,2,4,5,8]. Pass 4: [2,3,4,5,8].</p>
+        <p><strong>When useful:</strong> Useful for understanding swaps and early-exit optimization. Rarely the right production choice.</p>
+        <p><strong>Important detail:</strong> Strict &gt; comparisons preserve equal-key order; an already-sorted input exits after one scan.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bubbleSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> end = a.length - <span class="code-number">1</span>; end &gt; <span class="code-number">0</span>; end--) {
+        <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">false</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; end; j++) {
+            <span class="code-keyword">if</span> (a[j] &gt; a[j + <span class="code-number">1</span>]) {
+                swap(a, j, j + <span class="code-number">1</span>);
+                swapped = <span class="code-keyword">true</span>;
+            }
+        }
+        <span class="code-keyword">if</span> (!swapped) <span class="code-keyword">break</span>;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="selection-sort">Selection Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 02 · Quadratic / selection</p>
+        <p>Find the minimum in the unsorted suffix and swap it into the next output position.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n²) in all cases</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>Start [5,3,8,4,2] → choose 2 → [2,3,8,4,5] → choose 3 → [2,3,8,4,5] → choose 4 → [2,3,4,8,5] → choose 5 → [2,3,4,5,8].</p>
+        <p><strong>When useful:</strong> Useful when minimizing the number of swaps matters more than comparisons.</p>
+        <p><strong>Important detail:</strong> Only O(n) swaps, but still Θ(n²) comparisons. A long-distance swap can reorder equal elements.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> selectionSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; a.length - <span class="code-number">1</span>; i++) {
+        <span class="code-keyword">int</span> min = i;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = i + <span class="code-number">1</span>; j &lt; a.length; j++) {
+            <span class="code-keyword">if</span> (a[j] &lt; a[min]) min = j;
+        }
+        swap(a, i, min);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="insertion-sort">Insertion Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 03 · Quadratic / insertion</p>
+        <p>Build a sorted prefix; take the next value and shift larger values one position right.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n) best · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,3,8,4,2] → insert 3: [3,5,8,4,2] → insert 8: unchanged → insert 4: [3,4,5,8,2] → insert 2: [2,3,4,5,8].</p>
+        <p><strong>When useful:</strong> Excellent for tiny arrays and nearly sorted data; commonly used inside hybrids.</p>
+        <p><strong>Important detail:</strong> Its runtime is sensitive to inversions. Moving elements, rather than swapping adjacent values, reduces assignments.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> insertionSort(<span class="code-keyword">int</span>[] a) {
+    insertionSortRange(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="binary-insertion-sort">Binary Insertion Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 04 · Quadratic / insertion</p>
+        <p>Binary-search the position within the sorted prefix, then shift elements to make room.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n log n) comparisons · O(n²) movements</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>Sorted prefix [2,4,7,9], incoming 5 → binary search finds index 2 → shift 7,9 right → [2,4,5,7,9].</p>
+        <p><strong>When useful:</strong> Useful if comparisons are expensive but movement is relatively cheap.</p>
+        <p><strong>Important detail:</strong> Binary search reduces comparisons, not the O(n²) shifting cost; insert after equals for stability.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> binaryInsertionSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; a.length; i++) {
+        <span class="code-keyword">int</span> key = a[i], lo = <span class="code-number">0</span>, hi = i;
+        <span class="code-keyword">while</span> (lo &lt; hi) {
+            <span class="code-keyword">int</span> mid = lo + (hi - lo) / <span class="code-number">2</span>;
+            <span class="code-keyword">if</span> (key &lt; a[mid]) hi = mid;
+            <span class="code-keyword">else</span> lo = mid + <span class="code-number">1</span>; <span class="code-comment">// insert after equals to preserve stability</span>
+        }
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = i; j &gt; lo; j--) a[j] = a[j - <span class="code-number">1</span>];
+        a[lo] = key;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="shell-sort">Shell Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 05 · Gap-based / insertion</p>
+        <p>Insertion-sort interleaved subsequences separated by a shrinking gap.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Gap-sequence dependent; O(n²) worst with halving</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,3,8,4,2] → gap 2: [2,3,5,4,8] → gap 1: [2,3,4,5,8].</p>
+        <p><strong>When useful:</strong> Simple in-place alternative when moderate performance matters but extra memory is constrained.</p>
+        <p><strong>Important detail:</strong> Performance depends strongly on gap sequence; not generally stable because distant moves can cross equals.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> shellSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> gap = a.length / <span class="code-number">2</span>; gap &gt; <span class="code-number">0</span>; gap /= <span class="code-number">2</span>) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = gap; i &lt; a.length; i++) {
+            <span class="code-keyword">int</span> key = a[i], j = i;
+            <span class="code-keyword">while</span> (j &gt;= gap &amp;&amp; a[j - gap] &gt; key) {
+                a[j] = a[j - gap];
+                j -= gap;
+            }
+            a[j] = key;
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="merge-sort">Merge Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 06 · Divide and conquer</p>
+        <p>Recursively split into halves, sort each half, and merge the two sorted halves.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Θ(n log n) all cases</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(n)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,3,8,4,2] → split [5,3,8] | [4,2] → left [3,5,8], right [2,4] → merge [2,3,4,5,8].</p>
+        <p><strong>When useful:</strong> Strong choice for stable records, linked lists, external data, and predictable worst-case runtime.</p>
+        <p><strong>Important detail:</strong> Use &lt;= when taking an element from the left run to preserve stability. Array merge requires a temporary buffer.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> mergeSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">int</span>[] temp = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[a.length];
+    mergeSort(a, temp, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="quick-sort">Quick Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 07 · Divide and conquer</p>
+        <p>Choose a pivot, partition smaller elements left and larger elements right, recurse on each side.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n log n) avg · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(log n) avg stack</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,3,8,4,2], pivot 2 → [2 | 3,8,4,5] → pivot 5 in right region → [2,3,4,5,8].</p>
+        <p><strong>When useful:</strong> Fast general-purpose comparison algorithm; better pivot selection and 3-way partitioning improve robustness.</p>
+        <p><strong>Important detail:</strong> Lomuto partition is easy to teach but degrades on ordered input with last-element pivots; randomized/median pivots help.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> quickSort(<span class="code-keyword">int</span>[] a) { quickSort(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>); }</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="three-way-quick-sort">Three-way Quick Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 08 · Divide and conquer</p>
+        <p>Partition into three bands: values &lt; pivot, == pivot, and &gt; pivot (Dutch national flag).</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n log n) typical · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(log n) typical stack</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[4,2,4,1,4,3] with pivot 4 → [2,1,3] | [4,4,4] | [] → sort only &lt; and &gt; groups.</p>
+        <p><strong>When useful:</strong> Especially effective on inputs with many duplicates.</p>
+        <p><strong>Important detail:</strong> Equal keys are placed into a middle band, preventing repeated partition work on duplicates.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> threeWayQuickSort(<span class="code-keyword">int</span>[] a) {
+    quick3(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="heap-sort">Heap Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 09 · Selection / heap</p>
+        <p>Build a max heap; repeatedly move the root maximum to the right, shrink the heap, and restore heap order.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Θ(n log n) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,3,8,4,2] → max-heap [8,4,5,3,2] → extract 8: [5,4,2,3 | 8] → continue → [2,3,4,5,8].</p>
+        <p><strong>When useful:</strong> Useful for guaranteed n log n without a temporary O(n) array.</p>
+        <p><strong>Important detail:</strong> Heap construction is O(n), not O(n log n). Children of node i are 2i+1 and 2i+2.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> heapSort(<span class="code-keyword">int</span>[] a) {
+    heapSortRange(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="counting-sort">Counting Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 10 · Distribution / integer keys</p>
+        <p>Count occurrences of each integer key; use cumulative counts to place items into exact output positions.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Θ(n+k)</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(n+k)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[4,2,2,8,3,3,1] → frequencies 1:1, 2:2, 3:2, 4:1, 8:1 → prefix counts → [1,2,2,3,3,4,8].</p>
+        <p><strong>When useful:</strong> Excellent for bounded dense integer ranges, e.g. scores from 0 to 100.</p>
+        <p><strong>Important detail:</strong> For stable record sorting, compute prefix sums and scan input right-to-left; huge sparse ranges waste memory.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> countingSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">if</span> (a.length == <span class="code-number">0</span>) <span class="code-keyword">return</span>;
+    <span class="code-keyword">int</span> min = a[<span class="code-number">0</span>], max = a[<span class="code-number">0</span>];
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) { min = <span class="code-class">Math</span>.min(min, x); max = <span class="code-class">Math</span>.max(max, x); }
+    <span class="code-keyword">int</span> range = <span class="code-class">Math</span>.toIntExact((<span class="code-keyword">long</span>) max - min + <span class="code-number">1</span>);
+    <span class="code-keyword">int</span>[] count = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[range];
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) count[x - min]++;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; range; i++) count[i] += count[i - <span class="code-number">1</span>];
+    <span class="code-keyword">int</span>[] output = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[a.length];
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = a.length - <span class="code-number">1</span>; i &gt;= <span class="code-number">0</span>; i--) {
+        <span class="code-keyword">int</span> x = a[i];
+        output[--count[x - min]] = x;
+    }
+    <span class="code-class">System</span>.arraycopy(output, <span class="code-number">0</span>, a, <span class="code-number">0</span>, a.length);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="radix-sort-lsd">Radix Sort (LSD)</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 11 · Distribution / digits</p>
+        <p>Sort by one digit at a time, starting at the least significant digit, using a stable digit sort.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Θ(d(n+b)), base b</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(n+b)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[170,45,75,90,802,24,2,66] → units [170,90,802,2,24,45,75,66] → tens [802,2,24,45,66,170,75,90] → hundreds [2,24,45,66,75,90,170,802].</p>
+        <p><strong>When useful:</strong> Efficient for fixed-width integers, IDs, and fixed-length strings under suitable encodings.</p>
+        <p><strong>Important detail:</strong> Each pass MUST be stable. The provided example supports nonnegative integers; signed values require additional handling.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> radixSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">int</span> max = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) {
+        <span class="code-keyword">if</span> (x &lt; <span class="code-number">0</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Use nonnegative integers"</span>);
+        max = <span class="code-class">Math</span>.max(max, x);
+    }
+    <span class="code-keyword">int</span>[] out = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[a.length];
+    <span class="code-keyword">for</span> (<span class="code-keyword">long</span> exp = <span class="code-number">1</span>; max / exp &gt; <span class="code-number">0</span>; exp *= <span class="code-number">10</span>) {
+        <span class="code-keyword">int</span>[] count = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">10</span>];
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) count[(<span class="code-keyword">int</span>) (x / exp % <span class="code-number">10</span>)]++;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; <span class="code-number">10</span>; i++) count[i] += count[i - <span class="code-number">1</span>];
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = a.length - <span class="code-number">1</span>; i &gt;= <span class="code-number">0</span>; i--) {
+            <span class="code-keyword">int</span> x = a[i];
+            out[--count[(<span class="code-keyword">int</span>) (x / exp % <span class="code-number">10</span>)]] = x;
+        }
+        <span class="code-class">System</span>.arraycopy(out, <span class="code-number">0</span>, a, <span class="code-number">0</span>, a.length);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="bucket-sort">Bucket Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 12 · Distribution / numeric range</p>
+        <p>Map values to buckets based on their interval, sort each bucket, then concatenate.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n+k) expected under uniform spread · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(n+k)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Depends</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[.42,.32,.23,.52,.25] → five 0.2-wide buckets: B1 [.32,.23,.25], B2 [.42,.52] → sort buckets → [.23,.25,.32,.42,.52].</p>
+        <p><strong>When useful:</strong> Useful when values are known to be approximately uniformly distributed.</p>
+        <p><strong>Important detail:</strong> The implementation accepts doubles in [0,1); uniformity, bucket count, and per-bucket algorithm determine efficiency.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bucketSort(<span class="code-keyword">double</span>[] a) {
+    <span class="code-keyword">if</span> (a.length == <span class="code-number">0</span>) <span class="code-keyword">return</span>;
+    <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
+    <span class="code-class">List</span>&lt;<span class="code-class">Double</span>&gt;[] buckets = (<span class="code-class">List</span>&lt;<span class="code-class">Double</span>&gt;[]) <span class="code-keyword">new</span> <span class="code-class">List</span>[a.length];
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; buckets.length; i++) buckets[i] = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;();
+    <span class="code-keyword">for</span> (<span class="code-keyword">double</span> x : a) {
+        <span class="code-keyword">if</span> (!(x &gt;= <span class="code-number">0.0</span> &amp;&amp; x &lt; <span class="code-number">1.0</span>))
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Values must be in [0,1)"</span>);
+        buckets[(<span class="code-keyword">int</span>) (x * buckets.length)].add(x);
+    }
+    <span class="code-keyword">int</span> pos = <span class="code-number">0</span>;
+    <span class="code-keyword">for</span> (<span class="code-class">List</span>&lt;<span class="code-class">Double</span>&gt; bucket : buckets) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; bucket.size(); i++) {
+            <span class="code-keyword">double</span> key = bucket.get(i);
+            <span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;
+            <span class="code-keyword">while</span> (j &gt;= <span class="code-number">0</span> &amp;&amp; bucket.get(j) &gt; key) {
+                bucket.set(j + <span class="code-number">1</span>, bucket.get(j));
+                j--;
+            }
+            bucket.set(j + <span class="code-number">1</span>, key);
+        }
+        <span class="code-keyword">for</span> (<span class="code-keyword">double</span> x : bucket) a[pos++] = x;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="cocktail-shaker-sort">Cocktail Shaker Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 13 · Quadratic / exchange</p>
+        <p>Bubble forward to place a maximum, then backward to place a minimum.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n) best · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,1,4,2] → forward: [1,4,2,5] → backward: [1,2,4,5].</p>
+        <p><strong>When useful:</strong> Educational improvement when small values are stranded near the right end.</p>
+        <p><strong>Important detail:</strong> Like Bubble Sort, adjacent strict &gt; swaps preserve stability.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> cocktailSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">int</span> left = <span class="code-number">0</span>, right = a.length - <span class="code-number">1</span>;
+    <span class="code-keyword">while</span> (left &lt; right) {
+        <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">false</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = left; i &lt; right; i++) {
+            <span class="code-keyword">if</span> (a[i] &gt; a[i + <span class="code-number">1</span>]) { swap(a, i, i + <span class="code-number">1</span>); swapped = <span class="code-keyword">true</span>; }
+        }
+        <span class="code-keyword">if</span> (!swapped) <span class="code-keyword">return</span>;
+        right--;
+        swapped = <span class="code-keyword">false</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = right; i &gt; left; i--) {
+            <span class="code-keyword">if</span> (a[i - <span class="code-number">1</span>] &gt; a[i]) { swap(a, i - <span class="code-number">1</span>, i); swapped = <span class="code-keyword">true</span>; }
+        }
+        <span class="code-keyword">if</span> (!swapped) <span class="code-keyword">return</span>;
+        left++;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="comb-sort">Comb Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 14 · Gap-based / exchange</p>
+        <p>Compare and swap pairs separated by a large gap; shrink the gap toward 1.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Typically subquadratic in practice · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[8,4,1,7,2] → compare widely separated values with gap 3 → then gap 2 → then adjacent pairs at gap 1.</p>
+        <p><strong>When useful:</strong> Educational improvement on Bubble Sort that removes turtles (small values near the far end).</p>
+        <p><strong>Important detail:</strong> The common shrink factor is about 1.3; the example uses integer arithmetic for a factor near 1.3.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> combSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">int</span> gap = a.length;
+    <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">true</span>;
+    <span class="code-keyword">while</span> (gap &gt; <span class="code-number">1</span> || swapped) {
+        gap = <span class="code-class">Math</span>.max(<span class="code-number">1</span>, (gap * <span class="code-number">10</span>) / <span class="code-number">13</span>);
+        swapped = <span class="code-keyword">false</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i + gap &lt; a.length; i++) {
+            <span class="code-keyword">if</span> (a[i] &gt; a[i + gap]) { swap(a, i, i + gap); swapped = <span class="code-keyword">true</span>; }
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="gnome-sort">Gnome Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 15 · Quadratic / insertion</p>
+        <p>Walk forward if ordered; otherwise swap the offending pair and step backward.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n) best · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,3,4,2] → [3,5,4,2] → [3,4,5,2] → [3,4,2,5] → [3,2,4,5] → [2,3,4,5].</p>
+        <p><strong>When useful:</strong> Very simple insertion-like algorithm, mostly educational.</p>
+        <p><strong>Important detail:</strong> Moves backward on inversions, so it is effectively insertion sort by adjacent swaps.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> gnomeSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">int</span> i = <span class="code-number">1</span>;
+    <span class="code-keyword">while</span> (i &lt; a.length) {
+        <span class="code-keyword">if</span> (i == <span class="code-number">0</span> || a[i - <span class="code-number">1</span>] &lt;= a[i]) i++;
+        <span class="code-keyword">else</span> { swap(a, i - <span class="code-number">1</span>, i); i--; }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="odd-even-sort">Odd–Even Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 16 · Quadratic / parallel phases</p>
+        <p>Alternate compare-exchange operations on odd-start and even-start neighboring index pairs.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n) best with early exit · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[5,3,8,4,2] → odd pairs (1,2),(3,4) → [5,3,8,2,4] → even pairs (0,1),(2,3) → [3,5,2,8,4] → repeat.</p>
+        <p><strong>When useful:</strong> Interesting because non-overlapping pairs in one phase can be processed in parallel.</p>
+        <p><strong>Important detail:</strong> Also called odd-even transposition sort; distinct from the unrelated odd-even merge sorting network.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> oddEvenSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">boolean</span> sorted = <span class="code-keyword">false</span>;
+    <span class="code-keyword">while</span> (!sorted) {
+        sorted = <span class="code-keyword">true</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i + <span class="code-number">1</span> &lt; a.length; i += <span class="code-number">2</span>) {
+            <span class="code-keyword">if</span> (a[i] &gt; a[i + <span class="code-number">1</span>]) { swap(a, i, i + <span class="code-number">1</span>); sorted = <span class="code-keyword">false</span>; }
+        }
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i + <span class="code-number">1</span> &lt; a.length; i += <span class="code-number">2</span>) {
+            <span class="code-keyword">if</span> (a[i] &gt; a[i + <span class="code-number">1</span>]) { swap(a, i, i + <span class="code-number">1</span>); sorted = <span class="code-keyword">false</span>; }
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="cycle-sort">Cycle Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 17 · Quadratic / minimum writes</p>
+        <p>For each value, count how many elements rank before it, then rotate the permutation cycle into place.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Θ(n²)</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[3,1,2] → 3 belongs at index 2 (displace 2) → 2 belongs at index 1 (displace 1) → 1 belongs at index 0 → [1,2,3].</p>
+        <p><strong>When useful:</strong> Useful when writes to storage are unusually expensive (e.g. specialized memory).</p>
+        <p><strong>Important detail:</strong> Needs careful handling of duplicates and temporary held values. It minimizes writes, not comparisons.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> cycleSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> start = <span class="code-number">0</span>; start &lt; a.length - <span class="code-number">1</span>; start++) {
+        <span class="code-keyword">int</span> item = a[start], pos = start;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = start + <span class="code-number">1</span>; i &lt; a.length; i++) <span class="code-keyword">if</span> (a[i] &lt; item) pos++;
+        <span class="code-keyword">if</span> (pos == start) <span class="code-keyword">continue</span>;
+        <span class="code-keyword">while</span> (item == a[pos]) pos++;
+        <span class="code-keyword">int</span> old = a[pos]; a[pos] = item; item = old;
+        <span class="code-keyword">while</span> (pos != start) {
+            pos = start;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = start + <span class="code-number">1</span>; i &lt; a.length; i++) <span class="code-keyword">if</span> (a[i] &lt; item) pos++;
+            <span class="code-keyword">while</span> (item == a[pos]) pos++;
+            old = a[pos]; a[pos] = item; item = old;
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="pancake-sort">Pancake Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 18 · Quadratic / prefix reversal</p>
+        <p>Use only prefix reversals to bring the maximum to the front, then flip it to the end of the unsorted section.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Θ(n²)</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>[3,1,4,2] → flip first 3: [4,1,3,2] → flip first 4: [2,3,1,4] → place 3 next → [1,2,3,4].</p>
+        <p><strong>When useful:</strong> Interesting for constrained-operation puzzles and specialized physical ordering problems.</p>
+        <p><strong>Important detail:</strong> Sorting through flips instead of arbitrary swaps typically uses O(n) prefix reversals.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> pancakeSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> size = a.length; size &gt; <span class="code-number">1</span>; size--) {
+        <span class="code-keyword">int</span> max = <span class="code-number">0</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; size; i++) <span class="code-keyword">if</span> (a[i] &gt; a[max]) max = i;
+        <span class="code-keyword">if</span> (max == size - <span class="code-number">1</span>) <span class="code-keyword">continue</span>;
+        <span class="code-keyword">if</span> (max != <span class="code-number">0</span>) reverse(a, <span class="code-number">0</span>, max);
+        reverse(a, <span class="code-number">0</span>, size - <span class="code-number">1</span>);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="tree-sort">Tree Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 19 · Tree / insertion</p>
+        <p>Insert values into a binary search tree and read them with in-order traversal.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n log n) average · O(n²) worst</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(n)</span></li>
+        <li><span class="ledger-label">Stable?</span><span>Usually no</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>Insert [5,3,8,4,2] into a BST. In-order traversal: left (2,3,4) → root 5 → right 8.</p>
+        <p><strong>When useful:</strong> Useful for understanding binary search trees and ordering by traversal.</p>
+        <p><strong>Important detail:</strong> A naive BST can become a linked list on ordered input. A balanced tree changes worst-case time to O(n log n).</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> treeSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-class">Node</span> root = <span class="code-keyword">null</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) root = insert(root, x);
+    <span class="code-keyword">int</span>[] index = {<span class="code-number">0</span>};
+    inOrder(root, a, index);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="introsort">IntroSort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 20 · Hybrid / production</p>
+        <p>Start with quicksort, switch to heapsort if recursion depth gets excessive, use insertion sort on small pieces.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>O(n log n) guaranteed</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(log n) stack</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>Start partitioning like Quick Sort → if depth reaches 2⌊log₂ n⌋, Heap Sort remaining segment → Insertion Sort tiny segments.</p>
+        <p><strong>When useful:</strong> Strong default choice for performant in-place comparison sorting; common in standard libraries.</p>
+        <p><strong>Important detail:</strong> Provided code uses median-of-three, three-way partitions, and smaller-side-first recursion.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> introSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">if</span> (a.length &lt; <span class="code-number">2</span>) <span class="code-keyword">return</span>;
+    <span class="code-keyword">int</span> depthLimit = <span class="code-number">2</span> * (<span class="code-number">31</span> - <span class="code-class">Integer</span>.numberOfLeadingZeros(a.length));
+    introSort(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>, depthLimit);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="bitonic-sort">Bitonic Sort</div>
+    <div class="intro">
+        <p class="sw-muted sw-small">ALGORITHM 21 · Sorting network / parallel</p>
+        <p>Construct bitonic sequences and apply a fixed compare-exchange network in ascending/descending halves.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">Time complexity</span><span>Θ(n log² n)</span></li>
+        <li><span class="ledger-label">Extra memory</span><span>O(log n) recursion</span></li>
+        <li><span class="ledger-label">Stable?</span><span>No</span></li>
+    </ol></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Worked example</strong></p>
+        <p>For 8 inputs: sort 4 ascending and 4 descending → compare-exchange across the halves → recursively merge 4s then 2s.</p>
+        <p><strong>When useful:</strong> Useful for GPU/SIMD/parallel sorting networks with predictable access patterns.</p>
+        <p><strong>Important detail:</strong> The example implementation expects a power-of-two input length.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bitonicSort(<span class="code-keyword">int</span>[] a) {
+    <span class="code-keyword">if</span> (a.length == <span class="code-number">0</span> || (a.length &amp; (a.length - <span class="code-number">1</span>)) != <span class="code-number">0</span>)
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Length must be a power of two"</span>);
+    bitonic(a, <span class="code-number">0</span>, a.length, <span class="code-keyword">true</span>);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">This method may call helpers in the complete, compiled Java source file linked at the top of the page.</p>
+    </div>
+
+    <div class="subheading" id="advanced">Additional algorithms & families</div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 240px minmax(0, 1fr)">
+        <li><span class="ledger-label">TimSort</span><span>Stable hybrid combining run detection, insertion sorting for short runs, and merging. O(n) best, O(n log n) worst, O(n) extra memory upper bound. Well suited to partially ordered records. Java's stable object/collection sorting is in this family.</span></li>
+        <li><span class="ledger-label">External Merge Sort</span><span>For files larger than RAM: read chunks → sort each chunk → write sorted runs → k-way merge with a min-heap. Dominated by sequential disk/network I/O, not just comparisons.</span></li>
+        <li><span class="ledger-label">Pigeonhole Sort</span><span>Allocate a slot per possible integer key and accumulate frequencies. O(n+k) time and O(k) count storage for a manageable range; retaining complete records takes more care.</span></li>
+        <li><span class="ledger-label">Tournament Sort</span><span>Construct a tournament tree to select a minimum or maximum, update after extraction. Typically O(n log n) time; useful as a conceptual predecessor to multi-way selection structures.</span></li>
+        <li><span class="ledger-label">Smoothsort</span><span>Dijkstra's heap-based adaptive sort using Leonardo heaps; near O(n) for sorted input and O(n log n) worst, but notably harder to implement.</span></li>
+        <li><span class="ledger-label">Strand Sort</span><span>Extract increasing subsequences (strands) and merge them. Useful pedagogically for linked lists; performance depends on input shape and representation.</span></li>
+        <li><span class="ledger-label">Library Sort</span><span>Insertion-style approach that keeps empty gaps to reduce shifting; expected O(n log n) under appropriate probabilistic assumptions and O(n) extra storage.</span></li>
+        <li><span class="ledger-label">Sample Sort</span><span>Pick splitters from a sample, distribute records into partitions and sort in parallel. Useful for large distributed or parallel datasets.</span></li>
+        <li><span class="ledger-label">Odd–Even Merge Sort</span><span>Batcher's fixed comparison network, distinct from odd-even transposition sort; good for parallel hardware circuits.</span></li>
+        <li><span class="ledger-label">Bead / Gravity Sort</span><span>Physical or simulated bead-column sorting for nonnegative integers; niche demonstration, not a general software sort.</span></li>
+        <li><span class="ledger-label">Bogo / Stooge Sort</span><span>Intentionally inefficient teaching curiosities, helpful for illustrating algorithmic complexity—not production choices.</span></li>
+        <li><span class="ledger-label">Dual-Pivot Quick Sort</span><span>A variant partitioning around two pivots, creating up to three partitions. Used in some standard-library primitive sorting implementations.</span></li>
+    </ol></div>
+
+    <div class="subheading" id="interview">What interviewers expect you to understand</div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 240px minmax(0, 1fr)">
+        <li><span class="ledger-label">Why merge is stable</span><span>When left and right values are equal, choose the value from the left half first. This preserves their original relative order.</span></li>
+        <li><span class="ledger-label">Why Quick Sort can be O(n²)</span><span>A consistently poor pivot causes recurrences T(n) = T(n−1) + Θ(n), hence Θ(n²). Balanced partitions produce T(n) = 2T(n/2)+Θ(n), hence Θ(n log n).</span></li>
+        <li><span class="ledger-label">Why heap construction is O(n)</span><span>Most nodes are near the leaves and need little sifting. Summing by height yields O(n), despite individual sift-down costing up to O(log n).</span></li>
+        <li><span class="ledger-label">Why Counting Sort can be linear</span><span>It does not perform pairwise comparisons to determine order. It processes each input element and scans the key domain.</span></li>
+        <li><span class="ledger-label">Why Radix requires stable passes</span><span>When sorting the next more significant digit, the previous ordering of equal-digit groups must be retained.</span></li>
+        <li><span class="ledger-label">Why asymptotic complexity isn't enough</span><span>Input distribution, stability requirements, memory traffic, cache effects, comparator cost, parallelism, and latency constraints shape real algorithm choices.</span></li>
+    </ol></div>
+
+    <div class="subheading" id="java-file">Complete working Java file</div>
+    <div class="intro">
+        <p>The companion class includes 21 sorting algorithms, their helper methods, edge cases, and a randomized test harness that checks results against <code>Arrays.sort</code>. It compiles with Java 17+.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">import</span> java.util.*;
+<span class="code-keyword">import</span> java.util.function.<span class="code-class">Consumer</span>;
+
+<span class="code-comment">/** Self-contained implementations of classic sorting algorithms (Java 17+). */</span>
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SortingAlgorithmsGuide</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> swap(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> i, <span class="code-keyword">int</span> j) {
+        <span class="code-keyword">int</span> tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+
+    <span class="code-comment">// 1. Bubble Sort: stable, in-place, O(n^2) worst / O(n) best.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bubbleSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> end = a.length - <span class="code-number">1</span>; end &gt; <span class="code-number">0</span>; end--) {
+            <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">false</span>;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; end; j++) {
+                <span class="code-keyword">if</span> (a[j] &gt; a[j + <span class="code-number">1</span>]) {
+                    swap(a, j, j + <span class="code-number">1</span>);
+                    swapped = <span class="code-keyword">true</span>;
+                }
+            }
+            <span class="code-keyword">if</span> (!swapped) <span class="code-keyword">break</span>;
+        }
+    }
+
+    <span class="code-comment">// 2. Selection Sort: in-place, O(n^2), unstable.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> selectionSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; a.length - <span class="code-number">1</span>; i++) {
+            <span class="code-keyword">int</span> min = i;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = i + <span class="code-number">1</span>; j &lt; a.length; j++) {
+                <span class="code-keyword">if</span> (a[j] &lt; a[min]) min = j;
+            }
+            swap(a, i, min);
+        }
+    }
+
+    <span class="code-comment">// 3. Insertion Sort: stable, adaptive, in-place.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> insertionSort(<span class="code-keyword">int</span>[] a) {
+        insertionSortRange(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> insertionSortRange(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = lo + <span class="code-number">1</span>; i &lt;= hi; i++) {
+            <span class="code-keyword">int</span> key = a[i];
+            <span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;
+            <span class="code-keyword">while</span> (j &gt;= lo &amp;&amp; a[j] &gt; key) {
+                a[j + <span class="code-number">1</span>] = a[j];
+                j--;
+            }
+            a[j + <span class="code-number">1</span>] = key;
+        }
+    }
+
+    <span class="code-comment">// 4. Binary Insertion Sort: O(n log n) comparisons, O(n^2) shifts.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> binaryInsertionSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; a.length; i++) {
+            <span class="code-keyword">int</span> key = a[i], lo = <span class="code-number">0</span>, hi = i;
+            <span class="code-keyword">while</span> (lo &lt; hi) {
+                <span class="code-keyword">int</span> mid = lo + (hi - lo) / <span class="code-number">2</span>;
+                <span class="code-keyword">if</span> (key &lt; a[mid]) hi = mid;
+                <span class="code-keyword">else</span> lo = mid + <span class="code-number">1</span>; <span class="code-comment">// insert after equals to preserve stability</span>
+            }
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = i; j &gt; lo; j--) a[j] = a[j - <span class="code-number">1</span>];
+            a[lo] = key;
+        }
+    }
+
+    <span class="code-comment">// 5. Shell Sort with halving gaps. Unstable; complexity gap-dependent.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> shellSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> gap = a.length / <span class="code-number">2</span>; gap &gt; <span class="code-number">0</span>; gap /= <span class="code-number">2</span>) {
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = gap; i &lt; a.length; i++) {
+                <span class="code-keyword">int</span> key = a[i], j = i;
+                <span class="code-keyword">while</span> (j &gt;= gap &amp;&amp; a[j - gap] &gt; key) {
+                    a[j] = a[j - gap];
+                    j -= gap;
+                }
+                a[j] = key;
+            }
+        }
+    }
+
+    <span class="code-comment">// 6. Merge Sort: stable, O(n log n), O(n) extra storage.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> mergeSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">int</span>[] temp = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[a.length];
+        mergeSort(a, temp, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> mergeSort(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span>[] tmp, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi) {
+        <span class="code-keyword">if</span> (lo &gt;= hi) <span class="code-keyword">return</span>;
+        <span class="code-keyword">int</span> mid = lo + (hi - lo) / <span class="code-number">2</span>;
+        mergeSort(a, tmp, lo, mid);
+        mergeSort(a, tmp, mid + <span class="code-number">1</span>, hi);
+        <span class="code-keyword">int</span> i = lo, j = mid + <span class="code-number">1</span>, out = lo;
+        <span class="code-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= hi) {
+            tmp[out++] = a[i] &lt;= a[j] ? a[i++] : a[j++];
+        }
+        <span class="code-keyword">while</span> (i &lt;= mid) tmp[out++] = a[i++];
+        <span class="code-keyword">while</span> (j &lt;= hi) tmp[out++] = a[j++];
+        <span class="code-class">System</span>.arraycopy(tmp, lo, a, lo, hi - lo + <span class="code-number">1</span>);
+    }
+
+    <span class="code-comment">// 7. Quick Sort (Lomuto partition): average O(n log n), worst O(n^2).</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> quickSort(<span class="code-keyword">int</span>[] a) { quickSort(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>); }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> quickSort(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi) {
+        <span class="code-keyword">if</span> (lo &gt;= hi) <span class="code-keyword">return</span>;
+        <span class="code-keyword">int</span> p = partition(a, lo, hi);
+        quickSort(a, lo, p - <span class="code-number">1</span>);
+        quickSort(a, p + <span class="code-number">1</span>, hi);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">int</span> partition(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi) {
+        <span class="code-keyword">int</span> pivot = a[hi];
+        <span class="code-keyword">int</span> boundary = lo;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = lo; j &lt; hi; j++) {
+            <span class="code-keyword">if</span> (a[j] &lt;= pivot) swap(a, boundary++, j);
+        }
+        swap(a, boundary, hi);
+        <span class="code-keyword">return</span> boundary;
+    }
+
+    <span class="code-comment">// 8. Three-way Quick Sort: efficient when many values are duplicated.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> threeWayQuickSort(<span class="code-keyword">int</span>[] a) {
+        quick3(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> quick3(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi) {
+        <span class="code-keyword">if</span> (lo &gt;= hi) <span class="code-keyword">return</span>;
+        <span class="code-keyword">int</span> pivot = a[lo], lt = lo, i = lo + <span class="code-number">1</span>, gt = hi;
+        <span class="code-keyword">while</span> (i &lt;= gt) {
+            <span class="code-keyword">if</span> (a[i] &lt; pivot) swap(a, lt++, i++);
+            <span class="code-keyword">else</span> <span class="code-keyword">if</span> (a[i] &gt; pivot) swap(a, i, gt--);
+            <span class="code-keyword">else</span> i++;
+        }
+        quick3(a, lo, lt - <span class="code-number">1</span>);
+        quick3(a, gt + <span class="code-number">1</span>, hi);
+    }
+
+    <span class="code-comment">// 9. Heap Sort: in-place O(n log n) guaranteed, unstable.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> heapSort(<span class="code-keyword">int</span>[] a) {
+        heapSortRange(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> heapSortRange(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi) {
+        <span class="code-keyword">int</span> n = hi - lo + <span class="code-number">1</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = n / <span class="code-number">2</span> - <span class="code-number">1</span>; i &gt;= <span class="code-number">0</span>; i--) siftDown(a, lo, n, i);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> end = n - <span class="code-number">1</span>; end &gt; <span class="code-number">0</span>; end--) {
+            swap(a, lo, lo + end);
+            siftDown(a, lo, end, <span class="code-number">0</span>);
+        }
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> siftDown(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> offset, <span class="code-keyword">int</span> size, <span class="code-keyword">int</span> root) {
+        <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {
+            <span class="code-keyword">int</span> largest = root, l = <span class="code-number">2</span> * root + <span class="code-number">1</span>, r = l + <span class="code-number">1</span>;
+            <span class="code-keyword">if</span> (l &lt; size &amp;&amp; a[offset + l] &gt; a[offset + largest]) largest = l;
+            <span class="code-keyword">if</span> (r &lt; size &amp;&amp; a[offset + r] &gt; a[offset + largest]) largest = r;
+            <span class="code-keyword">if</span> (largest == root) <span class="code-keyword">return</span>;
+            swap(a, offset + root, offset + largest);
+            root = largest;
+        }
+    }
+
+    <span class="code-comment">// 10. Stable Counting Sort supporting negative integers.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> countingSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">if</span> (a.length == <span class="code-number">0</span>) <span class="code-keyword">return</span>;
+        <span class="code-keyword">int</span> min = a[<span class="code-number">0</span>], max = a[<span class="code-number">0</span>];
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) { min = <span class="code-class">Math</span>.min(min, x); max = <span class="code-class">Math</span>.max(max, x); }
+        <span class="code-keyword">int</span> range = <span class="code-class">Math</span>.toIntExact((<span class="code-keyword">long</span>) max - min + <span class="code-number">1</span>);
+        <span class="code-keyword">int</span>[] count = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[range];
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) count[x - min]++;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; range; i++) count[i] += count[i - <span class="code-number">1</span>];
+        <span class="code-keyword">int</span>[] output = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[a.length];
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = a.length - <span class="code-number">1</span>; i &gt;= <span class="code-number">0</span>; i--) {
+            <span class="code-keyword">int</span> x = a[i];
+            output[--count[x - min]] = x;
+        }
+        <span class="code-class">System</span>.arraycopy(output, <span class="code-number">0</span>, a, <span class="code-number">0</span>, a.length);
+    }
+
+    <span class="code-comment">// 11. LSD Radix Sort (base 10) for nonnegative int arrays.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> radixSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">int</span> max = <span class="code-number">0</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) {
+            <span class="code-keyword">if</span> (x &lt; <span class="code-number">0</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Use nonnegative integers"</span>);
+            max = <span class="code-class">Math</span>.max(max, x);
+        }
+        <span class="code-keyword">int</span>[] out = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[a.length];
+        <span class="code-keyword">for</span> (<span class="code-keyword">long</span> exp = <span class="code-number">1</span>; max / exp &gt; <span class="code-number">0</span>; exp *= <span class="code-number">10</span>) {
+            <span class="code-keyword">int</span>[] count = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[<span class="code-number">10</span>];
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) count[(<span class="code-keyword">int</span>) (x / exp % <span class="code-number">10</span>)]++;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; <span class="code-number">10</span>; i++) count[i] += count[i - <span class="code-number">1</span>];
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = a.length - <span class="code-number">1</span>; i &gt;= <span class="code-number">0</span>; i--) {
+                <span class="code-keyword">int</span> x = a[i];
+                out[--count[(<span class="code-keyword">int</span>) (x / exp % <span class="code-number">10</span>)]] = x;
+            }
+            <span class="code-class">System</span>.arraycopy(out, <span class="code-number">0</span>, a, <span class="code-number">0</span>, a.length);
+        }
+    }
+
+    <span class="code-comment">// 12. Bucket Sort for finite double values in [0,1).</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bucketSort(<span class="code-keyword">double</span>[] a) {
+        <span class="code-keyword">if</span> (a.length == <span class="code-number">0</span>) <span class="code-keyword">return</span>;
+        <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
+        <span class="code-class">List</span>&lt;<span class="code-class">Double</span>&gt;[] buckets = (<span class="code-class">List</span>&lt;<span class="code-class">Double</span>&gt;[]) <span class="code-keyword">new</span> <span class="code-class">List</span>[a.length];
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; buckets.length; i++) buckets[i] = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;&gt;();
+        <span class="code-keyword">for</span> (<span class="code-keyword">double</span> x : a) {
+            <span class="code-keyword">if</span> (!(x &gt;= <span class="code-number">0.0</span> &amp;&amp; x &lt; <span class="code-number">1.0</span>))
+                <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Values must be in [0,1)"</span>);
+            buckets[(<span class="code-keyword">int</span>) (x * buckets.length)].add(x);
+        }
+        <span class="code-keyword">int</span> pos = <span class="code-number">0</span>;
+        <span class="code-keyword">for</span> (<span class="code-class">List</span>&lt;<span class="code-class">Double</span>&gt; bucket : buckets) {
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; bucket.size(); i++) {
+                <span class="code-keyword">double</span> key = bucket.get(i);
+                <span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;
+                <span class="code-keyword">while</span> (j &gt;= <span class="code-number">0</span> &amp;&amp; bucket.get(j) &gt; key) {
+                    bucket.set(j + <span class="code-number">1</span>, bucket.get(j));
+                    j--;
+                }
+                bucket.set(j + <span class="code-number">1</span>, key);
+            }
+            <span class="code-keyword">for</span> (<span class="code-keyword">double</span> x : bucket) a[pos++] = x;
+        }
+    }
+
+    <span class="code-comment">// 13. Cocktail Shaker Sort: bidirectional Bubble Sort, stable.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> cocktailSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">int</span> left = <span class="code-number">0</span>, right = a.length - <span class="code-number">1</span>;
+        <span class="code-keyword">while</span> (left &lt; right) {
+            <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">false</span>;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = left; i &lt; right; i++) {
+                <span class="code-keyword">if</span> (a[i] &gt; a[i + <span class="code-number">1</span>]) { swap(a, i, i + <span class="code-number">1</span>); swapped = <span class="code-keyword">true</span>; }
+            }
+            <span class="code-keyword">if</span> (!swapped) <span class="code-keyword">return</span>;
+            right--;
+            swapped = <span class="code-keyword">false</span>;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = right; i &gt; left; i--) {
+                <span class="code-keyword">if</span> (a[i - <span class="code-number">1</span>] &gt; a[i]) { swap(a, i - <span class="code-number">1</span>, i); swapped = <span class="code-keyword">true</span>; }
+            }
+            <span class="code-keyword">if</span> (!swapped) <span class="code-keyword">return</span>;
+            left++;
+        }
+    }
+
+    <span class="code-comment">// 14. Comb Sort: gap-based Bubble Sort (unstable).</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> combSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">int</span> gap = a.length;
+        <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">true</span>;
+        <span class="code-keyword">while</span> (gap &gt; <span class="code-number">1</span> || swapped) {
+            gap = <span class="code-class">Math</span>.max(<span class="code-number">1</span>, (gap * <span class="code-number">10</span>) / <span class="code-number">13</span>);
+            swapped = <span class="code-keyword">false</span>;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i + gap &lt; a.length; i++) {
+                <span class="code-keyword">if</span> (a[i] &gt; a[i + gap]) { swap(a, i, i + gap); swapped = <span class="code-keyword">true</span>; }
+            }
+        }
+    }
+
+    <span class="code-comment">// 15. Gnome Sort: swap items backward until each is correctly inserted.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> gnomeSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">int</span> i = <span class="code-number">1</span>;
+        <span class="code-keyword">while</span> (i &lt; a.length) {
+            <span class="code-keyword">if</span> (i == <span class="code-number">0</span> || a[i - <span class="code-number">1</span>] &lt;= a[i]) i++;
+            <span class="code-keyword">else</span> { swap(a, i - <span class="code-number">1</span>, i); i--; }
+        }
+    }
+
+    <span class="code-comment">// 16. Odd-Even Sort: alternating even/odd compare-exchange phases.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> oddEvenSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">boolean</span> sorted = <span class="code-keyword">false</span>;
+        <span class="code-keyword">while</span> (!sorted) {
+            sorted = <span class="code-keyword">true</span>;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i + <span class="code-number">1</span> &lt; a.length; i += <span class="code-number">2</span>) {
+                <span class="code-keyword">if</span> (a[i] &gt; a[i + <span class="code-number">1</span>]) { swap(a, i, i + <span class="code-number">1</span>); sorted = <span class="code-keyword">false</span>; }
+            }
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i + <span class="code-number">1</span> &lt; a.length; i += <span class="code-number">2</span>) {
+                <span class="code-keyword">if</span> (a[i] &gt; a[i + <span class="code-number">1</span>]) { swap(a, i, i + <span class="code-number">1</span>); sorted = <span class="code-keyword">false</span>; }
+            }
+        }
+    }
+
+    <span class="code-comment">// 17. Cycle Sort: minimizes writes, but O(n^2) comparisons.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> cycleSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> start = <span class="code-number">0</span>; start &lt; a.length - <span class="code-number">1</span>; start++) {
+            <span class="code-keyword">int</span> item = a[start], pos = start;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = start + <span class="code-number">1</span>; i &lt; a.length; i++) <span class="code-keyword">if</span> (a[i] &lt; item) pos++;
+            <span class="code-keyword">if</span> (pos == start) <span class="code-keyword">continue</span>;
+            <span class="code-keyword">while</span> (item == a[pos]) pos++;
+            <span class="code-keyword">int</span> old = a[pos]; a[pos] = item; item = old;
+            <span class="code-keyword">while</span> (pos != start) {
+                pos = start;
+                <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = start + <span class="code-number">1</span>; i &lt; a.length; i++) <span class="code-keyword">if</span> (a[i] &lt; item) pos++;
+                <span class="code-keyword">while</span> (item == a[pos]) pos++;
+                old = a[pos]; a[pos] = item; item = old;
+            }
+        }
+    }
+
+    <span class="code-comment">// 18. Pancake Sort: places largest element using prefix reversals.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> pancakeSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> size = a.length; size &gt; <span class="code-number">1</span>; size--) {
+            <span class="code-keyword">int</span> max = <span class="code-number">0</span>;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; size; i++) <span class="code-keyword">if</span> (a[i] &gt; a[max]) max = i;
+            <span class="code-keyword">if</span> (max == size - <span class="code-number">1</span>) <span class="code-keyword">continue</span>;
+            <span class="code-keyword">if</span> (max != <span class="code-number">0</span>) reverse(a, <span class="code-number">0</span>, max);
+            reverse(a, <span class="code-number">0</span>, size - <span class="code-number">1</span>);
+        }
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> reverse(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> l, <span class="code-keyword">int</span> r) {
+        <span class="code-keyword">while</span> (l &lt; r) swap(a, l++, r--);
+    }
+
+    <span class="code-comment">// 19. Tree Sort: unbalanced BST, O(n log n) average / O(n^2) worst.</span>
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span> {
+        <span class="code-keyword">int</span> value, count = <span class="code-number">1</span>;
+        <span class="code-class">Node</span> left, right;
+        <span class="code-class">Node</span>(<span class="code-keyword">int</span> value) { <span class="code-keyword">this</span>.value = value; }
+    }
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> treeSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-class">Node</span> root = <span class="code-keyword">null</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x : a) root = insert(root, x);
+        <span class="code-keyword">int</span>[] index = {<span class="code-number">0</span>};
+        inOrder(root, a, index);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-class">Node</span> insert(<span class="code-class">Node</span> root, <span class="code-keyword">int</span> x) {
+        <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>) <span class="code-keyword">return</span> <span class="code-keyword">new</span> <span class="code-class">Node</span>(x);
+        <span class="code-keyword">if</span> (x &lt; root.value) root.left = insert(root.left, x);
+        <span class="code-keyword">else</span> <span class="code-keyword">if</span> (x &gt; root.value) root.right = insert(root.right, x);
+        <span class="code-keyword">else</span> root.count++;
+        <span class="code-keyword">return</span> root;
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> inOrder(<span class="code-class">Node</span> root, <span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span>[] index) {
+        <span class="code-keyword">if</span> (root == <span class="code-keyword">null</span>) <span class="code-keyword">return</span>;
+        inOrder(root.left, a, index);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; root.count; i++) a[index[<span class="code-number">0</span>]++] = root.value;
+        inOrder(root.right, a, index);
+    }
+
+    <span class="code-comment">// 20. IntroSort: Quick Sort + Heap Sort fallback + Insertion Sort.</span>
+    <span class="code-comment">// Worst-case O(n log n), with O(log n) recursion due to smaller-side-first.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> introSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">if</span> (a.length &lt; <span class="code-number">2</span>) <span class="code-keyword">return</span>;
+        <span class="code-keyword">int</span> depthLimit = <span class="code-number">2</span> * (<span class="code-number">31</span> - <span class="code-class">Integer</span>.numberOfLeadingZeros(a.length));
+        introSort(a, <span class="code-number">0</span>, a.length - <span class="code-number">1</span>, depthLimit);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> introSort(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> hi, <span class="code-keyword">int</span> depth) {
+        <span class="code-keyword">while</span> (hi - lo + <span class="code-number">1</span> &gt; <span class="code-number">16</span>) {
+            <span class="code-keyword">if</span> (depth == <span class="code-number">0</span>) { heapSortRange(a, lo, hi); <span class="code-keyword">return</span>; }
+            depth--;
+            <span class="code-keyword">int</span> mid = lo + (hi - lo) / <span class="code-number">2</span>;
+            <span class="code-keyword">int</span> pivot = medianOfThree(a[lo], a[mid], a[hi]);
+            <span class="code-keyword">int</span> lt = lo, i = lo, gt = hi;
+            <span class="code-keyword">while</span> (i &lt;= gt) {
+                <span class="code-keyword">if</span> (a[i] &lt; pivot) swap(a, lt++, i++);
+                <span class="code-keyword">else</span> <span class="code-keyword">if</span> (a[i] &gt; pivot) swap(a, i, gt--);
+                <span class="code-keyword">else</span> i++;
+            }
+            <span class="code-keyword">if</span> (lt - lo &lt; hi - gt) {
+                introSort(a, lo, lt - <span class="code-number">1</span>, depth);
+                lo = gt + <span class="code-number">1</span>;
+            } <span class="code-keyword">else</span> {
+                introSort(a, gt + <span class="code-number">1</span>, hi, depth);
+                hi = lt - <span class="code-number">1</span>;
+            }
+        }
+        insertionSortRange(a, lo, hi);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">int</span> medianOfThree(<span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b, <span class="code-keyword">int</span> c) {
+        <span class="code-keyword">if</span> (a &gt; b) { <span class="code-keyword">int</span> t = a; a = b; b = t; }
+        <span class="code-keyword">if</span> (b &gt; c) { <span class="code-keyword">int</span> t = b; b = c; c = t; }
+        <span class="code-keyword">if</span> (a &gt; b) b = a;
+        <span class="code-keyword">return</span> b;
+    }
+
+    <span class="code-comment">// 21. Bitonic Sort: sorting network, requires power-of-two array size.</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bitonicSort(<span class="code-keyword">int</span>[] a) {
+        <span class="code-keyword">if</span> (a.length == <span class="code-number">0</span> || (a.length &amp; (a.length - <span class="code-number">1</span>)) != <span class="code-number">0</span>)
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Length must be a power of two"</span>);
+        bitonic(a, <span class="code-number">0</span>, a.length, <span class="code-keyword">true</span>);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bitonic(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> count, <span class="code-keyword">boolean</span> asc) {
+        <span class="code-keyword">if</span> (count &lt;= <span class="code-number">1</span>) <span class="code-keyword">return</span>;
+        <span class="code-keyword">int</span> k = count / <span class="code-number">2</span>;
+        bitonic(a, lo, k, <span class="code-keyword">true</span>);
+        bitonic(a, lo + k, k, <span class="code-keyword">false</span>);
+        bitonicMerge(a, lo, count, asc);
+    }
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bitonicMerge(<span class="code-keyword">int</span>[] a, <span class="code-keyword">int</span> lo, <span class="code-keyword">int</span> count, <span class="code-keyword">boolean</span> asc) {
+        <span class="code-keyword">if</span> (count &lt;= <span class="code-number">1</span>) <span class="code-keyword">return</span>;
+        <span class="code-keyword">int</span> k = count / <span class="code-number">2</span>;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = lo; i &lt; lo + k; i++) {
+            <span class="code-keyword">if</span> (asc == (a[i] &gt; a[i + k])) swap(a, i, i + k);
+        }
+        bitonicMerge(a, lo, k, asc);
+        bitonicMerge(a, lo + k, k, asc);
+    }
+
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> test(<span class="code-class">String</span> name, <span class="code-class">Consumer</span>&lt;<span class="code-keyword">int</span>[]&gt; sort) {
+        <span class="code-class">Random</span> rnd = <span class="code-keyword">new</span> <span class="code-class">Random</span>(<span class="code-number">42</span>);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> n = <span class="code-number">0</span>; n &lt;= <span class="code-number">80</span>; n++) {
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> trial = <span class="code-number">0</span>; trial &lt; <span class="code-number">20</span>; trial++) {
+                <span class="code-keyword">int</span>[] a = rnd.ints(n, -<span class="code-number">30</span>, <span class="code-number">31</span>).toArray();
+                <span class="code-keyword">int</span>[] expected = a.clone();
+                <span class="code-class">Arrays</span>.sort(expected);
+                sort.accept(a);
+                <span class="code-keyword">if</span> (!<span class="code-class">Arrays</span>.equals(a, expected))
+                    <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AssertionError</span>(name + <span class="code-string">" failed: expected "</span> + <span class="code-class">Arrays</span>.toString(expected)
+                            + <span class="code-string">", got "</span> + <span class="code-class">Arrays</span>.toString(a));
+            }
+        }
+        <span class="code-class">System</span>.out.println(<span class="code-string">"PASS: "</span> + name);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        test(<span class="code-string">"Bubble"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::bubbleSort);
+        test(<span class="code-string">"Selection"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::selectionSort);
+        test(<span class="code-string">"Insertion"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::insertionSort);
+        test(<span class="code-string">"Binary Insertion"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::binaryInsertionSort);
+        test(<span class="code-string">"Shell"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::shellSort);
+        test(<span class="code-string">"Merge"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::mergeSort);
+        test(<span class="code-string">"Quick"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::quickSort);
+        test(<span class="code-string">"Three-Way Quick"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::threeWayQuickSort);
+        test(<span class="code-string">"Heap"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::heapSort);
+        test(<span class="code-string">"Counting"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::countingSort);
+        test(<span class="code-string">"Cocktail"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::cocktailSort);
+        test(<span class="code-string">"Comb"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::combSort);
+        test(<span class="code-string">"Gnome"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::gnomeSort);
+        test(<span class="code-string">"Odd-Even"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::oddEvenSort);
+        test(<span class="code-string">"Cycle"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::cycleSort);
+        test(<span class="code-string">"Pancake"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::pancakeSort);
+        test(<span class="code-string">"Tree"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::treeSort);
+        test(<span class="code-string">"Intro"</span>, <span class="code-class">SortingAlgorithmsGuide</span>::introSort);
+        <span class="code-class">Random</span> rnd = <span class="code-keyword">new</span> <span class="code-class">Random</span>(<span class="code-number">42</span>);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> n = <span class="code-number">0</span>; n &lt;= <span class="code-number">80</span>; n++) {
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> trial = <span class="code-number">0</span>; trial &lt; <span class="code-number">20</span>; trial++) {
+                <span class="code-keyword">int</span>[] a = rnd.ints(n, <span class="code-number">0</span>, <span class="code-number">200</span>).toArray();
+                <span class="code-keyword">int</span>[] expected = a.clone(); <span class="code-class">Arrays</span>.sort(expected);
+                radixSort(a);
+                <span class="code-keyword">if</span> (!<span class="code-class">Arrays</span>.equals(a, expected)) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AssertionError</span>(<span class="code-string">"Radix"</span>);
+            }
+        }
+        <span class="code-class">System</span>.out.println(<span class="code-string">"PASS: Radix"</span>);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> n = <span class="code-number">1</span>; n &lt;= <span class="code-number">256</span>; n &lt;&lt;= <span class="code-number">1</span>) {
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> trial = <span class="code-number">0</span>; trial &lt; <span class="code-number">20</span>; trial++) {
+                <span class="code-keyword">int</span>[] a = rnd.ints(n, -<span class="code-number">20</span>, <span class="code-number">21</span>).toArray();
+                <span class="code-keyword">int</span>[] expected = a.clone(); <span class="code-class">Arrays</span>.sort(expected);
+                bitonicSort(a);
+                <span class="code-keyword">if</span> (!<span class="code-class">Arrays</span>.equals(a, expected)) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">AssertionError</span>(<span class="code-string">"Bitonic"</span>);
+            }
+        }
+        <span class="code-class">System</span>.out.println(<span class="code-string">"PASS: Bitonic"</span>);
+        <span class="code-keyword">double</span>[] decimals = {<span class="code-number">0.42</span>, <span class="code-number">0.12</span>, <span class="code-number">0.99</span>, <span class="code-number">0.31</span>, <span class="code-number">0.12</span>, <span class="code-number">0.76</span>};
+        bucketSort(decimals);
+        <span class="code-class">System</span>.out.println(<span class="code-string">"Bucket: "</span> + <span class="code-class">Arrays</span>.toString(decimals));
+        <span class="code-class">System</span>.out.println(<span class="code-string">"All tests passed."</span>);
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="callout callout-note"><p>Compile: <code>javac SortingAlgorithmsGuide.java</code><br>Run tests: <code>java SortingAlgorithmsGuide</code><br>The demonstration supports negative values unless noted: LSD Radix is nonnegative; Bucket expects doubles in [0,1); Bitonic expects a power-of-two length.</p></div>
+
+    <div class="intro">
+        <p class="sw-muted sw-small">Sorting Algorithms — Visual Java reference • All diagrams, styles and playback work offline</p>
+    </div>
+</div>
+<script>
+'use strict';
+// Frames are derived from actual algorithmic operations rather than from a timed animation.
+const base=[5,3,8,4,2];
+function frame(a,note,active=[],sorted=[],pivot=-1){return {a:[...a],note,active:[...active],sorted:[...sorted],pivot}}
+function bubble(){let a=base.slice(),f=[frame(a,'Initial unsorted array')];for(let end=a.length-1;end>0;end--){let moved=false;for(let i=0;i<end;i++){if(a[i]>a[i+1]){[a[i],a[i+1]]=[a[i+1],a[i]];moved=true;f.push(frame(a,`Swap adjacent values at indices ${i} and ${i+1}`,[i,i+1],Array.from({length:a.length-1-end},(_,j)=>a.length-1-j)));}}f.push(frame(a,`Pass complete: index ${end} is finalized`,[],Array.from({length:a.length-end},(_,j)=>a.length-1-j)));if(!moved)break;}f.push(frame(a,'Sorted: no pair is out of order',[],a.map((_,i)=>i)));return f}
+function selection(){let a=base.slice(),f=[frame(a,'Find the smallest value in the unsorted suffix')];for(let i=0;i<a.length-1;i++){let m=i;for(let j=i+1;j<a.length;j++)if(a[j]<a[m])m=j;[a[i],a[m]]=[a[m],a[i]];f.push(frame(a,`Position ${i}: choose minimum ${a[i]} and swap into place`,[i,m],Array.from({length:i+1},(_,j)=>j)));}f.push(frame(a,'Sorted',[],a.map((_,i)=>i)));return f}
+function insertion(){let a=base.slice(),f=[frame(a,'Start with a sorted prefix containing one item',[],[0])];for(let i=1;i<a.length;i++){let v=a[i],j=i-1;while(j>=0&&a[j]>v){a[j+1]=a[j];j--;}a[j+1]=v;f.push(frame(a,`Insert ${v} at position ${j+1}; sorted prefix length is ${i+1}`,[j+1],Array.from({length:i+1},(_,k)=>k)));}return f}
+function shell(){let a=base.slice(),f=[frame(a,'Start with large gaps to move values over long distances')];for(let gap=Math.floor(a.length/2);gap>0;gap=Math.floor(gap/2)){for(let i=gap;i<a.length;i++){let v=a[i],j=i;while(j>=gap&&a[j-gap]>v){a[j]=a[j-gap];j-=gap;}a[j]=v;f.push(frame(a,`Gap ${gap}: place value ${v} at index ${j}`,[j,i]));}f.push(frame(a,`Finished all insertion passes for gap ${gap}`));}f.push(frame(a,'Sorted after final gap-1 pass',[],a.map((_,i)=>i)));return f}
+function merge(){let a=base.slice(),f=[frame(a,'Split recursively; every one-element segment is already sorted')];function go(lo,hi){if(lo>=hi)return;let mid=Math.floor((lo+hi)/2);go(lo,mid);go(mid+1,hi);let l=a.slice(lo,mid+1),r=a.slice(mid+1,hi+1),i=0,j=0,k=lo;while(i<l.length||j<r.length){if(j>=r.length||(i<l.length&&l[i]<=r[j]))a[k++]=l[i++];else a[k++]=r[j++];}f.push(frame(a,`Merge adjacent sorted ranges [${lo},${mid}] and [${mid+1},${hi}]`,Array.from({length:hi-lo+1},(_,z)=>lo+z)));}go(0,a.length-1);f.push(frame(a,'All halves merged into one sorted run',[],a.map((_,i)=>i)));return f}
+function quick(){let a=base.slice(),f=[frame(a,'Lomuto Quick Sort uses the last item of each range as pivot')];function go(lo,hi){if(lo>=hi)return;let pivot=a[hi],b=lo;f.push(frame(a,`Choose pivot ${pivot} for interval [${lo},${hi}]`,[],[],hi));for(let j=lo;j<hi;j++){if(a[j]<=pivot){[a[b],a[j]]=[a[j],a[b]];f.push(frame(a,`Move ${a[b]} into the ≤ pivot region`,[b,j],[],hi));b++;}}[a[b],a[hi]]=[a[hi],a[b]];f.push(frame(a,`Pivot ${pivot} placed at final index ${b}`,[b],[b],b));go(lo,b-1);go(b+1,hi);}go(0,a.length-1);f.push(frame(a,'Both sides sorted recursively',[],a.map((_,i)=>i)));return f}
+function heap(){let a=base.slice(),f=[frame(a,'Treat the array as a complete binary tree')];function down(size,i){while(true){let m=i,l=2*i+1,r=l+1;if(l<size&&a[l]>a[m])m=l;if(r<size&&a[r]>a[m])m=r;if(m===i)return;[a[i],a[m]]=[a[m],a[i]];f.push(frame(a,`Sift down: swap parent index ${i} with child index ${m}`,[i,m]));i=m;}}for(let i=Math.floor(a.length/2)-1;i>=0;i--)down(a.length,i);f.push(frame(a,'Max heap built: largest element is at the root',[],[],0));for(let end=a.length-1;end>0;end--){[a[0],a[end]]=[a[end],a[0]];f.push(frame(a,`Extract maximum ${a[end]} to final index ${end}`,[0,end],Array.from({length:a.length-end},(_,j)=>end+j)));down(end,0);}f.push(frame(a,'Heap exhausted; output sorted',[],a.map((_,i)=>i)));return f}
+function counting(){let a=[4,2,2,8,3,3,1],f=[frame(a,'Input integers, including repeats')];let min=Math.min(...a),max=Math.max(...a),c=Array(max-min+1).fill(0);a.forEach(x=>c[x-min]++);f.push(frame(a,'Counts: '+c.map((v,i)=>`${i+min}:${v}`).filter(s=>!s.endsWith(':0')).join(' • ')));for(let i=1;i<c.length;i++)c[i]+=c[i-1];f.push(frame(a,'Prefix counts give the final ending position for each key'));let out=Array(a.length).fill(0);for(let i=a.length-1;i>=0;i--){let x=a[i],pos=--c[x-min];out[pos]=x;f.push(frame(out,`Place ${x} into output index ${pos} (backward scan)`,[pos]));}f.push(frame(out,'Stable counting sort completed',[],out.map((_,i)=>i)));return f}
+function radix(){let a=[170,45,75,90,802,24,2,66],f=[frame(a,'Start with positive integers of different digit lengths')];for(let exp=1;exp<=100;exp*=10){let out=[],groups=Array.from({length:10},()=>[]);a.forEach(x=>groups[Math.floor(x/exp)%10].push(x));groups.forEach(g=>out.push(...g));a=out;f.push(frame(a,`Stable sort by ${exp===1?'ones':exp===10?'tens':'hundreds'} digit (exp=${exp})`,Array.from({length:a.length},(_,i)=>i)));}f.push(frame(a,'Digits exhausted; fully sorted',[],a.map((_,i)=>i)));return f}
+function cocktail(){let a=base.slice(),f=[frame(a,'A bidirectional variant of Bubble Sort')],left=0,right=a.length-1;while(left<right){let changed=false;for(let i=left;i<right;i++)if(a[i]>a[i+1]){[a[i],a[i+1]]=[a[i+1],a[i]];changed=true;f.push(frame(a,'Forward pass pushes a large value right',[i,i+1]));}if(!changed)break;right--;changed=false;for(let i=right;i>left;i--)if(a[i-1]>a[i]){[a[i-1],a[i]]=[a[i],a[i-1]];changed=true;f.push(frame(a,'Backward pass pushes a small value left',[i-1,i]));}if(!changed)break;left++;}f.push(frame(a,'Sorted after bidirectional sweeps',[],a.map((_,i)=>i)));return f}
+function gnome(){let a=base.slice(),f=[frame(a,'Compare a pair; move back when it is inverted')],i=1;while(i<a.length){if(i===0||a[i-1]<=a[i])i++;else{[a[i],a[i-1]]=[a[i-1],a[i]];f.push(frame(a,'Swap out-of-order adjacent values and step backward',[i-1,i]));i--;}}f.push(frame(a,'Gnome walk reached the end; sorted',[],a.map((_,i)=>i)));return f}
+function pancake(){let a=[3,1,4,2],f=[frame(a,'Only reversals of prefixes are allowed')];function flip(end){for(let i=0,j=end;i<j;i++,j--){[a[i],a[j]]=[a[j],a[i]];}f.push(frame(a,`Flip first ${end+1} elements`,Array.from({length:end+1},(_,i)=>i)));}for(let size=a.length;size>1;size--){let m=0;for(let i=1;i<size;i++)if(a[i]>a[m])m=i;if(m===size-1)continue;if(m!==0)flip(m);flip(size-1);}f.push(frame(a,'All largest values placed to the right',[],a.map((_,i)=>i)));return f}
+function tree(){return [frame(base,'Insert values in a binary search tree: root 5'),frame(base,'BST edges: 5→3 (left), 5→8 (right), 3→2 (left), 3→4 (right)'),frame([2,3,4,5,8],'In-order traversal: left subtree → root → right subtree',[],[0,1,2,3,4])];}
+const funcs={bubble,selection,insertion,shell,merge,quick,heap,counting,radix,cocktail,gnome,pancake,tree};
+const info={bubble:'Adjacent swaps • stable • adaptive with early exit',selection:'Repeated minimum selection • low swap count • unstable',insertion:'Sorted prefix • stable • excellent for nearly sorted inputs',shell:'Gap insertion • memory-efficient • unstable',merge:'Recursive split and merge • stable • O(n log n) worst-case',quick:'Pivot-based partitioning • average O(n log n) • unstable',heap:'Max heap • O(1) auxiliary array space • worst-case O(n log n)',counting:'Integer frequency and prefix counts • stable with backward output pass',radix:'Stable LSD digit passes • nonnegative input example',cocktail:'Adjacent swaps in both directions • stable',gnome:'Backtrack on inversions • stable',pancake:'Prefix reversal sorting • unstable',tree:'BST build and in-order traversal • average O(n log n)'};
+let frames=[],step=0,timer=null;
+const el=(id)=>document.getElementById(id);
+function render(){let f=frames[step];if(!f)return;let min=Math.min(0,...f.a),max=Math.max(1,...f.a),range=max-min||1;el('bars').innerHTML=f.a.map((n,i)=>{let h=18+((n-min)/range)*160;let cls=f.pivot===i?'pivot':f.sorted.includes(i)?'done':f.active.includes(i)?'active':'';return `<div class="barouter"><div class="bar ${cls}" style="height:${h}px" title="index ${i}: ${n}">${n}</div><span class="idx">${i}</span></div>`;}).join('');el('stepDesc').textContent=f.note;el('counter').textContent=`Step ${step+1}/${frames.length}`;el('progressInner').style.width=`${(step+1)/frames.length*100}%`;el('labInfo').textContent=info[el('algoSelect').value];el('stepTags').innerHTML=f.a.map((n,i)=>`<span>${i}:${n}</span>`).join('');}
+function stop(){if(timer!==null)clearInterval(timer);timer=null;el('play').textContent='▶ Play';}
+function load(){stop();frames=funcs[el('algoSelect').value]();step=0;render()}
+function next(){if(step<frames.length-1){step++;render();}else stop()}
+el('algoSelect').addEventListener('change',load);el('reset').addEventListener('click',load);el('next').addEventListener('click',next);el('prev').addEventListener('click',()=>{stop();step=Math.max(0,step-1);render();});el('play').addEventListener('click',()=>{if(timer!==null){stop();return;}if(step===frames.length-1)step=0;el('play').textContent='⏸ Pause';timer=setInterval(next,Number(el('speed').value));render();});el('speed').addEventListener('change',()=>{if(timer!==null){stop();el('play').click();}});
+load();
+</script>
+</body>
+</html>

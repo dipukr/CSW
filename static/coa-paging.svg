@@ -1,0 +1,33 @@
+<svg width="860" height="380" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 380" role="img" aria-label="Paged address translation: the page number of a virtual address is looked up in the TLB. On a hit the TLB gives the frame number directly; on a miss the page table in main memory supplies it and the TLB is updated. The frame number and the unchanged offset form the physical address used to access main memory. If the page is not in memory a page fault makes the OS load it from disk">
+    <defs><marker id="pg-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="pg-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="pg-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="22" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Virtual address</text>
+    <path d="M43 30 H170 A0 0 0 0 1 170 30 V66 A0 0 0 0 1 170 66 H43 A3 3 0 0 1 40 63 V33 A3 3 0 0 1 43 30 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="105" y="53" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Page #</text>
+    <path d="M170 30 H277 A3 3 0 0 1 280 33 V63 A3 3 0 0 1 277 66 H170 A0 0 0 0 1 170 66 V30 A0 0 0 0 1 170 30 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="225" y="53" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Offset</text>
+    <text x="560" y="124" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Physical address</text>
+    <path d="M563 132 H690 A0 0 0 0 1 690 132 V168 A0 0 0 0 1 690 168 H563 A3 3 0 0 1 560 165 V135 A3 3 0 0 1 563 132 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="625" y="155" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Frame #</text>
+    <path d="M690 132 H797 A3 3 0 0 1 800 135 V165 A3 3 0 0 1 797 168 H690 A0 0 0 0 1 690 168 V132 A0 0 0 0 1 690 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="745" y="155" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Offset</text>
+    <rect x="40" y="120" width="190" height="60" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#pg-s)"/>
+    <text x="135.0" y="146.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">TLB</text>
+    <text x="135.0" y="162.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">(recent page → frame entries)</text>
+    <rect x="40" y="230" width="190" height="60" rx="3" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2" filter="url(#pg-s)"/>
+    <text x="135.0" y="256.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Page table</text>
+    <text x="135.0" y="272.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">(in main memory)</text>
+    <rect x="660" y="230" width="160" height="60" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#pg-s)"/>
+    <text x="740.0" y="264.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1E293B">Main memory</text>
+    <path d="M105 66 V116" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#pg-a)"/>
+    <path d="M280 48 H745 V128" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#pg-a)"/>
+    <path d="M230 150 H556" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#pg-a)"/>
+    <text x="395" y="142" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#0D9488">TLB hit</text>
+    <path d="M135 180 V226" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#pg-a)"/>
+    <text x="145" y="208" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">TLB miss</text>
+    <path d="M230 260 H625 V172" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#pg-a)"/>
+    <text x="420" y="252" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame # (TLB updated)</text>
+    <path d="M745 168 V226" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#pg-a)"/>
+    <path d="M135 290 V318" fill="none" stroke="#7C8DA6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#pg-a)"/>
+    <rect x="40" y="322" width="330" height="40" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="205.0" y="346.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">page not present → page fault; OS loads it from disk</text>
+</svg>

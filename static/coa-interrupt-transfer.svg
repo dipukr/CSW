@@ -1,0 +1,31 @@
+<svg width="640" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" role="img" aria-label="Transfer of control via interrupts: the user program runs instructions 1 to i; an interrupt occurs after instruction i, control passes to the interrupt handler, which runs to completion, and the user program resumes at instruction i + 1">
+    <defs><marker id="itx-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="itx-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="itx-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="240" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">User program</text>
+    <text x="500" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Interrupt handler</text>
+    <path d="M183 40 H297 A3 3 0 0 1 300 43 V72 A0 0 0 0 1 300 72 H180 A0 0 0 0 1 180 72 V43 A3 3 0 0 1 183 40 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="240.0" y="60.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">1</text>
+    <path d="M180 72 H300 A0 0 0 0 1 300 72 V104 A0 0 0 0 1 300 104 H180 A0 0 0 0 1 180 104 V72 A0 0 0 0 1 180 72 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="240.0" y="92.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">2</text>
+    <path d="M180 104 H300 A0 0 0 0 1 300 104 V136 A0 0 0 0 1 300 136 H180 A0 0 0 0 1 180 136 V104 A0 0 0 0 1 180 104 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="240.0" y="124.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">⋮</text>
+    <path d="M180 136 H300 A0 0 0 0 1 300 136 V168 A0 0 0 0 1 300 168 H180 A0 0 0 0 1 180 168 V136 A0 0 0 0 1 180 136 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="240.0" y="156.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">i</text>
+    <path d="M180 168 H300 A0 0 0 0 1 300 168 V200 A0 0 0 0 1 300 200 H180 A0 0 0 0 1 180 200 V168 A0 0 0 0 1 180 168 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="240.0" y="188.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">i + 1</text>
+    <path d="M180 200 H300 A0 0 0 0 1 300 200 V232 A0 0 0 0 1 300 232 H180 A0 0 0 0 1 180 232 V200 A0 0 0 0 1 180 200 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="240.0" y="220.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">⋮</text>
+    <path d="M180 232 H300 A0 0 0 0 1 300 232 V261 A3 3 0 0 1 297 264 H183 A3 3 0 0 1 180 261 V232 A0 0 0 0 1 180 232 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="240.0" y="252.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">M</text>
+    <path d="M443 90 H557 A3 3 0 0 1 560 93 V122 A0 0 0 0 1 560 122 H440 A0 0 0 0 1 440 122 V93 A3 3 0 0 1 443 90 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="500.0" y="110.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">1</text>
+    <path d="M440 122 H560 A0 0 0 0 1 560 122 V154 A0 0 0 0 1 560 154 H440 A0 0 0 0 1 440 154 V122 A0 0 0 0 1 440 122 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="500.0" y="142.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">2</text>
+    <path d="M440 154 H560 A0 0 0 0 1 560 154 V186 A0 0 0 0 1 560 186 H440 A0 0 0 0 1 440 186 V154 A0 0 0 0 1 440 154 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="500.0" y="174.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">⋮</text>
+    <path d="M440 186 H560 A0 0 0 0 1 560 186 V215 A3 3 0 0 1 557 218 H443 A3 3 0 0 1 440 215 V186 A0 0 0 0 1 440 186 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="500.0" y="206.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">L</text>
+    <path d="M300 168 C370 168 370 106 436 106" fill="none" stroke="#B45309" stroke-width="1.5" marker-end="url(#itx-h)"/>
+    <text x="170" y="172" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">interrupt occurs here</text>
+    <path d="M440 210 C370 210 370 202 304 202" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#itx-a)"/>
+    <text x="380" y="232" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">return to i + 1</text>
+</svg>

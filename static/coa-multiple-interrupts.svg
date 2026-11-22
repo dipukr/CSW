@@ -1,0 +1,35 @@
+<svg width="880" height="270" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 270" role="img" aria-label="Multiple interrupts: (a) sequential processing, where interrupts are disabled in a handler, so handler Y runs only after handler X returns; (b) nested processing, where higher-priority interrupt Y interrupts handler X, then X resumes before control returns to the user program">
+    <defs><marker id="mi-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="mi-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="mi-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="220" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(a) Sequential interrupt processing</text>
+    <rect x="30" y="50" width="110" height="190" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#mi-s)"/>
+    <text x="85.0" y="141.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">User</text>
+    <text x="85.0" y="157.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">program</text>
+    <rect x="280" y="45" width="130" height="80" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#mi-s)"/>
+    <text x="345.0" y="81.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Interrupt</text>
+    <text x="345.0" y="97.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">handler X</text>
+    <rect x="280" y="165" width="130" height="80" rx="3" fill="#FFF1F2" stroke="#FECDD3" stroke-width="1.2" filter="url(#mi-s)"/>
+    <text x="345.0" y="201.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Interrupt</text>
+    <text x="345.0" y="217.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">handler Y</text>
+    <path d="M140 85 H276" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mi-a)"/>
+    <path d="M345 125 V161" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mi-a)"/>
+    <text x="353" y="147" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">X returns, Y runs</text>
+    <path d="M280 205 H144" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mi-a)"/>
+    <text x="210" y="198" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">return</text>
+    <text x="660" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(b) Nested interrupt processing</text>
+    <rect x="470" y="50" width="110" height="190" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#mi-s)"/>
+    <text x="525.0" y="141.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">User</text>
+    <text x="525.0" y="157.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">program</text>
+    <rect x="720" y="45" width="130" height="80" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#mi-s)"/>
+    <text x="785.0" y="81.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Interrupt</text>
+    <text x="785.0" y="97.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">handler X</text>
+    <rect x="720" y="165" width="130" height="80" rx="3" fill="#FFF1F2" stroke="#FECDD3" stroke-width="1.2" filter="url(#mi-s)"/>
+    <text x="785.0" y="201.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Interrupt</text>
+    <text x="785.0" y="217.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">handler Y</text>
+    <path d="M580 85 H716" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mi-a)"/>
+    <path d="M760 125 V161" fill="none" stroke="#B45309" stroke-width="1.5" marker-end="url(#mi-h)"/>
+    <text x="752" y="147" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">Y interrupts X</text>
+    <path d="M810 165 V129" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mi-a)"/>
+    <text x="818" y="150" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">back to X</text>
+    <path d="M720 105 H660 V200 H584" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mi-a)"/>
+    <text x="625" y="193" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">return</text>
+</svg>

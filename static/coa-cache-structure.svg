@@ -1,0 +1,63 @@
+<svg width="860" height="380" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 380" role="img" aria-label="Cache and main memory: words move between CPU and cache quickly, whole blocks move between cache and main memory more slowly. Each cache line holds a tag and a block of K words; main memory's 2^n words are grouped into blocks of K words">
+    <defs><marker id="cs-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="cs-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="cs-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="40" y="30" width="120" height="50" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#cs-s)"/>
+    <text x="100.0" y="59.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">CPU</text>
+    <rect x="340" y="30" width="140" height="50" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#cs-s)"/>
+    <text x="410.0" y="59.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Cache</text>
+    <rect x="660" y="30" width="160" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#cs-s)"/>
+    <text x="740.0" y="59.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Main memory</text>
+    <path d="M164 55 H336" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#cs-a)" marker-end="url(#cs-a)"/>
+    <text x="250" y="47" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">word transfer · fast</text>
+    <path d="M484 55 H656" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#cs-a)" marker-end="url(#cs-a)"/>
+    <text x="570" y="47" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">block transfer · slower</text>
+    <text x="220" y="128" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Cache: C lines</text>
+    <text x="95" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">Line #</text>
+    <text x="165" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">Tag</text>
+    <text x="285" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">Block (K words)</text>
+    <path d="M73 158 H117 A3 3 0 0 1 120 161 V188 A0 0 0 0 1 120 188 H70 A0 0 0 0 1 70 188 V161 A3 3 0 0 1 73 158 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M120 158 H210 A0 0 0 0 1 210 158 V188 A0 0 0 0 1 210 188 H120 A0 0 0 0 1 120 188 V158 A0 0 0 0 1 120 158 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <path d="M210 158 H360 A0 0 0 0 1 360 158 V188 A0 0 0 0 1 360 188 H210 A0 0 0 0 1 210 188 V158 A0 0 0 0 1 210 158 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="95" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">0</text>
+    <path d="M70 188 H120 A0 0 0 0 1 120 188 V218 A0 0 0 0 1 120 218 H70 A0 0 0 0 1 70 218 V188 A0 0 0 0 1 70 188 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M120 188 H210 A0 0 0 0 1 210 188 V218 A0 0 0 0 1 210 218 H120 A0 0 0 0 1 120 218 V188 A0 0 0 0 1 120 188 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <path d="M210 188 H360 A0 0 0 0 1 360 188 V218 A0 0 0 0 1 360 218 H210 A0 0 0 0 1 210 218 V188 A0 0 0 0 1 210 188 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="95" y="208" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">1</text>
+    <path d="M70 218 H120 A0 0 0 0 1 120 218 V248 A0 0 0 0 1 120 248 H70 A0 0 0 0 1 70 248 V218 A0 0 0 0 1 70 218 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M120 218 H210 A0 0 0 0 1 210 218 V248 A0 0 0 0 1 210 248 H120 A0 0 0 0 1 120 248 V218 A0 0 0 0 1 120 218 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <path d="M210 218 H360 A0 0 0 0 1 360 218 V248 A0 0 0 0 1 360 248 H210 A0 0 0 0 1 210 248 V218 A0 0 0 0 1 210 218 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="95" y="238" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">2</text>
+    <path d="M70 248 H120 A0 0 0 0 1 120 248 V278 A0 0 0 0 1 120 278 H70 A0 0 0 0 1 70 278 V248 A0 0 0 0 1 70 248 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M120 248 H210 A0 0 0 0 1 210 248 V278 A0 0 0 0 1 210 278 H120 A0 0 0 0 1 120 278 V248 A0 0 0 0 1 120 248 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <path d="M210 248 H360 A0 0 0 0 1 360 248 V278 A0 0 0 0 1 360 278 H210 A0 0 0 0 1 210 278 V248 A0 0 0 0 1 210 248 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="95" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">⋮</text>
+    <path d="M70 278 H120 A0 0 0 0 1 120 278 V305 A3 3 0 0 1 117 308 H73 A3 3 0 0 1 70 305 V278 A0 0 0 0 1 70 278 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M120 278 H210 A0 0 0 0 1 210 278 V308 A0 0 0 0 1 210 308 H120 A0 0 0 0 1 120 308 V278 A0 0 0 0 1 120 278 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <path d="M210 278 H360 A0 0 0 0 1 360 278 V308 A0 0 0 0 1 360 308 H210 A0 0 0 0 1 210 308 V278 A0 0 0 0 1 210 278 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="95" y="298" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">C − 1</text>
+    <text x="650" y="128" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Main memory: 2ⁿ words</text>
+    <text x="560" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">Address</text>
+    <text x="650" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">Word</text>
+    <path d="M533 158 H587 A3 3 0 0 1 590 161 V188 A0 0 0 0 1 590 188 H530 A0 0 0 0 1 530 188 V161 A3 3 0 0 1 533 158 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M590 158 H710 A0 0 0 0 1 710 158 V188 A0 0 0 0 1 710 188 H590 A0 0 0 0 1 590 188 V158 A0 0 0 0 1 590 158 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="560" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">0</text>
+    <path d="M530 188 H590 A0 0 0 0 1 590 188 V218 A0 0 0 0 1 590 218 H530 A0 0 0 0 1 530 218 V188 A0 0 0 0 1 530 188 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M590 188 H710 A0 0 0 0 1 710 188 V218 A0 0 0 0 1 710 218 H590 A0 0 0 0 1 590 218 V188 A0 0 0 0 1 590 188 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="560" y="208" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">1</text>
+    <path d="M530 218 H590 A0 0 0 0 1 590 218 V248 A0 0 0 0 1 590 248 H530 A0 0 0 0 1 530 248 V218 A0 0 0 0 1 530 218 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M590 218 H710 A0 0 0 0 1 710 218 V248 A0 0 0 0 1 710 248 H590 A0 0 0 0 1 590 248 V218 A0 0 0 0 1 590 218 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="560" y="238" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">2</text>
+    <path d="M530 248 H590 A0 0 0 0 1 590 248 V278 A0 0 0 0 1 590 278 H530 A0 0 0 0 1 530 278 V248 A0 0 0 0 1 530 248 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M590 248 H710 A0 0 0 0 1 710 248 V278 A0 0 0 0 1 710 278 H590 A0 0 0 0 1 590 278 V248 A0 0 0 0 1 590 248 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="560" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">3</text>
+    <path d="M530 278 H590 A0 0 0 0 1 590 278 V308 A0 0 0 0 1 590 308 H530 A0 0 0 0 1 530 308 V278 A0 0 0 0 1 530 278 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M590 278 H710 A0 0 0 0 1 710 278 V308 A0 0 0 0 1 710 308 H590 A0 0 0 0 1 590 308 V278 A0 0 0 0 1 590 278 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="560" y="298" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">⋮</text>
+    <path d="M530 308 H590 A0 0 0 0 1 590 308 V335 A3 3 0 0 1 587 338 H533 A3 3 0 0 1 530 335 V308 A0 0 0 0 1 530 308 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <path d="M590 308 H710 A0 0 0 0 1 710 308 V338 A0 0 0 0 1 710 338 H590 A0 0 0 0 1 590 338 V308 A0 0 0 0 1 590 308 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="560" y="328" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">2ⁿ − 1</text>
+    <path d="M720 160 h8 V276 h-8" fill="none" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="738" y="222" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#0D9488">block 0</text>
+    <text x="738" y="238" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">(K = 4 words)</text>
+    <path d="M720 310 h8 V336 h-8" fill="none" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="738" y="327" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#0D9488">block M − 1</text>
+</svg>

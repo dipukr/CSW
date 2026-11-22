@@ -1,0 +1,61 @@
+<svg width="900" height="330" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" role="img" aria-label="x86 instruction format: optional instruction prefixes (0 to 4 bytes), opcode (1 to 3 bytes), optional ModR/M byte, optional SIB byte, displacement (0, 1, 2 or 4 bytes) and immediate (0, 1, 2 or 4 bytes). ModR/M splits into Mod (2 bits), Reg/Opcode (3 bits) and R/M (3 bits); SIB splits into Scale (2), Index (3) and Base (3). The prefixes are instruction prefix, segment override, operand size override and address size override, each 0 or 1 byte">
+    <defs><marker id="x86f-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="x86f-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="x86f-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <path d="M43 30 H190 A0 0 0 0 1 190 30 V78 A0 0 0 0 1 190 78 H43 A3 3 0 0 1 40 75 V33 A3 3 0 0 1 43 30 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="115.0" y="50" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Instruction</text>
+    <text x="115.0" y="65" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">prefixes</text>
+    <text x="115.0" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0–4 bytes</text>
+    <path d="M190 30 H310 A0 0 0 0 1 310 30 V78 A0 0 0 0 1 310 78 H190 A0 0 0 0 1 190 78 V30 A0 0 0 0 1 190 30 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="250.0" y="58" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Opcode</text>
+    <text x="250.0" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">1, 2 or 3 bytes</text>
+    <path d="M310 30 H410 A0 0 0 0 1 410 30 V78 A0 0 0 0 1 410 78 H310 A0 0 0 0 1 310 78 V30 A0 0 0 0 1 310 30 Z" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2"/>
+    <text x="360.0" y="58" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">ModR/M</text>
+    <text x="360.0" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0 or 1</text>
+    <path d="M410 30 H510 A0 0 0 0 1 510 30 V78 A0 0 0 0 1 510 78 H410 A0 0 0 0 1 410 78 V30 A0 0 0 0 1 410 30 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="460.0" y="58" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">SIB</text>
+    <text x="460.0" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0 or 1</text>
+    <path d="M510 30 H655 A0 0 0 0 1 655 30 V78 A0 0 0 0 1 655 78 H510 A0 0 0 0 1 510 78 V30 A0 0 0 0 1 510 30 Z" fill="#FFF1F2" stroke="#FECDD3" stroke-width="1.2"/>
+    <text x="582.5" y="58" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Displacement</text>
+    <text x="582.5" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0, 1, 2 or 4</text>
+    <path d="M655 30 H797 A3 3 0 0 1 800 33 V75 A3 3 0 0 1 797 78 H655 A0 0 0 0 1 655 78 V30 A0 0 0 0 1 655 30 Z" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.2"/>
+    <text x="727.5" y="58" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Immediate</text>
+    <text x="727.5" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0, 1, 2 or 4</text>
+    <path d="M310 104 L320 126" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M410 104 L512 126" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M323 126 H368 A0 0 0 0 1 368 126 V162 A0 0 0 0 1 368 162 H323 A3 3 0 0 1 320 159 V129 A3 3 0 0 1 323 126 Z" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2"/>
+    <text x="344.0" y="149" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Mod</text>
+    <text x="344.0" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">2 bits</text>
+    <path d="M368 126 H440 A0 0 0 0 1 440 126 V162 A0 0 0 0 1 440 162 H368 A0 0 0 0 1 368 162 V126 A0 0 0 0 1 368 126 Z" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2"/>
+    <text x="404.0" y="149" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Reg/Opcode</text>
+    <text x="404.0" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">3 bits</text>
+    <path d="M440 126 H509 A3 3 0 0 1 512 129 V159 A3 3 0 0 1 509 162 H440 A0 0 0 0 1 440 162 V126 A0 0 0 0 1 440 126 Z" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2"/>
+    <text x="476.0" y="149" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">R/M</text>
+    <text x="476.0" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">3 bits</text>
+    <path d="M410 104 L560 126" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M510 104 L752 126" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M563 126 H608 A0 0 0 0 1 608 126 V162 A0 0 0 0 1 608 162 H563 A3 3 0 0 1 560 159 V129 A3 3 0 0 1 563 126 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="584.0" y="149" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Scale</text>
+    <text x="584.0" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">2 bits</text>
+    <path d="M608 126 H680 A0 0 0 0 1 680 126 V162 A0 0 0 0 1 680 162 H608 A0 0 0 0 1 608 162 V126 A0 0 0 0 1 608 126 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="644.0" y="149" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Index</text>
+    <text x="644.0" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">3 bits</text>
+    <path d="M680 126 H749 A3 3 0 0 1 752 129 V159 A3 3 0 0 1 749 162 H680 A0 0 0 0 1 680 162 V126 A0 0 0 0 1 680 126 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="716.0" y="149" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Base</text>
+    <text x="716.0" y="178" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">3 bits</text>
+    <path d="M43 250 H160 A0 0 0 0 1 160 250 V294 A0 0 0 0 1 160 294 H43 A3 3 0 0 1 40 291 V253 A3 3 0 0 1 43 250 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="100" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">Instruction</text>
+    <text x="100" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">prefix</text>
+    <text x="100" y="312" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">0 or 1 byte</text>
+    <path d="M160 250 H280 A0 0 0 0 1 280 250 V294 A0 0 0 0 1 280 294 H160 A0 0 0 0 1 160 294 V250 A0 0 0 0 1 160 250 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="220" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">Segment</text>
+    <text x="220" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">override</text>
+    <text x="220" y="312" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">0 or 1 byte</text>
+    <path d="M280 250 H400 A0 0 0 0 1 400 250 V294 A0 0 0 0 1 400 294 H280 A0 0 0 0 1 280 294 V250 A0 0 0 0 1 280 250 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="340" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">Operand size</text>
+    <text x="340" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">override</text>
+    <text x="340" y="312" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">0 or 1 byte</text>
+    <path d="M400 250 H517 A3 3 0 0 1 520 253 V291 A3 3 0 0 1 517 294 H400 A0 0 0 0 1 400 294 V250 A0 0 0 0 1 400 250 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="460" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">Address size</text>
+    <text x="460" y="283" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">override</text>
+    <text x="460" y="312" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="500" fill="#64748B">0 or 1 byte</text>
+    <path d="M115 104 V230 H280 V250" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+</svg>

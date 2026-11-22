@@ -1,0 +1,68 @@
+<svg width="700" height="346" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 346" role="img" aria-label="Pass 4, key 6: start with 2, 3, 7, 8 | 6, 4, 5. 8 &gt; 6, shift 8: 2, 3, 7, 8, 8, 4, 5. 7 &gt; 6, shift 7: 2, 3, 7, 7, 8, 4, 5. 3 &gt; 6 is false, stop. Insert 6: 2, 3, 6, 7, 8 | 4, 5">
+    <defs><marker id="insert-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="insert-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="insert-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="24" y="14" width="120" height="34" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="84" y="37" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">Key = 6</text>
+    <text x="24" y="91" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Start</text>
+    <rect x="302" y="66" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="326.0" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">2</text>
+    <rect x="354" y="66" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="378.0" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">3</text>
+    <rect x="406" y="66" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="430.0" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">7</text>
+    <rect x="458" y="66" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="482.0" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">8</text>
+    <rect x="510" y="66" width="48" height="40" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="534.0" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">6</text>
+    <rect x="562" y="66" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="586.0" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">4</text>
+    <rect x="614" y="66" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="638.0" y="92" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">5</text>
+    <path d="M508 60 V112" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="24" y="153" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">8 &gt; 6 → shift 8</text>
+    <rect x="302" y="128" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="326.0" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">2</text>
+    <rect x="354" y="128" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="378.0" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">3</text>
+    <rect x="406" y="128" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="430.0" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">7</text>
+    <rect x="458" y="128" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="482.0" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">8</text>
+    <rect x="510" y="128" width="48" height="40" rx="3" fill="#FFF1F2" stroke="#F472B6" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="534.0" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">8</text>
+    <rect x="562" y="128" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="586.0" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">4</text>
+    <rect x="614" y="128" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="638.0" y="154" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">5</text>
+    <text x="24" y="215" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">7 &gt; 6 → shift 7</text>
+    <rect x="302" y="190" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="326.0" y="216" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">2</text>
+    <rect x="354" y="190" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="378.0" y="216" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">3</text>
+    <rect x="406" y="190" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="430.0" y="216" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">7</text>
+    <rect x="458" y="190" width="48" height="40" rx="3" fill="#FFF1F2" stroke="#F472B6" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="482.0" y="216" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">7</text>
+    <rect x="510" y="190" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="534.0" y="216" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">8</text>
+    <rect x="562" y="190" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="586.0" y="216" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">4</text>
+    <rect x="614" y="190" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="638.0" y="216" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">5</text>
+    <text x="24" y="256" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#155E63">3 &gt; 6 → false (stop)</text>
+    <text x="24" y="307" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Insert 6:</text>
+    <rect x="302" y="282" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="326.0" y="308" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">2</text>
+    <rect x="354" y="282" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="378.0" y="308" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">3</text>
+    <rect x="406" y="282" width="48" height="40" rx="3" fill="#ECFDF5" stroke="#10B981" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="430.0" y="308" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">6</text>
+    <rect x="458" y="282" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="482.0" y="308" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">7</text>
+    <rect x="510" y="282" width="48" height="40" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="534.0" y="308" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">8</text>
+    <rect x="562" y="282" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="586.0" y="308" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">4</text>
+    <rect x="614" y="282" width="48" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#insert-s)"/>
+    <text x="638.0" y="308" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="500" fill="#1E293B">5</text>
+    <path d="M560 276 V328" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

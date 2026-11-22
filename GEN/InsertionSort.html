@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insertion Sort - Notes</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+/* Merge Sort widgets (page-specific) */
+.ms-widget { margin: 16px 0 24px; padding: 16px 18px; border: 1px solid #e3e6ea; border-radius: 3px; background: #ffffff; display: flex; flex-direction: column; gap: 10px; }
+.ms-head { display: flex; justify-content: space-between; align-items: center; }
+.ms-badge { font-size: 13px; padding: 1px 9px; border: 1px solid #c9ecea; border-radius: 999px; color: #0f766e; background: #f0fdfa; }
+.ms-label { font-family: Arial, Helvetica, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #155e63; }
+.ms-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ms-row { display: flex; gap: 3px; flex-wrap: wrap; }
+.ms-cell { min-width: 44px; flex: 1 1 0; max-width: 64px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ms-box { width: 100%; text-align: center; padding: 6px 0; border: 1px solid #e2e8f0; border-radius: 3px; background: #ffffff; font-variant-numeric: tabular-nums; font-weight: 500; color: #1e293b; transition: background .2s, border-color .2s; }
+.ms-cap { font-size: 11px; color: #64748b; min-height: 15px; }
+.ms-box.used { background: #f1f5f9; color: #94a3b8; }
+.ms-box.ptr-l { border: 2px solid #3a81c2; background: #eff6ff; font-weight: 700; }
+.ms-box.ptr-r { border: 2px solid #168568; background: #ecfdf5; font-weight: 700; }
+.ms-box.left { background: #eff6ff; border-color: #93c5fd; }
+.ms-box.right { background: #ecfdf5; border-color: #6ee7b7; }
+.ms-box.done { background: #d1fae5; border-color: #168568; }
+.ms-box.faded { color: #cbd5e1; border-color: #f1f5f9; }
+.ms-box.empty { background: #f8fafc; color: #cbd5e1; }
+.ms-box.filled { background: #ecfdf5; border-color: #168568; }
+.ms-note { padding: 10px 12px; min-height: 44px; background: #f1f5f9; border-radius: 3px; font-size: 15px; display: flex; align-items: center; }
+.ms-controls { display: flex; align-items: center; gap: 8px; }
+.ms-controls input[type=range] { flex: 1; accent-color: #0d9488; }
+.ms-controls button { font: inherit; font-size: 15px; padding: 4px 12px; border: 1px solid #cbd5e1; border-radius: 3px; background: #ffffff; color: #1e293b; cursor: pointer; }
+.ms-controls button.primary { background: #0d9488; border-color: #0d9488; color: #ffffff; }
+.ms-controls button:disabled { opacity: .45; cursor: default; }
+.ms-legend { font-size: 12.5px; color: #64748b; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ms-key { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid; margin-left: 8px; }
+.ms-key.left { background: #eff6ff; border-color: #93c5fd; } .ms-key.right { background: #ecfdf5; border-color: #6ee7b7; }
+.ms-key.ptr { background: #ffffff; border: 2px solid #3a81c2; } .ms-key.done { background: #d1fae5; border-color: #168568; }
+@media (max-width: 600px) { .ms-pair { grid-template-columns: 1fr; } }
+/* Insertion Sort visualizer */
+.bv-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 14px; color: #475569; }
+.bv-stats { margin-left: auto; font-variant-numeric: tabular-nums; }
+.iv-key { min-width: 46px; text-align: center; padding: 5px 10px; border: 2px solid #3a81c2; border-radius: 3px; background: #eff6ff; font-weight: 700; color: #1e293b; }
+.iv-key.none { border-color: #e2e8f0; background: #f8fafc; color: #cbd5e1; }
+.ms-box.iv-cmp, .ms-key.iv-cmp { background: #fef3c7; border-color: #f59e0b; }
+.ms-box.iv-ins { border: 2px solid #3a81c2; background: #dbeafe; font-weight: 700; }
+.ms-key.iv-ins { background: #dbeafe; border: 2px solid #3a81c2; }
+.ms-box.iv-hole { border: 1px dashed #94a3b8; background: #ffffff; color: #94a3b8; }
+.ms-key.iv-hole { background: #ffffff; border: 1px dashed #94a3b8; }
+</style>
+</head>
+<body>
+<div class="note">
+    <div class="title">Insertion Sort — Complete Guide</div>
+
+    <div class="intro">
+        <p><strong>Insertion Sort</strong> is a simple, comparison-based sorting algorithm that builds a sorted portion of an array <strong>one element at a time</strong>.</p>
+        <p>It works by taking an element from the unsorted portion, finding its correct position in the sorted portion, and inserting it there by shifting larger elements to the right.</p>
+        <p>Insertion Sort is especially useful for <strong>small datasets, nearly sorted arrays, and as a building block in hybrid sorting algorithms</strong>.</p>
+    </div>
+
+    <div class="subheading">What is Insertion Sort?</div>
+    <div class="intro">
+        <p>Imagine sorting playing cards in your hand.</p>
+        <p>You pick up cards one at a time. Whenever you pick up a new card, you compare it with the cards already in your hand and insert it into the correct position.</p>
+        <p>Insertion Sort works exactly the same way.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-example.svg" alt="Example of Insertion Sort in ascending order: in the array 7, 3, 8, 2, 6, 4, 5 the first element, 7, forms the sorted portion; each next element is inserted in its correct place, giving 2, 3, 4, 5, 6, 7, 8" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p>An array is conceptually divided into two portions:</p>
+        <ul>
+            <li><strong>Sorted portion (left):</strong> Elements that have already been processed and are in sorted order.</li>
+            <li><strong>Unsorted portion (right):</strong> Elements that still need to be inserted.</li>
+        </ul>
+        <p>Initially, the first element is considered sorted because any single element is already sorted.</p>
+    </div>
+
+    <div class="subheading">How Insertion Sort Works</div>
+    <div class="intro">
+        <p>For an array containing <code>n</code> elements:</p>
+        <ol>
+            <li>Start at index <code>1</code>, treating index <code>0</code> as the sorted portion.</li>
+            <li>Store the current element in a temporary variable called <code>key</code>.</li>
+            <li>Compare <code>key</code> with elements to its left, beginning with the immediate predecessor.</li>
+            <li>Shift elements larger than <code>key</code> one position to the right.</li>
+            <li>Insert <code>key</code> into the newly available position.</li>
+            <li>Repeat until every element has been processed.</li>
+        </ol>
+        <p>The important distinction is that <strong>Insertion Sort shifts elements instead of repeatedly swapping them</strong> in its conventional implementation.</p>
+    </div>
+
+    <div class="subheading">Interactive Step-by-Step Visualization</div>
+    <div class="intro">
+        <p>Explore the complete sorting process below. Move through the steps to see how the key is selected, larger elements are shifted, and the sorted portion expands.</p>
+    </div>
+    <div class="ms-widget" id="insertionViz">
+        <div class="ms-head"><strong>Insertion Sort visualizer</strong><span class="ms-badge" data-role="badge"></span></div>
+        <div class="bv-top"><span class="ms-label">KEY</span><span class="iv-key" data-role="key"></span><span class="bv-stats" data-role="stats"></span></div>
+        <div class="ms-row ms-indexed" data-role="arr"></div>
+        <div class="ms-note" data-role="note"></div>
+        <div class="ms-controls"><button data-role="prev" aria-label="Previous step">‹</button><input type="range" data-role="slider" min="0" step="1" aria-label="Step"><button class="primary" data-role="next">Next ›</button><button data-role="play">▶ Play</button><button data-role="shuffle">Shuffle</button></div>
+        <div class="ms-legend"><span class="ms-key left"></span>sorted portion <span class="ms-key iv-cmp"></span>compared with key <span class="ms-key right"></span>just shifted right <span class="ms-key iv-ins"></span>key inserted <span class="ms-key iv-hole"></span>free slot</div>
+    </div>
+
+    <div class="subheading">Detailed Dry Run</div>
+    <div class="intro">
+        <p>Consider:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-array.svg" alt="The array to sort: 7, 3, 8, 2, 6, 4, 5 at indices 0 to 6" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>We'll sort it into ascending order.</p>
+        <p class="minor-heading"><strong>Initial state</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-initial.svg" alt="Initial state: in 7 | 3, 8, 2, 6, 4, 5 the vertical separator follows index 0, so 7 alone is the sorted portion and the rest is unsorted" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>The vertical separator <code>|</code> distinguishes the sorted and unsorted portions.</p>
+        <p class="minor-heading"><strong>Pass 1: Insert 3</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-pass1.svg" alt="Pass 1, key 3: start with 7 | 3, 8, 2, 6, 4, 5. Compare 7 &gt; 3, true. Shift 7 right: 7, 7, 8, 2, 6, 4, 5. Insert 3: 3, 7 | 8, 2, 6, 4, 5" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>Now the first two elements are sorted.</p>
+        <p class="minor-heading"><strong>Pass 2: Insert 8</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-pass2.svg" alt="Pass 2, key 8: start with 3, 7 | 8, 2, 6, 4, 5. Compare 7 &gt; 8, false. No shifting required. Result: 3, 7, 8 | 2, 6, 4, 5" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>This shows why Insertion Sort performs efficiently on already sorted or nearly sorted arrays.</p>
+        <p class="minor-heading"><strong>Pass 3: Insert 2</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-pass3.svg" alt="Pass 3, key 2: start with 3, 7, 8 | 2, 6, 4, 5. 8 &gt; 2, shift 8: 3, 7, 8, 8, 6, 4, 5. 7 &gt; 2, shift 7: 3, 7, 7, 8, 6, 4, 5. 3 &gt; 2, shift 3: 3, 3, 7, 8, 6, 4, 5. Insert 2 at index 0: 2, 3, 7, 8 | 6, 4, 5" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>Notice that the original value <code>2</code> was saved in <code>key</code>, so it isn't lost when <code>8</code> is copied over its original position.</p>
+        <p class="minor-heading"><strong>Pass 4: Insert 6</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-pass4.svg" alt="Pass 4, key 6: start with 2, 3, 7, 8 | 6, 4, 5. 8 &gt; 6, shift 8: 2, 3, 7, 8, 8, 4, 5. 7 &gt; 6, shift 7: 2, 3, 7, 7, 8, 4, 5. 3 &gt; 6 is false, stop. Insert 6: 2, 3, 6, 7, 8 | 4, 5" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pass 5: Insert 4</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-pass5.svg" alt="Pass 5, key 4: start with 2, 3, 6, 7, 8 | 4, 5. Shift 8, 7, 6 right. Insert 4 after 3: 2, 3, 4, 6, 7, 8 | 5" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pass 6: Insert 5</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-pass6.svg" alt="Pass 6, key 5: start with 2, 3, 4, 6, 7, 8 | 5. Shift 8, 7, 6 right. Insert 5 after 4: 2, 3, 4, 5, 6, 7, 8, fully sorted" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>The entire array is now sorted.</p>
+        <p class="minor-heading"><strong>Summary of all passes</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-dry-summary.svg" alt="Summary of all passes: initial 7, 3, 8, 2, 6, 4, 5; pass 1 key 3 gives 3, 7, 8, 2, 6, 4, 5; pass 2 key 8 gives 3, 7, 8, 2, 6, 4, 5; pass 3 key 2 gives 2, 3, 7, 8, 6, 4, 5; pass 4 key 6 gives 2, 3, 6, 7, 8, 4, 5; pass 5 key 4 gives 2, 3, 4, 6, 7, 8, 5; pass 6 key 5 gives 2, 3, 4, 5, 6, 7, 8" style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>For an array of <code>n</code> elements, conventional Insertion Sort performs exactly <strong><code>n - 1</code> outer-loop passes</strong>, although some passes require no shifting.</p>
+    </div>
+
+    <div class="subheading">Java Implementation</div>
+    <div class="intro">
+        <p>Here is the standard and most widely used implementation of Insertion Sort.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> insertionSort(<span class="code-keyword">int</span>[] arr) {
+    <span class="code-keyword">int</span> n = arr.length;
+
+    <span class="code-comment">// Start from the second element</span>
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; n; i++) {
+        <span class="code-keyword">int</span> key = arr[i];
+        <span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;
+
+        <span class="code-comment">// Shift elements greater than key</span>
+        <span class="code-comment">// one position to the right</span>
+        <span class="code-keyword">while</span> (j &gt;= <span class="code-number">0</span> &amp;&amp; arr[j] &gt; key) {
+            arr[j + <span class="code-number">1</span>] = arr[j];
+            j--;
+        }
+
+        <span class="code-comment">// Insert key into its correct position</span>
+        arr[j + <span class="code-number">1</span>] = key;
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] arr = {<span class="code-number">7</span>, <span class="code-number">3</span>, <span class="code-number">8</span>, <span class="code-number">2</span>, <span class="code-number">6</span>, <span class="code-number">4</span>, <span class="code-number">5</span>};
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Before: {arr}"</span>);
+    insertionSort(arr);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"After:  {arr}"</span>);
+}</code></pre></div>
+    <div class="intro">
+        <p><strong>Output</strong></p>
+    </div>
+    <div class="code-block"><pre><code>Before: [7, 3, 8, 2, 6, 4, 5]
+After:  [2, 3, 4, 5, 6, 7, 8]</code></pre></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Understanding the code</strong></p>
+        <p><strong>1. Why does the outer loop start at index 1?</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; n; i++)</code></pre></div>
+    <div class="intro">
+        <p>The first element is already sorted by itself, so the algorithm starts with the second element.</p>
+        <p>At the beginning of iteration <code>i</code>, the elements from <code>0</code> through <code>i - 1</code> are sorted.</p>
+        <p><strong>2. Why do we store <code>arr[i]</code> in <code>key</code>?</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> key = arr[i];</code></pre></div>
+    <div class="intro">
+        <p>The shifting process may overwrite the original position of <code>arr[i]</code>.</p>
+        <p>Therefore, we store its value separately before shifting begins.</p>
+        <p><strong>3. Why do we start <code>j</code> at <code>i - 1</code>?</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;</code></pre></div>
+    <div class="intro">
+        <p>We must compare the key with the rightmost element of the already sorted portion first, then move backward.</p>
+        <p><strong>4. Why do we use <code>arr[j] &gt; key</code>?</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">while</span> (j &gt;= <span class="code-number">0</span> &amp;&amp; arr[j] &gt; key)</code></pre></div>
+    <div class="intro">
+        <p>We want to shift only the elements that are strictly greater than the current key.</p>
+        <p>If <code>arr[j] &lt;= key</code>, we've found the correct insertion location.</p>
+        <p>Also, Java's short-circuit <code>&amp;&amp;</code> ensures that <code>arr[j]</code> is not accessed when <code>j</code> is negative.</p>
+        <p><strong>5. Why is the insertion position <code>j + 1</code>?</strong></p>
+    </div>
+    <div class="code-block"><pre><code>arr[j + <span class="code-number">1</span>] = key;</code></pre></div>
+    <div class="intro">
+        <p>The loop stops either because <code>j</code> becomes <code>-1</code>, or because <code>arr[j] &lt;= key</code>.</p>
+        <p>In either case, the correct insertion position is immediately after <code>j</code>.</p>
+        <p>For example:</p>
+    </div>
+    <div class="code-block"><pre><code>Sorted portion: [2, 3, 7, 8]
+Key = 6
+
+Start j = 3
+
+8 &gt; 6 → shift, j = 2
+7 &gt; 6 → shift, j = 1
+3 &gt; 6 → false
+
+Insert at j + 1 = 2
+
+Result: [2, 3, 6, 7, 8]</code></pre></div>
+
+    <div class="subheading">Time Complexity Analysis</div>
+    <div class="intro">
+        <p>The time complexity of Insertion Sort depends heavily on the initial arrangement of elements.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Case</th><th>Time complexity</th><th>Reason</th></tr></thead>
+        <tbody>
+            <tr><td>Best</td><td><span class="math" data-tex="O(n)">O(n)</span></td><td>Already sorted</td></tr>
+            <tr><td>Average</td><td><span class="math" data-tex="O(n^2)">O(n^2)</span></td><td>Some elements shift</td></tr>
+            <tr><td>Worst</td><td><span class="math" data-tex="O(n^2)">O(n^2)</span></td><td>Reverse sorted</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Best case — O(n)</strong></p>
+        <p>Consider:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 2, 3, 4, 5]</code></pre></div>
+    <div class="intro">
+        <p>Every element is already in its correct position.</p>
+        <p>For each outer-loop iteration, the algorithm makes one key comparison and performs no shifts.</p>
+    </div>
+    <div class="code-block"><pre><code>i = 1 → Compare 1 &gt; 2 → false
+i = 2 → Compare 2 &gt; 3 → false
+i = 3 → Compare 3 &gt; 4 → false
+i = 4 → Compare 4 &gt; 5 → false</code></pre></div>
+    <div class="intro">
+        <p>Total key comparisons:</p>
+        <p class="math-display"><span class="math" data-tex="C_{\text{best}}(n)=n-1" data-display="1">C_{\text{best}}(n)=n-1</span></p>
+        <p>Therefore:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{T_{\text{best}}(n)=\Theta(n)}" data-display="1">\boxed{T_{\text{best}}(n)=\Theta(n)}</span></p>
+        <p>This is one of the primary advantages of Insertion Sort.</p>
+        <p class="minor-heading"><strong>Worst case — O(n²)</strong></p>
+        <p>Consider a reverse-sorted array:</p>
+    </div>
+    <div class="code-block"><pre><code>[5, 4, 3, 2, 1]</code></pre></div>
+    <div class="intro">
+        <p>Every new element must be moved to the beginning of the sorted portion.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Pass</th><th>Key comparisons</th><th>Shifts</th></tr></thead>
+        <tbody>
+            <tr><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>2</td><td>2</td><td>2</td></tr>
+            <tr><td>3</td><td>3</td><td>3</td></tr>
+            <tr><td>4</td><td>4</td><td>4</td></tr>
+            <tr><td>Total</td><td>10</td><td>10</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>For <code>n</code> elements, the total number of key comparisons is:</p>
+        <p class="math-display"><span class="math" data-tex="C_{\text{worst}}(n)=1+2+3+\cdots+(n-1)" data-display="1">C_{\text{worst}}(n)=1+2+3+\cdots+(n-1)</span></p>
+        <p>Using the arithmetic series formula:</p>
+        <p class="math-display"><span class="math" data-tex="C_{\text{worst}}(n)=\frac{n(n-1)}{2}" data-display="1">C_{\text{worst}}(n)=\frac{n(n-1)}{2}</span></p>
+        <p>Hence:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{T_{\text{worst}}(n)=\Theta(n^2)}" data-display="1">\boxed{T_{\text{worst}}(n)=\Theta(n^2)}</span></p>
+        <p class="minor-heading"><strong>Average case — O(n²)</strong></p>
+        <p>In a randomly arranged array of distinct elements, the key typically needs to move past some of the preceding elements.</p>
+        <p>For uniformly random permutations, the expected total number of shifts is:</p>
+        <p class="math-display"><span class="math" data-tex="E[\text{shifts}]=\frac{n(n-1)}{4}" data-display="1">E[\text{shifts}]=\frac{n(n-1)}{4}</span></p>
+        <p>This is approximately half the worst-case number of shifts, but its growth is still quadratic.</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{T_{\text{average}}(n)=\Theta(n^2)}" data-display="1">\boxed{T_{\text{average}}(n)=\Theta(n^2)}</span></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/insertion-shifts-chart.svg" alt="Line chart of shifts against array size n: expected shifts for a random permutation (average) are 22.5, 95, 390, 885, 1,580 and 2,475 for n = 10, 20, 40, 60, 80 and 100; worst-case shifts for reverse order are 45, 190, 780, 1,770, 3,160 and 4,950. Both curves grow quadratically" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">These are theoretical shift counts, not measured execution times. Both curves grow quadratically.</p>
+    </div>
+
+    <div class="subheading">Space Complexity</div>
+    <div class="intro">
+        <p>Insertion Sort requires only two additional scalar variables for sorting:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> key = arr[i];
+<span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;</code></pre></div>
+    <div class="intro">
+        <p>No extra array, auxiliary buffer, or recursion stack is needed in the iterative implementation.</p>
+        <p>Therefore:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{\text{Auxiliary space}=\Theta(1)}" data-display="1">\boxed{\text{Auxiliary space}=\Theta(1)}</span></p>
+        <p>This makes conventional Insertion Sort an <strong>in-place sorting algorithm</strong>.</p>
+    </div>
+
+    <div class="subheading">Important Properties of Insertion Sort</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Property</th><th>Insertion Sort</th></tr></thead>
+        <tbody>
+            <tr><td>Algorithm category</td><td>Comparison-based</td></tr>
+            <tr><td>Technique</td><td>Incremental insertion</td></tr>
+            <tr><td>In-place</td><td>Yes</td></tr>
+            <tr><td>Stable</td><td>Yes, with strict <code>&gt;</code></td></tr>
+            <tr><td>Adaptive</td><td>Yes</td></tr>
+            <tr><td>Online</td><td>Yes</td></tr>
+            <tr><td>Recursive by default</td><td>No</td></tr>
+            <tr><td>Best-case time</td><td>O(n)</td></tr>
+            <tr><td>Average-case time</td><td>O(n²)</td></tr>
+            <tr><td>Worst-case time</td><td>O(n²)</td></tr>
+            <tr><td>Auxiliary space</td><td>O(1)</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>What does stable mean?</strong></p>
+        <p>A sorting algorithm is stable if elements with equal sort keys retain their original relative order.</p>
+        <p>Consider records:</p>
+    </div>
+    <div class="code-block"><pre><code>[(4, A), (2, B), (4, C)]</code></pre></div>
+    <div class="intro">
+        <p>We sort by the numeric value only.</p>
+        <p>The expected stable output is:</p>
+    </div>
+    <div class="code-block"><pre><code>[(2, B), (4, A), (4, C)]</code></pre></div>
+    <div class="intro">
+        <p>Notice that <code>A</code> remains before <code>C</code>, because both records have the same key <code>4</code>.</p>
+        <p>Insertion Sort preserves this order because it uses:</p>
+    </div>
+    <div class="code-block"><pre><code>arr[j] &gt; key</code></pre></div>
+    <div class="intro">
+        <p>rather than:</p>
+    </div>
+    <div class="code-block"><pre><code>arr[j] &gt;= key</code></pre></div>
+    <div class="intro">
+        <p>The strict comparison does not move equal-key elements past one another.</p>
+        <p class="minor-heading"><strong>What does adaptive mean?</strong></p>
+        <p>An adaptive sorting algorithm performs less work when its input is partially sorted.</p>
+        <p>For example:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 2, 3, 4, 6, 5, 7, 8]</code></pre></div>
+    <div class="intro">
+        <p>Only <code>6</code> needs to be shifted when inserting <code>5</code>. The rest of the array requires no shifting.</p>
+        <p>This makes Insertion Sort particularly efficient for nearly sorted data.</p>
+        <p class="minor-heading"><strong>What does online mean?</strong></p>
+        <p>An online algorithm can process elements incrementally, without needing to know the complete input in advance.</p>
+        <p>For example:</p>
+    </div>
+    <div class="code-block"><pre><code>Current sorted array: [2, 4, 7]
+
+New element arrives: 5
+
+Updated sorted array: [2, 4, 5, 7]</code></pre></div>
+    <div class="intro">
+        <p>The new element can be inserted while preserving sorted order.</p>
+        <p>However, insertion into a normal array can still take O(n) time due to shifting.</p>
+    </div>
+
+    <div class="subheading">Why Insertion Sort Is Correct — Loop Invariant</div>
+    <div class="intro">
+        <p>A loop invariant is a property that remains true before and after each iteration.</p>
+        <p>For Insertion Sort, the main invariant is:</p>
+        <p><strong>At the beginning of outer-loop iteration <code>i</code>, the subarray <code>arr[0 ... i-1]</code> is sorted and contains exactly the elements originally found in that prefix.</strong></p>
+        <p>We can prove correctness using three steps.</p>
+        <p class="minor-heading"><strong>Initialization</strong></p>
+        <p>Before the first iteration, <code>i = 1</code>.</p>
+        <p>The sorted portion contains only <code>arr[0]</code>.</p>
+        <p>A single-element array is always sorted.</p>
+        <p>Therefore, the invariant is true.</p>
+        <p class="minor-heading"><strong>Maintenance</strong></p>
+        <p>Assume the invariant holds at the beginning of iteration <code>i</code>.</p>
+        <p>The algorithm:</p>
+        <ol>
+            <li>Saves <code>arr[i]</code> in <code>key</code>.</li>
+            <li>Shifts all larger elements of the sorted portion to the right.</li>
+            <li>Inserts <code>key</code> after the last element that is less than or equal to it.</li>
+        </ol>
+        <p>The resulting prefix <code>arr[0 ... i]</code> is sorted and contains the same elements as before.</p>
+        <p>Therefore, the invariant is maintained.</p>
+        <p class="minor-heading"><strong>Termination</strong></p>
+        <p>The outer loop ends when <code>i = n</code>.</p>
+        <p>At that point, the invariant tells us:</p>
+    </div>
+    <div class="code-block"><pre><code>arr[0 ... n-1] is sorted</code></pre></div>
+    <div class="intro">
+        <p>This is the entire array.</p>
+        <p>Therefore, Insertion Sort correctly sorts the input.</p>
+    </div>
+
+    <div class="subheading">Counting Comparisons and Shifts</div>
+    <div class="intro">
+        <p>It's helpful to instrument the algorithm to see how much work it performs.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] arr = {<span class="code-number">7</span>, <span class="code-number">3</span>, <span class="code-number">8</span>, <span class="code-number">2</span>, <span class="code-number">6</span>, <span class="code-number">4</span>, <span class="code-number">5</span>};
+
+    <span class="code-keyword">int</span> comparisons = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> shifts = <span class="code-number">0</span>;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; arr.length; i++) {
+        <span class="code-keyword">int</span> key = arr[i];
+        <span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;
+
+        <span class="code-keyword">while</span> (j &gt;= <span class="code-number">0</span>) {
+            comparisons++;
+
+            <span class="code-keyword">if</span> (arr[j] &lt;= key)
+                <span class="code-keyword">break</span>;
+
+            arr[j + <span class="code-number">1</span>] = arr[j];
+            shifts++;
+            j--;
+        }
+
+        arr[j + <span class="code-number">1</span>] = key;
+    }
+
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{arr}"</span>);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Comparisons: {comparisons}"</span>);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Shifts: {shifts}"</span>);
+}</code></pre></div>
+    <div class="intro">
+        <p><strong>Output</strong></p>
+    </div>
+    <div class="code-block"><pre><code>[2, 3, 4, 5, 6, 7, 8]
+Comparisons: 16
+Shifts: 12</code></pre></div>
+    <div class="intro">
+        <p>Here, comparisons count element-to-key comparisons, not index-boundary checks. Shifts count only assignments made to move existing elements rightward, excluding final key insertions.</p>
+        <p>An interesting mathematical property is that the number of shifts in standard Insertion Sort is exactly equal to the <strong>number of inversions</strong> in the original array.</p>
+        <p>An inversion is a pair of indices <code>i &lt; j</code> for which <code>arr[i] &gt; arr[j]</code>.</p>
+        <p>Every shift eliminates one such inversion.</p>
+        <p>This explains why Insertion Sort is efficient when an array is already close to sorted.</p>
+    </div>
+
+    <div class="subheading">Binary Insertion Sort — An Optimized Variant</div>
+    <div class="intro">
+        <p>In the standard algorithm, the insertion position is found using linear search.</p>
+        <p>But because the left portion is already sorted, we can use <strong>binary search</strong> to find the insertion position.</p>
+        <p>This variation is called <em>Binary Insertion Sort</em>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> binaryInsertionSort(<span class="code-keyword">int</span>[] arr) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; arr.length; i++) {
+        <span class="code-keyword">int</span> key = arr[i];
+
+        <span class="code-comment">// Binary search for insertion position</span>
+        <span class="code-keyword">int</span> low = <span class="code-number">0</span>;
+        <span class="code-keyword">int</span> high = i;
+
+        <span class="code-keyword">while</span> (low &lt; high) {
+            <span class="code-keyword">int</span> mid = low + (high - low) / <span class="code-number">2</span>;
+
+            <span class="code-keyword">if</span> (arr[mid] &lt;= key)
+                low = mid + <span class="code-number">1</span>;
+            <span class="code-keyword">else</span>
+                high = mid;
+        }
+
+        <span class="code-comment">// Shift elements to create space</span>
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = i; j &gt; low; j--)
+            arr[j] = arr[j - <span class="code-number">1</span>];
+
+        arr[low] = key;
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Does Binary Insertion Sort become O(n log n)?</strong></p>
+        <p>No. Binary search reduces the number of comparisons, but <strong>not the number of required shifts</strong>.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Operation</th><th>Standard insertion</th><th>Binary insertion</th></tr></thead>
+        <tbody>
+            <tr><td>Find insertion position</td><td>O(n) worst case</td><td>O(log n)</td></tr>
+            <tr><td>Shift elements</td><td>O(n)</td><td>O(n)</td></tr>
+            <tr><td>Total worst-case time</td><td>O(n²)</td><td>O(n²)</td></tr>
+            <tr><td>Auxiliary space</td><td>O(1)</td><td>O(1)</td></tr>
+            <tr><td>Stable</td><td>Yes</td><td>Yes, as implemented</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Across all iterations, Binary Insertion Sort uses O(n log n) element comparisons, but may still perform O(n²) shifts.</p>
+        <p>The <code>&lt;=</code> condition in the binary search finds a position <em>after</em> existing equal elements, preserving stability.</p>
+        <p>Binary Insertion Sort can be useful when comparisons are expensive, even though its asymptotic running time remains quadratic.</p>
+    </div>
+
+    <div class="subheading">Generic Insertion Sort in Java</div>
+    <div class="intro">
+        <p>The algorithm can also sort arbitrary objects through a <code>Comparator</code>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> &lt;<span class="code-class">T</span>&gt; <span class="code-keyword">void</span> insertionSort(<span class="code-class">T</span>[] arr, <span class="code-class">Comparator</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">T</span>&gt; comparator) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; arr.length; i++) {
+        <span class="code-class">T</span> key = arr[i];
+        <span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;
+
+        <span class="code-keyword">while</span> (j &gt;= <span class="code-number">0</span> &amp;&amp; comparator.compare(arr[j], key) &gt; <span class="code-number">0</span>) {
+            arr[j + <span class="code-number">1</span>] = arr[j];
+            j--;
+        }
+
+        arr[j + <span class="code-number">1</span>] = key;
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>For example, you could sort employees by salary, students by marks, or products by price.</p>
+        <p>To preserve stability, continue shifting only when the comparator returns a positive value.</p>
+    </div>
+
+    <div class="subheading">Insertion Sort vs Bubble Sort vs Selection Sort</div>
+    <div class="intro">
+        <p>These three algorithms are often introduced together, but they behave differently.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Feature</th><th>Insertion Sort</th><th>Bubble Sort</th><th>Selection Sort</th></tr></thead>
+        <tbody>
+            <tr><td>Main technique</td><td>Insert key into sorted prefix</td><td>Swap adjacent out-of-order elements</td><td>Select minimum</td></tr>
+            <tr><td>Best time</td><td>O(n)</td><td>O(n) with early-exit optimization</td><td>O(n²)</td></tr>
+            <tr><td>Average time</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td></tr>
+            <tr><td>Worst time</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td></tr>
+            <tr><td>Auxiliary space</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+            <tr><td>Stable</td><td>Yes</td><td>Yes</td><td>Usually no</td></tr>
+            <tr><td>Adaptive</td><td>Yes</td><td>Yes, when optimized</td><td>No</td></tr>
+            <tr><td>Data movement</td><td>Shifts</td><td>Adjacent swaps</td><td>Few swaps</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Insertion Sort is generally a better choice than basic Bubble Sort for small arrays, because shifting an element is typically cheaper than repeatedly swapping pairs.</p>
+        <p>Selection Sort may be useful in situations where minimizing the number of writes is particularly important.</p>
+    </div>
+
+    <div class="subheading">Practical Advantages and Disadvantages</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages</strong></p>
+        <ul>
+            <li>Simple to understand and implement.</li>
+            <li>In-place with O(1) auxiliary space.</li>
+            <li>Stable and adaptive.</li>
+            <li>Efficient for small or nearly sorted arrays.</li>
+            <li>Can incrementally maintain sorted order.</li>
+        </ul>
+        <p class="minor-heading"><strong>Disadvantages</strong></p>
+        <ul>
+            <li>Quadratic average and worst-case time.</li>
+            <li>Inefficient for large randomly ordered arrays.</li>
+            <li>May need many element shifts.</li>
+            <li>Not ideal for moving elements over long distances in large arrays.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Where Is Insertion Sort Used in Practice?</div>
+    <div class="intro">
+        <p>Insertion Sort is particularly valuable for sorting small subarrays inside more sophisticated algorithms.</p>
+        <p>For instance, hybrid sorting implementations may use a fast general-purpose algorithm on large partitions and switch to Insertion Sort when the partitions become sufficiently small.</p>
+        <p>This can improve performance by avoiding recursion and partition-management overhead on tiny datasets.</p>
+        <p>Insertion Sort is also useful when maintaining a sorted sequence of small size or processing data that is already nearly sorted.</p>
+        <p>The broader principle is important: <strong>an algorithm with O(n²) complexity can still be faster than an O(n log n) algorithm for sufficiently small inputs because constant factors matter.</strong></p>
+    </div>
+
+    <div class="subheading">Common Implementation Mistakes</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Mistake</th><th>Problem</th></tr></thead>
+        <tbody>
+            <tr><td>Starting the outer loop at <code>0</code> unnecessarily</td><td>The first element is already sorted</td></tr>
+            <tr><td>Using <code>arr[j] &gt;= key</code></td><td>Can destroy stability</td></tr>
+            <tr><td>Forgetting <code>key = arr[i]</code></td><td>The original value may be overwritten</td></tr>
+            <tr><td>Using <code>j</code> instead of <code>j + 1</code> for insertion</td><td>Places the key incorrectly</td></tr>
+            <tr><td>Checking <code>arr[j]</code> before <code>j &gt;= 0</code></td><td>Can cause an index-out-of-bounds exception</td></tr>
+            <tr><td>Using repeated swaps when shifts suffice</td><td>Often increases assignment overhead</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>The standard implementation safely handles empty arrays, single-element arrays, duplicates, negative numbers, and already sorted arrays. As written, it expects a non-null array.</p>
+    </div>
+
+    <div class="subheading">Interview Questions and Answers</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Is Insertion Sort stable?</strong></p>
+        <p>Yes. Standard Insertion Sort is stable because elements with equal keys are not shifted past one another.</p>
+        <p class="minor-heading"><strong>Why is its best-case time O(n)?</strong></p>
+        <p>When the input is already sorted, each element requires only one comparison with its predecessor and no shifts.</p>
+        <p class="minor-heading"><strong>Is Insertion Sort in-place?</strong></p>
+        <p>Yes. The iterative version uses O(1) auxiliary space.</p>
+        <p class="minor-heading"><strong>How many passes are required?</strong></p>
+        <p>For <code>n</code> elements, the conventional implementation executes <code>n - 1</code> outer-loop iterations.</p>
+        <p class="minor-heading"><strong>Why does it work well on nearly sorted arrays?</strong></p>
+        <p>Because the number of shifts depends on the number of inversions, which is small for nearly sorted input.</p>
+        <p class="minor-heading"><strong>Does binary search make Insertion Sort O(n log n)?</strong></p>
+        <p>No. Finding the insertion position becomes faster, but shifting elements still requires O(n²) total work in the worst case.</p>
+        <p class="minor-heading"><strong>Can Insertion Sort sort in descending order?</strong></p>
+        <p>Yes. Reverse the comparison:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">while</span> (j &gt;= <span class="code-number">0</span> &amp;&amp; arr[j] &lt; key)</code></pre></div>
+    <div class="intro">
+        <p>This shifts smaller elements to the right.</p>
+    </div>
+
+    <div class="subheading">Final Summary</div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 210px minmax(0, 1fr)">
+        <li><span class="ledger-label">Best-case time</span><span>O(n)</span></li>
+        <li><span class="ledger-label">Average / worst time</span><span>O(n²)</span></li>
+        <li><span class="ledger-label">Auxiliary space</span><span>O(1)</span></li>
+        <li><span class="ledger-label">Stable</span><span>Yes</span></li>
+    </ol></div>
+    <div class="intro">
+        <p><strong>Core principle:</strong> Maintain a sorted prefix, take the next element, shift larger elements to the right, and insert the key into its correct position.</p>
+        <p>Insertion Sort is one of the most useful sorting algorithms to understand because it introduces key ideas used in more advanced algorithms: <strong>loop invariants, adaptiveness, stability, in-place data movement, inversion counting, and hybrid algorithm optimization</strong>.</p>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+
+function msCell(value, cls, cap) {
+    return '<div class="ms-cell"><div class="ms-box ' + (cls || "") + '">' + value + '</div>' + (cap === undefined ? "" : '<div class="ms-cap">' + cap + '</div>') + '</div>';
+}
+
+function msControls(root, count, render) {
+    const q = (r) => root.querySelector('[data-role="' + r + '"]');
+    const slider = q("slider");
+    let step = 0;
+    function go(n) { step = Math.max(0, Math.min(count() - 1, n)); slider.max = count() - 1; slider.value = step; q("prev").disabled = step === 0; q("next").disabled = step === count() - 1; render(step); }
+    q("prev").addEventListener("click", () => go(step - 1));
+    q("next").addEventListener("click", () => go(step + 1));
+    slider.addEventListener("input", () => go(Number(slider.value)));
+    return go;
+}
+
+
+/* Insertion Sort visualizer: key selection, comparisons, shifts and insertion. */
+(function () {
+    const root = document.getElementById("insertionViz");
+    if (!root) return;
+    const q = (r) => root.querySelector('[data-role="' + r + '"]');
+    let frames = [], timer = null;
+
+    function trace(input) {
+        const a = input.slice(), n = a.length, f = [];
+        let comps = 0, shifts = 0;
+        const snap = (o) => f.push(Object.assign({a: a.slice(), key: null, hole: -1, cmp: -1, moved: -1, ins: -1, sorted: 1, pass: 0, comps, shifts}, o));
+        snap({note: `Index 0 (${a[0]}) on its own is the sorted portion.`});
+        for (let i = 1; i < n; i++) {
+            const key = a[i];
+            let j = i - 1;
+            snap({pass: i, key, hole: i, sorted: i, note: `Pass ${i}: store key = ${key} from index ${i}; its slot is now free.`});
+            while (j >= 0) {
+                comps++;
+                if (a[j] > key) {
+                    snap({pass: i, key, hole: j + 1, cmp: j, sorted: i, comps, shifts, note: `${a[j]} > ${key}: shift ${a[j]} one position to the right.`});
+                    a[j + 1] = a[j]; shifts++; j--;
+                    snap({pass: i, key, hole: j + 1, moved: j + 2, sorted: i, comps, shifts, note: `Shifted. The free slot moves to index ${j + 1}.`});
+                } else {
+                    snap({pass: i, key, hole: j + 1, cmp: j, sorted: i, comps, shifts, note: `${a[j]} ≤ ${key}: stop. The key belongs at index ${j + 1}.`});
+                    break;
+                }
+            }
+            if (j < 0) snap({pass: i, key, hole: 0, sorted: i, comps, shifts, note: `Reached the start of the array: the key belongs at index 0.`});
+            a[j + 1] = key;
+            snap({pass: i, ins: j + 1, sorted: i + 1, comps, shifts, note: `Insert ${key} at index ${j + 1}. Sorted portion is now indices 0–${i}.`});
+        }
+        snap({pass: n - 1, sorted: n, comps, shifts, note: `All ${n - 1} passes done: ${a.join(", ")}.`});
+        return f;
+    }
+
+    function render(k) {
+        const fr = frames[k];
+        q("badge").textContent = `Step ${k} / ${frames.length - 1}`;
+        q("stats").textContent = `Pass ${fr.pass} · comparisons ${fr.comps} · shifts ${fr.shifts}`;
+        const kb = q("key");
+        kb.textContent = fr.key === null ? "—" : fr.key;
+        kb.className = "iv-key" + (fr.key === null ? " none" : "");
+        q("arr").innerHTML = fr.a.map((v, i) => {
+            if (i === fr.hole) return msCell("·", "iv-hole", i);
+            const cls = i === fr.ins ? "iv-ins" : i === fr.cmp ? "iv-cmp" : i === fr.moved ? "right" : i < fr.sorted ? "left" : "";
+            return msCell(v, cls, i);
+        }).join("");
+        q("note").textContent = fr.note;
+    }
+
+    const go = msControls(root, () => frames.length, render);
+    function stop() { if (timer) clearInterval(timer); timer = null; q("play").textContent = "▶ Play"; }
+    function load(vals) { stop(); frames = trace(vals); go(0); }
+    q("shuffle").addEventListener("click", () => { const v = []; while (v.length < 7) { const x = 1 + Math.floor(Math.random() * 9); if (!v.includes(x)) v.push(x); } load(v); });
+    q("play").addEventListener("click", () => {
+        if (timer) { stop(); return; }
+        if (Number(q("slider").value) >= frames.length - 1) go(0);
+        q("play").textContent = "⏸ Pause";
+        timer = setInterval(() => { const s = Number(q("slider").value); if (s >= frames.length - 1) stop(); else go(s + 1); }, 700);
+    });
+    load([7, 3, 8, 2, 6, 4, 5]);
+})();
+</script>
+</body>
+</html>

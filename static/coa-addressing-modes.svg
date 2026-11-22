@@ -1,0 +1,158 @@
+<svg width="905" height="490" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 905 490" role="img" aria-label="Addressing modes. (a) Immediate: the operand is in the instruction. (b) Direct: the address field points to the operand in memory. (c) Indirect: the address field points to a memory word that holds the operand's address. (d) Register: the field names a register holding the operand. (e) Register indirect: the named register holds the operand's memory address. (f) Displacement: a register's contents plus the address field give the operand's address. (g) Stack: the operand is implicitly on top of the stack">
+    <defs><marker id="am2-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="am2-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="am2-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="15" y="38" width="210" height="200" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="120" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">(a) Immediate</text>
+    <path d="M30 54 H77 A0 0 0 0 1 77 54 V82 A0 0 0 0 1 77 82 H30 A3 3 0 0 1 27 79 V57 A3 3 0 0 1 30 54 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="52.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Op</text>
+    <path d="M77 54 H184 A3 3 0 0 1 187 57 V79 A3 3 0 0 1 184 82 H77 A0 0 0 0 1 77 82 V54 A0 0 0 0 1 77 54 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="132.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#B45309">Operand</text>
+    <text x="27" y="50" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">instruction</text>
+    <text x="120" y="150" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">operand is part of</text>
+    <text x="120" y="166" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">the instruction itself</text>
+    <rect x="237" y="38" width="210" height="200" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="342" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">(b) Direct</text>
+    <path d="M252 54 H299 A0 0 0 0 1 299 54 V82 A0 0 0 0 1 299 82 H252 A3 3 0 0 1 249 79 V57 A3 3 0 0 1 252 54 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="274.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Op</text>
+    <path d="M299 54 H366 A3 3 0 0 1 369 57 V79 A3 3 0 0 1 366 82 H299 A0 0 0 0 1 299 82 V54 A0 0 0 0 1 299 54 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="334.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">A</text>
+    <text x="249" y="50" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">instruction</text>
+    <path d="M380 102 H432 A3 3 0 0 1 435 105 V126 A0 0 0 0 1 435 126 H377 A0 0 0 0 1 377 126 V105 A3 3 0 0 1 380 102 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="118" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M377 126 H435 A0 0 0 0 1 435 126 V150 A0 0 0 0 1 435 150 H377 A0 0 0 0 1 377 150 V126 A0 0 0 0 1 377 126 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="142" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M377 150 H435 A0 0 0 0 1 435 150 V174 A0 0 0 0 1 435 174 H377 A0 0 0 0 1 377 174 V150 A0 0 0 0 1 377 150 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="406" y="166" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#B45309">operand</text>
+    <path d="M377 174 H435 A0 0 0 0 1 435 174 V198 A0 0 0 0 1 435 198 H377 A0 0 0 0 1 377 198 V174 A0 0 0 0 1 377 174 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="190" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M377 198 H435 A0 0 0 0 1 435 198 V219 A3 3 0 0 1 432 222 H380 A3 3 0 0 1 377 219 V198 A0 0 0 0 1 377 198 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="214" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <text x="406" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">memory</text>
+    <path d="M334.0 82 V162 H373" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <rect x="459" y="38" width="210" height="200" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="564" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">(c) Indirect</text>
+    <path d="M474 54 H521 A0 0 0 0 1 521 54 V82 A0 0 0 0 1 521 82 H474 A3 3 0 0 1 471 79 V57 A3 3 0 0 1 474 54 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="496.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Op</text>
+    <path d="M521 54 H588 A3 3 0 0 1 591 57 V79 A3 3 0 0 1 588 82 H521 A0 0 0 0 1 521 82 V54 A0 0 0 0 1 521 54 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="556.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">A</text>
+    <text x="471" y="50" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">instruction</text>
+    <path d="M602 102 H654 A3 3 0 0 1 657 105 V126 A0 0 0 0 1 657 126 H599 A0 0 0 0 1 599 126 V105 A3 3 0 0 1 602 102 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="628" y="118" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">address</text>
+    <path d="M599 126 H657 A0 0 0 0 1 657 126 V150 A0 0 0 0 1 657 150 H599 A0 0 0 0 1 599 150 V126 A0 0 0 0 1 599 126 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="628" y="142" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M599 150 H657 A0 0 0 0 1 657 150 V174 A0 0 0 0 1 657 174 H599 A0 0 0 0 1 599 174 V150 A0 0 0 0 1 599 150 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="628" y="166" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M599 174 H657 A0 0 0 0 1 657 174 V198 A0 0 0 0 1 657 198 H599 A0 0 0 0 1 599 198 V174 A0 0 0 0 1 599 174 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="628" y="190" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#B45309">operand</text>
+    <path d="M599 198 H657 A0 0 0 0 1 657 198 V219 A3 3 0 0 1 654 222 H602 A3 3 0 0 1 599 219 V198 A0 0 0 0 1 599 198 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="628" y="214" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <text x="628" y="96" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">memory</text>
+    <path d="M556.0 82 V114 H595" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <path d="M657 114 H665 V186 H661" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <rect x="681" y="38" width="210" height="200" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="786" y="28" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">(d) Register</text>
+    <path d="M696 54 H743 A0 0 0 0 1 743 54 V82 A0 0 0 0 1 743 82 H696 A3 3 0 0 1 693 79 V57 A3 3 0 0 1 696 54 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="718.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Op</text>
+    <path d="M743 54 H810 A3 3 0 0 1 813 57 V79 A3 3 0 0 1 810 82 H743 A0 0 0 0 1 743 82 V54 A0 0 0 0 1 743 54 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="778.0" y="73" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">R</text>
+    <text x="693" y="50" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">instruction</text>
+    <path d="M696 120 H762 A3 3 0 0 1 765 123 V144 A0 0 0 0 1 765 144 H693 A0 0 0 0 1 693 144 V123 A3 3 0 0 1 696 120 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="729" y="136" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M693 144 H765 A0 0 0 0 1 765 144 V168 A0 0 0 0 1 765 168 H693 A0 0 0 0 1 693 168 V144 A0 0 0 0 1 693 144 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="729" y="160" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#B45309">operand</text>
+    <path d="M693 168 H765 A0 0 0 0 1 765 168 V189 A3 3 0 0 1 762 192 H696 A3 3 0 0 1 693 189 V168 A0 0 0 0 1 693 168 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="729" y="184" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <text x="729" y="205" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">registers</text>
+    <path d="M778.0 82 V100 H781 V156 H769" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <rect x="15" y="278" width="210" height="200" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="120" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">(e) Register indirect</text>
+    <path d="M30 294 H77 A0 0 0 0 1 77 294 V322 A0 0 0 0 1 77 322 H30 A3 3 0 0 1 27 319 V297 A3 3 0 0 1 30 294 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="52.0" y="313" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Op</text>
+    <path d="M77 294 H144 A3 3 0 0 1 147 297 V319 A3 3 0 0 1 144 322 H77 A0 0 0 0 1 77 322 V294 A0 0 0 0 1 77 294 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="112.0" y="313" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">R</text>
+    <text x="27" y="290" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">instruction</text>
+    <path d="M30 360 H96 A3 3 0 0 1 99 363 V384 A0 0 0 0 1 99 384 H27 A0 0 0 0 1 27 384 V363 A3 3 0 0 1 30 360 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="63" y="376" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M27 384 H99 A0 0 0 0 1 99 384 V408 A0 0 0 0 1 99 408 H27 A0 0 0 0 1 27 408 V384 A0 0 0 0 1 27 384 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="63" y="400" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">address</text>
+    <path d="M27 408 H99 A0 0 0 0 1 99 408 V429 A3 3 0 0 1 96 432 H30 A3 3 0 0 1 27 429 V408 A0 0 0 0 1 27 408 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="63" y="424" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <text x="63" y="445" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">registers</text>
+    <path d="M158 342 H210 A3 3 0 0 1 213 345 V366 A0 0 0 0 1 213 366 H155 A0 0 0 0 1 155 366 V345 A3 3 0 0 1 158 342 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="184" y="358" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M155 366 H213 A0 0 0 0 1 213 366 V390 A0 0 0 0 1 213 390 H155 A0 0 0 0 1 155 390 V366 A0 0 0 0 1 155 366 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="184" y="382" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M155 390 H213 A0 0 0 0 1 213 390 V414 A0 0 0 0 1 213 414 H155 A0 0 0 0 1 155 414 V390 A0 0 0 0 1 155 390 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="184" y="406" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M155 414 H213 A0 0 0 0 1 213 414 V438 A0 0 0 0 1 213 438 H155 A0 0 0 0 1 155 438 V414 A0 0 0 0 1 155 414 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="184" y="430" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#B45309">operand</text>
+    <path d="M155 438 H213 A0 0 0 0 1 213 438 V459 A3 3 0 0 1 210 462 H158 A3 3 0 0 1 155 459 V438 A0 0 0 0 1 155 438 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="184" y="454" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <text x="184" y="336" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">memory</text>
+    <path d="M92.0 322 V340 H111 V396 H103" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <path d="M99 402 H135 V426 H151" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <rect x="237" y="278" width="210" height="200" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="342" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">(f) Displacement</text>
+    <path d="M252 294 H289 A0 0 0 0 1 289 294 V322 A0 0 0 0 1 289 322 H252 A3 3 0 0 1 249 319 V297 A3 3 0 0 1 252 294 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="269.0" y="313" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Op</text>
+    <path d="M289 294 H329 A0 0 0 0 1 329 294 V322 A0 0 0 0 1 329 322 H289 A0 0 0 0 1 289 322 V294 A0 0 0 0 1 289 294 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="309.0" y="313" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">R</text>
+    <path d="M329 294 H376 A3 3 0 0 1 379 297 V319 A3 3 0 0 1 376 322 H329 A0 0 0 0 1 329 322 V294 A0 0 0 0 1 329 294 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="354.0" y="313" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">A</text>
+    <text x="249" y="290" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">instruction</text>
+    <path d="M252 371 H318 A3 3 0 0 1 321 374 V395 A0 0 0 0 1 321 395 H249 A0 0 0 0 1 249 395 V374 A3 3 0 0 1 252 371 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="285" y="387" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M249 395 H321 A0 0 0 0 1 321 395 V419 A0 0 0 0 1 321 419 H249 A0 0 0 0 1 249 419 V395 A0 0 0 0 1 249 395 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="285" y="411" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">base</text>
+    <path d="M249 419 H321 A0 0 0 0 1 321 419 V440 A3 3 0 0 1 318 443 H252 A3 3 0 0 1 249 440 V419 A0 0 0 0 1 249 419 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="285" y="435" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <text x="285" y="456" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">registers</text>
+    <path d="M380 342 H432 A3 3 0 0 1 435 345 V366 A0 0 0 0 1 435 366 H377 A0 0 0 0 1 377 366 V345 A3 3 0 0 1 380 342 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="358" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M377 366 H435 A0 0 0 0 1 435 366 V390 A0 0 0 0 1 435 390 H377 A0 0 0 0 1 377 390 V366 A0 0 0 0 1 377 366 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="382" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M377 390 H435 A0 0 0 0 1 435 390 V414 A0 0 0 0 1 435 414 H377 A0 0 0 0 1 377 414 V390 A0 0 0 0 1 377 390 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="406" y="406" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#B45309">operand</text>
+    <path d="M377 414 H435 A0 0 0 0 1 435 414 V438 A0 0 0 0 1 435 438 H377 A0 0 0 0 1 377 438 V414 A0 0 0 0 1 377 414 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="430" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M377 438 H435 A0 0 0 0 1 435 438 V459 A3 3 0 0 1 432 462 H380 A3 3 0 0 1 377 459 V438 A0 0 0 0 1 377 438 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="406" y="454" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <text x="406" y="336" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">memory</text>
+    <circle cx="349" cy="402" r="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="349" y="407" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">+</text>
+    <path d="M354.0 322 V387" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <path d="M309.0 322 V350 H333 V393" fill="none" stroke="#7C8DA6" stroke-width="1.5"/>
+    <path d="M321 402 H334" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <path d="M360 402 H373" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <rect x="459" y="278" width="210" height="200" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="564" y="268" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">(g) Stack</text>
+    <path d="M474 294 H521 A0 0 0 0 1 521 294 V322 A0 0 0 0 1 521 322 H474 A3 3 0 0 1 471 319 V297 A3 3 0 0 1 474 294 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="496.0" y="313" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">Op</text>
+    <path d="M521 294 H608 A3 3 0 0 1 611 297 V319 A3 3 0 0 1 608 322 H521 A0 0 0 0 1 521 322 V294 A0 0 0 0 1 521 294 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="566.0" y="313" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#1E293B">implicit</text>
+    <text x="471" y="290" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">instruction</text>
+    <path d="M474 384 H540 A3 3 0 0 1 543 387 V405 A3 3 0 0 1 540 408 H474 A3 3 0 0 1 471 405 V387 A3 3 0 0 1 474 384 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="507" y="400" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">SP</text>
+    <text x="507" y="421" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">registers</text>
+    <path d="M602 342 H654 A3 3 0 0 1 657 345 V366 A0 0 0 0 1 657 366 H599 A0 0 0 0 1 599 366 V345 A3 3 0 0 1 602 342 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="628" y="358" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M599 366 H657 A0 0 0 0 1 657 366 V390 A0 0 0 0 1 657 390 H599 A0 0 0 0 1 599 390 V366 A0 0 0 0 1 599 366 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="628" y="382" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#1E293B"></text>
+    <path d="M599 390 H657 A0 0 0 0 1 657 390 V414 A0 0 0 0 1 657 414 H599 A0 0 0 0 1 599 414 V390 A0 0 0 0 1 599 390 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="628" y="406" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#B45309">operand</text>
+    <path d="M599 414 H657 A0 0 0 0 1 657 414 V438 A0 0 0 0 1 657 438 H599 A0 0 0 0 1 599 438 V414 A0 0 0 0 1 599 414 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="628" y="430" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">item</text>
+    <path d="M599 438 H657 A0 0 0 0 1 657 438 V459 A3 3 0 0 1 654 462 H602 A3 3 0 0 1 599 459 V438 A0 0 0 0 1 599 438 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="628" y="454" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="600" fill="#1E293B">item</text>
+    <text x="628" y="336" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">memory</text>
+    <path d="M543 396 H569 V402 H595" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#am2-a)"/>
+    <text x="507" y="378" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">top-of-stack register</text>
+    <text x="701" y="300" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">A</text>
+    <text x="737" y="300" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">address field</text>
+    <text x="701" y="326" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">R</text>
+    <text x="737" y="326" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">register field</text>
+    <text x="701" y="352" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">EA</text>
+    <text x="737" y="352" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">effective address</text>
+    <text x="701" y="378" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#1E293B">SP</text>
+    <text x="737" y="378" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">stack pointer</text>
+    <text x="701" y="418" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#B45309">highlighted cell = operand</text>
+</svg>

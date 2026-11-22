@@ -1,0 +1,39 @@
+<svg width="880" height="450" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 450" role="img" aria-label="MESI cache-coherence state transitions for one cache line. This processor's accesses (solid): from Invalid, a read miss goes to Shared if another cache holds the line, or to Exclusive if none does; a write miss goes to Modified. A write hit in Shared (after invalidating other copies) or in Exclusive goes to Modified. Snooped bus activity (dashed): another processor's read moves Exclusive and Modified lines to Shared, with Modified data written back; another processor's write invalidates the line from any state">
+    <defs><marker id="mesi-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="mesi-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="mesi-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="40" y="195" width="150" height="60" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#mesi-s)"/>
+    <text x="115" y="222" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Invalid</text>
+    <text x="115" y="240" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">(I)</text>
+    <rect x="365" y="40" width="150" height="60" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#mesi-s)"/>
+    <text x="440" y="67" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Shared</text>
+    <text x="440" y="85" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">(S)</text>
+    <rect x="365" y="350" width="150" height="60" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#mesi-s)"/>
+    <text x="440" y="377" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Exclusive</text>
+    <text x="440" y="395" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">(E)</text>
+    <rect x="690" y="195" width="150" height="60" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#mesi-s)"/>
+    <text x="765" y="222" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Modified</text>
+    <text x="765" y="240" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">(M)</text>
+    <path d="M115 195 V70 H361" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mesi-a)"/>
+    <text x="238" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">read miss, line shared elsewhere</text>
+    <path d="M115 255 V380 H361" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mesi-a)"/>
+    <text x="238" y="398" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">read miss, no other copy</text>
+    <path d="M190 225 H686" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mesi-a)"/>
+    <text x="560" y="217" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">write miss</text>
+    <path d="M515 70 H765 V191" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mesi-a)"/>
+    <text x="640" y="62" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">write hit (invalidate others)</text>
+    <path d="M515 380 H765 V259" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#mesi-a)"/>
+    <text x="640" y="398" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">write hit</text>
+    <path d="M720 195 V92 H519" fill="none" stroke="#BE123C" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#mesi-a)"/>
+    <text x="620" y="108" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#BE123C">snoop read (write back)</text>
+    <path d="M440 350 V104" fill="none" stroke="#BE123C" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#mesi-a)"/>
+    <text x="448" y="290" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#BE123C">snoop read</text>
+    <path d="M380 100 V205 H194" fill="none" stroke="#BE123C" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#mesi-a)"/>
+    <path d="M380 350 V245 H194" fill="none" stroke="#BE123C" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#mesi-a)"/>
+    <text x="290" y="199" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#BE123C">snoop write</text>
+    <text x="290" y="262" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#BE123C">snoop write</text>
+    <path d="M720 255 V315 H150 V259" fill="none" stroke="#BE123C" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#mesi-a)"/>
+    <text x="590" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#BE123C">snoop write (write back, then invalidate)</text>
+    <path d="M40 432 h30" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="78" y="436" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">this processor's read or write</text>
+    <path d="M330 432 h30" stroke="#BE123C" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <text x="368" y="436" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">activity snooped on the bus from another processor</text>
+</svg>

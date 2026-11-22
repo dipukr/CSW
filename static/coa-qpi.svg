@@ -1,0 +1,47 @@
+<svg width="780" height="440" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 440" role="img" aria-label="Multicore configuration using QuickPath Interconnect: four cores, each with its own DRAM on a memory bus, are joined pairwise by QPI links; two cores also link over QPI to I/O hubs, which connect to I/O devices over PCI Express">
+    <defs><marker id="qpi-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="qpi-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="qpi-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <path d="M290 85 L490 85" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M290 245 L490 245" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M290 85 L290 245" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M490 85 L490 245" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M290 85 L490 245" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M490 85 L290 245" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="220" y="50" width="140" height="70" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="290.0" y="89.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Core A</text>
+    <rect x="420" y="50" width="140" height="70" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="490.0" y="89.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Core B</text>
+    <rect x="220" y="210" width="140" height="70" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="290.0" y="249.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Core C</text>
+    <rect x="420" y="210" width="140" height="70" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="490.0" y="249.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Core D</text>
+    <rect x="40" y="50" width="120" height="70" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="100.0" y="89.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">DRAM</text>
+    <path d="M160 85 H220" fill="none" stroke="#64748B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="40" y="210" width="120" height="70" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="100.0" y="249.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">DRAM</text>
+    <path d="M160 245 H220" fill="none" stroke="#64748B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="620" y="50" width="120" height="70" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="680.0" y="89.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">DRAM</text>
+    <path d="M560 85 H620" fill="none" stroke="#64748B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="620" y="210" width="120" height="70" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="680.0" y="249.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">DRAM</text>
+    <path d="M560 245 H620" fill="none" stroke="#64748B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M290 280 V340" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M490 280 V340" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="220" y="340" width="140" height="56" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="290.0" y="372.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">I/O hub</text>
+    <rect x="420" y="340" width="140" height="56" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="490.0" y="372.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">I/O hub</text>
+    <rect x="40" y="340" width="120" height="56" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="100.0" y="372.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">I/O devices</text>
+    <path d="M160 368 H220" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="620" y="340" width="120" height="56" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#qpi-s)"/>
+    <text x="680.0" y="372.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">I/O devices</text>
+    <path d="M560 368 H620" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M170 425 h30" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="208" y="429" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">QPI link</text>
+    <path d="M340 425 h30" fill="none" stroke="#64748B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="378" y="429" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">memory bus</text>
+    <path d="M510 425 h30" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="548" y="429" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">PCI Express</text>
+</svg>

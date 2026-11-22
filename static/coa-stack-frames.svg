@@ -1,0 +1,45 @@
+<svg width="760" height="370" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" role="img" aria-label="Stack frame growth for nested calls. (a) While P is active the stack holds P's frame: return point, old frame pointer, parameters and local variables, with the frame pointer at the base of P's frame and the stack pointer at its top. (b) After P calls Q, Q's frame is pushed on top, and the frame and stack pointers move to Q's frame">
+    <defs><marker id="sf-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="sf-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="sf-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <path d="M133 170 H327 A3 3 0 0 1 330 173 V204 A0 0 0 0 1 330 204 H130 A0 0 0 0 1 130 204 V173 A3 3 0 0 1 133 170 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="230" y="192" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Local variables</text>
+    <path d="M130 204 H330 A0 0 0 0 1 330 204 V238 A0 0 0 0 1 330 238 H130 A0 0 0 0 1 130 238 V204 A0 0 0 0 1 130 204 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="230" y="226" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Parameters</text>
+    <path d="M130 238 H330 A0 0 0 0 1 330 238 V272 A0 0 0 0 1 330 272 H130 A0 0 0 0 1 130 272 V238 A0 0 0 0 1 130 238 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="230" y="260" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Old frame pointer</text>
+    <path d="M130 272 H330 A0 0 0 0 1 330 272 V303 A3 3 0 0 1 327 306 H133 A3 3 0 0 1 130 303 V272 A0 0 0 0 1 130 272 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="230" y="294" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Return point</text>
+    <path d="M338 172 h8 V304 h-8" fill="none" stroke="#93C5FD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="352" y="242" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#1E293B">P</text>
+    <path d="M40 172 H126" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sf-a)"/>
+    <text x="40" y="164" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">stack pointer</text>
+    <path d="M40 274 H126" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sf-a)"/>
+    <text x="40" y="266" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame pointer</text>
+    <text x="230" y="350" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(a) P is active</text>
+    <path d="M503 170 H697 A3 3 0 0 1 700 173 V204 A0 0 0 0 1 700 204 H500 A0 0 0 0 1 500 204 V173 A3 3 0 0 1 503 170 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="600" y="192" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Local variables</text>
+    <path d="M500 204 H700 A0 0 0 0 1 700 204 V238 A0 0 0 0 1 700 238 H500 A0 0 0 0 1 500 238 V204 A0 0 0 0 1 500 204 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="600" y="226" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Parameters</text>
+    <path d="M500 238 H700 A0 0 0 0 1 700 238 V272 A0 0 0 0 1 700 272 H500 A0 0 0 0 1 500 272 V238 A0 0 0 0 1 500 238 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="600" y="260" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Old frame pointer</text>
+    <path d="M500 272 H700 A0 0 0 0 1 700 272 V303 A3 3 0 0 1 697 306 H503 A3 3 0 0 1 500 303 V272 A0 0 0 0 1 500 272 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="600" y="294" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Return point</text>
+    <path d="M708 172 h8 V304 h-8" fill="none" stroke="#93C5FD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="722" y="242" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#1E293B">P</text>
+    <path d="M503 34 H697 A3 3 0 0 1 700 37 V68 A0 0 0 0 1 700 68 H500 A0 0 0 0 1 500 68 V37 A3 3 0 0 1 503 34 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="600" y="56" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Local variables</text>
+    <path d="M500 68 H700 A0 0 0 0 1 700 68 V102 A0 0 0 0 1 700 102 H500 A0 0 0 0 1 500 102 V68 A0 0 0 0 1 500 68 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="600" y="90" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Parameters</text>
+    <path d="M500 102 H700 A0 0 0 0 1 700 102 V136 A0 0 0 0 1 700 136 H500 A0 0 0 0 1 500 136 V102 A0 0 0 0 1 500 102 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="600" y="124" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Old frame pointer</text>
+    <path d="M500 136 H700 A0 0 0 0 1 700 136 V167 A3 3 0 0 1 697 170 H503 A3 3 0 0 1 500 167 V136 A0 0 0 0 1 500 136 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="600" y="158" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Return point</text>
+    <path d="M708 36 h8 V168 h-8" fill="none" stroke="#FCD34D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="722" y="106" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#1E293B">Q</text>
+    <path d="M410 36 H496" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sf-a)"/>
+    <text x="410" y="28" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">stack pointer</text>
+    <path d="M410 138 H496" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sf-a)"/>
+    <text x="410" y="130" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">frame pointer</text>
+    <text x="600" y="350" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(b) P has called Q</text>
+    <path d="M745 300 V40" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sf-a)"/>
+    <text x="738" y="320" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">stack grows</text>
+</svg>

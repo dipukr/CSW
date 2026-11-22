@@ -1,0 +1,71 @@
+<svg width="880" height="340" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 340" role="img" aria-label="CC-NUMA organization: each node holds processors with their own L1 and L2 caches, a local main memory, a directory for cache coherence and I/O, all on a local bus; nodes are joined by an interconnect network. Local memory is faster to reach than another node's memory">
+    <defs><marker id="numa-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="numa-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="numa-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="20" y="30" width="260" height="230" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="150.0" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Node 1</text>
+    <rect x="35" y="45" width="110" height="46" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="90.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Processor</text>
+    <text x="90.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">+ L1 / L2</text>
+    <rect x="155" y="45" width="110" height="46" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="210.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Processor</text>
+    <text x="210.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">+ L1 / L2</text>
+    <path d="M30 112 H270" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M90 91 V112" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M210 91 V112" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="35" y="135" width="110" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="90.0" y="154.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Main</text>
+    <text x="90.0" y="169.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">memory</text>
+    <rect x="155" y="135" width="110" height="46" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="210.0" y="162.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Directory</text>
+    <rect x="35" y="200" width="230" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="150.0" y="224.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">I/O</text>
+    <path d="M90 112 V135" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M210 112 V135" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M270 112 V160 H275" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M150 260 V290" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="310" y="30" width="260" height="230" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="440.0" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Node 2</text>
+    <rect x="325" y="45" width="110" height="46" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="380.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Processor</text>
+    <text x="380.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">+ L1 / L2</text>
+    <rect x="445" y="45" width="110" height="46" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="500.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Processor</text>
+    <text x="500.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">+ L1 / L2</text>
+    <path d="M320 112 H560" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M380 91 V112" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M500 91 V112" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="325" y="135" width="110" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="380.0" y="154.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Main</text>
+    <text x="380.0" y="169.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">memory</text>
+    <rect x="445" y="135" width="110" height="46" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="500.0" y="162.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Directory</text>
+    <rect x="325" y="200" width="230" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="440.0" y="224.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">I/O</text>
+    <path d="M380 112 V135" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M500 112 V135" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M560 112 V160 H565" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M440 260 V290" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="600" y="30" width="260" height="230" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="730.0" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Node N</text>
+    <rect x="615" y="45" width="110" height="46" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="670.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Processor</text>
+    <text x="670.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">+ L1 / L2</text>
+    <rect x="735" y="45" width="110" height="46" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="790.0" y="64.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Processor</text>
+    <text x="790.0" y="79.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">+ L1 / L2</text>
+    <path d="M610 112 H850" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M670 91 V112" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M790 91 V112" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="615" y="135" width="110" height="46" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="670.0" y="154.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Main</text>
+    <text x="670.0" y="169.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">memory</text>
+    <rect x="735" y="135" width="110" height="46" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="790.0" y="162.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Directory</text>
+    <rect x="615" y="200" width="230" height="40" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="730.0" y="224.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">I/O</text>
+    <path d="M670 112 V135" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M790 112 V135" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M850 112 V160 H855" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M730 260 V290" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="20" y="290" width="840" height="36" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#numa-s)"/>
+    <text x="440.0" y="312.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Interconnect network</text>
+</svg>

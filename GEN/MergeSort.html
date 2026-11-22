@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merge Sort - Notes</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+/* Merge Sort widgets (page-specific) */
+.ms-widget { margin: 16px 0 24px; padding: 16px 18px; border: 1px solid #e3e6ea; border-radius: 3px; background: #ffffff; display: flex; flex-direction: column; gap: 10px; }
+.ms-head { display: flex; justify-content: space-between; align-items: center; }
+.ms-badge { font-size: 13px; padding: 1px 9px; border: 1px solid #c9ecea; border-radius: 999px; color: #0f766e; background: #f0fdfa; }
+.ms-label { font-family: Arial, Helvetica, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #155e63; }
+.ms-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ms-row { display: flex; gap: 3px; flex-wrap: wrap; }
+.ms-cell { min-width: 44px; flex: 1 1 0; max-width: 64px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ms-box { width: 100%; text-align: center; padding: 6px 0; border: 1px solid #e2e8f0; border-radius: 3px; background: #ffffff; font-variant-numeric: tabular-nums; font-weight: 500; color: #1e293b; transition: background .2s, border-color .2s; }
+.ms-cap { font-size: 11px; color: #64748b; min-height: 15px; }
+.ms-box.used { background: #f1f5f9; color: #94a3b8; }
+.ms-box.ptr-l { border: 2px solid #3a81c2; background: #eff6ff; font-weight: 700; }
+.ms-box.ptr-r { border: 2px solid #168568; background: #ecfdf5; font-weight: 700; }
+.ms-box.left { background: #eff6ff; border-color: #93c5fd; }
+.ms-box.right { background: #ecfdf5; border-color: #6ee7b7; }
+.ms-box.done { background: #d1fae5; border-color: #168568; }
+.ms-box.faded { color: #cbd5e1; border-color: #f1f5f9; }
+.ms-box.empty { background: #f8fafc; color: #cbd5e1; }
+.ms-box.filled { background: #ecfdf5; border-color: #168568; }
+.ms-note { padding: 10px 12px; min-height: 44px; background: #f1f5f9; border-radius: 3px; font-size: 15px; display: flex; align-items: center; }
+.ms-controls { display: flex; align-items: center; gap: 8px; }
+.ms-controls input[type=range] { flex: 1; accent-color: #0d9488; }
+.ms-controls button { font: inherit; font-size: 15px; padding: 4px 12px; border: 1px solid #cbd5e1; border-radius: 3px; background: #ffffff; color: #1e293b; cursor: pointer; }
+.ms-controls button.primary { background: #0d9488; border-color: #0d9488; color: #ffffff; }
+.ms-controls button:disabled { opacity: .45; cursor: default; }
+.ms-legend { font-size: 12.5px; color: #64748b; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ms-key { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid; margin-left: 8px; }
+.ms-key.left { background: #eff6ff; border-color: #93c5fd; } .ms-key.right { background: #ecfdf5; border-color: #6ee7b7; }
+.ms-key.ptr { background: #ffffff; border: 2px solid #3a81c2; } .ms-key.done { background: #d1fae5; border-color: #168568; }
+@media (max-width: 600px) { .ms-pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="note">
+    <div class="title">Merge Sort – Complete Guide with Algorithms, Diagrams, Java Code, and Complexity Analysis</div>
+
+    <div class="intro">
+        <p><strong>Merge Sort</strong> is a comparison-based sorting algorithm that uses the <strong>Divide and Conquer</strong> technique to sort an array or collection of elements.</p>
+        <p>It is one of the most important sorting algorithms because it guarantees <strong>O(n log n) time complexity</strong> in the best, average, and worst cases.</p>
+        <p>In this guide, we'll cover how Merge Sort works internally, step-by-step execution, recursive and iterative Java implementations, memory usage, stability, complexity analysis, and practical applications.</p>
+    </div>
+
+    <div class="subheading">What is Merge Sort?</div>
+    <div class="intro">
+        <p>Merge Sort works by repeatedly dividing an array into smaller subarrays until each subarray contains a single element, then merging those subarrays back together in sorted order.</p>
+        <p>The algorithm has three fundamental operations:</p>
+    </div>
+    <div class="steps">
+        <div class="step"><div class="step-title">Divide</div><div class="step-body">Split the unsorted array into two approximately equal halves.</div></div>
+        <div class="step"><div class="step-title">Conquer</div><div class="step-body">Recursively sort both halves. A subarray containing one element is already sorted.</div></div>
+        <div class="step"><div class="step-title">Combine</div><div class="step-body">Merge the two sorted halves into a single sorted array.</div></div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Key characteristics</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Property</th><th>Merge Sort</th></tr></thead>
+        <tbody>
+            <tr><td>Algorithm paradigm</td><td>Divide and Conquer</td></tr>
+            <tr><td>Best-case time</td><td>O(n log n)</td></tr>
+            <tr><td>Average-case time</td><td>O(n log n)</td></tr>
+            <tr><td>Worst-case time</td><td>O(n log n)</td></tr>
+            <tr><td>Auxiliary space (array)</td><td>O(n)</td></tr>
+            <tr><td>Stable</td><td>Yes, with stable merging</td></tr>
+            <tr><td>In-place</td><td>No, in the standard array implementation</td></tr>
+            <tr><td>Recursive</td><td>Typically yes</td></tr>
+            <tr><td>Comparison-based</td><td>Yes</td></tr>
+            <tr><td>Suitable for linked lists</td><td>Yes</td></tr>
+        </tbody>
+    </table></div>
+
+    <div class="subheading">How Merge Sort Works – Step-by-Step Example</div>
+    <div class="intro">
+        <p>Consider the following unsorted array:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/merge-original-array.svg" alt="Original array of eight values, 38, 12, 27, 43, 9, 31, 18, 25, at indices 0 to 7" style="width:100%;max-width:560px">
+    </div>
+    <div class="intro">
+        <p>Our objective is to sort it in ascending order.</p>
+        <p class="minor-heading"><strong>Step 1: Divide the array</strong></p>
+        <p>First, divide the array into two halves. Continue dividing until every subarray contains just one element.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/merge-divide.svg" alt="Divide phase, top to bottom: 38 12 27 43 9 31 18 25 splits into 38 12 27 43 and 9 31 18 25, then into 38 12, 27 43, 9 31 and 18 25, and finally into eight single-element subarrays, the base cases" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p>Once a subarray contains one element, recursion stops because a single element is already sorted.</p>
+        <p>Notice that <strong>the divide operation does not sort anything</strong>. It only splits the problem into smaller ones.</p>
+        <p class="minor-heading"><strong>Step 2: Merge sorted subarrays</strong></p>
+        <p>Now we begin merging the smallest subarrays in sorted order.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/merge-merge.svg" alt="Merge phase, bottom to top: single elements merge into 12 38, 27 43, 9 31 and 18 25; these merge into 12 27 38 43 and 9 18 25 31; and these merge into the final sorted array 9 12 18 25 27 31 38 43" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p>The full merge sequence is:</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Merge operation</th><th>Sorted result</th></tr></thead>
+        <tbody>
+            <tr><td><code>[38]</code> + <code>[12]</code></td><td><code>[12, 38]</code></td></tr>
+            <tr><td><code>[27]</code> + <code>[43]</code></td><td><code>[27, 43]</code></td></tr>
+            <tr><td><code>[9]</code> + <code>[31]</code></td><td><code>[9, 31]</code></td></tr>
+            <tr><td><code>[18]</code> + <code>[25]</code></td><td><code>[18, 25]</code></td></tr>
+            <tr><td><code>[12, 38]</code> + <code>[27, 43]</code></td><td><code>[12, 27, 38, 43]</code></td></tr>
+            <tr><td><code>[9, 31]</code> + <code>[18, 25]</code></td><td><code>[9, 18, 25, 31]</code></td></tr>
+            <tr><td>Merge both sorted halves</td><td><code>[9, 12, 18, 25, 27, 31, 38, 43]</code></td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Interactive Merge Sort visualization</strong></p>
+        <p>Use the controls to follow each split, comparison, and merge, including how elements are selected from the two sorted halves.</p>
+    </div>
+    <div class="ms-widget" id="mergeViz">
+        <div class="ms-head"><strong>Merge Sort trace</strong><span class="ms-badge" data-role="badge"></span></div>
+        <div class="ms-label" data-role="call"></div>
+        <div class="ms-row ms-indexed" data-role="arr"></div>
+        <div class="ms-label">MERGED RUN</div>
+        <div class="ms-row" data-role="out"></div>
+        <div class="ms-note" data-role="note"></div>
+        <div class="ms-controls"><button data-role="prev" aria-label="Previous step">‹</button><input type="range" data-role="slider" min="0" step="1" aria-label="Trace step"><button class="primary" data-role="next">Next ›</button><button data-role="shuffle">Shuffle</button></div>
+        <div class="ms-legend"><span class="ms-key left"></span>left run <span class="ms-key right"></span>right run <span class="ms-key ptr"></span>front element being compared <span class="ms-key done"></span>sorted run</div>
+    </div>
+
+    <div class="subheading">Understanding the Merge Operation Internally</div>
+    <div class="intro">
+        <p>The most important operation in Merge Sort is <code>merge()</code>.</p>
+        <p>It takes <strong>two already sorted subarrays</strong> and combines them into a single sorted subarray.</p>
+        <p>For example:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/merge-merge-operation.svg" alt="Merge operation: the left sorted array 12, 27, 38, 43 and the right sorted array 9, 18, 25, 31 combine into the final merged array 9, 12, 18, 25, 27, 31, 38, 43" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>How do we merge?</strong></p>
+        <p>Maintain three pointers:</p>
+        <p><code>i</code> — points to the current element of the left subarray.</p>
+        <p><code>j</code> — points to the current element of the right subarray.</p>
+        <p><code>k</code> — points to the next position in the merged output.</p>
+        <p>At each step, compare <code>left[i]</code> and <code>right[j]</code>. Copy the smaller element into the output, then advance its pointer and <code>k</code>.</p>
+        <p>Here is an interactive demonstration of that operation:</p>
+    </div>
+    <div class="ms-widget" id="mergeSim">
+        <div class="ms-head"><strong>Merge operation simulator</strong><span class="ms-badge" data-role="badge"></span></div>
+        <div class="ms-pair">
+            <div><div class="ms-label">LEFT (sorted)</div><div class="ms-row" data-role="left"></div></div>
+            <div><div class="ms-label">RIGHT (sorted)</div><div class="ms-row" data-role="right"></div></div>
+        </div>
+        <div class="ms-label">MERGED OUTPUT</div>
+        <div class="ms-row" data-role="out"></div>
+        <div class="ms-note" data-role="note"></div>
+        <div class="ms-controls"><button data-role="prev" aria-label="Previous step">‹</button><input type="range" data-role="slider" min="0" step="1" aria-label="Step"><button class="primary" data-role="next">Next ›</button><button data-role="reset" aria-label="Restart">↺</button></div>
+    </div>
+    <div class="intro">
+        <p>The critical insight is that we <strong>never need to compare every element of the left half with every element of the right half</strong>.</p>
+        <p>Because both are already sorted, comparing their front elements is sufficient to select the next smallest value.</p>
+        <p>Therefore, merging subarrays of sizes <code>m</code> and <code>n</code> takes <strong>O(m + n)</strong> time, not O(m × n).</p>
+    </div>
+
+    <div class="subheading">Merge Sort Algorithm – Pseudocode</div>
+    <div class="intro">
+        <p>Merge Sort consists of two main functions: <code>mergeSort()</code> and <code>merge()</code>.</p>
+        <p class="minor-heading"><strong>mergeSort()</strong></p>
+    </div>
+    <div class="code-block"><pre><code>MERGE_SORT(array, left, right):
+    if left &gt;= right:
+        return
+    mid = left + (right - left) / 2
+    MERGE_SORT(array, left, mid)
+    MERGE_SORT(array, mid + 1, right)
+    MERGE(array, left, mid, right)</code></pre></div>
+    <div class="intro">
+        <p>The two recursive calls sort the left and right halves independently. The <code>MERGE()</code> operation executes only after both halves have been sorted.</p>
+        <p class="minor-heading"><strong>merge()</strong></p>
+    </div>
+    <div class="code-block"><pre><code>MERGE(array, left, mid, right):
+    i = left
+    j = mid + 1
+    k = left
+    while i &lt;= mid AND j &lt;= right:
+        if array[i] &lt;= array[j]:
+            temp[k] = array[i]
+            i++
+        else:
+            temp[k] = array[j]
+            j++
+        k++
+    while i &lt;= mid:
+        temp[k] = array[i]
+        i++
+        k++
+    while j &lt;= right:
+        temp[k] = array[j]
+        j++
+        k++
+    copy temp[left...right] back to array</code></pre></div>
+    <div class="intro">
+        <p>This uses an auxiliary array <code>temp</code>, allocated once before sorting.</p>
+        <p>The <code>&lt;=</code> comparison is especially important: it makes the algorithm stable by choosing the left element first when two values are equal.</p>
+    </div>
+
+    <div class="subheading">Complete Recursive Merge Sort Implementation in Java</div>
+    <div class="intro">
+        <p>The following is a production-style basic implementation with a reusable temporary array.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> sort(<span class="code-keyword">int</span>[] arr) {
+    <span class="code-class">Objects</span>.requireNonNull(arr, <span class="code-string">"Array cannot be null"</span>);
+
+    <span class="code-keyword">if</span> (arr.length &lt; <span class="code-number">2</span>)
+        <span class="code-keyword">return</span>;
+
+    <span class="code-comment">// Allocate temporary memory only once.</span>
+    <span class="code-keyword">var</span> temp = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[arr.length];
+
+    mergeSort(arr, temp, <span class="code-number">0</span>, arr.length - <span class="code-number">1</span>);
+}
+
+<span class="code-keyword">private</span> <span class="code-keyword">void</span> mergeSort(<span class="code-keyword">int</span>[] arr, <span class="code-keyword">int</span>[] temp, <span class="code-keyword">int</span> left, <span class="code-keyword">int</span> right) {
+    <span class="code-comment">// Base case: zero or one element.</span>
+    <span class="code-keyword">if</span> (left &gt;= right)
+        <span class="code-keyword">return</span>;
+
+    <span class="code-comment">// Avoid integer overflow.</span>
+    <span class="code-keyword">int</span> mid = left + (right - left) / <span class="code-number">2</span>;
+
+    <span class="code-comment">// Sort the left half.</span>
+    mergeSort(arr, temp, left, mid);
+
+    <span class="code-comment">// Sort the right half.</span>
+    mergeSort(arr, temp, mid + <span class="code-number">1</span>, right);
+
+    <span class="code-comment">// Merge the two sorted halves.</span>
+    merge(arr, temp, left, mid, right);
+}
+
+<span class="code-keyword">private</span> <span class="code-keyword">void</span> merge(<span class="code-keyword">int</span>[] arr, <span class="code-keyword">int</span>[] temp, <span class="code-keyword">int</span> left, <span class="code-keyword">int</span> mid, <span class="code-keyword">int</span> right) {
+    <span class="code-keyword">int</span> i = left;     <span class="code-comment">// Left-half pointer</span>
+    <span class="code-keyword">int</span> j = mid + <span class="code-number">1</span>;  <span class="code-comment">// Right-half pointer</span>
+    <span class="code-keyword">int</span> k = left;     <span class="code-comment">// Temporary-array pointer</span>
+
+    <span class="code-comment">// Compare the front elements.</span>
+    <span class="code-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= right)
+        <span class="code-keyword">if</span> (arr[i] &lt;= arr[j])
+            temp[k++] = arr[i++];
+        <span class="code-keyword">else</span>
+            temp[k++] = arr[j++];
+
+    <span class="code-comment">// Copy remaining left elements.</span>
+    <span class="code-keyword">while</span> (i &lt;= mid)
+        temp[k++] = arr[i++];
+
+    <span class="code-comment">// Copy remaining right elements.</span>
+    <span class="code-keyword">while</span> (j &lt;= right)
+        temp[k++] = arr[j++];
+
+    <span class="code-comment">// Copy merged result back to original array.</span>
+    <span class="code-class">System</span>.arraycopy(temp, left, arr, left, right - left + <span class="code-number">1</span>);
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] arr = {<span class="code-number">38</span>, <span class="code-number">12</span>, <span class="code-number">27</span>, <span class="code-number">43</span>, <span class="code-number">9</span>, <span class="code-number">31</span>, <span class="code-number">18</span>, <span class="code-number">25</span>};
+    <span class="code-class">Console</span>.draw(<span class="code-string">"Before: {arr}"</span>);
+    sort(arr);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"After : {arr}"</span>);
+}</code></pre></div>
+    <div class="intro">
+        <p><strong>Output:</strong></p>
+    </div>
+    <div class="code-block"><pre><code>Before: [38, 12, 27, 43, 9, 31, 18, 25]
+After : [9, 12, 18, 25, 27, 31, 38, 43]</code></pre></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Understanding the important lines</strong></p>
+        <p><strong>1. Finding the midpoint</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">int</span> mid = left + (right - left) / <span class="code-number">2</span>;</code></pre></div>
+    <div class="intro">
+        <p>This finds the middle index of the current subarray. It is safer than <code>(left + right) / 2</code> because adding two large positive indices can overflow an integer.</p>
+        <p>For an array indexed from <code>0</code> through <code>7</code>, <code>mid = 3</code>, producing the two ranges <code>[0,3]</code> and <code>[4,7]</code>.</p>
+        <p><strong>2. Recursive calls</strong></p>
+    </div>
+    <div class="code-block"><pre><code>mergeSort(arr, temp, left, mid);
+mergeSort(arr, temp, mid + <span class="code-number">1</span>, right);</code></pre></div>
+    <div class="intro">
+        <p>Both halves are sorted before the current invocation merges them. Every recursive invocation is responsible for its own range.</p>
+        <p><strong>3. Choosing the smaller element</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">if</span> (arr[i] &lt;= arr[j])
+    temp[k++] = arr[i++];
+<span class="code-keyword">else</span>
+    temp[k++] = arr[j++];</code></pre></div>
+    <div class="intro">
+        <p>The condition decides which element belongs at the next output position. The increment operators advance the input pointer that was used and the output pointer.</p>
+        <p><strong>4. Copying remaining elements</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">while</span> (i &lt;= mid)
+    temp[k++] = arr[i++];</code></pre></div>
+    <div class="intro">
+        <p>Once one half is exhausted, the remaining half can be copied without comparisons because it is already sorted.</p>
+        <p><strong>5. Copying the merged result back</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">System</span>.arraycopy(temp, left, arr, left, right - left + <span class="code-number">1</span>);</code></pre></div>
+    <div class="intro">
+        <p>The merged elements exist in the temporary array. We copy only the current range back into the original array so the parent recursive call can use the sorted result.</p>
+    </div>
+
+    <div class="subheading">Understanding the Recursive Call Stack</div>
+    <div class="intro">
+        <p>An important distinction is that recursion goes down the left branch first in this implementation. It does not immediately merge after dividing the root array.</p>
+        <p>Consider a small example:</p>
+    </div>
+    <div class="code-block"><pre><code>mergeSort([8, 3, 5, 1])
+│
+├── mergeSort([8, 3])
+│   │
+│   ├── mergeSort([8])  → return
+│   │
+│   ├── mergeSort([3])  → return
+│   │
+│   └── merge([8], [3])
+│       Result: [3, 8]
+│
+├── mergeSort([5, 1])
+│   │
+│   ├── mergeSort([5])  → return
+│   │
+│   ├── mergeSort([1])  → return
+│   │
+│   └── merge([5], [1])
+│       Result: [1, 5]
+│
+└── merge([3, 8], [1, 5])
+    Result: [1, 3, 5, 8]</code></pre></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>What exactly happens in memory?</strong></p>
+        <p>Each <code>mergeSort()</code> call creates a stack frame containing its own local variables such as <code>left</code>, <code>right</code>, and <code>mid</code>.</p>
+        <p>When the base case is reached, the function returns to its parent. That parent then continues executing the next statement.</p>
+        <p>A parent call can only finish its merge after both child calls have returned.</p>
+        <p>The recursion depth is approximately <span class="math" data-tex="\lceil\log_2 n\rceil+1">\lceil\log_2 n\rceil+1</span> stack frames, including the root and base case.</p>
+        <p>For example, an array of 1,024 elements requires a maximum of 11 simultaneous <code>mergeSort()</code> frames. It does not require 1,024 simultaneous frames.</p>
+    </div>
+
+    <div class="subheading">Time Complexity Analysis</div>
+    <div class="intro">
+        <p>Merge Sort's time complexity can be understood by analyzing the dividing and merging work separately.</p>
+        <p class="minor-heading"><strong>How many levels of division exist?</strong></p>
+        <p>At every level, the input size is approximately halved.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Level</th><th>Subarrays</th><th>Elements per subarray</th></tr></thead>
+        <tbody>
+            <tr><td>0</td><td>1</td><td>n</td></tr>
+            <tr><td>1</td><td>2</td><td>n/2</td></tr>
+            <tr><td>2</td><td>4</td><td>n/4</td></tr>
+            <tr><td>3</td><td>8</td><td>n/8</td></tr>
+            <tr><td>k</td><td>2ᵏ</td><td>n/2ᵏ</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>We stop dividing when a subarray contains one element:</p>
+        <p class="math-display"><span class="math" data-tex="\frac{n}{2^k}=1" data-display="1">\frac{n}{2^k}=1</span></p>
+        <p>Therefore:</p>
+        <p class="math-display"><span class="math" data-tex="2^k=n" data-display="1">2^k=n</span></p>
+        <p>Taking logarithms:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{k=\log_2 n}" data-display="1">\boxed{k=\log_2 n}</span></p>
+        <p>So the number of division levels is <strong>O(log n)</strong>.</p>
+        <p class="minor-heading"><strong>How much work happens at each merge level?</strong></p>
+        <p>The important observation is that the total number of elements processed at each full merge level remains <code>n</code>.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/merge-work-per-level.svg" alt="Merging work per level for n = 8: level 1 merges 4 runs of 2, level 2 merges 2 runs of 4, level 3 merges 1 run of 8; every level processes all 8 elements" style="width:100%;max-width:640px">
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">Every level processes all 8 elements, distributed across progressively larger merged runs.</p>
+        <p>Each merge level takes O(n) time. There are O(log n) merge levels.</p>
+        <p>Therefore:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{T(n)=O(n\log n)}" data-display="1">\boxed{T(n)=O(n\log n)}</span></p>
+        <p class="minor-heading"><strong>Recurrence relation</strong></p>
+        <p>For a recursive algorithm, the running time is expressed as:</p>
+        <p class="math-display"><span class="math" data-tex="T(n)=2T(n/2)+O(n)" data-display="1">T(n)=2T(n/2)+O(n)</span></p>
+        <p>Here, <code>2T(n/2)</code> represents sorting two halves, and <code>O(n)</code> represents merging them.</p>
+        <p>Using the Master Theorem:</p>
+        <p class="math-display"><span class="math" data-tex="a=2,\quad b=2,\quad f(n)=\Theta(n)" data-display="1">a=2,\quad b=2,\quad f(n)=\Theta(n)</span></p>
+        <p>Since <span class="math" data-tex="n^{\log_b a}=n^{\log_2 2}=n">n^{\log_b a}=n^{\log_2 2}=n</span>, the merge work matches the polynomial work of the recursive subproblems.</p>
+        <p>Therefore:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{T(n)=\Theta(n\log n)}" data-display="1">\boxed{T(n)=\Theta(n\log n)}</span></p>
+        <p>The bound is tight: both the upper and lower asymptotic bounds are n log n for the standard implementation.</p>
+        <p class="minor-heading"><strong>Best, average, and worst cases</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Case</th><th>Input example</th><th>Time</th></tr></thead>
+        <tbody>
+            <tr><td>Best</td><td>Already sorted</td><td>Θ(n log n)</td></tr>
+            <tr><td>Average</td><td>Random order</td><td>Θ(n log n)</td></tr>
+            <tr><td>Worst</td><td>An arrangement requiring many comparisons</td><td>Θ(n log n)</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Why does the best case still require n log n time?</p>
+        <p>Because the standard Merge Sort algorithm performs the same recursive decomposition and merges the same ranges regardless of whether the input is already sorted.</p>
+        <p>An optimization that skips merging when adjacent sorted runs are already in order can improve this behavior, which we'll examine later.</p>
+        <p class="minor-heading"><strong>Number of comparisons</strong></p>
+        <p>Merging sorted subarrays of lengths <code>m</code> and <code>n</code> requires at most:</p>
+        <p class="math-display"><span class="math" data-tex="m+n-1" data-display="1">m+n-1</span></p>
+        <p>comparisons.</p>
+        <p>For an array length that is a power of two, the maximum number of comparisons across the entire standard Merge Sort is:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{C(n)=n\log_2 n-n+1}" data-display="1">\boxed{C(n)=n\log_2 n-n+1}</span></p>
+        <p>For <code>n = 8</code>:</p>
+        <p class="math-display"><span class="math" data-tex="C(8)=8(3)-8+1=17" data-display="1">C(8)=8(3)-8+1=17</span></p>
+        <p>Thus, Merge Sort needs at most 17 element comparisons when sorting eight elements. The specific eight-element example above needs 16.</p>
+    </div>
+
+    <div class="subheading">Space Complexity Analysis</div>
+    <div class="intro">
+        <p>The standard array-based Merge Sort uses two different kinds of extra memory.</p>
+        <p class="minor-heading"><strong>Temporary array</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">var</span> temp = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[arr.length];</code></pre></div>
+    <div class="intro">
+        <p>A temporary array of size <code>n</code> is allocated to hold merged elements.</p>
+        <p>Its space requirement is:</p>
+        <p class="math-display"><span class="math" data-tex="S_{\text{temp}}(n)=O(n)" data-display="1">S_{\text{temp}}(n)=O(n)</span></p>
+        <p class="minor-heading"><strong>Recursive call stack</strong></p>
+        <p>Each recursive call adds a stack frame. Because only one branch of the recursion tree is active on the call stack at a time, the maximum stack depth is O(log n).</p>
+        <p>Thus:</p>
+        <p class="math-display"><span class="math" data-tex="S_{\text{stack}}(n)=O(\log n)" data-display="1">S_{\text{stack}}(n)=O(\log n)</span></p>
+        <p>The combined auxiliary space is:</p>
+        <p class="math-display"><span class="math" data-tex="S(n)=O(n)+O(\log n)=\boxed{O(n)}" data-display="1">S(n)=O(n)+O(\log n)=\boxed{O(n)}</span></p>
+    </div>
+    <div class="callout callout-note">
+        <p><strong>Example: Sorting one million integers</strong></p>
+        <p>Assuming Java's usual 4-byte <code>int</code>, the original <code>int[]</code> occupies approximately 4 MB of element storage. The reusable temporary <code>int[]</code> occupies another approximately 4 MB.</p>
+        <p>The recursion depth is approximately 21 frames. Array object headers, alignment, and stack frames add a small amount of further memory.</p>
+    </div>
+    <div class="intro">
+        <p>One optimization in our implementation is especially important: we allocate <code>temp</code> only once.</p>
+        <p>If new temporary arrays are allocated inside every merge, the program can generate substantially more short-lived allocations and garbage collection work, even though the peak live auxiliary memory can still be O(n) in a well-structured implementation.</p>
+    </div>
+
+    <div class="subheading">Why Is Merge Sort Stable?</div>
+    <div class="intro">
+        <p>A sorting algorithm is <strong>stable</strong> if elements having equal sort keys retain their original relative order.</p>
+        <p>Consider employee records sorted by age.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/merge-stability.svg" alt="Stability example: records A (30), B (25), C (30), D (20) sorted stably by age become D (20), B (25), A (30), C (30). A and C both have age 30, and A stays before C" style="width:100%;max-width:560px">
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">A and C both have age 30. A appeared before C originally, and remains before C after sorting.</p>
+        <p>The stability comes from this line:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">if</span> (arr[i] &lt;= arr[j])</code></pre></div>
+    <div class="intro">
+        <p>When two values are equal, the element from the <strong>left half</strong> is chosen first.</p>
+        <p>This preserves the original order of equal elements, provided recursive merges are also stable.</p>
+        <p>Changing <code>&lt;=</code> to <code>&lt;</code> causes the implementation to choose the right-half element on equality and can destroy stability.</p>
+        <p>Stability is useful for multi-key sorting. For example, records can first be sorted by employee name and then stably sorted by department, preserving name order within each department.</p>
+    </div>
+
+    <div class="subheading">Iterative Merge Sort (Bottom-Up Approach)</div>
+    <div class="intro">
+        <p>So far, we've used the <strong>Top-Down Merge Sort</strong>, which recursively divides an array.</p>
+        <p>Merge Sort can also be implemented iteratively, without recursion. This is called <strong>Bottom-Up Merge Sort</strong>.</p>
+        <p>Instead of dividing the array first, we start by considering every element a sorted run of length one and repeatedly merge adjacent runs.</p>
+        <p class="minor-heading"><strong>How Bottom-Up Merge Sort works</strong></p>
+        <p>Consider:</p>
+    </div>
+    <div class="code-block"><pre><code>Original:
+[38, 12, 27, 43, 9, 31, 18, 25]
+
+Width = 1: Merge individual elements
+[12, 38]  [27, 43]  [9, 31]  [18, 25]
+
+Width = 2: Merge runs of 2 elements
+[12, 27, 38, 43]   [9, 18, 25, 31]
+
+Width = 4: Merge runs of 4 elements
+[9, 12, 18, 25, 27, 31, 38, 43]
+
+Sorted!</code></pre></div>
+    <div class="intro">
+        <p>Notice that the size of sorted runs doubles after each pass: 1, 2, 4, 8, 16, and so on.</p>
+        <p class="minor-heading"><strong>Java implementation</strong></p>
+        <p>Add the following method to the <code>MergeSort</code> class shown earlier. It reuses the existing <code>merge()</code> method.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> sortBottomUp(<span class="code-keyword">int</span>[] arr) {
+    <span class="code-class">Objects</span>.requireNonNull(arr);
+
+    <span class="code-keyword">int</span> n = arr.length;
+    <span class="code-keyword">if</span> (n &lt; <span class="code-number">2</span>)
+        <span class="code-keyword">return</span>;
+
+    <span class="code-keyword">var</span> temp = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[n];
+
+    <span class="code-comment">// Sorted run width: 1, 2, 4, 8, ...</span>
+    <span class="code-keyword">for</span> (<span class="code-keyword">long</span> width = <span class="code-number">1</span>; width &lt; n; width *= <span class="code-number">2</span>) {
+
+        <span class="code-comment">// Merge adjacent runs of this width.</span>
+        <span class="code-keyword">for</span> (<span class="code-keyword">long</span> start = <span class="code-number">0</span>; start &lt; n; start += <span class="code-number">2</span> * width) {
+            <span class="code-keyword">int</span> left = (<span class="code-keyword">int</span>) start;
+            <span class="code-keyword">int</span> mid = (<span class="code-keyword">int</span>) <span class="code-class">Math</span>.min(start + width - <span class="code-number">1</span>, n - <span class="code-number">1L</span>);
+            <span class="code-keyword">int</span> right = (<span class="code-keyword">int</span>) <span class="code-class">Math</span>.min(start + <span class="code-number">2</span> * width - <span class="code-number">1</span>, n - <span class="code-number">1L</span>);
+
+            <span class="code-keyword">if</span> (mid &lt; right)
+                merge(arr, temp, left, mid, right);
+        }
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Using <code>long</code> for the width and start calculations avoids integer overflow for very large arrays.</p>
+        <p class="minor-heading"><strong>Top-Down vs Bottom-Up Merge Sort</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Feature</th><th>Top-Down</th><th>Bottom-Up</th></tr></thead>
+        <tbody>
+            <tr><td>Implementation</td><td>Recursive</td><td>Iterative</td></tr>
+            <tr><td>Division</td><td>Splits until single elements</td><td>Starts with single elements</td></tr>
+            <tr><td>Merge direction</td><td>From leaves upward</td><td>From small runs upward</td></tr>
+            <tr><td>Time</td><td>O(n log n)</td><td>O(n log n)</td></tr>
+            <tr><td>Auxiliary array</td><td>O(n)</td><td>O(n)</td></tr>
+            <tr><td>Call stack</td><td>O(log n)</td><td>O(1)</td></tr>
+            <tr><td>Recursion overhead</td><td>Yes</td><td>No</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Both approaches are valid. Bottom-up sorting avoids recursion overhead, while top-down sorting often more closely matches the mathematical definition of Divide and Conquer.</p>
+    </div>
+
+    <div class="subheading">Optimizing Merge Sort</div>
+    <div class="intro">
+        <p>Standard Merge Sort can be improved in several practical ways.</p>
+        <p class="minor-heading"><strong>Optimization 1: Skip unnecessary merges</strong></p>
+        <p>Suppose the left half is:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 3, 5]</code></pre></div>
+    <div class="intro">
+        <p>And the right half is:</p>
+    </div>
+    <div class="code-block"><pre><code>[7, 9, 12]</code></pre></div>
+    <div class="intro">
+        <p>Both halves are individually sorted. Moreover, the maximum element of the left half is already less than the minimum element of the right half:</p>
+    </div>
+    <div class="code-block"><pre><code>5 &lt;= 7</code></pre></div>
+    <div class="intro">
+        <p>Therefore, the combined range is already sorted. There is no need to call <code>merge()</code>.</p>
+        <p>Modify the recursive implementation:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">private</span> <span class="code-keyword">void</span> mergeSort(<span class="code-keyword">int</span>[] arr, <span class="code-keyword">int</span>[] temp, <span class="code-keyword">int</span> left, <span class="code-keyword">int</span> right) {
+    <span class="code-keyword">if</span> (left &gt;= right)
+        <span class="code-keyword">return</span>;
+
+    <span class="code-keyword">int</span> mid = left + (right - left) / <span class="code-number">2</span>;
+
+    mergeSort(arr, temp, left, mid);
+    mergeSort(arr, temp, mid + <span class="code-number">1</span>, right);
+
+    <span class="code-comment">// Both halves are sorted.</span>
+    <span class="code-comment">// No merge is needed when they are already in order.</span>
+    <span class="code-keyword">if</span> (arr[mid] &lt;= arr[mid + <span class="code-number">1</span>])
+        <span class="code-keyword">return</span>;
+
+    merge(arr, temp, left, mid, right);
+}</code></pre></div>
+    <div class="intro">
+        <p>This makes an important difference for already sorted input.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Input</th><th>Standard Merge Sort</th><th>Optimized version</th></tr></thead>
+        <tbody>
+            <tr><td>Already sorted</td><td>Θ(n log n)</td><td>Θ(n)</td></tr>
+            <tr><td>Randomly ordered</td><td>Θ(n log n)</td><td>O(n log n)</td></tr>
+            <tr><td>Reverse sorted</td><td>Θ(n log n)</td><td>Θ(n log n)</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>For sorted input, recursion still visits O(n) nodes, but the expensive merging work is skipped. This gives linear best-case time.</p>
+        <p class="minor-heading"><strong>Optimization 2: Use insertion sort for small subarrays</strong></p>
+        <p>Recursive Merge Sort has overhead from method calls and merging. Insertion Sort is often faster for very small arrays because of its low overhead and good cache locality.</p>
+        <p>A hybrid implementation can use insertion sort when a subarray is sufficiently small.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">final</span> <span class="code-keyword">int</span> <span class="code-class">THRESHOLD</span> = <span class="code-number">24</span>;
+
+<span class="code-keyword">private</span> <span class="code-keyword">void</span> mergeSortHybrid(<span class="code-keyword">int</span>[] arr, <span class="code-keyword">int</span>[] temp, <span class="code-keyword">int</span> left, <span class="code-keyword">int</span> right) {
+    <span class="code-keyword">if</span> (right - left + <span class="code-number">1</span> &lt;= <span class="code-class">THRESHOLD</span>) {
+        insertionSort(arr, left, right);
+        <span class="code-keyword">return</span>;
+    }
+
+    <span class="code-keyword">int</span> mid = left + (right - left) / <span class="code-number">2</span>;
+
+    mergeSortHybrid(arr, temp, left, mid);
+    mergeSortHybrid(arr, temp, mid + <span class="code-number">1</span>, right);
+
+    <span class="code-keyword">if</span> (arr[mid] &lt;= arr[mid + <span class="code-number">1</span>])
+        <span class="code-keyword">return</span>;
+
+    merge(arr, temp, left, mid, right);
+}
+
+<span class="code-keyword">private</span> <span class="code-keyword">void</span> insertionSort(<span class="code-keyword">int</span>[] arr, <span class="code-keyword">int</span> left, <span class="code-keyword">int</span> right) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = left + <span class="code-number">1</span>; i &lt;= right; i++) {
+        <span class="code-keyword">int</span> value = arr[i];
+        <span class="code-keyword">int</span> j = i - <span class="code-number">1</span>;
+
+        <span class="code-keyword">while</span> (j &gt;= left &amp;&amp; arr[j] &gt; value) {
+            arr[j + <span class="code-number">1</span>] = arr[j];
+            j--;
+        }
+
+        arr[j + <span class="code-number">1</span>] = value;
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>The threshold of 24 is illustrative. The best value depends on the hardware, runtime, data distribution, and element type.</p>
+        <p>This technique is used in the general family of hybrid sorting algorithms, including ideas found in TimSort.</p>
+    </div>
+
+    <div class="subheading">Merge Sort for Linked Lists</div>
+    <div class="intro">
+        <p>Merge Sort is particularly well suited for linked lists.</p>
+        <p>Why? Because it is possible to merge two sorted linked lists by rearranging their <code>next</code> pointers without using an auxiliary array.</p>
+        <p class="minor-heading"><strong>Example</strong></p>
+    </div>
+    <div class="code-block"><pre><code>Original linked list
+
+8 → 3 → 5 → 1 → null
+
+Divide
+
+8 → 3       5 → 1
+  ↓           ↓
+8   3       5   1
+
+Merge
+
+3 → 8       1 → 5
+
+Final merge
+
+1 → 3 → 5 → 8 → null</code></pre></div>
+    <div class="intro">
+        <p>For singly linked lists, we can use the slow-and-fast-pointer technique to find the midpoint.</p>
+        <p class="minor-heading"><strong>Java implementation</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">class</span> <span class="code-class">Node</span> {
+    <span class="code-keyword">int</span> value;
+    <span class="code-class">Node</span> next;
+
+    <span class="code-class">Node</span>(<span class="code-keyword">int</span> value) {
+        <span class="code-keyword">this</span>.value = value;
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-class">Node</span> mergeSort(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>)
+        <span class="code-keyword">return</span> head;
+
+    <span class="code-comment">// Find the end of the left half.</span>
+    <span class="code-class">Node</span> slow = head;
+    <span class="code-class">Node</span> fast = head.next;
+
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    <span class="code-class">Node</span> rightHead = slow.next;
+
+    <span class="code-comment">// Disconnect two halves.</span>
+    slow.next = <span class="code-keyword">null</span>;
+
+    <span class="code-class">Node</span> left = mergeSort(head);
+    <span class="code-class">Node</span> right = mergeSort(rightHead);
+
+    <span class="code-keyword">return</span> merge(left, right);
+}
+
+<span class="code-keyword">private</span> <span class="code-class">Node</span> merge(<span class="code-class">Node</span> left, <span class="code-class">Node</span> right) {
+    <span class="code-keyword">var</span> dummy = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    <span class="code-class">Node</span> tail = dummy;
+
+    <span class="code-keyword">while</span> (left != <span class="code-keyword">null</span> &amp;&amp; right != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (left.value &lt;= right.value) {
+            tail.next = left;
+            left = left.next;
+        } <span class="code-keyword">else</span> {
+            tail.next = right;
+            right = right.next;
+        }
+        tail = tail.next;
+    }
+
+    <span class="code-comment">// Attach remaining nodes.</span>
+    tail.next = (left != <span class="code-keyword">null</span>) ? left : right;
+
+    <span class="code-keyword">return</span> dummy.next;
+}</code></pre></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Complexity for linked lists</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Property</th><th>Complexity</th></tr></thead>
+        <tbody>
+            <tr><td>Time</td><td>O(n log n)</td></tr>
+            <tr><td>Auxiliary array</td><td>None</td></tr>
+            <tr><td>Recursion stack</td><td>O(log n)</td></tr>
+            <tr><td>Peak auxiliary space overall</td><td>O(log n)</td></tr>
+            <tr><td>Stability</td><td>Yes</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>The implementation reuses the original list nodes. The temporary dummy nodes and recursive call stack account for the auxiliary memory.</p>
+        <p>A bottom-up linked-list Merge Sort can go further and use <strong>O(1) auxiliary space</strong>, with no recursion.</p>
+    </div>
+
+    <div class="subheading">Generic Merge Sort Using Java Comparator</div>
+    <div class="intro">
+        <p>Real applications rarely sort only primitive integers. We often sort records, domain objects, transaction entries, employees, or other entities using a custom ordering.</p>
+        <p>We can implement a stable, generic Merge Sort using Java generics and <code>Comparator</code>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> &lt;<span class="code-class">T</span>&gt; <span class="code-keyword">void</span> sort(<span class="code-class">T</span>[] arr, <span class="code-class">Comparator</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">T</span>&gt; comparator) {
+    <span class="code-class">T</span>[] temp = arr.clone();
+    sort(arr, temp, <span class="code-number">0</span>, arr.length - <span class="code-number">1</span>, comparator);
+}
+
+<span class="code-keyword">private</span> &lt;<span class="code-class">T</span>&gt; <span class="code-keyword">void</span> sort(<span class="code-class">T</span>[] arr, <span class="code-class">T</span>[] temp, <span class="code-keyword">int</span> left, <span class="code-keyword">int</span> right, <span class="code-class">Comparator</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">T</span>&gt; comparator) {
+    <span class="code-keyword">if</span> (left &gt;= right)
+        <span class="code-keyword">return</span>;
+
+    <span class="code-keyword">int</span> mid = left + (right - left) / <span class="code-number">2</span>;
+
+    sort(arr, temp, left, mid, comparator);
+    sort(arr, temp, mid + <span class="code-number">1</span>, right, comparator);
+
+    <span class="code-keyword">int</span> i = left;
+    <span class="code-keyword">int</span> j = mid + <span class="code-number">1</span>;
+    <span class="code-keyword">int</span> k = left;
+
+    <span class="code-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= right)
+        <span class="code-keyword">if</span> (comparator.compare(arr[i], arr[j]) &lt;= <span class="code-number">0</span>)
+            temp[k++] = arr[i++];
+        <span class="code-keyword">else</span>
+            temp[k++] = arr[j++];
+
+    <span class="code-keyword">while</span> (i &lt;= mid)
+        temp[k++] = arr[i++];
+
+    <span class="code-keyword">while</span> (j &lt;= right)
+        temp[k++] = arr[j++];
+
+    <span class="code-class">System</span>.arraycopy(temp, left, arr, left, right - left + <span class="code-number">1</span>);
+}
+
+<span class="code-keyword">record</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> age) {}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">Employee</span>[] employees = {
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Alice"</span>, <span class="code-number">30</span>),
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Bob"</span>, <span class="code-number">25</span>),
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"Charlie"</span>, <span class="code-number">30</span>),
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"David"</span>, <span class="code-number">20</span>)
+    };
+    sort(employees, <span class="code-class">Comparator</span>.comparingInt(<span class="code-class">Employee</span>::age));
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{employees}"</span>);
+}</code></pre></div>
+    <div class="intro">
+        <p>The output order will be:</p>
+    </div>
+    <div class="code-block"><pre><code>Employee[name=David, age=20]
+Employee[name=Bob, age=25]
+Employee[name=Alice, age=30]
+Employee[name=Charlie, age=30]</code></pre></div>
+    <div class="intro">
+        <p>Alice and Charlie have equal ages, but Alice remains before Charlie because our merge operation is stable.</p>
+        <p>The comparator determines the sort order. For descending age, for example, you could use:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-class">Comparator</span>.comparingInt(<span class="code-class">Employee</span>::age).reversed()</code></pre></div>
+    <div class="intro">
+        <p>In a normal Java application, prefer library sorting facilities such as <code>Arrays.sort()</code> or <code>List.sort()</code> unless you have a specific reason to implement your own sorting algorithm.</p>
+    </div>
+
+    <div class="subheading">Why Merge Sort Is Correct</div>
+    <div class="intro">
+        <p>We can formally reason about Merge Sort's correctness using mathematical induction.</p>
+        <p><strong>Base case:</strong> For n = 0 or n = 1, the array is already sorted. The algorithm returns immediately, so it produces the correct result.</p>
+        <p><strong>Inductive hypothesis:</strong> Assume Merge Sort correctly sorts every array containing fewer than n elements.</p>
+        <p><strong>Inductive step:</strong> For an array containing n elements, the algorithm divides it into two smaller subarrays. By the inductive hypothesis, both recursive calls return correctly sorted halves.</p>
+        <p>The merge operation always selects the smallest remaining front element from those two sorted halves. Therefore, each element appended to the result is at least as large as the preceding element.</p>
+        <p>Every input element is copied exactly once into the merged result, so no elements are lost or duplicated.</p>
+        <p>Consequently, the resulting array is correctly sorted and contains exactly the original elements.</p>
+        <p>By induction, Merge Sort is correct for all nonnegative array lengths.</p>
+        <p>This proof illustrates a broader idea: <strong>Divide and Conquer works when smaller solutions can be combined into a correct solution to the original problem.</strong></p>
+    </div>
+
+    <div class="subheading">Merge Sort vs Quick Sort vs Heap Sort</div>
+    <div class="intro">
+        <p>These three algorithms all have O(n log n) average-case or better guarantees, but their tradeoffs differ significantly.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Feature</th><th>Merge Sort</th><th>Quick Sort</th><th>Heap Sort</th></tr></thead>
+        <tbody>
+            <tr><td>Best time</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td></tr>
+            <tr><td>Average time</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td></tr>
+            <tr><td>Worst time</td><td>O(n log n)</td><td>O(n²)</td><td>O(n log n)</td></tr>
+            <tr><td>Typical extra space</td><td>O(n)</td><td>O(log n) stack</td><td>O(1)</td></tr>
+            <tr><td>Stable by default</td><td>Yes</td><td>No</td><td>No</td></tr>
+            <tr><td>Standard strategy</td><td>Divide and merge</td><td>Partition around pivot</td><td>Heap selection</td></tr>
+            <tr><td>Works well on linked lists</td><td>Yes</td><td>Less naturally</td><td>Less naturally</td></tr>
+            <tr><td>Key advantage</td><td>Stable, predictable time</td><td>Often fast on arrays</td><td>Worst-case bound with low extra memory</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>Quick Sort's O(log n) auxiliary-space entry assumes a well-engineered implementation that controls stack depth; a naïve recursive version can use O(n) stack space.</p>
+        <p class="minor-heading"><strong>When should you choose Merge Sort?</strong></p>
+        <p>Merge Sort is attractive when stable sorting is required, worst-case O(n log n) time is important, additional memory is acceptable, or data is stored in linked lists or external files.</p>
+        <p>Quick Sort can be a strong choice for in-memory arrays where its locality and relatively low auxiliary memory are desirable. Heap Sort is useful when strict memory limits and worst-case time guarantees are both important.</p>
+    </div>
+
+    <div class="subheading">Real-World Applications</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>External sorting of very large files</strong></p>
+        <p>Suppose a system needs to sort a 100 GB file, but the available RAM is only 4 GB.</p>
+        <p>The entire file cannot be loaded into memory.</p>
+        <p>External Merge Sort solves this by splitting the file into chunks that fit in memory, sorting each chunk, writing sorted runs to disk, and then merging those runs using streaming reads.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/merge-external.svg" alt="Simplified external merge sort: a 100 GB input file is split into memory-sized chunks, for example 100 chunks of 1 GB; each chunk is sorted into a run (four representative runs shown); a streaming k-way merge using buffers and a priority queue combines the runs into a 100 GB sorted output file" style="width:100%;max-width:620px">
+    </div>
+    <div class="intro">
+        <p>Only small portions of the sorted runs need to reside in RAM during merging. This is a major reason that merge-based algorithms are foundational to large-scale data processing.</p>
+        <p class="minor-heading"><strong>Database sorting</strong></p>
+        <p>External merge techniques are useful for sorting datasets larger than available memory. Database query engines may use related sort-and-merge techniques when executing <code>ORDER BY</code>, sort-merge joins, or disk-based processing.</p>
+        <p class="minor-heading"><strong>Distributed systems</strong></p>
+        <p>Merge-based approaches are useful when independently sorted partitions need to be combined into a globally sorted stream.</p>
+        <p class="minor-heading"><strong>Parallel sorting</strong></p>
+        <p>The two halves of Merge Sort can be sorted independently, making the algorithm naturally suitable for parallel computation.</p>
+        <p>Java also provides <code>Arrays.parallelSort()</code> for parallel sorting, without requiring you to manually manage worker threads.</p>
+    </div>
+
+    <div class="subheading">Common Mistakes in Merge Sort Implementations</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Mistake</th><th>Problem</th><th>Correct approach</th></tr></thead>
+        <tbody>
+            <tr><td>Incorrect base condition</td><td>Infinite recursion or unnecessary calls</td><td>Stop when <code>left &gt;= right</code></td></tr>
+            <tr><td>Incorrect midpoint ranges</td><td>Missing or repeating elements</td><td>Use <code>[left, mid]</code> and <code>[mid+1, right]</code></td></tr>
+            <tr><td>Using <code>&lt;</code> for equal keys</td><td>Breaks stability</td><td>Use <code>&lt;=</code> when selecting the left element</td></tr>
+            <tr><td>Forgetting remaining elements</td><td>Incomplete merged result</td><td>Copy both possible remainders</td></tr>
+            <tr><td>Forgetting copy-back</td><td>Original array stays unsorted</td><td>Copy merged range to original</td></tr>
+            <tr><td>Repeated temporary allocations</td><td>More allocation overhead</td><td>Reuse a buffer</td></tr>
+            <tr><td>Using <code>(left+right)/2</code></td><td>Possible integer overflow</td><td>Use <code>left+(right-left)/2</code></td></tr>
+            <tr><td>Calling merge on unsorted halves</td><td>Incorrect output</td><td>Sort both halves before merging</td></tr>
+        </tbody>
+    </table></div>
+
+    <div class="subheading">Important Interview Questions</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Is Merge Sort an in-place algorithm?</strong></p>
+        <p>Not in its standard array implementation. It generally requires O(n) auxiliary memory, although specialized in-place merging algorithms exist.</p>
+        <p class="minor-heading"><strong>Is Merge Sort stable?</strong></p>
+        <p>Yes, provided that equal values from the left sorted run are selected before equal values from the right run.</p>
+        <p class="minor-heading"><strong>Can Merge Sort work without recursion?</strong></p>
+        <p>Yes. Bottom-up Merge Sort uses loops to merge increasingly large sorted runs and avoids recursive stack usage.</p>
+        <p class="minor-heading"><strong>Why is Merge Sort O(n log n) instead of O(n²)?</strong></p>
+        <p>Because the array is halved recursively, creating O(log n) levels, and merging across each level takes O(n) total work.</p>
+        <p class="minor-heading"><strong>Why is Merge Sort good for linked lists?</strong></p>
+        <p>Because sorted linked lists can be merged simply by rearranging pointers, without copying their elements into an auxiliary array.</p>
+        <p class="minor-heading"><strong>Does Merge Sort work with duplicates and negative numbers?</strong></p>
+        <p>Yes. It works with any values for which a consistent comparison operation is defined.</p>
+        <p class="minor-heading"><strong>What is the main disadvantage of Merge Sort?</strong></p>
+        <p>Its O(n) auxiliary-memory requirement for standard array sorting, along with the memory traffic involved in copying merged elements.</p>
+        <p class="minor-heading"><strong>What is the difference between Merge Sort and TimSort?</strong></p>
+        <p>Merge Sort recursively or iteratively combines sorted halves. TimSort is an adaptive, stable hybrid that exploits already ordered runs and uses techniques including insertion sorting and run merging.</p>
+    </div>
+
+    <div class="subheading">Final Summary</div>
+    <div class="intro">
+        <p>Merge Sort is a classic demonstration of Divide and Conquer.</p>
+        <p>Its main insight is that <strong>merging two sorted arrays is much easier than sorting an arbitrary unsorted array</strong>.</p>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Divide → Sort → Merge</strong></p>
+        <p>Repeatedly halve the problem, then combine sorted results.</p>
+    </div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 170px minmax(0, 1fr)">
+        <li><span class="ledger-label">O(n log n)</span><span>Guaranteed time</span></li>
+        <li><span class="ledger-label">O(n)</span><span>Array extra space</span></li>
+        <li><span class="ledger-label">Stable</span><span>Preserves equal-key order</span></li>
+    </ol></div>
+    <div class="intro">
+        <p>The three concepts most worth mastering are the recursive call tree, the two-pointer merge operation, and the recurrence relation <span class="math" data-tex="T(n)=2T(n/2)+\Theta(n)">T(n)=2T(n/2)+\Theta(n)</span>.</p>
+        <p>Once these are clear, the recursive implementation, bottom-up variation, linked-list version, and external merging techniques all follow the same fundamental idea.</p>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+
+function msCell(value, cls, cap) {
+    return '<div class="ms-cell"><div class="ms-box ' + (cls || "") + '">' + value + '</div>' + (cap === undefined ? "" : '<div class="ms-cap">' + cap + '</div>') + '</div>';
+}
+
+function msControls(root, count, render) {
+    const q = (r) => root.querySelector('[data-role="' + r + '"]');
+    const slider = q("slider");
+    let step = 0;
+    function go(n) { step = Math.max(0, Math.min(count() - 1, n)); slider.max = count() - 1; slider.value = step; q("prev").disabled = step === 0; q("next").disabled = step === count() - 1; render(step); }
+    q("prev").addEventListener("click", () => go(step - 1));
+    q("next").addEventListener("click", () => go(step + 1));
+    slider.addEventListener("input", () => go(Number(slider.value)));
+    return go;
+}
+
+/* Merge operation simulator: merge two fixed sorted arrays with pointers i and j. */
+(function () {
+    const root = document.getElementById("mergeSim");
+    if (!root) return;
+    const L = [12, 27, 38, 43], R = [9, 18, 25, 31];
+    const steps = (function () {
+        let i = 0, j = 0, out = [], s = [{i: 0, j: 0, out: [], note: "Both arrays are sorted. Compare their first elements."}];
+        while (i < L.length && j < R.length) {
+            const li = L[i], rj = R[j];
+            if (li <= rj) { out.push(li); i++; s.push({i, j, out: [...out], note: `${li} ≤ ${rj}: take ${li} from the left.`}); }
+            else { out.push(rj); j++; s.push({i, j, out: [...out], note: `${li} > ${rj}: take ${rj} from the right.`}); }
+        }
+        if (i < L.length) { out.push(...L.slice(i)); i = L.length; s.push({i, j, out: [...out], note: "Right array is exhausted. Copy the remaining left elements."}); }
+        if (j < R.length) { out.push(...R.slice(j)); j = R.length; s.push({i, j, out: [...out], note: "Left array is exhausted. Copy the remaining right elements."}); }
+        return s;
+    })();
+    const q = (r) => root.querySelector('[data-role="' + r + '"]');
+    function side(vals, idx, ptr) {
+        return vals.map((v, k) => msCell(v, k < idx ? "used" : k === idx ? ptr : "", k === idx ? "▲" : k < idx ? "✓" : "")).join("");
+    }
+    const go = msControls(root, () => steps.length, function (n) {
+        const ms = steps[n];
+        q("badge").textContent = `Step ${n} / ${steps.length - 1}`;
+        q("left").innerHTML = side(L, ms.i, "ptr-l");
+        q("right").innerHTML = side(R, ms.j, "ptr-r");
+        q("out").innerHTML = Array.from({length: 8}, (_, k) => k < ms.out.length ? msCell(ms.out[k], "filled") : msCell("·", "empty")).join("");
+        q("note").textContent = ms.note;
+    });
+    q("reset").addEventListener("click", () => go(0));
+    go(0);
+})();
+
+/* Merge Sort trace: top-down ascending merge sort over 7 or 8 values. */
+(function () {
+    const root = document.getElementById("mergeViz");
+    if (!root) return;
+    const q = (r) => root.querySelector('[data-role="' + r + '"]');
+    let values = [38, 12, 27, 43, 9, 31, 18, 25], frames = [];
+
+    function trace(input) {
+        const a = input.slice(), f = [];
+        const snap = (o) => f.push(Object.assign({arr: a.slice(), lo: -1, hi: -1, mid: -1, i: -1, j: -1, out: null, sorted: []}, o));
+        snap({call: "mergeSort(0, " + (a.length - 1) + ")", note: `Start with ${a.length} unsorted values. Each call sorts one contiguous range.`});
+        const done = [];
+        function sort(lo, hi) {
+            const call = `mergeSort(${lo}, ${hi})`;
+            if (lo >= hi) {
+                done.push([lo, hi]);
+                snap({call, lo, hi, sorted: done.slice(), note: `Range [${lo}..${hi}] holds the single element ${a[lo]}: a base case, already sorted.`});
+                return;
+            }
+            const mid = lo + Math.floor((hi - lo) / 2);
+            snap({call, lo, hi, mid, sorted: done.slice(), note: `Split [${lo}..${hi}] at mid = ${mid} into [${lo}..${mid}] (${mid - lo + 1}) and [${mid + 1}..${hi}] (${hi - mid})` + (mid - lo + 1 !== hi - mid ? " — an unequal split." : ".")});
+            sort(lo, mid);
+            sort(mid + 1, hi);
+            let i = lo, j = mid + 1;
+            const out = [];
+            snap({call: `merge(${lo}, ${mid}, ${hi})`, lo, hi, mid, i, j, out: out.slice(), sorted: done.slice(), note: `Merge the sorted runs [${lo}..${mid}] and [${mid + 1}..${hi}]: compare their front elements.`});
+            while (i <= mid && j <= hi) {
+                const take = a[i] <= a[j];
+                const note = take ? `${a[i]} ≤ ${a[j]}: append ${a[i]} from the left run.` : `${a[i]} > ${a[j]}: append ${a[j]} from the right run.`;
+                out.push(take ? a[i++] : a[j++]);
+                snap({call: `merge(${lo}, ${mid}, ${hi})`, lo, hi, mid, i, j, out: out.slice(), sorted: done.slice(), note});
+            }
+            if (i <= mid || j <= hi) {
+                const rest = i <= mid ? a.slice(i, mid + 1) : a.slice(j, hi + 1);
+                const from = i <= mid ? "left" : "right";
+                out.push(...rest);
+                i = mid + 1; j = hi + 1;
+                snap({call: `merge(${lo}, ${mid}, ${hi})`, lo, hi, mid, i, j, out: out.slice(), sorted: done.slice(), note: `The ${from === "left" ? "right" : "left"} run is exhausted: append the remaining ${from} value${rest.length > 1 ? "s" : ""} ${rest.join(", ")} without comparing.`});
+            }
+            for (let k = 0; k < out.length; k++) a[lo + k] = out[k];
+            for (let d = done.length - 1; d >= 0; d--) if (done[d][0] >= lo && done[d][1] <= hi) done.splice(d, 1);
+            done.push([lo, hi]);
+            snap({call: `merge(${lo}, ${mid}, ${hi})`, lo, hi, mid, sorted: done.slice(), note: `Copy back: [${lo}..${hi}] is now the sorted run ${out.join(", ")}.`});
+        }
+        sort(0, a.length - 1);
+        snap({call: "done", lo: 0, hi: a.length - 1, sorted: [[0, a.length - 1]], note: `All runs merged: ${a.join(", ")}.`});
+        return f;
+    }
+
+    function render(n) {
+        const fr = frames[n];
+        q("badge").textContent = `Step ${n} / ${frames.length - 1}`;
+        q("call").textContent = fr.call;
+        const inSorted = (k) => fr.sorted.some((r) => k >= r[0] && k <= r[1]);
+        q("arr").innerHTML = fr.arr.map((v, k) => {
+            let cls = "";
+            if (fr.lo >= 0 && (k < fr.lo || k > fr.hi)) cls = "faded";
+            else if (fr.out && k === fr.i && fr.i <= fr.mid) cls = "ptr-l";
+            else if (fr.out && k === fr.j && fr.j <= fr.hi) cls = "ptr-r";
+            else if (fr.out && k < fr.i && k <= fr.mid) cls = "used";
+            else if (fr.out && k > fr.mid && k < fr.j) cls = "used";
+            else if (fr.mid >= 0 && k <= fr.mid) cls = "left";
+            else if (fr.mid >= 0) cls = "right";
+            else if (inSorted(k) && fr.lo >= 0) cls = "done";
+            if (fr.call === "done") cls = "done";
+            return msCell(v, cls, k);
+        }).join("");
+        const len = fr.out ? fr.hi - fr.lo + 1 : 0;
+        q("out").innerHTML = fr.out ? Array.from({length: len}, (_, k) => k < fr.out.length ? msCell(fr.out[k], "filled") : msCell("·", "empty")).join("") : '<span class="ms-cap">— appears while two runs are being merged —</span>';
+        q("note").textContent = fr.note;
+    }
+
+    const go = msControls(root, () => frames.length, render);
+    function load(vals) { values = vals; frames = trace(values); go(0); }
+    q("shuffle").addEventListener("click", function () {
+        const n = Math.random() < 0.5 ? 7 : 8, pool = [];
+        while (pool.length < n) { const v = 1 + Math.floor(Math.random() * 60); if (!pool.includes(v)) pool.push(v); }
+        load(pool);
+    });
+    load(values);
+})();
+</script>
+</body>
+</html>

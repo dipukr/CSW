@@ -1,0 +1,31 @@
+<svg width="560" height="260" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 260" role="img" aria-label="Stability example: records A (30), B (25), C (30), D (20) sorted stably by age become D (20), B (25), A (30), C (30). A and C both have age 30, and A stays before C">
+    <defs><marker id="st-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="st-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="st-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="22" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">BEFORE SORTING BY AGE</text>
+    <rect x="40" y="34" width="110" height="58" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="95" y="60" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">A</text>
+    <text x="95" y="79" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">30 yrs</text>
+    <rect x="165" y="34" width="110" height="58" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="220" y="60" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">B</text>
+    <text x="220" y="79" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">25 yrs</text>
+    <rect x="290" y="34" width="110" height="58" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="345" y="60" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">C</text>
+    <text x="345" y="79" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">30 yrs</text>
+    <rect x="415" y="34" width="110" height="58" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="470" y="60" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">D</text>
+    <text x="470" y="79" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">20 yrs</text>
+    <path d="M280 102 V146" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#st-a)"/>
+    <text x="292" y="128" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">Stable sort by age</text>
+    <text x="40" y="168" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">AFTER</text>
+    <rect x="40" y="180" width="110" height="58" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="95" y="206" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">D</text>
+    <text x="95" y="225" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">20 yrs</text>
+    <rect x="165" y="180" width="110" height="58" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="220" y="206" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">B</text>
+    <text x="220" y="225" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">25 yrs</text>
+    <rect x="290" y="180" width="110" height="58" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="345" y="206" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">A</text>
+    <text x="345" y="225" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">30 yrs</text>
+    <rect x="415" y="180" width="110" height="58" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#st-s)"/>
+    <text x="470" y="206" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="#1E293B">C</text>
+    <text x="470" y="225" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">30 yrs</text>
+</svg>

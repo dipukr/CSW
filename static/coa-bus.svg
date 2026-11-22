@@ -1,0 +1,41 @@
+<svg width="800" height="290" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 290" role="img" aria-label="System bus: the CPU, main memory and two I/O modules each connect to three shared buses: the data bus, the address bus and the control bus">
+    <defs><marker id="bus-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="bus-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="bus-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <path d="M130 170 H785" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="20" y="174" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#0D9488">Data bus</text>
+    <path d="M130 215 H785" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="20" y="219" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#B45309">Address bus</text>
+    <path d="M130 260 H785" fill="none" stroke="#6D28D9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="20" y="264" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#6D28D9">Control bus</text>
+    <rect x="140" y="30" width="140" height="64" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#bus-s)"/>
+    <text x="210.0" y="66.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1E293B">CPU</text>
+    <path d="M175 94 V170" fill="none" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="175" cy="170" r="3.5" fill="#0D9488"/>
+    <path d="M210 94 V215" fill="none" stroke="#B45309" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="210" cy="215" r="3.5" fill="#B45309"/>
+    <path d="M245 94 V260" fill="none" stroke="#6D28D9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="245" cy="260" r="3.5" fill="#6D28D9"/>
+    <rect x="305" y="30" width="140" height="64" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#bus-s)"/>
+    <text x="375.0" y="66.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1E293B">Main memory</text>
+    <path d="M340 94 V170" fill="none" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="340" cy="170" r="3.5" fill="#0D9488"/>
+    <path d="M375 94 V215" fill="none" stroke="#B45309" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="375" cy="215" r="3.5" fill="#B45309"/>
+    <path d="M410 94 V260" fill="none" stroke="#6D28D9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="410" cy="260" r="3.5" fill="#6D28D9"/>
+    <rect x="470" y="30" width="140" height="64" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#bus-s)"/>
+    <text x="540.0" y="66.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1E293B">I/O module</text>
+    <path d="M505 94 V170" fill="none" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="505" cy="170" r="3.5" fill="#0D9488"/>
+    <path d="M540 94 V215" fill="none" stroke="#B45309" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="540" cy="215" r="3.5" fill="#B45309"/>
+    <path d="M575 94 V260" fill="none" stroke="#6D28D9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="575" cy="260" r="3.5" fill="#6D28D9"/>
+    <rect x="635" y="30" width="140" height="64" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#bus-s)"/>
+    <text x="705.0" y="66.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1E293B">I/O module</text>
+    <path d="M670 94 V170" fill="none" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="670" cy="170" r="3.5" fill="#0D9488"/>
+    <path d="M705 94 V215" fill="none" stroke="#B45309" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="705" cy="215" r="3.5" fill="#B45309"/>
+    <path d="M740 94 V260" fill="none" stroke="#6D28D9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="740" cy="260" r="3.5" fill="#6D28D9"/>
+</svg>

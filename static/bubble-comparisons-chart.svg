@@ -1,0 +1,41 @@
+<svg width="760" height="380" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" role="img" aria-label="Line chart of worst-case comparisons n(n - 1)/2 against array length n: 10 gives 45, 20 gives 190, 50 gives 1,225, 100 gives 4,950, 200 gives 19,900, 500 gives 124,750 and 1,000 gives 499,500">
+    <defs><marker id="ch-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="ch-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="ch-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="26" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Worst-case number of comparisons</text>
+    <text x="40" y="46" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">Using n(n − 1)/2 for an array of length n</text>
+    <path d="M100 320.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="324.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0</text>
+    <path d="M100 270.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="274.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">100,000</text>
+    <path d="M100 220.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="224.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">200,000</text>
+    <path d="M100 170.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="174.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">300,000</text>
+    <path d="M100 120.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="124.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">400,000</text>
+    <path d="M100 70.0 H720" fill="none" stroke="#E2E8F0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="74.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">500,000</text>
+    <path d="M100 320 H720" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="100.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">10</text>
+    <text x="203.33333333333331" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">20</text>
+    <text x="306.66666666666663" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">50</text>
+    <text x="410.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">100</text>
+    <text x="513.3333333333333" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">200</text>
+    <text x="616.6666666666666" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">500</text>
+    <text x="720.0" y="340" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">1000</text>
+    <text x="410.0" y="364" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">array length n</text>
+    <polyline points="100.0,320.0 203.3,319.9 306.7,319.4 410.0,317.5 513.3,310.1 616.7,257.6 720.0,70.2" fill="none" stroke="#0D9488" stroke-width="2.4" stroke-linejoin="round"/>
+    <circle cx="100.0" cy="320.0" r="4" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <text x="100.0" y="309.9775" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">45</text>
+    <circle cx="203.3" cy="319.9" r="4" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <text x="203.33333333333331" y="309.905" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">190</text>
+    <circle cx="306.7" cy="319.4" r="4" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <text x="306.66666666666663" y="309.3875" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">1,225</text>
+    <circle cx="410.0" cy="317.5" r="4" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <text x="410.0" y="307.525" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">4,950</text>
+    <circle cx="513.3" cy="310.1" r="4" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <text x="513.3333333333333" y="300.05" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">19,900</text>
+    <circle cx="616.7" cy="257.6" r="4" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <text x="616.6666666666666" y="247.625" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">124,750</text>
+    <circle cx="720.0" cy="70.2" r="4" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+    <text x="720.0" y="60.25" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#1E293B">499,500</text>
+</svg>

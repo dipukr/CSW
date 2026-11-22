@@ -8,18 +8,17 @@
 </head>
 <body>
 <div class="note">
-    <div class="title">Algorithms</div>
+    <div class="title">Complete Overview of Algorithms</div>
 
     <div class="intro">
-        <p class="sw-muted sw-small">Computer Science · Reference Notes<br>Foundations · Classification · Design Paradigms · Complexity · Algorithm Families · Optimization · Real-World Applications</p>
         <p>An <strong>algorithm</strong> is a finite, well-defined sequence of computational steps designed to solve a problem or perform a task.</p>
         <p>Algorithms form the foundation of computer science. They are used in everything from searching and sorting to database engines, operating systems, distributed systems, artificial intelligence, cryptography, networking, and large-scale optimization.</p>
         <p>This guide presents a comprehensive, top-level understanding of algorithms, focusing on <strong>what they are, how they work, how they are classified, when different approaches are useful, and how their performance is evaluated.</strong></p>
     </div>
 
-    <div class="subheading">1. Fundamentals of Algorithms</div>
+    <div class="subheading">Fundamentals of Algorithms</div>
     <div class="intro">
-        <p class="minor-heading"><strong>1.1 What is an algorithm?</strong></p>
+        <p class="minor-heading"><strong>What is an algorithm?</strong></p>
         <p>An algorithm transforms an input into an output by applying a precisely defined procedure.</p>
     </div>
     <div class="svg-diagram">
@@ -27,9 +26,9 @@
     </div>
     <div class="intro">
         <p><strong>Example:</strong> Given a collection of customer records, an algorithm might find a particular customer, sort all customers by age, detect duplicate records, or calculate the shortest delivery route.</p>
-        <p class="minor-heading"><strong>1.2 Essential properties</strong></p>
+        <p class="minor-heading"><strong>Essential properties</strong></p>
     </div>
-    <div class="folio"><ol class="ledger">
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 200px minmax(0, 1fr); text-align: center">
         <li><span class="ledger-label">Input</span><span>Accepts zero or more input values</span></li>
         <li><span class="ledger-label">Output</span><span>Produces a result or observable effect</span></li>
         <li><span class="ledger-label">Definiteness</span><span>Every operation is unambiguous</span></li>
@@ -40,7 +39,7 @@
     </ol></div>
     <div class="intro">
         <p>Strictly speaking, some practical procedures are intentionally continuous, such as server event loops and monitoring processes. These can still be algorithmic systems even though the overall process does not terminate.</p>
-        <p class="minor-heading"><strong>1.3 Algorithm vs data structure vs program</strong></p>
+        <p class="minor-heading"><strong>Algorithm vs data structure vs program</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Concept</th><th>Purpose</th><th>Example</th></tr></thead>
             <tbody>
@@ -54,7 +53,7 @@
         <p><strong>Important:</strong> A data structure and an algorithm are not the same thing, but they strongly influence each other. An algorithm's efficiency often depends on the underlying data structure.</p>
     </div>
 
-    <div class="subheading">2. Major Ways to Classify Algorithms</div>
+    <div class="subheading">Major Ways to Classify Algorithms</div>
     <div class="intro">
         <p>There is no single universal classification. Algorithms can be categorized independently along several dimensions.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
@@ -62,6 +61,7 @@
             <tbody>
                 <tr><td>By purpose</td><td>Searching, Sorting, Graph, String, Optimization, Numerical</td></tr>
                 <tr><td>By design technique</td><td>Brute Force, Divide and Conquer, Greedy, Dynamic Programming</td></tr>
+                <tr><td>By practical problem-solving pattern</td><td>Two Pointers, Sliding Window, Prefix Sum, Monotonic Stack, Binary Search on Answer, Merge Intervals, Union-Find</td></tr>
                 <tr><td>By execution behavior</td><td>Iterative, Recursive, Parallel, Distributed</td></tr>
                 <tr><td>By result guarantee</td><td>Exact, Approximation, Heuristic</td></tr>
                 <tr><td>By randomness</td><td>Deterministic, Randomized</td></tr>
@@ -75,10 +75,10 @@
         <p>For example, Merge Sort is simultaneously a sorting algorithm, a divide-and-conquer algorithm, a deterministic algorithm, and typically an offline algorithm.</p>
     </div>
 
-    <div class="subheading">3. Algorithm Analysis and Complexity</div>
+    <div class="subheading">Algorithm Analysis and Complexity</div>
     <div class="intro">
         <p>Algorithm analysis determines how efficiently an algorithm uses computational resources as its input grows.</p>
-        <p class="minor-heading"><strong>3.1 Main performance measures</strong></p>
+        <p class="minor-heading"><strong>Main performance measures</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Measure</th><th>Description</th></tr></thead>
             <tbody>
@@ -92,7 +92,7 @@
             </tbody>
         </table></div>
         <p>The two most fundamental measures are <strong>time complexity</strong> and <strong>space complexity</strong>.</p>
-        <p class="minor-heading"><strong>3.2 Asymptotic notation</strong></p>
+        <p class="minor-heading"><strong>Asymptotic notation</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Notation</th><th>Meaning</th></tr></thead>
             <tbody>
@@ -104,7 +104,7 @@
             </tbody>
         </table></div>
         <p>Big O is often used informally to describe growth rates, but mathematically it means an <strong>upper bound</strong>, not necessarily the exact running time or worst-case scenario.</p>
-        <p class="minor-heading"><strong>3.3 Common time complexity classes</strong></p>
+        <p class="minor-heading"><strong>Common time complexity classes</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Complexity</th><th>Name</th><th>Typical example</th></tr></thead>
             <tbody>
@@ -126,7 +126,7 @@
     </div>
     <div class="intro">
         <p><em>Growth is illustrative, not a benchmark. Actual runtime depends on hardware, constants, data, and implementation.</em></p>
-        <p class="minor-heading"><strong>3.4 Cases of complexity analysis</strong></p>
+        <p class="minor-heading"><strong>Cases of complexity analysis</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Case</th><th>Interpretation</th></tr></thead>
             <tbody>
@@ -138,7 +138,7 @@
             </tbody>
         </table></div>
         <p>For example, a hash table can offer expected constant-time lookups, even though individual operations may take much longer because of collisions.</p>
-        <p class="minor-heading"><strong>3.5 Time-space tradeoff</strong></p>
+        <p class="minor-heading"><strong>Time-space tradeoff</strong></p>
         <p>Algorithms frequently exchange memory for speed.</p>
         <ul>
             <li><strong>Memoization:</strong> Uses additional memory to avoid repeated computations.</li>
@@ -150,7 +150,7 @@
         <p>The fastest algorithm is not always the best algorithm. Memory, network usage, latency, throughput, reliability, and implementation complexity can matter equally.</p>
     </div>
 
-    <div class="subheading">4. Algorithm Design Paradigms</div>
+    <div class="subheading">Algorithm Design Paradigms</div>
     <div class="intro">
         <p>These are general problem-solving techniques used to design algorithms across many domains.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
@@ -170,11 +170,11 @@
                 <tr><td>Metaheuristic</td><td>Use general search strategies to explore large solution spaces</td><td>Genetic Algorithms, Simulated Annealing</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>4.1 Brute force</strong></p>
+        <p class="minor-heading"><strong>Brute force</strong></p>
         <p>Explores possible candidates without relying on sophisticated problem-specific optimization.</p>
         <p><strong>Advantages:</strong> Simple, broadly applicable, and useful as a correctness baseline.</p>
         <p><strong>Disadvantages:</strong> Often computationally expensive, especially for combinatorial problems.</p>
-        <p class="minor-heading"><strong>4.2 Divide and conquer</strong></p>
+        <p class="minor-heading"><strong>Divide and conquer</strong></p>
         <p>Divides a large problem into smaller, usually independent problems, solves them recursively, then combines the results.</p>
         <p>Typical stages:</p>
         <ol>
@@ -183,11 +183,11 @@
             <li>Combine.</li>
         </ol>
         <p>It is effective when a problem has a useful recursive structure and the subproblems can be handled efficiently.</p>
-        <p class="minor-heading"><strong>4.3 Greedy algorithms</strong></p>
+        <p class="minor-heading"><strong>Greedy algorithms</strong></p>
         <p>Choose the best available option at each step without generally reconsidering previous decisions.</p>
         <p>Greedy methods are efficient when the problem has the required mathematical structure, particularly a valid greedy-choice property.</p>
         <p><strong>Important:</strong> Making locally optimal decisions does not guarantee a globally optimal solution for every problem.</p>
-        <p class="minor-heading"><strong>4.4 Dynamic programming</strong></p>
+        <p class="minor-heading"><strong>Dynamic programming</strong></p>
         <p>Breaks a problem into overlapping subproblems and stores intermediate solutions.</p>
         <p>Two primary approaches:</p>
         <ul>
@@ -195,12 +195,12 @@
             <li><strong>Tabulation (bottom-up):</strong> Iterative construction of solutions from smaller states.</li>
         </ul>
         <p>Dynamic programming is especially useful when problems exhibit optimal substructure and repeated subproblems.</p>
-        <p class="minor-heading"><strong>4.5 Backtracking vs branch and bound</strong></p>
+        <p class="minor-heading"><strong>Backtracking vs branch and bound</strong></p>
         <p>Both systematically explore a solution space.</p>
         <p>Backtracking primarily prunes decisions that violate constraints or cannot lead to valid solutions.</p>
         <p>Branch and bound primarily uses bounds to discard candidates that cannot improve on the best solution already found.</p>
         <p>They are often combined in optimization algorithms.</p>
-        <p class="minor-heading"><strong>4.6 Randomized algorithms</strong></p>
+        <p class="minor-heading"><strong>Randomized algorithms</strong></p>
         <p>Use random choices to influence execution or outcomes.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Type</th><th>Guarantee</th></tr></thead>
@@ -210,16 +210,148 @@
             </tbody>
         </table></div>
         <p>Randomized methods are common in sampling, hashing, approximate counting, optimization, and large-scale data processing.</p>
-        <p class="minor-heading"><strong>4.7 Approximation and heuristic algorithms</strong></p>
+        <p class="minor-heading"><strong>Approximation and heuristic algorithms</strong></p>
         <p>An approximation algorithm provides a mathematically defined guarantee about how close its solution is to optimal.</p>
         <p>A heuristic aims to find useful solutions efficiently but generally provides no universal guarantee.</p>
         <p>Metaheuristics such as genetic algorithms, tabu search, and simulated annealing provide reusable search strategies for difficult optimization landscapes.</p>
     </div>
 
-    <div class="subheading">5. Major Families of Algorithms</div>
+    <div class="subheading">Practical Algorithmic Problem-Solving Patterns &amp; Techniques</div>
+    <div class="intro">
+        <p>Broad <strong>design paradigms</strong> such as divide and conquer and dynamic programming describe how an algorithm is constructed. <strong>Problem-solving patterns</strong> are more specific, reusable ways to organize pointers, scans, intermediate state, data structures, or searches. A single algorithm can combine multiple patterns.</p>
+        <p>These patterns are especially useful for array and string problems, coding interviews, online data processing, database-style range queries, graph traversal, and high-performance application logic. The following is a conceptual guide, <strong>without code examples</strong>.</p>
+        <p class="minor-heading"><strong>Two Pointers</strong></p>
+        <p><strong>Basic idea:</strong> Maintain two positions in a sequence and move one or both according to a rule, avoiding repeated scanning of the same elements.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Variant</th><th>How it works</th><th>Typical use</th><th>Typical cost</th></tr></thead>
+            <tbody>
+                <tr><td>Opposite-direction pointers</td><td>Start at opposite ends and move inward.</td><td>Pair search in sorted data, palindrome checks, sorted-array partitioning.</td><td>O(n) for one pass.</td></tr>
+                <tr><td>Same-direction pointers</td><td>Both move forward, often serving as read and write positions.</td><td>In-place compaction, removing adjacent duplicates, merging scans.</td><td>O(n) for one pass.</td></tr>
+                <tr><td>Fast and slow pointers</td><td>Pointers advance at different rates.</td><td>Linked-list cycle detection, finding the middle of a list, locating cycles.</td><td>Often O(n) time and O(1) extra space.</td></tr>
+                <tr><td>Two sorted streams</td><td>Track positions in two separately ordered inputs.</td><td>Sorted merge, intersection of sorted arrays, merge joins.</td><td>O(n + m) for full traversal.</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/algo-two-pointers-window.svg" alt="Two Pointers and Sliding Window diagrams" style="width:100%;max-width:940px">
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">Two Pointers generally tracks two positions; Sliding Window maintains a contiguous interval and a property of that interval. The techniques can overlap.</p>
+        <p class="minor-heading"><strong>Sliding Window</strong></p>
+        <p><strong>Basic idea:</strong> Maintain information about a contiguous range while moving its boundaries forward. Rather than recomputing every range from scratch, update the running sum, frequency map, count, or another maintained property as elements enter or leave.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Variant</th><th>Typical problem</th><th>Key requirement</th><th>Typical cost</th></tr></thead>
+            <tbody>
+                <tr><td>Fixed-size window</td><td>Maximum sum or average of every consecutive k-element group.</td><td>The window length remains k.</td><td>Often O(n).</td></tr>
+                <tr><td>Variable-size window</td><td>Longest or shortest contiguous range meeting a condition.</td><td>The condition must permit safe boundary adjustment; monotonic behavior is commonly used.</td><td>Often O(n) with monotone pointer movement.</td></tr>
+                <tr><td>Frequency-based window</td><td>Longest substring without repeated characters; bounded distinct values.</td><td>Maintain element counts as endpoints change.</td><td>Often O(n) with appropriate map operations.</td></tr>
+                <tr><td>Window with monotonic deque</td><td>Minimum or maximum in every k-element window.</td><td>Maintain candidates in a monotonic order.</td><td>O(n) amortized for the full sequence.</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Recognize it when:</strong> The question asks about <em>contiguous subarrays, substrings, consecutive time intervals, longest valid ranges, or fixed-length rolling statistics</em>. It is not automatically applicable to arbitrary subsets or non-monotone constraints.</p>
+        <p class="minor-heading"><strong>Prefix Sums and Difference Arrays</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Technique</th><th>Core idea</th><th>Best suited for</th><th>Typical cost</th></tr></thead>
+            <tbody>
+                <tr><td>Prefix Sum</td><td>Precompute cumulative totals so a range sum is the difference of two prefix values.</td><td>Many static range-sum queries.</td><td>O(n) preprocessing, O(1) per range query.</td></tr>
+                <tr><td>2D Prefix Sum</td><td>Precompute cumulative sums over a rectangular grid.</td><td>Repeated rectangle-sum queries in matrices.</td><td>O(rows × cols) preprocessing, O(1) per query.</td></tr>
+                <tr><td>Prefix XOR / Prefix Counts</td><td>Store cumulative XOR values or frequency counts.</td><td>Range XOR, parity, letter-count, and counting queries.</td><td>Often O(n) preprocessing; query cost depends on representation.</td></tr>
+                <tr><td>Difference Array</td><td>Record boundary changes to represent many interval additions compactly.</td><td>Batch range updates, followed by reconstruction.</td><td>Often O(1) per update, O(n) reconstruction.</td></tr>
+                <tr><td>Prefix Sum + Hash Map</td><td>Track previously seen prefix aggregates.</td><td>Counting subarrays with a target sum or property.</td><td>Often expected O(n).</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+    <div class="svg-diagram">
+        <img src="static/algo-prefix-sums.svg" alt="Prefix sum diagram showing range sum as difference of two cumulative totals" style="width:100%;max-width:820px">
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">A prefix sum transforms repeated additions over a static range into constant-time arithmetic using cumulative values.</p>
+        <p class="minor-heading"><strong>Monotonic Stack and Monotonic Queue</strong></p>
+        <p><strong>Monotonic stack:</strong> Maintains elements or indices in increasing or decreasing order. When a new element violates that order, obsolete elements are removed. It is useful for <em>next greater/smaller element, stock span, histogram rectangles, and boundary detection</em>.</p>
+        <p><strong>Monotonic queue/deque:</strong> Maintains ordered candidates while also removing expired elements. It is useful for <em>sliding-window minimum/maximum</em> and some dynamic programming optimizations.</p>
+        <p>Under the standard push-once/pop-once setup, these patterns often run in <strong>O(n) amortized time</strong>, even though one step may remove many elements.</p>
+        <p class="minor-heading"><strong>Binary Search on Answer, Ordering, and Selection</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Core idea</th><th>Typical use</th></tr></thead>
+            <tbody>
+                <tr><td>Binary Search on Answer</td><td>Turn optimization into a monotone feasibility question and binary search the boundary.</td><td>Minimum capacity, earliest feasible time, maximum achievable threshold.</td></tr>
+                <tr><td>Sort + Scan</td><td>Sort by a relevant key, then make one pass using ordering.</td><td>Duplicate detection, grouping, scheduling, interval problems.</td></tr>
+                <tr><td>Merge Intervals</td><td>Sort intervals and combine overlaps while scanning.</td><td>Calendar conflicts, occupied time spans, overlapping ranges.</td></tr>
+                <tr><td>Sweep Line</td><td>Order event boundaries and update active information as a line or time advances.</td><td>Overlaps, geometric intersections, concurrent event counts.</td></tr>
+                <tr><td>Quickselect / Partition Selection</td><td>Partition around a pivot to locate an order statistic without fully sorting.</td><td>kth-smallest value, median selection.</td></tr>
+                <tr><td>Heap / Top-K</td><td>Maintain the best k candidates in a heap.</td><td>Top scores, nearest candidates, streaming top-k.</td></tr>
+                <tr><td>Cyclic Placement / Index Mapping</td><td>Use a bounded value-to-position relation to place or inspect items.</td><td>Missing/duplicate numbers in constrained integer ranges.</td></tr>
+                <tr><td>Coordinate Compression</td><td>Map sparse ordered values to a compact index domain while preserving relative order.</td><td>Fenwick Trees, Segment Trees, offline queries.</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Key caution:</strong> Binary Search on Answer requires a valid monotonic feasibility property; sorting changes original ordering, so it may require tracking original indices.</p>
+        <p class="minor-heading"><strong>Hashing, Counting, and Linear-Time Optimization</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Core idea</th><th>Typical use</th></tr></thead>
+            <tbody>
+                <tr><td>Frequency Map / Counting</td><td>Maintain occurrences of values or symbols.</td><td>Anagrams, duplicates, majority-like properties.</td></tr>
+                <tr><td>Hash Map for Complements</td><td>Remember values already seen to identify a needed counterpart.</td><td>Pair-sum and matching constraints.</td></tr>
+                <tr><td>Kadane's Algorithm</td><td>Maintain the best subarray ending at the current position, then the best overall.</td><td>Maximum-sum contiguous subarray in O(n).</td></tr>
+                <tr><td>Running Aggregate</td><td>Incrementally update sum, min, max, counts, or other mergeable state.</td><td>Stream statistics and single-pass calculations.</td></tr>
+                <tr><td>Rolling Hash</td><td>Update a hash as a fixed-length subsequence shifts by one position.</td><td>Substring search and deduplication candidates; verify matches if collisions matter.</td></tr>
+                <tr><td>Bitmask / Bitset Technique</td><td>Represent small sets or flags compactly using bits.</td><td>Subset states, membership flags, Boolean set operations.</td></tr>
+                <tr><td>Meet in the Middle</td><td>Split a combinatorial search into two halves and combine their results.</td><td>Subset sums and searches where full enumeration is too large.</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Graph, Tree, and Range-Query Patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Core idea</th><th>Typical use</th></tr></thead>
+            <tbody>
+                <tr><td>BFS / Level-by-Level Traversal</td><td>Explore neighbors in increasing hop-distance order.</td><td>Unweighted shortest paths, minimum number of steps.</td></tr>
+                <tr><td>Multi-Source BFS</td><td>Start the traversal from many sources simultaneously.</td><td>Distance to the nearest source, propagation problems.</td></tr>
+                <tr><td>DFS / Recursive Exploration</td><td>Follow one branch deeply before backtracking.</td><td>Connected components, cycle detection, tree traversal.</td></tr>
+                <tr><td>Union-Find (Disjoint Set Union)</td><td>Merge equivalence groups and test whether two items share a group.</td><td>Connectivity, Kruskal's MST, dynamic grouping.</td></tr>
+                <tr><td>Topological Processing</td><td>Process directed acyclic graphs in dependency-respecting order.</td><td>Build order, dependency scheduling, DAG dynamic programming.</td></tr>
+                <tr><td>Tree Traversal / Euler Tour</td><td>Translate tree structure into a traversal or flattened interval.</td><td>Subtree queries, ancestor relationships.</td></tr>
+                <tr><td>Binary Lifting</td><td>Precompute jumps of powers of two along a tree or functional graph.</td><td>Ancestors and lowest-common-ancestor queries.</td></tr>
+                <tr><td>Fenwick Tree / Segment Tree</td><td>Maintain aggregated information over changing ranges.</td><td>Dynamic prefix and range queries.</td></tr>
+                <tr><td>Trie / Prefix Tree</td><td>Follow shared prefixes of keys or sequences.</td><td>Autocomplete, prefix lookup, dictionary search.</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Dynamic Programming and Search-State Patterns</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Pattern</th><th>Core idea</th><th>Typical use</th></tr></thead>
+            <tbody>
+                <tr><td>Memoization / State Caching</td><td>Cache subproblem answers keyed by state.</td><td>Repeated overlapping recursive subproblems.</td></tr>
+                <tr><td>Tabulation / State Transition</td><td>Fill states in dependency order using previously solved states.</td><td>Knapsack, sequence alignment, path counting.</td></tr>
+                <tr><td>Rolling Array / Space Optimization</td><td>Keep only state layers still needed for future transitions.</td><td>Dynamic programming with local dependencies.</td></tr>
+                <tr><td>Bitmask DP</td><td>Use bits to encode subsets in dynamic programming states.</td><td>Subset routing, assignment over small sets.</td></tr>
+                <tr><td>Backtracking with Pruning</td><td>Build candidates incrementally and abandon impossible partial choices.</td><td>Constraint satisfaction, permutations, combinations.</td></tr>
+                <tr><td>State-Space Search</td><td>Represent possible configurations as nodes and moves as edges.</td><td>Puzzles, transformations, search problems.</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Quick Pattern-Recognition Guide</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Problem clue</th><th>Patterns to investigate first</th></tr></thead>
+            <tbody>
+                <tr><td>Sorted array; pair or palindrome</td><td>Two Pointers</td></tr>
+                <tr><td>Contiguous subarray or substring</td><td>Sliding Window, Prefix Sum, Kadane, Hash Map</td></tr>
+                <tr><td>Many static range-sum queries</td><td>Prefix Sum, 2D Prefix Sum</td></tr>
+                <tr><td>Many batch interval additions</td><td>Difference Array</td></tr>
+                <tr><td>Dynamic range sums or minima</td><td>Fenwick Tree, Segment Tree</td></tr>
+                <tr><td>Next greater/smaller; span</td><td>Monotonic Stack</td></tr>
+                <tr><td>Maximum/minimum in each moving window</td><td>Monotonic Deque</td></tr>
+                <tr><td>Minimum valid capacity or maximum feasible threshold</td><td>Binary Search on Answer</td></tr>
+                <tr><td>Overlapping ranges or events</td><td>Sort + Merge Intervals, Sweep Line</td></tr>
+                <tr><td>Top k or kth-ranked element</td><td>Heap / Top-K, Quickselect</td></tr>
+                <tr><td>Cycle or midpoint in a linked list</td><td>Fast and Slow Pointers</td></tr>
+                <tr><td>Dependencies, connectivity, or minimum hops</td><td>Topological Sort, Union-Find, BFS/DFS</td></tr>
+                <tr><td>Small subsets and repeated choices</td><td>Backtracking, Meet in the Middle, Bitmask DP</td></tr>
+                <tr><td>Common prefixes or multiple string searches</td><td>Trie, Rolling Hash, Pattern Matching</td></tr>
+            </tbody>
+        </table></div>
+        <p><strong>Important distinction:</strong> These are recognition and implementation patterns, not guarantees. For example, <em>Sliding Window</em> and <em>Two Pointers</em> are often closely related; <em>Greedy</em> and <em>Dynamic Programming</em> are broader design paradigms; and <em>Fenwick Tree</em> and <em>Trie</em> are data structures that support particular algorithmic techniques.</p>
+    </div>
+
+    <div class="subheading">Major Families of Algorithms</div>
     <div class="intro">
         <p>This is the most important classification when studying algorithms by the kinds of problems they solve.</p>
-        <p class="minor-heading"><strong>5.1 Searching algorithms</strong></p>
+        <p class="minor-heading"><strong>Searching algorithms</strong></p>
         <p>Searching algorithms locate elements, records, or values in a collection.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Algorithm</th><th>Basic idea</th><th>Typical complexity</th></tr></thead>
@@ -236,7 +368,7 @@
             </tbody>
         </table></div>
         <p><strong>Where used:</strong> Databases, indexes, dictionaries, search engines, caching systems, and in-memory collections.</p>
-        <p class="minor-heading"><strong>5.2 Sorting algorithms</strong></p>
+        <p class="minor-heading"><strong>Sorting algorithms</strong></p>
         <p>Sorting algorithms organize data in a specified order.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Algorithm</th><th>Average time</th><th>Worst time</th><th>Stable?</th></tr></thead>
@@ -265,7 +397,7 @@
             <li><strong>Parallel sorting:</strong> Distributes sorting work across multiple processors.</li>
         </ul>
         <p>For arbitrary comparison-based sorting, the worst-case comparison lower bound is Ω(n log n). Specialized sorting algorithms can avoid this bound when their assumptions permit.</p>
-        <p class="minor-heading"><strong>5.3 Graph algorithms</strong></p>
+        <p class="minor-heading"><strong>Graph algorithms</strong></p>
         <p>Graph algorithms process relationships between entities.</p>
         <p>A graph consists of vertices (nodes) and edges (connections).</p>
     </div>
@@ -291,7 +423,7 @@
             </tbody>
         </table></div>
         <p><strong>Graph algorithms are fundamental to</strong> networking, routing, social networks, dependency resolution, scheduling, fraud detection, recommendation systems, and distributed systems.</p>
-        <p class="minor-heading"><strong>5.4 String and text-processing algorithms</strong></p>
+        <p class="minor-heading"><strong>String and text-processing algorithms</strong></p>
         <p>These algorithms analyze, search, compare, or transform sequences of characters or symbols.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Category</th><th>Major algorithms</th></tr></thead>
@@ -309,7 +441,7 @@
             </tbody>
         </table></div>
         <p><strong>Applications:</strong> Search engines, text editors, autocomplete, plagiarism detection, bioinformatics, document processing, and language technologies.</p>
-        <p class="minor-heading"><strong>5.5 Mathematical and numerical algorithms</strong></p>
+        <p class="minor-heading"><strong>Mathematical and numerical algorithms</strong></p>
         <p>These algorithms perform mathematical computation.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Category</th><th>Examples</th></tr></thead>
@@ -327,7 +459,7 @@
             </tbody>
         </table></div>
         <p>These algorithms are especially important in scientific computing, machine learning, simulations, cryptography, graphics, and engineering.</p>
-        <p class="minor-heading"><strong>5.6 Computational geometry algorithms</strong></p>
+        <p class="minor-heading"><strong>Computational geometry algorithms</strong></p>
         <p>Operate on geometric objects such as points, lines, polygons, surfaces, and spatial regions.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Problem</th><th>Representative algorithms</th></tr></thead>
@@ -343,7 +475,7 @@
             </tbody>
         </table></div>
         <p><strong>Applications:</strong> GIS, map services, collision detection, robotics, computer graphics, and spatial databases.</p>
-        <p class="minor-heading"><strong>5.7 Combinatorial optimization algorithms</strong></p>
+        <p class="minor-heading"><strong>Combinatorial optimization algorithms</strong></p>
         <p>These algorithms find an optimal arrangement, selection, or allocation from a large set of possibilities.</p>
         <p>Typical problems include:</p>
         <ul>
@@ -360,7 +492,7 @@
         </ul>
         <p>Common solving approaches include dynamic programming, greedy algorithms, branch and bound, integer linear programming, constraint programming, approximation, and metaheuristics.</p>
         <p>Many of these problems are computationally difficult in their general forms, so practical systems often rely on approximations or heuristics.</p>
-        <p class="minor-heading"><strong>5.8 Computational statistics and probabilistic algorithms</strong></p>
+        <p class="minor-heading"><strong>Computational statistics and probabilistic algorithms</strong></p>
         <p>These algorithms handle randomness, uncertainty, statistical estimation, and probability distributions.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Category</th><th>Examples</th></tr></thead>
@@ -376,7 +508,7 @@
             </tbody>
         </table></div>
         <p><strong>Applications:</strong> Analytics, risk modeling, machine learning, financial simulation, monitoring, and approximate query processing.</p>
-        <p class="minor-heading"><strong>5.9 Compression algorithms</strong></p>
+        <p class="minor-heading"><strong>Compression algorithms</strong></p>
         <p>Compression reduces the amount of information needed to represent data.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Type</th><th>Algorithms</th><th>Characteristic</th></tr></thead>
@@ -387,7 +519,7 @@
         </table></div>
         <p>Practical formats often combine several algorithms.</p>
         <p><strong>Applications:</strong> Data storage, network transmission, archives, images, audio, video, and database compression.</p>
-        <p class="minor-heading"><strong>5.10 Cryptographic algorithms</strong></p>
+        <p class="minor-heading"><strong>Cryptographic algorithms</strong></p>
         <p>Cryptographic algorithms protect information and support security properties.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Category</th><th>Examples</th><th>Purpose</th></tr></thead>
@@ -402,7 +534,7 @@
             </tbody>
         </table></div>
         <p>Cryptographic security must consider more than running time: mathematical assumptions, randomness, key management, side-channel resistance, and implementation correctness all matter.</p>
-        <p class="minor-heading"><strong>5.11 Machine learning and artificial intelligence algorithms</strong></p>
+        <p class="minor-heading"><strong>Machine learning and artificial intelligence algorithms</strong></p>
         <p>These algorithms learn from data, perform inference, or search complex spaces.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Category</th><th>Major approaches</th></tr></thead>
@@ -420,7 +552,7 @@
             </tbody>
         </table></div>
         <p>A machine learning model is not itself a single algorithm. Its operation may involve separate algorithms for preprocessing, training, optimization, inference, and evaluation.</p>
-        <p class="minor-heading"><strong>5.12 Scheduling and resource-management algorithms</strong></p>
+        <p class="minor-heading"><strong>Scheduling and resource-management algorithms</strong></p>
         <p>These decide how computational work and resources should be allocated.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Category</th><th>Algorithms or policies</th></tr></thead>
@@ -438,10 +570,10 @@
         <p>These are especially important in operating systems, web servers, cloud platforms, and distributed applications.</p>
     </div>
 
-    <div class="subheading">6. Algorithms by Execution and Data Model</div>
+    <div class="subheading">Algorithms by Execution and Data Model</div>
     <div class="intro">
         <p>Another important perspective is <em>where, when, and how</em> an algorithm operates.</p>
-        <p class="minor-heading"><strong>6.1 Sequential vs parallel algorithms</strong></p>
+        <p class="minor-heading"><strong>Sequential vs parallel algorithms</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Type</th><th>Description</th></tr></thead>
             <tbody>
@@ -460,7 +592,7 @@
             <li><strong>Scalability:</strong> Ability to benefit from more computing resources.</li>
         </ul>
         <p>A parallel algorithm is not automatically faster: communication, synchronization, and contention add overhead.</p>
-        <p class="minor-heading"><strong>6.2 Online vs offline algorithms</strong></p>
+        <p class="minor-heading"><strong>Online vs offline algorithms</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
             <tbody>
@@ -471,7 +603,7 @@
             </tbody>
         </table></div>
         <p>Online and streaming are related but not identical: online algorithms emphasize decisions without future knowledge, while streaming algorithms emphasize sequential data access and memory efficiency.</p>
-        <p class="minor-heading"><strong>6.3 In-memory vs external-memory algorithms</strong></p>
+        <p class="minor-heading"><strong>In-memory vs external-memory algorithms</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Type</th><th>Characteristics</th></tr></thead>
             <tbody>
@@ -482,24 +614,24 @@
             </tbody>
         </table></div>
         <p>For very large datasets, I/O complexity may be more important than arithmetic operation counts.</p>
-        <p class="minor-heading"><strong>6.4 Deterministic vs nondeterministic vs randomized</strong></p>
+        <p class="minor-heading"><strong>Deterministic vs nondeterministic vs randomized</strong></p>
         <ul>
             <li><strong>Deterministic:</strong> Same input and internal state lead to the same computation and result.</li>
             <li><strong>Randomized:</strong> The algorithm explicitly uses random choices.</li>
             <li><strong>Nondeterministic:</strong> A theoretical computational model can explore multiple possible choices, often used to define complexity classes such as NP.</li>
         </ul>
         <p>Nondeterminism in complexity theory is not the same as randomness or unpredictable thread scheduling.</p>
-        <p class="minor-heading"><strong>6.5 Exact vs approximate algorithms</strong></p>
+        <p class="minor-heading"><strong>Exact vs approximate algorithms</strong></p>
         <p>An exact algorithm produces a mathematically correct answer to the specified problem.</p>
         <p>An approximation algorithm deliberately permits bounded suboptimality.</p>
         <p>A probabilistic or sketch-based algorithm may provide an approximate result with a stated error probability.</p>
         <p>The right choice depends on the application. A financial ledger may require exact arithmetic, while analytics over billions of records may tolerate a small, quantified estimation error.</p>
     </div>
 
-    <div class="subheading">7. Distributed and Concurrent Algorithms</div>
+    <div class="subheading">Distributed and Concurrent Algorithms</div>
     <div class="intro">
         <p>Distributed and concurrent algorithms are particularly important in modern backend systems, databases, and cloud computing.</p>
-        <p class="minor-heading"><strong>7.1 Distributed algorithms</strong></p>
+        <p class="minor-heading"><strong>Distributed algorithms</strong></p>
         <p>Distributed algorithms coordinate computation across multiple networked machines.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Category</th><th>Major algorithms / approaches</th><th>Purpose</th></tr></thead>
@@ -519,7 +651,7 @@
             </tbody>
         </table></div>
         <p>Distributed algorithms must account for network delays, partial failures, concurrent activity, message duplication, and potentially inconsistent observations.</p>
-        <p class="minor-heading"><strong>7.2 Concurrent algorithms</strong></p>
+        <p class="minor-heading"><strong>Concurrent algorithms</strong></p>
         <p>Concurrent algorithms coordinate multiple threads or tasks sharing resources.</p>
         <p>Important concepts include:</p>
         <ul>
@@ -539,7 +671,7 @@
         <p>These algorithms are foundational to concurrent collections, database engines, thread pools, messaging systems, and high-performance servers.</p>
     </div>
 
-    <div class="subheading">8. Algorithms Used Inside Real-World Software Systems</div>
+    <div class="subheading">Algorithms Used Inside Real-World Software Systems</div>
     <div class="intro">
         <p>Algorithms rarely operate in isolation. Real applications combine multiple algorithm families.</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
@@ -564,11 +696,11 @@
         <p>A database query engine, for example, may use graph-like optimization of a query plan, select a join algorithm, sort intermediate records, and employ specialized memory-management algorithms during a single query.</p>
     </div>
 
-    <div class="subheading">9. Computational Complexity Theory</div>
+    <div class="subheading">Computational Complexity Theory</div>
     <div class="intro">
         <p>Algorithm design asks <strong>how to solve a problem</strong>.</p>
         <p>Computational complexity theory asks <strong>how much computational effort a problem fundamentally requires</strong>.</p>
-        <p class="minor-heading"><strong>9.1 Major complexity classes</strong></p>
+        <p class="minor-heading"><strong>Major complexity classes</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Class</th><th>General meaning</th></tr></thead>
             <tbody>
@@ -587,15 +719,15 @@
     </div>
     <div class="intro">
         <p class="sw-muted sw-small">Illustrative containment relationships. P is contained in NP, which is contained in PSPACE. The separation of P from NP is not proven.</p>
-        <p class="minor-heading"><strong>9.2 What is the P vs NP problem?</strong></p>
+        <p class="minor-heading"><strong>What is the P vs NP problem?</strong></p>
         <p>The central question is:</p>
         <p><strong>If a solution can be verified efficiently, can it also be found efficiently?</strong></p>
         <p>Whether P equals NP remains an open problem.</p>
-        <p class="minor-heading"><strong>9.3 Why NP-completeness matters</strong></p>
+        <p class="minor-heading"><strong>Why NP-completeness matters</strong></p>
         <p>Consider problems such as Boolean Satisfiability (SAT), Hamiltonian Cycle, and the decision version of Traveling Salesperson.</p>
         <p>When a problem is proved NP-complete, finding a polynomial-time exact algorithm for its unrestricted form would imply P = NP.</p>
         <p>This is why practitioners often investigate restricted problem variants, approximation algorithms, heuristics, or exponential algorithms that are effective for small instances.</p>
-        <p class="minor-heading"><strong>9.4 Other important complexity concepts</strong></p>
+        <p class="minor-heading"><strong>Other important complexity concepts</strong></p>
         <ul>
             <li><strong>Polynomial vs exponential time:</strong> Distinguishes scaling behaviors with very different practical consequences.</li>
             <li><strong>Pseudo-polynomial time:</strong> Running time polynomial in numerical input values rather than their encoded bit lengths.</li>
@@ -607,10 +739,10 @@
         </ul>
     </div>
 
-    <div class="subheading">10. Algorithm Correctness and Verification</div>
+    <div class="subheading">Algorithm Correctness and Verification</div>
     <div class="intro">
         <p>Efficiency is meaningless unless an algorithm meets its required specification.</p>
-        <p class="minor-heading"><strong>10.1 Correctness properties</strong></p>
+        <p class="minor-heading"><strong>Correctness properties</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Property</th><th>Meaning</th></tr></thead>
             <tbody>
@@ -623,7 +755,7 @@
                 <tr><td>Approximation Guarantee</td><td>The result is within a specified bound of optimal</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>10.2 Common proof techniques</strong></p>
+        <p class="minor-heading"><strong>Common proof techniques</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Technique</th><th>Usage</th></tr></thead>
             <tbody>
@@ -637,16 +769,16 @@
                 <tr><td>Probabilistic Analysis</td><td>Establishes expectations or error bounds</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>10.3 Testing an algorithm</strong></p>
+        <p class="minor-heading"><strong>Testing an algorithm</strong></p>
         <p>Testing complements mathematical reasoning.</p>
         <p>Important testing methods include boundary-value testing, randomized testing, property-based testing, differential testing, adversarial testing, benchmarking, and stress testing.</p>
         <p>For concurrent or distributed algorithms, testing must also consider interleavings, failure injection, network partitions, message reordering, and delayed operations.</p>
     </div>
 
-    <div class="subheading">11. How to Choose the Right Algorithm</div>
+    <div class="subheading">How to Choose the Right Algorithm</div>
     <div class="intro">
         <p>Choosing an algorithm is an engineering decision, not simply a matter of selecting the lowest Big O complexity.</p>
-        <p class="minor-heading"><strong>11.1 Decision framework</strong></p>
+        <p class="minor-heading"><strong>Decision framework</strong></p>
     </div>
     <div class="steps">
         <div class="step"><div class="step-title">Understand the problem and input constraints</div></div>
@@ -656,7 +788,7 @@
         <div class="step"><div class="step-title">Benchmark realistic inputs and select an approach</div></div>
     </div>
     <div class="intro">
-        <p class="minor-heading"><strong>11.2 Questions to consider</strong></p>
+        <p class="minor-heading"><strong>Questions to consider</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Question</th><th>Why it matters</th></tr></thead>
             <tbody>
@@ -672,7 +804,7 @@
                 <tr><td>Can results be reused?</td><td>Makes precomputation or memoization attractive</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>11.3 Practical performance factors</strong></p>
+        <p class="minor-heading"><strong>Practical performance factors</strong></p>
         <p>Even when two algorithms have similar asymptotic complexity, they can perform very differently because of:</p>
         <ul>
             <li>Constant factors and instruction overhead</li>
@@ -688,7 +820,7 @@
         <p>For example, an O(n²) algorithm may outperform an O(n log n) algorithm on sufficiently small datasets because its constant overhead is lower.</p>
     </div>
 
-    <div class="subheading">12. Common Misconceptions</div>
+    <div class="subheading">Common Misconceptions</div>
     <div class="intro">
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Misconception</th><th>Correct understanding</th></tr></thead>
@@ -707,14 +839,14 @@
         </table></div>
     </div>
 
-    <div class="subheading">13. Recommended Learning Roadmap</div>
+    <div class="subheading">Recommended Learning Roadmap</div>
     <div class="intro">
         <p>The following sequence progresses from essential foundations to advanced algorithm engineering.</p>
     </div>
     <div class="steps">
         <div class="step"><div class="step-title">Level 1 — Foundations</div><div class="step-body">Learn algorithm properties, mathematical reasoning, recursion, iteration, asymptotic notation, time complexity, space complexity, and basic data structures.</div></div>
         <div class="step"><div class="step-title">Level 2 — Core Algorithms</div><div class="step-body">Study searching, sorting, hashing, binary search trees, heaps, stacks, queues, and fundamental recursive algorithms.</div></div>
-        <div class="step"><div class="step-title">Level 3 — Design Paradigms</div><div class="step-body">Understand brute force, divide and conquer, greedy algorithms, dynamic programming, backtracking, and branch and bound.</div></div>
+        <div class="step"><div class="step-title">Level 3 — Design Paradigms &amp; Practical Patterns</div><div class="step-body">Understand brute force, divide and conquer, greedy algorithms, dynamic programming, backtracking, and branch and bound; then learn Two Pointers, Sliding Window, Prefix Sums, Monotonic Stack, and Binary Search on Answer.</div></div>
         <div class="step"><div class="step-title">Level 4 — Graphs and Strings</div><div class="step-body">Study BFS, DFS, shortest paths, minimum spanning trees, topological sorting, connectivity, pattern matching, tries, and string similarity.</div></div>
         <div class="step"><div class="step-title">Level 5 — Advanced Algorithms</div><div class="step-body">Explore computational geometry, randomized algorithms, approximation, advanced optimization, number theory, and mathematical algorithms.</div></div>
         <div class="step"><div class="step-title">Level 6 — Complexity and Correctness</div><div class="step-body">Study proofs, recurrences, amortized analysis, lower bounds, reductions, NP-completeness, and parameterized complexity.</div></div>
@@ -722,7 +854,7 @@
         <div class="step"><div class="step-title">Level 8 — Specialized Domains</div><div class="step-body">Explore cryptography, machine learning, computational statistics, graph analytics, large-scale optimization, approximate nearest-neighbor search, and other domain-specific algorithms.</div></div>
     </div>
 
-    <div class="subheading">14. Consolidated Algorithm Taxonomy</div>
+    <div class="subheading">Consolidated Algorithm Taxonomy</div>
     <div class="intro">
         <p>The entire subject can be organized into five conceptual layers.</p>
         <p class="minor-heading"><strong>ALGORITHMS</strong></p>
@@ -730,7 +862,7 @@
     </div>
     <div class="folio"><ol class="ledger">
         <li><span class="ledger-label">1. Problem Domains</span><span>Searching, Sorting, Graphs, Strings, Mathematics, Optimization, Geometry, AI, Security</span></li>
-        <li><span class="ledger-label">2. Design Techniques</span><span>Divide and Conquer, Greedy, Dynamic Programming, Backtracking, Randomization, Approximation</span></li>
+        <li><span class="ledger-label">2. Design Techniques</span><span>Divide and Conquer, Greedy, Dynamic Programming, Backtracking, Randomization, Approximation; Two Pointers, Sliding Window, Prefix Sums, and Monotonic Patterns</span></li>
         <li><span class="ledger-label">3. Execution Models</span><span>Sequential, Parallel, Concurrent, Distributed, Online, Streaming, External-Memory</span></li>
         <li><span class="ledger-label">4. Analysis &amp; Guarantees</span><span>Time, Space, I/O, Correctness, Optimality, Approximation, Complexity Classes</span></li>
         <li><span class="ledger-label">5. Engineering Applications</span><span>Databases, Operating Systems, Networking, Distributed Systems, Cloud Platforms, Compilers, Search Engines, Machine Learning</span></li>
@@ -746,7 +878,7 @@
             <li><strong>When should it be used?</strong> — Input characteristics, system constraints, and practical tradeoffs.</li>
         </ol>
         <p>Mastering these perspectives provides the foundation for both theoretical computer science and practical software engineering.</p>
-        <p>For backend and distributed-system engineering in particular, the most valuable areas beyond core searching, sorting, and graph algorithms are <strong>hashing, indexing, caching, scheduling, concurrency, streaming, external-memory processing, and distributed coordination algorithms</strong>.</p>
+        <p>For backend and distributed-system engineering in particular, the most valuable areas beyond core searching, sorting, and graph algorithms are <strong>two-pointer and sliding-window techniques, prefix aggregates, hashing, indexing, caching, scheduling, concurrency, streaming, external-memory processing, and distributed coordination algorithms</strong>.</p>
     </div>
 </div>
 </body>

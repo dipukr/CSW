@@ -1,0 +1,42 @@
+<svg width="820" height="330" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 330" role="img" aria-label="Block diagram of an I/O module: on the system-bus side, data lines connect to data registers and status/control registers, and address and control lines go to I/O logic. On the device side, one external device interface logic block per device exchanges data, status and control signals with that device">
+    <defs><marker id="iom-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="iom-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="iom-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="180" y="30" width="460" height="285" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="410.0" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">I/O module</text>
+    <rect x="200" y="50" width="170" height="50" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iom-s)"/>
+    <text x="285.0" y="79.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="400" fill="#1E293B">Data registers</text>
+    <rect x="200" y="120" width="170" height="50" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iom-s)"/>
+    <text x="285.0" y="141.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Status / control</text>
+    <text x="285.0" y="156.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">registers</text>
+    <rect x="200" y="200" width="170" height="90" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#iom-s)"/>
+    <text x="285.0" y="249.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">I/O logic</text>
+    <path d="M410 60 V280" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M370 75 H410" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M370 145 H410" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M370 245 H410" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="450" y="50" width="170" height="100" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#iom-s)"/>
+    <text x="535.0" y="96.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">External device</text>
+    <text x="535.0" y="111.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">interface logic</text>
+    <path d="M410 100 H450" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M620 72 H730" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="738" y="76" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">data</text>
+    <path d="M620 100 H730" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="738" y="104" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">status</text>
+    <path d="M620 128 H730" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="738" y="132" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">control</text>
+    <rect x="450" y="190" width="170" height="100" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#iom-s)"/>
+    <text x="535.0" y="236.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">External device</text>
+    <text x="535.0" y="251.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">interface logic</text>
+    <path d="M410 240 H450" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M620 212 H730" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="738" y="216" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">data</text>
+    <path d="M620 240 H730" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="738" y="244" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">status</text>
+    <path d="M620 268 H730" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="738" y="272" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">control</text>
+    <path d="M20 75 H196" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="22" y="68" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Data lines</text>
+    <path d="M20 225 H196" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="22" y="218" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Address lines</text>
+    <path d="M20 265 H196" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-start="url(#iom-a)" marker-end="url(#iom-a)"/>
+    <text x="22" y="258" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">Control lines</text>
+</svg>

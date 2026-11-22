@@ -1,0 +1,16 @@
+<svg width="660" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 120" role="img" aria-label="A simple 16-bit instruction format: a 4-bit opcode followed by two 6-bit operand references">
+    <defs><marker id="if-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="if-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="if-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <path d="M43 40 H184 A0 0 0 0 1 184 40 V84 A0 0 0 0 1 184 84 H43 A3 3 0 0 1 40 81 V43 A3 3 0 0 1 43 40 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="112.0" y="67" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Opcode</text>
+    <text x="112.0" y="104" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">4 bits</text>
+    <path d="M184 40 H400 A0 0 0 0 1 400 40 V84 A0 0 0 0 1 400 84 H184 A0 0 0 0 1 184 84 V40 A0 0 0 0 1 184 40 Z" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+    <text x="292.0" y="67" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Operand reference</text>
+    <text x="292.0" y="104" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">6 bits</text>
+    <path d="M400 40 H613 A3 3 0 0 1 616 43 V81 A3 3 0 0 1 613 84 H400 A0 0 0 0 1 400 84 V40 A0 0 0 0 1 400 40 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="508.0" y="67" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Operand reference</text>
+    <text x="508.0" y="104" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">6 bits</text>
+    <text x="40" y="30" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">0</text>
+    <text x="184" y="30" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">4</text>
+    <text x="400" y="30" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">10</text>
+    <text x="616" y="30" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">16</text>
+</svg>

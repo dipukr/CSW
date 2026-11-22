@@ -1,0 +1,84 @@
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-label="Three techniques for reading a block of data. (a) Programmed I/O: issue a read command, read the I/O module's status repeatedly until it is ready, read a word, write it to memory, and repeat until done. (b) Interrupt-driven I/O: issue a read command, do something else, and on the interrupt read the status, read the word, write it to memory, and repeat. (c) DMA: issue a read-block command to the DMA module, do something else, and on the interrupt read the DMA module's status, then go on to the next instruction">
+    <defs><marker id="iot-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="iot-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="iot-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="150" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(a) Programmed I/O</text>
+    <text x="450" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(b) Interrupt-driven I/O</text>
+    <text x="750" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(c) Direct memory access</text>
+    <rect x="45.0" y="50" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="150.0" y="68.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Issue read command</text>
+    <text x="150.0" y="83.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">to I/O module</text>
+    <rect x="45.0" y="118" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="150.0" y="136.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Read status of</text>
+    <text x="150.0" y="151.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">I/O module</text>
+    <path d="M150 94 V114" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <path d="M150 186.0 L225.0 215.0 L150 244.0 L75.0 215.0 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" stroke-linejoin="round"/>
+    <text x="150" y="211.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Check</text>
+    <text x="150" y="226.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">status</text>
+    <path d="M150 162 V182" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="45.0" y="268" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="150.0" y="286.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Read word from</text>
+    <text x="150.0" y="301.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">I/O module</text>
+    <path d="M150 244 V264" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="45.0" y="336" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="150.0" y="354.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Write word</text>
+    <text x="150.0" y="369.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">into memory</text>
+    <path d="M150 312 V332" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <path d="M150 404.0 L225.0 433.0 L150 462.0 L75.0 433.0 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" stroke-linejoin="round"/>
+    <text x="150" y="437.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Done?</text>
+    <path d="M150 380 V400" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="45.0" y="486" width="210" height="44" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="150.0" y="512.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Next instruction</text>
+    <path d="M150 462 V482" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <path d="M225 215.0 H275 V140.0 H259" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <text x="268" y="207.0" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">not ready</text>
+    <path d="M75 433.0 H25 V72.0 H41" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <text x="50" y="425.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">no</text>
+    <text x="162" y="260" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">ready</text>
+    <text x="162" y="478" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">yes</text>
+    <rect x="345.0" y="50" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="450.0" y="68.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Issue read command</text>
+    <text x="450.0" y="83.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">to I/O module</text>
+    <rect x="345.0" y="118" width="210" height="44" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="450.0" y="144.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">CPU does something else</text>
+    <path d="M450 94 V114" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="345.0" y="186" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="450.0" y="204.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Read status of</text>
+    <text x="450.0" y="219.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">I/O module</text>
+    <path d="M450 162 V182" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <path d="M450 254.0 L525.0 283.0 L450 312.0 L375.0 283.0 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" stroke-linejoin="round"/>
+    <text x="450" y="279.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Check</text>
+    <text x="450" y="294.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">status</text>
+    <path d="M450 230 V250" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="345.0" y="336" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="450.0" y="354.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Read word from</text>
+    <text x="450.0" y="369.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">I/O module</text>
+    <path d="M450 312 V332" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="345.0" y="404" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="450.0" y="422.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Write word</text>
+    <text x="450.0" y="437.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">into memory</text>
+    <path d="M450 380 V400" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <path d="M450 472.0 L525.0 501.0 L450 530.0 L375.0 501.0 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" stroke-linejoin="round"/>
+    <text x="450" y="505.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#1E293B">Done?</text>
+    <path d="M450 448 V468" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="345.0" y="554" width="210" height="44" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="450.0" y="580.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Next instruction</text>
+    <path d="M450 530 V550" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <text x="462" y="178" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">interrupt</text>
+    <path d="M375 501.0 H325 V72.0 H341" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <text x="350" y="493.0" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">no</text>
+    <text x="462" y="328" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">ready</text>
+    <text x="462" y="546" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">yes</text>
+    <rect x="645.0" y="50" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="750.0" y="68.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Issue read block</text>
+    <text x="750.0" y="83.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">command to DMA module</text>
+    <rect x="645.0" y="118" width="210" height="44" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="750.0" y="144.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">CPU does something else</text>
+    <path d="M750 94 V114" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="645.0" y="186" width="210" height="44" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="750.0" y="204.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Read status of</text>
+    <text x="750.0" y="219.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">DMA module</text>
+    <path d="M750 162 V182" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <rect x="645.0" y="254" width="210" height="44" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#iot-s)"/>
+    <text x="750.0" y="280.2" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#1E293B">Next instruction</text>
+    <path d="M750 230 V250" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#iot-a)"/>
+    <text x="762" y="178" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#B45309">interrupt</text>
+</svg>

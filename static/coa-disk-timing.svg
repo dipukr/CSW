@@ -1,0 +1,21 @@
+<svg width="820" height="140" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 140" role="img" aria-label="Timing of a disk I/O transfer: wait for device, wait for channel, seek, rotational delay, data transfer. The device is busy from seek through data transfer">
+    <defs><marker id="dt-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="dt-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="dt-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <path d="M33 60 H160 A0 0 0 0 1 160 60 V110 A0 0 0 0 1 160 110 H33 A3 3 0 0 1 30 107 V63 A3 3 0 0 1 33 60 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="95.0" y="81" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Wait for</text>
+    <text x="95.0" y="97" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">device</text>
+    <path d="M160 60 H290 A0 0 0 0 1 290 60 V110 A0 0 0 0 1 290 110 H160 A0 0 0 0 1 160 110 V60 A0 0 0 0 1 160 60 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="225.0" y="81" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Wait for</text>
+    <text x="225.0" y="97" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">channel</text>
+    <path d="M290 60 H460 A0 0 0 0 1 460 60 V110 A0 0 0 0 1 460 110 H290 A0 0 0 0 1 290 110 V60 A0 0 0 0 1 290 60 Z" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2"/>
+    <text x="375.0" y="89" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Seek</text>
+    <path d="M460 60 H630 A0 0 0 0 1 630 60 V110 A0 0 0 0 1 630 110 H460 A0 0 0 0 1 460 110 V60 A0 0 0 0 1 460 60 Z" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.2"/>
+    <text x="545.0" y="81" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Rotational</text>
+    <text x="545.0" y="97" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">delay</text>
+    <path d="M630 60 H787 A3 3 0 0 1 790 63 V107 A3 3 0 0 1 787 110 H630 A0 0 0 0 1 630 110 V60 A0 0 0 0 1 630 60 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="710.0" y="81" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Data</text>
+    <text x="710.0" y="97" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">transfer</text>
+    <path d="M290 44 v-8 H790 v8" fill="none" stroke="#B45309" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="540" y="26" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#B45309">device busy</text>
+    <path d="M30 128 H790" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#dt-a)"/>
+    <text x="410" y="136" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="500" fill="#64748B">time</text>
+</svg>

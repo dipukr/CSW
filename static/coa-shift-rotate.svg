@@ -1,0 +1,209 @@
+<svg width="780" height="346" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 346" role="img" aria-label="Shift and rotate operations by 3 bits on the input 10100110. Logical right shift gives 00010100; logical left shift gives 00110000; arithmetic right shift copies the sign bit, giving 11110100; arithmetic left shift keeps the sign bit, giving 10110000; right rotate gives 11010100; left rotate gives 00110101. Bits shifted or rotated in are highlighted">
+    <defs><marker id="sh-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="sh-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="sh-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="340" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#64748B">input</text>
+    <text x="610" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#64748B">result (shift by 3)</text>
+    <text x="20" y="62" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Logical right shift</text>
+    <path d="M243 40 H265 A0 0 0 0 1 265 40 V72 A0 0 0 0 1 265 72 H243 A3 3 0 0 1 240 69 V43 A3 3 0 0 1 243 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="252.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M265 40 H290 A0 0 0 0 1 290 40 V72 A0 0 0 0 1 290 72 H265 A0 0 0 0 1 265 72 V40 A0 0 0 0 1 265 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="277.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M290 40 H315 A0 0 0 0 1 315 40 V72 A0 0 0 0 1 315 72 H290 A0 0 0 0 1 290 72 V40 A0 0 0 0 1 290 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="302.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M315 40 H340 A0 0 0 0 1 340 40 V72 A0 0 0 0 1 340 72 H315 A0 0 0 0 1 315 72 V40 A0 0 0 0 1 315 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="327.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M340 40 H365 A0 0 0 0 1 365 40 V72 A0 0 0 0 1 365 72 H340 A0 0 0 0 1 340 72 V40 A0 0 0 0 1 340 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="352.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M365 40 H390 A0 0 0 0 1 390 40 V72 A0 0 0 0 1 390 72 H365 A0 0 0 0 1 365 72 V40 A0 0 0 0 1 365 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="377.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M390 40 H415 A0 0 0 0 1 415 40 V72 A0 0 0 0 1 415 72 H390 A0 0 0 0 1 390 72 V40 A0 0 0 0 1 390 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="402.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M415 40 H437 A3 3 0 0 1 440 43 V69 A3 3 0 0 1 437 72 H415 A0 0 0 0 1 415 72 V40 A0 0 0 0 1 415 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="427.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M450 56 H494" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sh-a)"/>
+    <path d="M513 40 H535 A0 0 0 0 1 535 40 V72 A0 0 0 0 1 535 72 H513 A3 3 0 0 1 510 69 V43 A3 3 0 0 1 513 40 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="522.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M535 40 H560 A0 0 0 0 1 560 40 V72 A0 0 0 0 1 560 72 H535 A0 0 0 0 1 535 72 V40 A0 0 0 0 1 535 40 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="547.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M560 40 H585 A0 0 0 0 1 585 40 V72 A0 0 0 0 1 585 72 H560 A0 0 0 0 1 560 72 V40 A0 0 0 0 1 560 40 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="572.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M585 40 H610 A0 0 0 0 1 610 40 V72 A0 0 0 0 1 610 72 H585 A0 0 0 0 1 585 72 V40 A0 0 0 0 1 585 40 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="597.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M610 40 H635 A0 0 0 0 1 635 40 V72 A0 0 0 0 1 635 72 H610 A0 0 0 0 1 610 72 V40 A0 0 0 0 1 610 40 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="622.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M635 40 H660 A0 0 0 0 1 660 40 V72 A0 0 0 0 1 660 72 H635 A0 0 0 0 1 635 72 V40 A0 0 0 0 1 635 40 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="647.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M660 40 H685 A0 0 0 0 1 685 40 V72 A0 0 0 0 1 685 72 H660 A0 0 0 0 1 660 72 V40 A0 0 0 0 1 660 40 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="672.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M685 40 H707 A3 3 0 0 1 710 43 V69 A3 3 0 0 1 707 72 H685 A0 0 0 0 1 685 72 V40 A0 0 0 0 1 685 40 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="697.5" y="61" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <text x="20" y="108" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Logical left shift</text>
+    <path d="M243 86 H265 A0 0 0 0 1 265 86 V118 A0 0 0 0 1 265 118 H243 A3 3 0 0 1 240 115 V89 A3 3 0 0 1 243 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="252.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M265 86 H290 A0 0 0 0 1 290 86 V118 A0 0 0 0 1 290 118 H265 A0 0 0 0 1 265 118 V86 A0 0 0 0 1 265 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="277.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M290 86 H315 A0 0 0 0 1 315 86 V118 A0 0 0 0 1 315 118 H290 A0 0 0 0 1 290 118 V86 A0 0 0 0 1 290 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="302.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M315 86 H340 A0 0 0 0 1 340 86 V118 A0 0 0 0 1 340 118 H315 A0 0 0 0 1 315 118 V86 A0 0 0 0 1 315 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="327.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M340 86 H365 A0 0 0 0 1 365 86 V118 A0 0 0 0 1 365 118 H340 A0 0 0 0 1 340 118 V86 A0 0 0 0 1 340 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="352.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M365 86 H390 A0 0 0 0 1 390 86 V118 A0 0 0 0 1 390 118 H365 A0 0 0 0 1 365 118 V86 A0 0 0 0 1 365 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="377.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M390 86 H415 A0 0 0 0 1 415 86 V118 A0 0 0 0 1 415 118 H390 A0 0 0 0 1 390 118 V86 A0 0 0 0 1 390 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="402.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M415 86 H437 A3 3 0 0 1 440 89 V115 A3 3 0 0 1 437 118 H415 A0 0 0 0 1 415 118 V86 A0 0 0 0 1 415 86 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="427.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M450 102 H494" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sh-a)"/>
+    <path d="M513 86 H535 A0 0 0 0 1 535 86 V118 A0 0 0 0 1 535 118 H513 A3 3 0 0 1 510 115 V89 A3 3 0 0 1 513 86 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="522.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M535 86 H560 A0 0 0 0 1 560 86 V118 A0 0 0 0 1 560 118 H535 A0 0 0 0 1 535 118 V86 A0 0 0 0 1 535 86 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="547.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M560 86 H585 A0 0 0 0 1 585 86 V118 A0 0 0 0 1 585 118 H560 A0 0 0 0 1 560 118 V86 A0 0 0 0 1 560 86 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="572.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M585 86 H610 A0 0 0 0 1 610 86 V118 A0 0 0 0 1 610 118 H585 A0 0 0 0 1 585 118 V86 A0 0 0 0 1 585 86 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="597.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M610 86 H635 A0 0 0 0 1 635 86 V118 A0 0 0 0 1 635 118 H610 A0 0 0 0 1 610 118 V86 A0 0 0 0 1 610 86 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="622.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M635 86 H660 A0 0 0 0 1 660 86 V118 A0 0 0 0 1 660 118 H635 A0 0 0 0 1 635 118 V86 A0 0 0 0 1 635 86 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="647.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M660 86 H685 A0 0 0 0 1 685 86 V118 A0 0 0 0 1 685 118 H660 A0 0 0 0 1 660 118 V86 A0 0 0 0 1 660 86 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="672.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M685 86 H707 A3 3 0 0 1 710 89 V115 A3 3 0 0 1 707 118 H685 A0 0 0 0 1 685 118 V86 A0 0 0 0 1 685 86 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="697.5" y="107" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <text x="20" y="154" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Arithmetic right shift</text>
+    <path d="M243 132 H265 A0 0 0 0 1 265 132 V164 A0 0 0 0 1 265 164 H243 A3 3 0 0 1 240 161 V135 A3 3 0 0 1 243 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="252.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M265 132 H290 A0 0 0 0 1 290 132 V164 A0 0 0 0 1 290 164 H265 A0 0 0 0 1 265 164 V132 A0 0 0 0 1 265 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="277.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M290 132 H315 A0 0 0 0 1 315 132 V164 A0 0 0 0 1 315 164 H290 A0 0 0 0 1 290 164 V132 A0 0 0 0 1 290 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="302.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M315 132 H340 A0 0 0 0 1 340 132 V164 A0 0 0 0 1 340 164 H315 A0 0 0 0 1 315 164 V132 A0 0 0 0 1 315 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="327.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M340 132 H365 A0 0 0 0 1 365 132 V164 A0 0 0 0 1 365 164 H340 A0 0 0 0 1 340 164 V132 A0 0 0 0 1 340 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="352.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M365 132 H390 A0 0 0 0 1 390 132 V164 A0 0 0 0 1 390 164 H365 A0 0 0 0 1 365 164 V132 A0 0 0 0 1 365 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="377.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M390 132 H415 A0 0 0 0 1 415 132 V164 A0 0 0 0 1 415 164 H390 A0 0 0 0 1 390 164 V132 A0 0 0 0 1 390 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="402.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M415 132 H437 A3 3 0 0 1 440 135 V161 A3 3 0 0 1 437 164 H415 A0 0 0 0 1 415 164 V132 A0 0 0 0 1 415 132 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="427.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M450 148 H494" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sh-a)"/>
+    <path d="M513 132 H535 A0 0 0 0 1 535 132 V164 A0 0 0 0 1 535 164 H513 A3 3 0 0 1 510 161 V135 A3 3 0 0 1 513 132 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="522.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">1</text>
+    <path d="M535 132 H560 A0 0 0 0 1 560 132 V164 A0 0 0 0 1 560 164 H535 A0 0 0 0 1 535 164 V132 A0 0 0 0 1 535 132 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="547.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">1</text>
+    <path d="M560 132 H585 A0 0 0 0 1 585 132 V164 A0 0 0 0 1 585 164 H560 A0 0 0 0 1 560 164 V132 A0 0 0 0 1 560 132 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="572.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">1</text>
+    <path d="M585 132 H610 A0 0 0 0 1 610 132 V164 A0 0 0 0 1 610 164 H585 A0 0 0 0 1 585 164 V132 A0 0 0 0 1 585 132 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="597.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M610 132 H635 A0 0 0 0 1 635 132 V164 A0 0 0 0 1 635 164 H610 A0 0 0 0 1 610 164 V132 A0 0 0 0 1 610 132 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="622.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M635 132 H660 A0 0 0 0 1 660 132 V164 A0 0 0 0 1 660 164 H635 A0 0 0 0 1 635 164 V132 A0 0 0 0 1 635 132 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="647.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M660 132 H685 A0 0 0 0 1 685 132 V164 A0 0 0 0 1 685 164 H660 A0 0 0 0 1 660 164 V132 A0 0 0 0 1 660 132 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="672.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M685 132 H707 A3 3 0 0 1 710 135 V161 A3 3 0 0 1 707 164 H685 A0 0 0 0 1 685 164 V132 A0 0 0 0 1 685 132 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="697.5" y="153" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <text x="20" y="200" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Arithmetic left shift</text>
+    <path d="M243 178 H265 A0 0 0 0 1 265 178 V210 A0 0 0 0 1 265 210 H243 A3 3 0 0 1 240 207 V181 A3 3 0 0 1 243 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="252.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M265 178 H290 A0 0 0 0 1 290 178 V210 A0 0 0 0 1 290 210 H265 A0 0 0 0 1 265 210 V178 A0 0 0 0 1 265 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="277.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M290 178 H315 A0 0 0 0 1 315 178 V210 A0 0 0 0 1 315 210 H290 A0 0 0 0 1 290 210 V178 A0 0 0 0 1 290 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="302.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M315 178 H340 A0 0 0 0 1 340 178 V210 A0 0 0 0 1 340 210 H315 A0 0 0 0 1 315 210 V178 A0 0 0 0 1 315 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="327.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M340 178 H365 A0 0 0 0 1 365 178 V210 A0 0 0 0 1 365 210 H340 A0 0 0 0 1 340 210 V178 A0 0 0 0 1 340 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="352.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M365 178 H390 A0 0 0 0 1 390 178 V210 A0 0 0 0 1 390 210 H365 A0 0 0 0 1 365 210 V178 A0 0 0 0 1 365 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="377.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M390 178 H415 A0 0 0 0 1 415 178 V210 A0 0 0 0 1 415 210 H390 A0 0 0 0 1 390 210 V178 A0 0 0 0 1 390 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="402.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M415 178 H437 A3 3 0 0 1 440 181 V207 A3 3 0 0 1 437 210 H415 A0 0 0 0 1 415 210 V178 A0 0 0 0 1 415 178 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="427.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M450 194 H494" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sh-a)"/>
+    <path d="M513 178 H535 A0 0 0 0 1 535 178 V210 A0 0 0 0 1 535 210 H513 A3 3 0 0 1 510 207 V181 A3 3 0 0 1 513 178 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="522.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M535 178 H560 A0 0 0 0 1 560 178 V210 A0 0 0 0 1 560 210 H535 A0 0 0 0 1 535 210 V178 A0 0 0 0 1 535 178 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="547.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M560 178 H585 A0 0 0 0 1 585 178 V210 A0 0 0 0 1 585 210 H560 A0 0 0 0 1 560 210 V178 A0 0 0 0 1 560 178 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="572.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M585 178 H610 A0 0 0 0 1 610 178 V210 A0 0 0 0 1 610 210 H585 A0 0 0 0 1 585 210 V178 A0 0 0 0 1 585 178 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="597.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M610 178 H635 A0 0 0 0 1 635 178 V210 A0 0 0 0 1 635 210 H610 A0 0 0 0 1 610 210 V178 A0 0 0 0 1 610 178 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="622.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M635 178 H660 A0 0 0 0 1 660 178 V210 A0 0 0 0 1 660 210 H635 A0 0 0 0 1 635 210 V178 A0 0 0 0 1 635 178 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="647.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M660 178 H685 A0 0 0 0 1 685 178 V210 A0 0 0 0 1 685 210 H660 A0 0 0 0 1 660 210 V178 A0 0 0 0 1 660 178 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="672.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M685 178 H707 A3 3 0 0 1 710 181 V207 A3 3 0 0 1 707 210 H685 A0 0 0 0 1 685 210 V178 A0 0 0 0 1 685 178 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="697.5" y="199" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <text x="20" y="246" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Right rotate</text>
+    <path d="M243 224 H265 A0 0 0 0 1 265 224 V256 A0 0 0 0 1 265 256 H243 A3 3 0 0 1 240 253 V227 A3 3 0 0 1 243 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="252.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M265 224 H290 A0 0 0 0 1 290 224 V256 A0 0 0 0 1 290 256 H265 A0 0 0 0 1 265 256 V224 A0 0 0 0 1 265 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="277.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M290 224 H315 A0 0 0 0 1 315 224 V256 A0 0 0 0 1 315 256 H290 A0 0 0 0 1 290 256 V224 A0 0 0 0 1 290 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="302.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M315 224 H340 A0 0 0 0 1 340 224 V256 A0 0 0 0 1 340 256 H315 A0 0 0 0 1 315 256 V224 A0 0 0 0 1 315 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="327.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M340 224 H365 A0 0 0 0 1 365 224 V256 A0 0 0 0 1 365 256 H340 A0 0 0 0 1 340 256 V224 A0 0 0 0 1 340 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="352.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M365 224 H390 A0 0 0 0 1 390 224 V256 A0 0 0 0 1 390 256 H365 A0 0 0 0 1 365 256 V224 A0 0 0 0 1 365 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="377.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M390 224 H415 A0 0 0 0 1 415 224 V256 A0 0 0 0 1 415 256 H390 A0 0 0 0 1 390 256 V224 A0 0 0 0 1 390 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="402.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M415 224 H437 A3 3 0 0 1 440 227 V253 A3 3 0 0 1 437 256 H415 A0 0 0 0 1 415 256 V224 A0 0 0 0 1 415 224 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="427.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M450 240 H494" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sh-a)"/>
+    <path d="M513 224 H535 A0 0 0 0 1 535 224 V256 A0 0 0 0 1 535 256 H513 A3 3 0 0 1 510 253 V227 A3 3 0 0 1 513 224 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="522.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">1</text>
+    <path d="M535 224 H560 A0 0 0 0 1 560 224 V256 A0 0 0 0 1 560 256 H535 A0 0 0 0 1 535 256 V224 A0 0 0 0 1 535 224 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="547.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">1</text>
+    <path d="M560 224 H585 A0 0 0 0 1 585 224 V256 A0 0 0 0 1 585 256 H560 A0 0 0 0 1 560 256 V224 A0 0 0 0 1 560 224 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="572.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M585 224 H610 A0 0 0 0 1 610 224 V256 A0 0 0 0 1 610 256 H585 A0 0 0 0 1 585 256 V224 A0 0 0 0 1 585 224 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="597.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M610 224 H635 A0 0 0 0 1 635 224 V256 A0 0 0 0 1 635 256 H610 A0 0 0 0 1 610 256 V224 A0 0 0 0 1 610 224 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="622.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M635 224 H660 A0 0 0 0 1 660 224 V256 A0 0 0 0 1 660 256 H635 A0 0 0 0 1 635 256 V224 A0 0 0 0 1 635 224 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="647.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M660 224 H685 A0 0 0 0 1 685 224 V256 A0 0 0 0 1 685 256 H660 A0 0 0 0 1 660 256 V224 A0 0 0 0 1 660 224 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="672.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M685 224 H707 A3 3 0 0 1 710 227 V253 A3 3 0 0 1 707 256 H685 A0 0 0 0 1 685 256 V224 A0 0 0 0 1 685 224 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="697.5" y="245" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <text x="20" y="292" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Left rotate</text>
+    <path d="M243 270 H265 A0 0 0 0 1 265 270 V302 A0 0 0 0 1 265 302 H243 A3 3 0 0 1 240 299 V273 A3 3 0 0 1 243 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="252.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M265 270 H290 A0 0 0 0 1 290 270 V302 A0 0 0 0 1 290 302 H265 A0 0 0 0 1 265 302 V270 A0 0 0 0 1 265 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="277.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M290 270 H315 A0 0 0 0 1 315 270 V302 A0 0 0 0 1 315 302 H290 A0 0 0 0 1 290 302 V270 A0 0 0 0 1 290 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="302.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M315 270 H340 A0 0 0 0 1 340 270 V302 A0 0 0 0 1 340 302 H315 A0 0 0 0 1 315 302 V270 A0 0 0 0 1 315 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="327.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M340 270 H365 A0 0 0 0 1 365 270 V302 A0 0 0 0 1 365 302 H340 A0 0 0 0 1 340 302 V270 A0 0 0 0 1 340 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="352.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M365 270 H390 A0 0 0 0 1 390 270 V302 A0 0 0 0 1 390 302 H365 A0 0 0 0 1 365 302 V270 A0 0 0 0 1 365 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="377.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M390 270 H415 A0 0 0 0 1 415 270 V302 A0 0 0 0 1 415 302 H390 A0 0 0 0 1 390 302 V270 A0 0 0 0 1 390 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="402.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M415 270 H437 A3 3 0 0 1 440 273 V299 A3 3 0 0 1 437 302 H415 A0 0 0 0 1 415 302 V270 A0 0 0 0 1 415 270 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="427.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M450 286 H494" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#sh-a)"/>
+    <path d="M513 270 H535 A0 0 0 0 1 535 270 V302 A0 0 0 0 1 535 302 H513 A3 3 0 0 1 510 299 V273 A3 3 0 0 1 513 270 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="522.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M535 270 H560 A0 0 0 0 1 560 270 V302 A0 0 0 0 1 560 302 H535 A0 0 0 0 1 535 302 V270 A0 0 0 0 1 535 270 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="547.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M560 270 H585 A0 0 0 0 1 585 270 V302 A0 0 0 0 1 585 302 H560 A0 0 0 0 1 560 302 V270 A0 0 0 0 1 560 270 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="572.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M585 270 H610 A0 0 0 0 1 610 270 V302 A0 0 0 0 1 610 302 H585 A0 0 0 0 1 585 302 V270 A0 0 0 0 1 585 270 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="597.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">1</text>
+    <path d="M610 270 H635 A0 0 0 0 1 635 270 V302 A0 0 0 0 1 635 302 H610 A0 0 0 0 1 610 302 V270 A0 0 0 0 1 610 270 Z" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2"/>
+    <text x="622.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="500" fill="#1E293B">0</text>
+    <path d="M635 270 H660 A0 0 0 0 1 660 270 V302 A0 0 0 0 1 660 302 H635 A0 0 0 0 1 635 302 V270 A0 0 0 0 1 635 270 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="647.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">1</text>
+    <path d="M660 270 H685 A0 0 0 0 1 685 270 V302 A0 0 0 0 1 685 302 H660 A0 0 0 0 1 660 302 V270 A0 0 0 0 1 660 270 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="672.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">0</text>
+    <path d="M685 270 H707 A3 3 0 0 1 710 273 V299 A3 3 0 0 1 707 302 H685 A0 0 0 0 1 685 302 V270 A0 0 0 0 1 685 270 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="697.5" y="291" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700" fill="#B45309">1</text>
+</svg>

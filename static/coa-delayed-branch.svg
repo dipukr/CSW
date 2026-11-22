@@ -1,0 +1,53 @@
+<svg width="880" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" role="img" aria-label="Normal and delayed branch. Normal: LOAD, ADD, JUMP 105, then the skipped ADD and SUB, then STORE at 105. Delayed branch: a NOP is placed in the slot after the jump, so the jump target becomes 106. Optimized delayed branch: the ADD 1, rA that preceded the jump is moved into the delay slot, so useful work is done while the jump takes effect">
+    <defs><marker id="db-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="db-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="db-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="200" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Normal branch</text>
+    <text x="52" y="61" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">100</text>
+    <path d="M93 40 H307 A3 3 0 0 1 310 43 V72 A0 0 0 0 1 310 72 H90 A0 0 0 0 1 90 72 V43 A3 3 0 0 1 93 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="106" y="61" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">LOAD  X, rA</text>
+    <text x="52" y="93" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">101</text>
+    <path d="M90 72 H310 A0 0 0 0 1 310 72 V104 A0 0 0 0 1 310 104 H90 A0 0 0 0 1 90 104 V72 A0 0 0 0 1 90 72 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="106" y="93" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">ADD   1, rA</text>
+    <text x="52" y="125" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">102</text>
+    <path d="M90 104 H310 A0 0 0 0 1 310 104 V136 A0 0 0 0 1 310 136 H90 A0 0 0 0 1 90 136 V104 A0 0 0 0 1 90 104 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="106" y="125" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">JUMP  105</text>
+    <text x="52" y="157" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">103</text>
+    <path d="M90 136 H310 A0 0 0 0 1 310 136 V168 A0 0 0 0 1 310 168 H90 A0 0 0 0 1 90 168 V136 A0 0 0 0 1 90 136 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="106" y="157" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">ADD   rA, rB</text>
+    <text x="52" y="189" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">104</text>
+    <path d="M90 168 H310 A0 0 0 0 1 310 168 V200 A0 0 0 0 1 310 200 H90 A0 0 0 0 1 90 200 V168 A0 0 0 0 1 90 168 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="106" y="189" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">SUB   rC, rB</text>
+    <text x="52" y="221" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">105</text>
+    <path d="M90 200 H310 A0 0 0 0 1 310 200 V229 A3 3 0 0 1 307 232 H93 A3 3 0 0 1 90 229 V200 A0 0 0 0 1 90 200 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="106" y="221" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">STORE rA, Z</text>
+    <text x="52" y="253" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">106</text>
+    <text x="465" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Delayed branch (NOP in slot)</text>
+    <path d="M358 40 H572 A3 3 0 0 1 575 43 V72 A0 0 0 0 1 575 72 H355 A0 0 0 0 1 355 72 V43 A3 3 0 0 1 358 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="371" y="61" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">LOAD  X, rA</text>
+    <path d="M355 72 H575 A0 0 0 0 1 575 72 V104 A0 0 0 0 1 575 104 H355 A0 0 0 0 1 355 104 V72 A0 0 0 0 1 355 72 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="371" y="93" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">ADD   1, rA</text>
+    <path d="M355 104 H575 A0 0 0 0 1 575 104 V136 A0 0 0 0 1 575 136 H355 A0 0 0 0 1 355 136 V104 A0 0 0 0 1 355 104 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="371" y="125" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">JUMP  106</text>
+    <path d="M355 136 H575 A0 0 0 0 1 575 136 V168 A0 0 0 0 1 575 168 H355 A0 0 0 0 1 355 168 V136 A0 0 0 0 1 355 136 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="371" y="157" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">NOP</text>
+    <path d="M355 168 H575 A0 0 0 0 1 575 168 V200 A0 0 0 0 1 575 200 H355 A0 0 0 0 1 355 200 V168 A0 0 0 0 1 355 168 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="371" y="189" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">ADD   rA, rB</text>
+    <path d="M355 200 H575 A0 0 0 0 1 575 200 V232 A0 0 0 0 1 575 232 H355 A0 0 0 0 1 355 232 V200 A0 0 0 0 1 355 200 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="371" y="221" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">SUB   rC, rB</text>
+    <path d="M355 232 H575 A0 0 0 0 1 575 232 V261 A3 3 0 0 1 572 264 H358 A3 3 0 0 1 355 261 V232 A0 0 0 0 1 355 232 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="371" y="253" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">STORE rA, Z</text>
+    <text x="730" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1E293B">Optimized delayed branch</text>
+    <path d="M623 40 H837 A3 3 0 0 1 840 43 V72 A0 0 0 0 1 840 72 H620 A0 0 0 0 1 620 72 V43 A3 3 0 0 1 623 40 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="636" y="61" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">LOAD  X, rA</text>
+    <path d="M620 72 H840 A0 0 0 0 1 840 72 V104 A0 0 0 0 1 840 104 H620 A0 0 0 0 1 620 104 V72 A0 0 0 0 1 620 72 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="636" y="93" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">JUMP  105</text>
+    <path d="M620 104 H840 A0 0 0 0 1 840 104 V136 A0 0 0 0 1 840 136 H620 A0 0 0 0 1 620 136 V104 A0 0 0 0 1 620 104 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <text x="636" y="125" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#B45309">ADD   1, rA</text>
+    <path d="M620 136 H840 A0 0 0 0 1 840 136 V168 A0 0 0 0 1 840 168 H620 A0 0 0 0 1 620 168 V136 A0 0 0 0 1 620 136 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="636" y="157" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">ADD   rA, rB</text>
+    <path d="M620 168 H840 A0 0 0 0 1 840 168 V200 A0 0 0 0 1 840 200 H620 A0 0 0 0 1 620 200 V168 A0 0 0 0 1 620 168 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="636" y="189" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">SUB   rC, rB</text>
+    <path d="M620 200 H840 A0 0 0 0 1 840 200 V229 A3 3 0 0 1 837 232 H623 A3 3 0 0 1 620 229 V200 A0 0 0 0 1 620 200 Z" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="636" y="221" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="400" fill="#1E293B">STORE rA, Z</text>
+    <text x="52" y="24" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B">address</text>
+    <text x="440" y="285" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#B45309">highlighted = delay slot: the instruction after a branch always executes</text>
+</svg>

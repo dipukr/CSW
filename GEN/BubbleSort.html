@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bubble Sort - Notes</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+/* Merge Sort widgets (page-specific) */
+.ms-widget { margin: 16px 0 24px; padding: 16px 18px; border: 1px solid #e3e6ea; border-radius: 3px; background: #ffffff; display: flex; flex-direction: column; gap: 10px; }
+.ms-head { display: flex; justify-content: space-between; align-items: center; }
+.ms-badge { font-size: 13px; padding: 1px 9px; border: 1px solid #c9ecea; border-radius: 999px; color: #0f766e; background: #f0fdfa; }
+.ms-label { font-family: Arial, Helvetica, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #155e63; }
+.ms-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ms-row { display: flex; gap: 3px; flex-wrap: wrap; }
+.ms-cell { min-width: 44px; flex: 1 1 0; max-width: 64px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ms-box { width: 100%; text-align: center; padding: 6px 0; border: 1px solid #e2e8f0; border-radius: 3px; background: #ffffff; font-variant-numeric: tabular-nums; font-weight: 500; color: #1e293b; transition: background .2s, border-color .2s; }
+.ms-cap { font-size: 11px; color: #64748b; min-height: 15px; }
+.ms-box.used { background: #f1f5f9; color: #94a3b8; }
+.ms-box.ptr-l { border: 2px solid #3a81c2; background: #eff6ff; font-weight: 700; }
+.ms-box.ptr-r { border: 2px solid #168568; background: #ecfdf5; font-weight: 700; }
+.ms-box.left { background: #eff6ff; border-color: #93c5fd; }
+.ms-box.right { background: #ecfdf5; border-color: #6ee7b7; }
+.ms-box.done { background: #d1fae5; border-color: #168568; }
+.ms-box.faded { color: #cbd5e1; border-color: #f1f5f9; }
+.ms-box.empty { background: #f8fafc; color: #cbd5e1; }
+.ms-box.filled { background: #ecfdf5; border-color: #168568; }
+.ms-note { padding: 10px 12px; min-height: 44px; background: #f1f5f9; border-radius: 3px; font-size: 15px; display: flex; align-items: center; }
+.ms-controls { display: flex; align-items: center; gap: 8px; }
+.ms-controls input[type=range] { flex: 1; accent-color: #0d9488; }
+.ms-controls button { font: inherit; font-size: 15px; padding: 4px 12px; border: 1px solid #cbd5e1; border-radius: 3px; background: #ffffff; color: #1e293b; cursor: pointer; }
+.ms-controls button.primary { background: #0d9488; border-color: #0d9488; color: #ffffff; }
+.ms-controls button:disabled { opacity: .45; cursor: default; }
+.ms-legend { font-size: 12.5px; color: #64748b; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ms-key { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid; margin-left: 8px; }
+.ms-key.left { background: #eff6ff; border-color: #93c5fd; } .ms-key.right { background: #ecfdf5; border-color: #6ee7b7; }
+.ms-key.ptr { background: #ffffff; border: 2px solid #3a81c2; } .ms-key.done { background: #d1fae5; border-color: #168568; }
+@media (max-width: 600px) { .ms-pair { grid-template-columns: 1fr; } }
+/* Bubble Sort visualizer and quiz */
+.bv-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; color: #475569; }
+.bv-top select { font: inherit; font-size: 14px; padding: 3px 8px; border: 1px solid #cbd5e1; border-radius: 3px; margin-left: 6px; }
+.bv-stats { font-variant-numeric: tabular-nums; }
+.bv-bars { display: flex; align-items: flex-end; justify-content: center; gap: 8px; height: 210px; padding: 10px; background: #f8fafc; border-radius: 3px; }
+.bv-bars .barouter { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bv-bars .bar { width: 42px; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; border-radius: 3px 3px 0 0; background: #e2e8f0; border: 1px solid #94a3b8; color: #1e293b; font-weight: 600; font-size: 14px; transition: height .25s, background .2s; }
+.bv-bars .bar.cmp { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+.bv-bars .bar.swap { background: #fce7f3; border-color: #db2777; color: #9d174d; }
+.bv-bars .bar.done { background: #d1fae5; border-color: #34d399; color: #065f46; }
+.bv-bars .idx { font-size: 12px; color: #64748b; }
+.ms-key.bv-cmp { background: #fef3c7; border-color: #f59e0b; } .ms-key.bv-swap { background: #fce7f3; border-color: #db2777; }
+.qz-q { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; }
+.qz-q:last-of-type { border-bottom: 0; }
+.qz-q label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.qz-q input { accent-color: #0d9488; }
+.qz-ex { font-size: 14px; color: #475569; }
+.qz-ex.ok::before { content: "✓ "; color: #059669; font-weight: 700; }
+.qz-ex.no::before { content: "ℹ "; color: #64748b; }
+.qz-score { display: flex; justify-content: space-between; align-items: center; }
+.qz-score button { font: inherit; font-size: 14px; padding: 4px 12px; border: 1px solid #cbd5e1; border-radius: 3px; background: #ffffff; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="note">
+    <div class="title">Bubble Sort — Complete Guide</div>
+
+    <div class="intro">
+        <p><strong>Bubble Sort</strong> is one of the simplest comparison-based sorting algorithms. It sorts an array by repeatedly comparing <strong>adjacent elements</strong> and swapping them when they are in the wrong order.</p>
+        <p>It is easy to understand and implement, making it useful for learning sorting algorithms, nested loops, time complexity, and algorithm optimization.</p>
+    </div>
+
+    <div class="subheading">What is Bubble Sort?</div>
+    <div class="intro">
+        <p>Bubble Sort repeatedly traverses an array, comparing two neighboring elements at a time.</p>
+        <p>For ascending order:</p>
+        <ul>
+            <li>If the left element is greater than the right element, swap them.</li>
+            <li>Otherwise, leave them unchanged.</li>
+            <li>After each complete pass, the largest element in the remaining unsorted portion reaches its correct position.</li>
+            <li>Repeat until the array is sorted.</li>
+        </ul>
+        <p>Consider:</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/bubble-unsorted-sorted.svg" alt="Bubble Sort in ascending order turns the unsorted array 5, 1, 4, 2, 3 into 1, 2, 3, 4, 5, in place; the index of each position, 0 to 4, stays the same" style="width:100%;max-width:560px">
+    </div>
+    <div class="intro">
+        <p class="sw-muted sw-small">The algorithm modifies the original array in place.</p>
+        <p>The name <em>Bubble Sort</em> comes from the way large values move toward the end of the array during successive comparisons, similar to bubbles rising to the surface.</p>
+    </div>
+
+    <div class="subheading">Interactive visualization</div>
+    <div class="intro">
+        <p>Explore how Bubble Sort performs individual comparisons, swaps adjacent elements, and completes each pass.</p>
+    </div>
+    <div class="ms-widget" id="bubbleViz">
+        <div class="ms-head"><strong>Bubble Sort visualizer</strong><span class="ms-badge" data-role="badge"></span></div>
+        <div class="bv-top"><label>Initial order <select data-role="order"><option value="mixed" selected>Mixed</option><option value="nearly">Nearly sorted</option><option value="reversed">Reversed</option><option value="sorted">Sorted</option></select></label><span class="bv-stats" data-role="stats"></span></div>
+        <div class="bv-bars" data-role="bars"></div>
+        <div class="ms-note" data-role="note"></div>
+        <div class="ms-controls"><button data-role="prev" aria-label="Previous step">‹</button><input type="range" data-role="slider" min="0" step="1" aria-label="Step"><button class="primary" data-role="next">Next ›</button><button data-role="play">▶ Play</button><button data-role="shuffle">Shuffle</button></div>
+        <div class="ms-legend"><span class="ms-key bv-cmp"></span>being compared <span class="ms-key bv-swap"></span>just swapped <span class="ms-key done"></span>in final position</div>
+    </div>
+    <div class="intro">
+        <p>The most important observation is that <strong>after each pass, at least one more element has reached its final sorted position</strong>.</p>
+    </div>
+
+    <div class="subheading">Step-by-step dry run</div>
+    <div class="intro">
+        <p>Let's sort the following array in ascending order:</p>
+    </div>
+    <div class="code-block"><pre><code>[5, 1, 4, 2, 3]</code></pre></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pass 1: Move the largest element to the end</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/bubble-pass1.svg" alt="Pass 1 of Bubble Sort on 5, 1, 4, 2, 3: comparison 1 compares 5 and 1 and swaps; comparison 2 compares 5 and 4 and swaps; comparison 3 compares 5 and 2 and swaps; comparison 4 compares 5 and 3 and swaps. The pass result is 1, 4, 2, 3, 5, with 5 sorted in the last position" style="width:100%;max-width:780px">
+    </div>
+    <div class="intro">
+        <p>After Pass 1:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 4, 2, 3 | 5]
+             Sorted</code></pre></div>
+    <div class="intro">
+        <p>The largest element, <code>5</code>, has reached index <code>4</code>. There is no reason to compare it again.</p>
+        <p class="minor-heading"><strong>Pass 2: Move the next-largest element into position</strong></p>
+        <p>The next pass only processes the first four elements.</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Comparison</th><th>Action</th><th>Array</th></tr></thead>
+        <tbody>
+            <tr><td>1 vs 4</td><td>No swap</td><td><code>[1,4,2,3,5]</code></td></tr>
+            <tr><td>4 vs 2</td><td>Swap</td><td><code>[1,2,4,3,5]</code></td></tr>
+            <tr><td>4 vs 3</td><td>Swap</td><td><code>[1,2,3,4,5]</code></td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>After Pass 2:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 2, 3 | 4, 5]
+          Sorted</code></pre></div>
+    <div class="intro">
+        <p>The two largest elements are now in their correct positions.</p>
+        <p class="minor-heading"><strong>Pass 3: Check whether the array is sorted</strong></p>
+        <p>We compare only the remaining unsorted portion.</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 2, 3, 4, 5]
+
+Compare 1 and 2 → No swap
+Compare 2 and 3 → No swap</code></pre></div>
+    <div class="intro">
+        <p>There were <strong>zero swaps during Pass 3</strong>.</p>
+        <p>Therefore, the array is already sorted, and we can terminate early.</p>
+        <p class="minor-heading"><strong>Summary of our example</strong></p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <tbody>
+            <tr><td>Pass 1</td><td>[1, 4, 2, 3, 5]</td><td>4 swaps</td></tr>
+            <tr><td>Pass 2</td><td>[1, 2, 3, 4, 5]</td><td>2 swaps</td></tr>
+            <tr><td>Pass 3</td><td>No change</td><td>0 swaps</td></tr>
+        </tbody>
+    </table></div>
+    <div class="folio"><ol class="ledger" style="grid-template-columns: 120px minmax(0, 1fr)">
+        <li><span class="ledger-label">3</span><span>Passes</span></li>
+        <li><span class="ledger-label">9</span><span>Comparisons</span></li>
+        <li><span class="ledger-label">6</span><span>Swaps</span></li>
+    </ol></div>
+
+    <div class="subheading">Bubble Sort algorithm</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pseudocode</strong></p>
+    </div>
+    <div class="code-block"><pre><code>BUBBLE_SORT(A, n):
+    for i = 0 to n - 2:
+        swapped = false
+        for j = 0 to n - i - 2:
+            if A[j] &gt; A[j + 1]:
+                swap(A[j], A[j + 1])
+                swapped = true
+        if swapped == false:
+            break</code></pre></div>
+    <div class="intro">
+        <p>There are two loops:</p>
+        <ul>
+            <li><strong>Outer loop (<code>i</code>):</strong> Counts how many passes we have performed.</li>
+            <li><strong>Inner loop (<code>j</code>):</strong> Compares adjacent elements in the unsorted region.</li>
+        </ul>
+        <p>The key boundary is:</p>
+    </div>
+    <div class="code-block"><pre><code>j &lt; n - i - <span class="code-number">1</span></code></pre></div>
+    <div class="intro">
+        <p>Here, <code>n</code> is the array length, <code>i</code> is the current pass index, and <code>j</code> is the comparison index.</p>
+        <p>Why subtract <code>i</code>? Because the last <code>i</code> elements are already sorted.</p>
+        <p>Why subtract <code>1</code>? Because we access <code>arr[j + 1]</code>, which must remain within the array.</p>
+    </div>
+
+    <div class="subheading">Java implementation</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Basic Bubble Sort</strong></p>
+        <p>This version uses no early-exit optimization.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> bubbleSort(<span class="code-keyword">int</span>[] arr) {
+    <span class="code-keyword">int</span> n = arr.length;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; n - <span class="code-number">1</span>; i++)
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; n - i - <span class="code-number">1</span>; j++)
+            <span class="code-keyword">if</span> (arr[j] &gt; arr[j + <span class="code-number">1</span>]) {
+                <span class="code-keyword">int</span> temp = arr[j];
+                arr[j] = arr[j + <span class="code-number">1</span>];
+                arr[j + <span class="code-number">1</span>] = temp;
+            }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] arr = {<span class="code-number">5</span>, <span class="code-number">1</span>, <span class="code-number">4</span>, <span class="code-number">2</span>, <span class="code-number">3</span>};
+    bubbleSort(arr);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{arr}"</span>);
+}</code></pre></div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 2, 3, 4, 5]</code></pre></div>
+    <div class="intro">
+        <p>This works correctly, but it continues executing passes even when the array has become sorted.</p>
+        <p class="minor-heading"><strong>Optimized Bubble Sort (recommended version)</strong></p>
+        <p>We introduce a boolean variable <code>swapped</code>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> bubbleSort(<span class="code-keyword">int</span>[] arr) {
+    <span class="code-keyword">int</span> n = arr.length;
+
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; n - <span class="code-number">1</span>; i++) {
+        <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">false</span>;
+
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; n - i - <span class="code-number">1</span>; j++)
+            <span class="code-keyword">if</span> (arr[j] &gt; arr[j + <span class="code-number">1</span>]) {
+                <span class="code-keyword">int</span> temp = arr[j];
+                arr[j] = arr[j + <span class="code-number">1</span>];
+                arr[j + <span class="code-number">1</span>] = temp;
+                swapped = <span class="code-keyword">true</span>;
+            }
+
+        <span class="code-comment">// No swaps means the entire array is sorted.</span>
+        <span class="code-keyword">if</span> (!swapped)
+            <span class="code-keyword">break</span>;
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-keyword">int</span>[] arr = {<span class="code-number">5</span>, <span class="code-number">1</span>, <span class="code-number">4</span>, <span class="code-number">2</span>, <span class="code-number">3</span>};
+    bubbleSort(arr);
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{arr}"</span>);
+}</code></pre></div>
+    <div class="intro">
+        <p>This version contains two important optimizations:</p>
+        <p><strong>Optimization 1 — Shrink the comparison range.</strong> After every pass, one more element at the end is known to be sorted.</p>
+        <p><strong>Optimization 2 — Stop when there are no swaps.</strong> If an entire pass makes no swaps, all adjacent elements are in nondecreasing order and the array is sorted.</p>
+    </div>
+
+    <div class="subheading">Time complexity analysis</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <tbody>
+            <tr><td>Best case</td><td>O(n)</td><td>Already sorted (optimized)</td></tr>
+            <tr><td>Average case</td><td>O(n²)</td><td>Randomly arranged</td></tr>
+            <tr><td>Worst case</td><td>O(n²)</td><td>Reverse sorted</td></tr>
+            <tr><td>Auxiliary space</td><td>O(1)</td><td>Constant extra variables</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Best case: O(n)</strong></p>
+        <p>Consider an already sorted array:</p>
+    </div>
+    <div class="code-block"><pre><code>[1, 2, 3, 4, 5]</code></pre></div>
+    <div class="intro">
+        <p>During the first pass:</p>
+    </div>
+    <div class="code-block"><pre><code>1 &lt; 2 → No swap
+2 &lt; 3 → No swap
+3 &lt; 4 → No swap
+4 &lt; 5 → No swap</code></pre></div>
+    <div class="intro">
+        <p>The <code>swapped</code> variable remains <code>false</code>.</p>
+        <p>The algorithm exits after performing <code>n - 1</code> comparisons.</p>
+        <p>Therefore:</p>
+        <p class="math-display"><span class="math" data-tex="T(n)=\Theta(n)" data-display="1">T(n)=\Theta(n)</span></p>
+        <p>This best-case complexity applies <strong>only when early termination is implemented</strong>. Without it, basic Bubble Sort always performs a quadratic number of comparisons.</p>
+        <p class="minor-heading"><strong>Worst case: O(n²)</strong></p>
+        <p>Consider a reverse-sorted array:</p>
+    </div>
+    <div class="code-block"><pre><code>[5, 4, 3, 2, 1]</code></pre></div>
+    <div class="intro">
+        <p>Every pair of elements is initially inverted relative to the final order.</p>
+        <p>The algorithm performs:</p>
+    </div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Pass</th><th>Comparisons</th></tr></thead>
+        <tbody>
+            <tr><td>1</td><td>4</td></tr>
+            <tr><td>2</td><td>3</td></tr>
+            <tr><td>3</td><td>2</td></tr>
+            <tr><td>4</td><td>1</td></tr>
+            <tr><td><strong>Total</strong></td><td><strong>10</strong></td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>For an array of size <code>n</code>, the maximum comparison count is:</p>
+        <p class="math-display"><span class="math" data-tex="C(n)=(n-1)+(n-2)+\cdots+1" data-display="1">C(n)=(n-1)+(n-2)+\cdots+1</span></p>
+        <p>Using the arithmetic series formula:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{C(n)=\frac{n(n-1)}{2}}" data-display="1">\boxed{C(n)=\frac{n(n-1)}{2}}</span></p>
+        <p>Expanding:</p>
+        <p class="math-display"><span class="math" data-tex="C(n)=\frac{n^2-n}{2}" data-display="1">C(n)=\frac{n^2-n}{2}</span></p>
+        <p>The dominant term is <span class="math" data-tex="n^2">n^2</span>, so:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{T(n)=\Theta(n^2)}" data-display="1">\boxed{T(n)=\Theta(n^2)}</span></p>
+        <p class="minor-heading"><strong>How comparisons grow with input size</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/bubble-comparisons-chart.svg" alt="Line chart of worst-case comparisons n(n - 1)/2 against array length n: 10 gives 45, 20 gives 190, 50 gives 1,225, 100 gives 4,950, 200 gives 19,900, 500 gives 124,750 and 1,000 gives 499,500" style="width:100%;max-width:760px">
+    </div>
+    <div class="intro">
+        <p>For example, increasing the array size from 100 to 1,000 increases worst-case comparisons from 4,950 to 499,500 — approximately 101 times as many comparisons.</p>
+        <p class="minor-heading"><strong>Average case: O(n²)</strong></p>
+        <p>For a uniformly random permutation of distinct elements, Bubble Sort also takes quadratic time on average.</p>
+        <p>The expected number of swaps is:</p>
+        <p class="math-display"><span class="math" data-tex="E[\text{swaps}]=\frac{n(n-1)}{4}" data-display="1">E[\text{swaps}]=\frac{n(n-1)}{4}</span></p>
+        <p>This follows from the expected number of inversions in a random permutation.</p>
+    </div>
+
+    <div class="subheading">Why is Bubble Sort stable?</div>
+    <div class="intro">
+        <p>A sorting algorithm is <strong>stable</strong> if elements with equal sorting keys retain their original relative order.</p>
+        <p>Consider sorting employees by salary:</p>
+    </div>
+    <div class="code-block"><pre><code>Input:
+
+(A, 50000)
+(B, 30000)
+(C, 50000)
+(D, 40000)</code></pre></div>
+    <div class="intro">
+        <p>The employees <code>A</code> and <code>C</code> have the same salary.</p>
+        <p>After sorting:</p>
+    </div>
+    <div class="code-block"><pre><code>(B, 30000)
+(D, 40000)
+(A, 50000)
+(C, 50000)</code></pre></div>
+    <div class="intro">
+        <p>Notice that <code>A</code> still appears before <code>C</code>.</p>
+        <p>Bubble Sort is stable because it swaps only when:</p>
+    </div>
+    <div class="code-block"><pre><code>arr[j] &gt; arr[j + <span class="code-number">1</span>]</code></pre></div>
+    <div class="intro">
+        <p>If two elements have equal keys, there is no swap.</p>
+        <p>If you change the condition to:</p>
+    </div>
+    <div class="code-block"><pre><code>arr[j] &gt;= arr[j + <span class="code-number">1</span>]</code></pre></div>
+    <div class="intro">
+        <p>equal elements may be swapped, and the algorithm is no longer guaranteed to be stable.</p>
+    </div>
+
+    <div class="subheading">Generic Bubble Sort in Java</div>
+    <div class="intro">
+        <p>We can implement Bubble Sort for any object type using <code>Comparator</code>.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> &lt;<span class="code-class">T</span>&gt; <span class="code-keyword">void</span> bubbleSort(<span class="code-class">T</span>[] arr, <span class="code-class">Comparator</span>&lt;? <span class="code-keyword">super</span> <span class="code-class">T</span>&gt; comparator) {
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; arr.length - <span class="code-number">1</span>; i++) {
+        <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">false</span>;
+
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; arr.length - i - <span class="code-number">1</span>; j++)
+            <span class="code-keyword">if</span> (comparator.compare(arr[j], arr[j + <span class="code-number">1</span>]) &gt; <span class="code-number">0</span>) {
+                <span class="code-class">T</span> temp = arr[j];
+                arr[j] = arr[j + <span class="code-number">1</span>];
+                arr[j + <span class="code-number">1</span>] = temp;
+                swapped = <span class="code-keyword">true</span>;
+            }
+
+        <span class="code-keyword">if</span> (!swapped)
+            <span class="code-keyword">break</span>;
+    }
+}
+
+<span class="code-keyword">record</span> <span class="code-class">Employee</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> salary) {}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">Employee</span>[] employees = {
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"A"</span>, <span class="code-number">50000</span>),
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"B"</span>, <span class="code-number">30000</span>),
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"C"</span>, <span class="code-number">50000</span>),
+        <span class="code-keyword">new</span> <span class="code-class">Employee</span>(<span class="code-string">"D"</span>, <span class="code-number">40000</span>)
+    };
+    bubbleSort(employees, <span class="code-class">Comparator</span>.comparingInt(<span class="code-class">Employee</span>::salary));
+    <span class="code-class">Console</span>.draw(<span class="code-string">"{employees}"</span>);
+}</code></pre></div>
+    <div class="intro">
+        <p>The comparison uses <code>&gt; 0</code> rather than <code>&gt;= 0</code> so employees with equal salaries preserve their original order.</p>
+    </div>
+
+    <div class="subheading">Mathematical correctness: Why does Bubble Sort work?</div>
+    <div class="intro">
+        <p>We can prove correctness using a <strong>loop invariant</strong>.</p>
+        <p>A loop invariant is a condition that remains true after each iteration of a loop.</p>
+        <p>For Bubble Sort:</p>
+    </div>
+    <div class="callout callout-note"><p>After <code>k</code> completed passes, the last <code>k</code> elements are in their correct final sorted positions.</p></div>
+    <div class="intro">
+        <p><strong>Initialization:</strong> Before the first pass, <code>k = 0</code>, so the invariant is trivially true.</p>
+        <p><strong>Maintenance:</strong> During the next pass, each adjacent comparison ensures that the larger of the compared values moves to the right. The maximum element of the remaining unsorted prefix reaches its final position at the end of that prefix. Therefore, the sorted suffix grows by one element.</p>
+        <p><strong>Termination:</strong> After at most <code>n - 1</code> passes, at most one element remains outside the sorted suffix. It must also be in its correct position. Alternatively, a pass with no swaps proves the entire array is sorted.</p>
+        <p>This establishes the correctness of Bubble Sort.</p>
+    </div>
+
+    <div class="subheading">Important properties</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Property</th><th>Bubble Sort</th></tr></thead>
+        <tbody>
+            <tr><td>Algorithm type</td><td>Comparison-based</td></tr>
+            <tr><td>Approach</td><td>Iterative, adjacent swapping</td></tr>
+            <tr><td>Stable</td><td>Yes, with strict comparison</td></tr>
+            <tr><td>In-place</td><td>Yes</td></tr>
+            <tr><td>Adaptive</td><td>Yes, with early termination</td></tr>
+            <tr><td>Recursive</td><td>Not normally</td></tr>
+            <tr><td>Best time</td><td>Θ(n), optimized</td></tr>
+            <tr><td>Average time</td><td>Θ(n²)</td></tr>
+            <tr><td>Worst time</td><td>Θ(n²)</td></tr>
+            <tr><td>Extra space</td><td>Θ(1)</td></tr>
+            <tr><td>Maximum passes</td><td>n − 1</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Important observation: Swaps equal inversions</strong></p>
+        <p>An <strong>inversion</strong> is a pair of indices <code>i &lt; j</code> for which <code>arr[i] &gt; arr[j]</code>.</p>
+        <p>For example:</p>
+    </div>
+    <div class="code-block"><pre><code>[3, 1, 2]</code></pre></div>
+    <div class="intro">
+        <p>The inversions are <code>(3,1)</code> and <code>(3,2)</code>, so there are two inversions.</p>
+        <p>Bubble Sort swaps adjacent elements only when they form an inversion. Each such swap reduces the total inversion count by exactly one.</p>
+        <p>Therefore:</p>
+        <p class="math-display"><span class="math" data-tex="\boxed{\text{Total swaps}=\text{Initial inversion count}}" data-display="1">\boxed{\text{Total swaps}=\text{Initial inversion count}}</span></p>
+        <p>This is an important distinction: the number of comparisons depends on the passes executed, while the number of swaps is exactly determined by the initial inversions.</p>
+    </div>
+
+    <div class="subheading">Further optimization: Track the last swap</div>
+    <div class="intro">
+        <p>We can optimize the inner loop further.</p>
+        <p>If the final swap of a pass occurs at index <code>k</code>, everything to the right of <code>k</code> is already sorted relative to the preceding values and need not be processed during subsequent passes.</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> bubbleSort(<span class="code-keyword">int</span>[] arr) {
+    <span class="code-keyword">int</span> n = arr.length;
+
+    <span class="code-keyword">while</span> (n &gt; <span class="code-number">1</span>) {
+        <span class="code-keyword">int</span> newN = <span class="code-number">0</span>;
+
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; n; i++)
+            <span class="code-keyword">if</span> (arr[i - <span class="code-number">1</span>] &gt; arr[i]) {
+                <span class="code-keyword">int</span> temp = arr[i - <span class="code-number">1</span>];
+                arr[i - <span class="code-number">1</span>] = arr[i];
+                arr[i] = temp;
+                newN = i;
+            }
+
+        n = newN;
+    }
+}</code></pre></div>
+    <div class="intro">
+        <p>Here, <code>newN</code> records the boundary immediately after the final swap.</p>
+        <p>If no swaps happen, <code>newN</code> remains zero, and the loop terminates.</p>
+        <p>This optimization can reduce unnecessary comparisons on certain partially sorted arrays, although worst-case time complexity remains O(n²).</p>
+    </div>
+
+    <div class="subheading">Bubble Sort vs other sorting algorithms</div>
+    <div class="gpt-table-wrap"><table class="gpt-table">
+        <thead><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Stable</th></tr></thead>
+        <tbody>
+            <tr><td>Bubble Sort (optimized)</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>Yes</td></tr>
+            <tr><td>Selection Sort</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>No, generally</td></tr>
+            <tr><td>Insertion Sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>Yes</td></tr>
+            <tr><td>Merge Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>Yes</td></tr>
+            <tr><td>Quick Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>No, generally</td></tr>
+            <tr><td>Heap Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>No</td></tr>
+        </tbody>
+    </table></div>
+    <div class="intro">
+        <p>For practical Java applications, Bubble Sort is rarely preferred for large arrays. <code>Arrays.sort()</code> and <code>List.sort()</code> provide much more efficient general-purpose sorting implementations.</p>
+    </div>
+
+    <div class="subheading">Advantages and disadvantages</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages</strong></p>
+        <ul>
+            <li>Very simple to understand and implement.</li>
+            <li>Requires only O(1) auxiliary space.</li>
+            <li>Stable with strict comparisons.</li>
+            <li>Can terminate early when sorted.</li>
+            <li>Useful for teaching sorting and loop invariants.</li>
+        </ul>
+        <p class="minor-heading"><strong>Disadvantages</strong></p>
+        <ul>
+            <li>O(n²) average and worst-case time.</li>
+            <li>Can perform many element swaps.</li>
+            <li>Inefficient on large datasets.</li>
+            <li>Often slower than Insertion Sort in practice.</li>
+            <li>Not suitable for performance-critical sorting.</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Common mistakes</div>
+    <div class="intro">
+        <p><strong>Incorrect inner-loop boundary</strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-comment">// Incorrect: arr[j + 1] may exceed the array length.</span>
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; n - i; j++)</code></pre></div>
+    <div class="intro">
+        <p>Correct:</p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; n - i - <span class="code-number">1</span>; j++)</code></pre></div>
+    <div class="intro">
+        <p><strong>Forgetting to reset <code>swapped</code></strong></p>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; n - <span class="code-number">1</span>; i++) {
+    <span class="code-keyword">boolean</span> swapped = <span class="code-keyword">false</span>;  <span class="code-comment">// Must reset each pass</span>
+    <span class="code-comment">// ...</span>
+}</code></pre></div>
+    <div class="intro">
+        <p><strong>Using the wrong comparison for ascending order</strong></p>
+    </div>
+    <div class="code-block"><pre><code>arr[j] &gt; arr[j + <span class="code-number">1</span>]  <span class="code-comment">// Ascending</span>
+arr[j] &lt; arr[j + <span class="code-number">1</span>]  <span class="code-comment">// Descending</span></code></pre></div>
+    <div class="intro">
+        <p><strong>Thinking Bubble Sort always requires n − 1 passes</strong></p>
+        <p>That is the maximum number of passes in the standard algorithm. An optimized implementation can stop earlier when no swaps occur.</p>
+    </div>
+
+    <div class="subheading">When should you use Bubble Sort?</div>
+    <div class="intro">
+        <p>Bubble Sort is particularly useful for understanding how sorting works, practicing nested-loop logic, explaining stability and in-place sorting, and studying best-case versus worst-case complexity.</p>
+        <p>For real applications, particularly with large collections, an efficient library sorting algorithm is usually a better choice.</p>
+    </div>
+
+    <div class="subheading">Test your understanding</div>
+    <div class="ms-widget" id="quiz"></div>
+
+    <div class="subheading">Final takeaway</div>
+    <div class="intro">
+        <p>Bubble Sort works by repeatedly comparing and swapping adjacent elements. Each pass moves the largest remaining value into its correct position.</p>
+        <p>Its main characteristics are <strong>O(n²) average/worst-case time, O(1) auxiliary space, stability, and O(n) best-case time with early termination</strong>.</p>
+        <p>The algorithm is important not because it is the fastest sorting method, but because it clearly demonstrates comparisons, swaps, loop invariants, early termination, and algorithmic complexity.</p>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+
+function msCell(value, cls, cap) {
+    return '<div class="ms-cell"><div class="ms-box ' + (cls || "") + '">' + value + '</div>' + (cap === undefined ? "" : '<div class="ms-cap">' + cap + '</div>') + '</div>';
+}
+
+function msControls(root, count, render) {
+    const q = (r) => root.querySelector('[data-role="' + r + '"]');
+    const slider = q("slider");
+    let step = 0;
+    function go(n) { step = Math.max(0, Math.min(count() - 1, n)); slider.max = count() - 1; slider.value = step; q("prev").disabled = step === 0; q("next").disabled = step === count() - 1; render(step); }
+    q("prev").addEventListener("click", () => go(step - 1));
+    q("next").addEventListener("click", () => go(step + 1));
+    slider.addEventListener("input", () => go(Number(slider.value)));
+    return go;
+}
+
+
+/* Bubble Sort visualizer: comparisons, swaps and completed passes (optimized, with early exit). */
+(function () {
+    const root = document.getElementById("bubbleViz");
+    if (!root) return;
+    const q = (r) => root.querySelector('[data-role="' + r + '"]');
+    const ORDERS = {mixed: [5, 1, 4, 2, 8, 3, 7, 6], nearly: [1, 2, 4, 3, 5, 6, 8, 7], reversed: [8, 7, 6, 5, 4, 3, 2, 1], sorted: [1, 2, 3, 4, 5, 6, 7, 8]};
+    let frames = [], timer = null;
+
+    function trace(input) {
+        const a = input.slice(), n = a.length, f = [];
+        let comps = 0, swaps = 0, done = [];
+        const snap = (o) => f.push(Object.assign({a: a.slice(), cmp: [], swap: [], done: done.slice(), pass: 0, comps, swaps}, o));
+        snap({note: `Start: ${a.length} values. Each pass compares neighbours and swaps any out-of-order pair.`});
+        for (let i = 0; i < n - 1; i++) {
+            let swapped = false;
+            for (let j = 0; j < n - i - 1; j++) {
+                comps++;
+                snap({pass: i + 1, cmp: [j, j + 1], comps, swaps, note: `Pass ${i + 1}: compare ${a[j]} and ${a[j + 1]}.`});
+                if (a[j] > a[j + 1]) {
+                    [a[j], a[j + 1]] = [a[j + 1], a[j]];
+                    swaps++; swapped = true;
+                    snap({pass: i + 1, swap: [j, j + 1], comps, swaps, note: `${a[j + 1]} > ${a[j]}: swap them.`});
+                } else {
+                    snap({pass: i + 1, cmp: [j, j + 1], comps, swaps, note: `${a[j]} ≤ ${a[j + 1]}: already in order, no swap.`});
+                }
+            }
+            done.push(n - i - 1);
+            if (!swapped) {
+                done = a.map((_, k) => k);
+                snap({pass: i + 1, comps, swaps, note: `Pass ${i + 1} made no swaps, so the array is sorted: stop early.`});
+                return f;
+            }
+            snap({pass: i + 1, comps, swaps, note: `Pass ${i + 1} complete: ${a[n - i - 1]} has reached its final position at index ${n - i - 1}.`});
+        }
+        done = a.map((_, k) => k);
+        snap({pass: n - 1, comps, swaps, note: "All passes done: the array is sorted."});
+        return f;
+    }
+
+    function render(k) {
+        const fr = frames[k], max = Math.max(...fr.a);
+        q("badge").textContent = `Step ${k} / ${frames.length - 1}`;
+        q("stats").textContent = `Pass ${fr.pass} · comparisons ${fr.comps} · swaps ${fr.swaps}`;
+        q("bars").innerHTML = fr.a.map((v, i) => {
+            const cls = fr.swap.includes(i) ? "swap" : fr.cmp.includes(i) ? "cmp" : fr.done.includes(i) ? "done" : "";
+            return `<div class="barouter"><div class="bar ${cls}" style="height:${30 + v / max * 140}px">${v}</div><span class="idx">${i}</span></div>`;
+        }).join("");
+        q("note").textContent = fr.note;
+    }
+
+    const go = msControls(root, () => frames.length, render);
+    let step = 0;
+    const wrapRender = render;
+    function stop() { if (timer) clearInterval(timer); timer = null; q("play").textContent = "▶ Play"; }
+    function load(vals) { stop(); frames = trace(vals); go(0); }
+    q("order").addEventListener("change", () => load(ORDERS[q("order").value]));
+    q("shuffle").addEventListener("click", () => { const v = ORDERS.sorted.slice(); for (let i = v.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [v[i], v[j]] = [v[j], v[i]]; } load(v); });
+    q("play").addEventListener("click", () => {
+        if (timer) { stop(); return; }
+        if (Number(q("slider").value) >= frames.length - 1) go(0);
+        q("play").textContent = "⏸ Pause";
+        timer = setInterval(() => { const s = Number(q("slider").value); if (s >= frames.length - 1) stop(); else go(s + 1); }, 700);
+    });
+    load(ORDERS.mixed);
+})();
+
+/* Test your understanding */
+(function () {
+    const root = document.getElementById("quiz");
+    if (!root) return;
+    const questions = [{q:"Why can the inner loop ignore the last i elements?",opts:["They are always zero","They have already reached their final positions","They are smaller than every other element"],correct:1,ex:"After i completed passes, the i largest values are in their correct positions at the end of the array."},{q:"What is the optimized best-case time complexity?",opts:["O(1)","O(n)","O(n²)"],correct:1,ex:"An already sorted array requires a single pass with n − 1 comparisons and no swaps."},{q:"Which condition preserves stability?",opts:["arr[j] > arr[j+1]","arr[j] >= arr[j+1]","Always swap adjacent elements"],correct:0,ex:"A strict greater-than comparison never exchanges equal keys."},{q:"For a reverse-sorted array of 5 distinct elements, how many swaps occur?",opts:["5","10","20"],correct:1,ex:"There are 5 × 4 / 2 = 10 inversions, and Bubble Sort performs one swap per inversion."}];
+    let answers = {};
+    function render() {
+        let html = questions.map((qq, i) => `<div class="qz-q"><strong>${i + 1}. ${qq.q}</strong>` +
+            qq.opts.map((o, j) => `<label><input type="radio" name="qz${i}" value="${j}"${answers[i] === j ? " checked" : ""}> ${o.replace(/</g, "&lt;")}</label>`).join("") +
+            (answers[i] !== undefined ? `<div class="qz-ex ${answers[i] === qq.correct ? "ok" : "no"}">${qq.ex}</div>` : "") + "</div>").join("");
+        if (Object.keys(answers).length === questions.length)
+            html += `<div class="qz-score"><strong>Score: ${questions.filter((qq, i) => answers[i] === qq.correct).length}/${questions.length}</strong><button type="button">Try again</button></div>`;
+        root.innerHTML = html;
+        root.querySelectorAll("input").forEach((inp) => inp.addEventListener("change", () => { answers[Number(inp.name.slice(2))] = Number(inp.value); render(); }));
+        const b = root.querySelector(".qz-score button");
+        if (b) b.addEventListener("click", () => { answers = {}; render(); });
+    }
+    render();
+})();
+</script>
+</body>
+</html>

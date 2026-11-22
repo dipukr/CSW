@@ -1,0 +1,31 @@
+<svg width="620" height="465" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 465" role="img" aria-label="Simplified external merge sort: a 100 GB input file is split into memory-sized chunks, for example 100 chunks of 1 GB; each chunk is sorted into a run (four representative runs shown); a streaming k-way merge using buffers and a priority queue combines the runs into a 100 GB sorted output file">
+    <defs><marker id="ext-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="ext-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="ext-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="40" y="22" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700" fill="#155E63">SIMPLIFIED EXTERNAL MERGE SORT</text>
+    <rect x="160" y="36" width="300" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="310.0" y="65.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">100 GB input file</text>
+    <path d="M310 86 V108" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ext-a)"/>
+    <rect x="160" y="112" width="300" height="56" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="310.0" y="144.7" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13.5" font-weight="700" fill="#1E293B">Split into memory-sized chunks</text>
+    <text x="310" y="160" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">For example, 100 chunks of 1 GB</text>
+    <path d="M310 168 V190" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ext-a)"/>
+    <rect x="70" y="194" width="105" height="56" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="122.5" y="218.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Run 1</text>
+    <text x="122.5" y="234.1" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Sorted</text>
+    <rect x="195" y="194" width="105" height="56" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="247.5" y="218.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Run 2</text>
+    <text x="247.5" y="234.1" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Sorted</text>
+    <rect x="320" y="194" width="105" height="56" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="372.5" y="218.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Run 3</text>
+    <text x="372.5" y="234.1" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Sorted</text>
+    <rect x="445" y="194" width="105" height="56" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="497.5" y="218.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Run 4</text>
+    <text x="497.5" y="234.1" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1E293B">Sorted</text>
+    <text x="310" y="272" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">Representative sorted chunks; the actual example has 100.</text>
+    <path d="M310 280 V302" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ext-a)"/>
+    <rect x="160" y="306" width="300" height="60" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="310.0" y="340.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">Streaming k-way merge</text>
+    <text x="310" y="356" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="500" fill="#64748B">Use buffers and a priority queue</text>
+    <path d="M310 366 V388" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#ext-a)"/>
+    <rect x="160" y="392" width="300" height="56" rx="3" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.2" filter="url(#ext-s)"/>
+    <text x="310.0" y="424.9" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="#1E293B">100 GB sorted output file</text>
+</svg>

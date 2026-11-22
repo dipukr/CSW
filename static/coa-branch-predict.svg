@@ -1,0 +1,32 @@
+<svg width="880" height="230" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 230" role="img" aria-label="Two-bit branch prediction state machine. Four states in a row: strongly predict taken, weakly predict taken, weakly predict not taken, strongly predict not taken. Each not-taken outcome moves one step toward not taken; each taken outcome moves one step toward taken; the end states stay put on a matching outcome. The prediction changes only after two wrong guesses in a row">
+    <defs><marker id="bpd-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="bpd-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="bpd-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <rect x="60" y="80" width="140" height="64" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#bpd-s)"/>
+    <text x="130" y="106" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Predict taken</text>
+    <text x="130" y="126" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">strong (11)</text>
+    <path d="M200 98 H266" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="235" y="90" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">not taken</text>
+    <path d="M270 126 H204" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="235" y="142" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">taken</text>
+    <rect x="270" y="80" width="140" height="64" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#bpd-s)"/>
+    <text x="340" y="106" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Predict taken</text>
+    <text x="340" y="126" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">weak (10)</text>
+    <path d="M410 98 H476" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="445" y="90" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">not taken</text>
+    <path d="M480 126 H414" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="445" y="142" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">taken</text>
+    <rect x="480" y="80" width="140" height="64" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#bpd-s)"/>
+    <text x="550" y="106" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Predict not taken</text>
+    <text x="550" y="126" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">weak (01)</text>
+    <path d="M620 98 H686" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="655" y="90" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">not taken</text>
+    <path d="M690 126 H624" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="655" y="142" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">taken</text>
+    <rect x="690" y="80" width="140" height="64" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#bpd-s)"/>
+    <text x="760" y="106" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">Predict not taken</text>
+    <text x="760" y="126" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#64748B">strong (00)</text>
+    <path d="M60 100 C16 100 16 124 56 124" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="34" y="80" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">taken</text>
+    <path d="M830 100 C874 100 874 124 834 124" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#bpd-a)"/>
+    <text x="848" y="80" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">not taken</text>
+    <text x="440" y="200" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#64748B">outcome of each executed branch updates the state; the prediction flips only after two misses in a row</text>
+</svg>

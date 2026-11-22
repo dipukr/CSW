@@ -1,0 +1,33 @@
+<svg width="820" height="230" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 230" role="img" aria-label="Logical versus physical cache: (a) a logical cache sits before the MMU and is indexed with logical (virtual) addresses; (b) a physical cache sits after the MMU and is indexed with physical addresses">
+    <defs><marker id="lpc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="lpc-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="lpc-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
+    <text x="20" y="30" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(a) Logical cache</text>
+    <rect x="20" y="40" width="150" height="50" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="95.0" y="69.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Processor</text>
+    <rect x="225" y="40" width="150" height="50" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="300.0" y="69.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Cache</text>
+    <path d="M170 65 H221" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#lpc-a)"/>
+    <rect x="430" y="40" width="150" height="50" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="505.0" y="69.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">MMU</text>
+    <path d="M375 65 H426" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#lpc-a)"/>
+    <rect x="635" y="40" width="150" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="710.0" y="69.5" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Main memory</text>
+    <path d="M580 65 H631" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#lpc-a)"/>
+    <text x="197" y="57" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">logical</text>
+    <text x="402" y="57" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">logical</text>
+    <text x="607" y="57" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">physical</text>
+    <text x="20" y="130" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1E293B">(b) Physical cache</text>
+    <rect x="20" y="140" width="150" height="50" rx="3" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="95.0" y="169.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Processor</text>
+    <rect x="225" y="140" width="150" height="50" rx="3" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="300.0" y="169.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">MMU</text>
+    <path d="M170 165 H221" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#lpc-a)"/>
+    <rect x="430" y="140" width="150" height="50" rx="3" fill="#E7F6F4" stroke="#5EBFB5" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="505.0" y="169.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Cache</text>
+    <path d="M375 165 H426" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#lpc-a)"/>
+    <rect x="635" y="140" width="150" height="50" rx="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" filter="url(#lpc-s)"/>
+    <text x="710.0" y="169.6" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Main memory</text>
+    <path d="M580 165 H631" fill="none" stroke="#7C8DA6" stroke-width="1.5" marker-end="url(#lpc-a)"/>
+    <text x="197" y="157" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">logical</text>
+    <text x="402" y="157" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">physical</text>
+    <text x="607" y="157" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">physical</text>
+</svg>
