@@ -1180,9 +1180,11 @@ strong {
     font-weight: 500;
 }
 
-/* emphasis inside ordinary paragraphs is charcoal (classed paragraphs such as p.minor-heading headings keep body ink) */
+/* emphasis inside ordinary paragraphs: colour only, normal weight
+   (classed paragraphs such as p.minor-heading headings keep the rule above) */
 p:not([class]) strong {
-    color: #323238;
+    font-weight: normal;
+    color: #0f766e;
 }
 
 .font-size-15 {
