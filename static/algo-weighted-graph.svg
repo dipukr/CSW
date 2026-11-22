@@ -1,0 +1,6 @@
+<svg width="610" height="300" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" viewBox="0 0 610 300" role="img" aria-label="Weighted undirected graph with nodes A, B, C, D and E connected by edges of weights 1 through 6" xmlns="http://www.w3.org/2000/svg">
+ <g stroke="#8b9bae" stroke-width="3" fill="none"><path d="M89 148L235 60L430 60L500 190L260 240L89 148"/><path d="M235 60L260 240"/></g>
+ <g font-size="18" fill="#516274" font-weight="600"><text x="144" y="88">4</text><text x="155" y="210">2</text><text x="334" y="44">3</text><text x="389" y="153">1</text><text x="373" y="231">6</text><text x="257" y="147">5</text></g>
+ <g fill="#dce9fa" stroke="#508bd0" stroke-width="3"><circle cx="89" cy="148" r="29"/><circle cx="235" cy="60" r="29"/><circle cx="430" cy="60" r="29"/><circle cx="260" cy="240" r="29"/><circle cx="500" cy="190" r="29"/></g>
+ <g font-size="22" font-weight="700" text-anchor="middle" fill="#263848"><text x="89" y="155">A</text><text x="235" y="67">B</text><text x="430" y="67">C</text><text x="260" y="247">D</text><text x="500" y="197">E</text></g>
+ </svg>

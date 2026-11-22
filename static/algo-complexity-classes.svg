@@ -1,0 +1,12 @@
+<svg width="650" height="410" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" viewBox="0 0 650 410" role="img" aria-label="Complexity classes nesting diagram, PSPACE contains NP, NP contains P and NP-complete, assuming P differs from NP" xmlns="http://www.w3.org/2000/svg">
+ <rect x="40" y="22" width="570" height="335" rx="24" fill="#e7edf4" stroke="#9ba9b8" stroke-width="2"/>
+ <text x="325" y="59" text-anchor="middle" font-weight="700" font-size="23" fill="#314154">PSPACE</text>
+ <rect x="73" y="78" width="504" height="244" rx="21" fill="#e0eaf9" stroke="#7099ce" stroke-width="2"/>
+ <text x="325" y="114" text-anchor="middle" font-weight="700" font-size="23" fill="#244c82">NP</text>
+ <rect x="110" y="138" width="190" height="142" rx="20" fill="#d0e5db" stroke="#5d9b79" stroke-width="2"/>
+ <text x="205" y="219" text-anchor="middle" font-size="34" font-weight="700" fill="#22583a">P</text>
+ <rect x="342" y="138" width="191" height="142" rx="20" fill="#f0e4d0" stroke="#bb9152" stroke-width="2" stroke-dasharray="7 5"/>
+ <text x="437" y="197" text-anchor="middle" font-size="19" font-weight="700" fill="#735322">NP-Complete</text>
+ <text x="437" y="226" text-anchor="middle" font-size="16" fill="#735322">if P ≠ NP</text>
+ <text x="325" y="393" text-anchor="middle" font-size="17" fill="#516274">Schematic under the assumption P ≠ NP</text>
+ </svg>
