@@ -1324,7 +1324,18 @@ p:not([class]) strong {
 }
 
 /* bold mini-heading inside an intro block: space above separates it from the previous paragraph */
-.intro p.minor-heading { margin-top: 18px; font-size: 19px; }   /* body text is 18px */
+/* mini-heading: small uppercase, letter-spaced teal label (body text is 18px) */
+.intro p.minor-heading {
+    margin-top: 22px;
+    margin-bottom: 6px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.4;
+    color: #155e63;
+}
+.intro p.minor-heading strong { font-weight: 700; color: inherit; }
 .subheading + .intro > p.minor-heading:first-child { margin-top: 0; }
 
 /* ChatGPT-style answer widgets (cards, flow nodes, stat tiles, steppers) */
