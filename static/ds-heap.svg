@@ -30,22 +30,22 @@
     <text x="552.5" y="49" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#047857">insert / poll  O(log n)</text>
     <text x="470" y="80" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#64748B">parent ≤ children</text>
     <text x="40" y="272" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="600" fill="#1E293B">array</text>
-    <rect x="110" y="250" width="60" height="36" rx="3" fill="#E7F6F4" stroke="#0D9488" stroke-width="1.2"/>
+    <path d="M113 250 H170 A0 0 0 0 1 170 250 V286 A0 0 0 0 1 170 286 H113 A3 3 0 0 1 110 283 V253 A3 3 0 0 1 113 250 Z" fill="#E7F6F4" stroke="#0D9488" stroke-width="1.2"/>
     <text x="140.0" y="273.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">1</text>
     <text x="140" y="304" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[0]</text>
-    <rect x="170" y="250" width="60" height="36" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M170 250 H230 A0 0 0 0 1 230 250 V286 A0 0 0 0 1 230 286 H170 A0 0 0 0 1 170 286 V250 A0 0 0 0 1 170 250 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="200.0" y="273.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">3</text>
     <text x="200" y="304" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[1]</text>
-    <rect x="230" y="250" width="60" height="36" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M230 250 H290 A0 0 0 0 1 290 250 V286 A0 0 0 0 1 290 286 H230 A0 0 0 0 1 230 286 V250 A0 0 0 0 1 230 250 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="260.0" y="273.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">6</text>
     <text x="260" y="304" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[2]</text>
-    <rect x="290" y="250" width="60" height="36" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M290 250 H350 A0 0 0 0 1 350 250 V286 A0 0 0 0 1 350 286 H290 A0 0 0 0 1 290 286 V250 A0 0 0 0 1 290 250 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="320.0" y="273.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">5</text>
     <text x="320" y="304" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[3]</text>
-    <rect x="350" y="250" width="60" height="36" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M350 250 H410 A0 0 0 0 1 410 250 V286 A0 0 0 0 1 410 286 H350 A0 0 0 0 1 350 286 V250 A0 0 0 0 1 350 250 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="380.0" y="273.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">9</text>
     <text x="380" y="304" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[4]</text>
-    <rect x="410" y="250" width="60" height="36" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M410 250 H467 A3 3 0 0 1 470 253 V283 A3 3 0 0 1 467 286 H410 A0 0 0 0 1 410 286 V250 A0 0 0 0 1 410 250 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="440.0" y="273.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">8</text>
     <text x="440" y="304" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[5]</text>
     <text x="490" y="272" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#64748B">children of i: 2i+1, 2i+2</text>

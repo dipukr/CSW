@@ -1,28 +1,28 @@
 <svg width="640" height="178" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 178" role="img" aria-label="Array of eight integers with indices 0 to 7; element arr[3] is highlighted, reached directly at address base + 3 times element size">
     <defs><marker id="ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="ar-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="ar-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
     <text x="20" y="66" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="600" fill="#1E293B">arr</text>
-    <rect x="70" y="40" width="62" height="44" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M73 40 H132 A0 0 0 0 1 132 40 V84 A0 0 0 0 1 132 84 H73 A3 3 0 0 1 70 81 V43 A3 3 0 0 1 73 40 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="101.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">7</text>
     <text x="101" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">[0]</text>
-    <rect x="132" y="40" width="62" height="44" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M132 40 H194 A0 0 0 0 1 194 40 V84 A0 0 0 0 1 194 84 H132 A0 0 0 0 1 132 84 V40 A0 0 0 0 1 132 40 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="163.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">2</text>
     <text x="163" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">[1]</text>
-    <rect x="194" y="40" width="62" height="44" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M194 40 H256 A0 0 0 0 1 256 40 V84 A0 0 0 0 1 256 84 H194 A0 0 0 0 1 194 84 V40 A0 0 0 0 1 194 40 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="225.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">9</text>
     <text x="225" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">[2]</text>
-    <rect x="256" y="40" width="62" height="44" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <path d="M256 40 H318 A0 0 0 0 1 318 40 V84 A0 0 0 0 1 318 84 H256 A0 0 0 0 1 256 84 V40 A0 0 0 0 1 256 40 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
     <text x="287.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">4</text>
     <text x="287" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#B45309">[3]</text>
-    <rect x="318" y="40" width="62" height="44" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M318 40 H380 A0 0 0 0 1 380 40 V84 A0 0 0 0 1 380 84 H318 A0 0 0 0 1 318 84 V40 A0 0 0 0 1 318 40 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="349.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">5</text>
     <text x="349" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">[4]</text>
-    <rect x="380" y="40" width="62" height="44" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M380 40 H442 A0 0 0 0 1 442 40 V84 A0 0 0 0 1 442 84 H380 A0 0 0 0 1 380 84 V40 A0 0 0 0 1 380 40 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="411.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">1</text>
     <text x="411" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">[5]</text>
-    <rect x="442" y="40" width="62" height="44" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M442 40 H504 A0 0 0 0 1 504 40 V84 A0 0 0 0 1 504 84 H442 A0 0 0 0 1 442 84 V40 A0 0 0 0 1 442 40 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="473.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">8</text>
     <text x="473" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">[6]</text>
-    <rect x="504" y="40" width="62" height="44" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M504 40 H563 A3 3 0 0 1 566 43 V81 A3 3 0 0 1 563 84 H504 A0 0 0 0 1 504 84 V40 A0 0 0 0 1 504 40 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="535.0" y="67.6" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="16" font-weight="600" fill="#1E293B">3</text>
     <text x="535" y="102" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="400" fill="#64748B">[7]</text>
     <text x="320" y="130" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#B45309">arr[3]: address = base + 3 × element size</text>

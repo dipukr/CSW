@@ -2,27 +2,27 @@
     <defs><marker id="cl-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="cl-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="cl-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
     <text x="20" y="24" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1E293B">Contiguous storage — array</text>
     <text x="72" y="48" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">0x100</text>
-    <rect x="40" y="56" width="64" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M43 56 H104 A0 0 0 0 1 104 56 V96 A0 0 0 0 1 104 96 H43 A3 3 0 0 1 40 93 V59 A3 3 0 0 1 43 56 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="72.0" y="81.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">10</text>
     <text x="72" y="114" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[0]</text>
     <text x="136" y="48" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">0x104</text>
-    <rect x="104" y="56" width="64" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M104 56 H168 A0 0 0 0 1 168 56 V96 A0 0 0 0 1 168 96 H104 A0 0 0 0 1 104 96 V56 A0 0 0 0 1 104 56 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="136.0" y="81.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">20</text>
     <text x="136" y="114" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[1]</text>
     <text x="200" y="48" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">0x108</text>
-    <rect x="168" y="56" width="64" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M168 56 H232 A0 0 0 0 1 232 56 V96 A0 0 0 0 1 232 96 H168 A0 0 0 0 1 168 96 V56 A0 0 0 0 1 168 56 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="200.0" y="81.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">30</text>
     <text x="200" y="114" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[2]</text>
     <text x="264" y="48" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">0x10C</text>
-    <rect x="232" y="56" width="64" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M232 56 H296 A0 0 0 0 1 296 56 V96 A0 0 0 0 1 296 96 H232 A0 0 0 0 1 232 96 V56 A0 0 0 0 1 232 56 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="264.0" y="81.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">40</text>
     <text x="264" y="114" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[3]</text>
     <text x="328" y="48" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">0x110</text>
-    <rect x="296" y="56" width="64" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M296 56 H360 A0 0 0 0 1 360 56 V96 A0 0 0 0 1 360 96 H296 A0 0 0 0 1 296 96 V56 A0 0 0 0 1 296 56 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="328.0" y="81.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">50</text>
     <text x="328" y="114" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[4]</text>
     <text x="392" y="48" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">0x114</text>
-    <rect x="360" y="56" width="64" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M360 56 H421 A3 3 0 0 1 424 59 V93 A3 3 0 0 1 421 96 H360 A0 0 0 0 1 360 96 V56 A0 0 0 0 1 360 56 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="392.0" y="81.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">60</text>
     <text x="392" y="114" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="400" fill="#64748B">[5]</text>
     <text x="450" y="82" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#64748B" font-style="italic">one block, neighbours side by side</text>

@@ -1,32 +1,32 @@
 <svg width="640" height="220" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" role="img" aria-label="Dynamic array growth: a full backing array of capacity 4 holding A to D; adding E allocates a new array of capacity 8, copies A to D and appends E">
     <defs><marker id="da-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#7C8DA6"/></marker><marker id="da-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B45309"/></marker><filter id="da-s" x="-10%" y="-15%" width="120%" height="150%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0F172A" flood-opacity="0.10"/></filter></defs>
     <text x="20" y="26" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">size 4, capacity 4 (full)</text>
-    <rect x="40" y="36" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M43 36 H96 A0 0 0 0 1 96 36 V76 A0 0 0 0 1 96 76 H43 A3 3 0 0 1 40 73 V39 A3 3 0 0 1 43 36 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="68.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">A</text>
-    <rect x="96" y="36" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M96 36 H152 A0 0 0 0 1 152 36 V76 A0 0 0 0 1 152 76 H96 A0 0 0 0 1 96 76 V36 A0 0 0 0 1 96 36 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="124.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">B</text>
-    <rect x="152" y="36" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M152 36 H208 A0 0 0 0 1 208 36 V76 A0 0 0 0 1 208 76 H152 A0 0 0 0 1 152 76 V36 A0 0 0 0 1 152 36 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="180.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">C</text>
-    <rect x="208" y="36" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M208 36 H261 A3 3 0 0 1 264 39 V73 A3 3 0 0 1 261 76 H208 A0 0 0 0 1 208 76 V36 A0 0 0 0 1 208 36 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="236.0" y="61.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">D</text>
     <text x="290" y="61" text-anchor="start" font-family="ui-monospace, Consolas, monospace" font-size="13" font-weight="600" fill="#B45309">add("E")</text>
     <text x="510" y="175" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1E293B">size 5, capacity 8</text>
     <text x="510" y="191" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="400" fill="#64748B">(new backing array)</text>
-    <rect x="40" y="150" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M43 150 H96 A0 0 0 0 1 96 150 V190 A0 0 0 0 1 96 190 H43 A3 3 0 0 1 40 187 V153 A3 3 0 0 1 43 150 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="68.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">A</text>
-    <rect x="96" y="150" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M96 150 H152 A0 0 0 0 1 152 150 V190 A0 0 0 0 1 152 190 H96 A0 0 0 0 1 96 190 V150 A0 0 0 0 1 96 150 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="124.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">B</text>
-    <rect x="152" y="150" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M152 150 H208 A0 0 0 0 1 208 150 V190 A0 0 0 0 1 208 190 H152 A0 0 0 0 1 152 190 V150 A0 0 0 0 1 152 150 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="180.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">C</text>
-    <rect x="208" y="150" width="56" height="40" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <path d="M208 150 H264 A0 0 0 0 1 264 150 V190 A0 0 0 0 1 264 190 H208 A0 0 0 0 1 208 190 V150 A0 0 0 0 1 208 150 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
     <text x="236.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">D</text>
-    <rect x="264" y="150" width="56" height="40" rx="3" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+    <path d="M264 150 H320 A0 0 0 0 1 320 150 V190 A0 0 0 0 1 320 190 H264 A0 0 0 0 1 264 190 V150 A0 0 0 0 1 264 150 Z" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
     <text x="292.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B">E</text>
-    <rect x="320" y="150" width="56" height="40" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M320 150 H376 A0 0 0 0 1 376 150 V190 A0 0 0 0 1 376 190 H320 A0 0 0 0 1 320 190 V150 A0 0 0 0 1 320 150 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="4 3"/>
     <text x="348.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B"></text>
-    <rect x="376" y="150" width="56" height="40" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M376 150 H432 A0 0 0 0 1 432 150 V190 A0 0 0 0 1 432 190 H376 A0 0 0 0 1 376 190 V150 A0 0 0 0 1 376 150 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="4 3"/>
     <text x="404.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B"></text>
-    <rect x="432" y="150" width="56" height="40" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <path d="M432 150 H485 A3 3 0 0 1 488 153 V187 A3 3 0 0 1 485 190 H432 A0 0 0 0 1 432 190 V150 A0 0 0 0 1 432 150 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="4 3"/>
     <text x="460.0" y="175.2" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="15" font-weight="600" fill="#1E293B"></text>
     <path d="M68 76 V148" fill="none" stroke="#7C8DA6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#da-a)"/>
     <path d="M124 76 V148" fill="none" stroke="#7C8DA6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#da-a)"/>
