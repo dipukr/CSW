@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Read-Write Locks</title>
+<link rel="stylesheet" href="../src/styles.css">
+<script defer src="../src/api-card.js"></script>
+<script>
+// Reader-writer lock simulator: readers share the lock, a writer needs it alone.
+document.addEventListener("DOMContentLoaded", function () {
+    var sim = document.getElementById("rw-sim");
+    if (!sim) return;
+    var fair = sim.querySelector("[data-fair]");
+    var holdersBox = sim.querySelector("[data-holders]");
+    var queueBox = sim.querySelector("[data-queue]");
+    var count = sim.querySelector("[data-count]");
+    var resource = sim.querySelector("[data-resource]");
+    var last = sim.querySelector("[data-last]");
+    var holders = [], queue = [];
+    function isWriter(t) { return t.charAt(0) === "W"; }
+    function mode(t) { return isWriter(t) ? "write" : "read"; }
+    function canGrant(t) {
+        if (holders.some(isWriter)) return false;
+        return isWriter(t) ? holders.length === 0 : true;
+    }
+    function admit() {
+        var admitted = [], i = 0;
+        while (i < queue.length) {
+            var t = queue[i];
+            if (canGrant(t)) { queue.splice(i, 1); holders.push(t); admitted.push(t); continue; }
+            if (fair.checked) break;
+            i++;
+        }
+        return admitted;
+    }
+    function request(t) {
+        if (holders.indexOf(t) >= 0 || queue.indexOf(t) >= 0) return;
+        if (canGrant(t) && (!fair.checked || queue.length === 0)) {
+            holders.push(t);
+            last.textContent = t + " acquires the " + mode(t) + " lock.";
+        } else {
+            queue.push(t);
+            last.textContent = t + " waits for the " + mode(t) + " lock.";
+        }
+        render();
+    }
+    function release(t) {
+        holders.splice(holders.indexOf(t), 1);
+        var admitted = admit();
+        last.textContent = t + " releases the " + mode(t) + " lock." + (admitted.length ? " " + admitted.join(", ") + " now " + (admitted.length > 1 ? "hold" : "holds") + " the lock." : "");
+        render();
+    }
+    function chip(text) {
+        var s = document.createElement("span");
+        s.className = "gw-btn";
+        s.style.cursor = "default";
+        s.textContent = text;
+        return s;
+    }
+    function render() {
+        if (holders.length === 0) resource.textContent = "Free";
+        else if (holders.some(isWriter)) resource.textContent = holders[0] + " is writing";
+        else resource.textContent = holders.join(", ") + (holders.length > 1 ? " are reading" : " is reading");
+        holdersBox.textContent = "";
+        if (holders.length === 0) holdersBox.appendChild(Object.assign(document.createElement("span"), {className: "gw-small", textContent: "None"}));
+        holders.forEach(function (t) {
+            var b = document.createElement("button");
+            b.className = "gw-btn primary";
+            b.textContent = t + " (" + mode(t) + ") Release";
+            b.addEventListener("click", function () { release(t); });
+            holdersBox.appendChild(b);
+        });
+        queueBox.textContent = "";
+        if (queue.length === 0) queueBox.appendChild(Object.assign(document.createElement("span"), {className: "gw-small", textContent: "Empty"}));
+        queue.forEach(function (t) { queueBox.appendChild(chip(t + " (" + mode(t) + ")")); });
+        count.textContent = queue.length;
+        sim.querySelectorAll("[data-thread]").forEach(function (b) {
+            var t = b.dataset.thread;
+            b.disabled = holders.indexOf(t) >= 0 || queue.indexOf(t) >= 0;
+        });
+    }
+    sim.querySelectorAll("[data-thread]").forEach(function (b) {
+        b.addEventListener("click", function () { request(b.dataset.thread); });
+    });
+    sim.querySelector("[data-reset]").addEventListener("click", function () {
+        holders = []; queue = [];
+        last.textContent = "No lock requested yet.";
+        render();
+    });
+    fair.addEventListener("change", function () { admit(); render(); });
+    render();
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Read-Write Locks</div>
+
+    <div class="intro">
+        <p>A Reader&ndash;writer Lock is a synchronization mechanism that allows multiple threads to read shared data simultaneously, but only one thread to write at a time.</p>
+        <p>Designed to improve concurrency in applications where reading happens much more frequently than writing.</p>
+    </div>
+
+    <div class="subheading">Basic concept</div>
+    <div class="intro">
+        <p>Consider a shared bank account balance accessed by five threads.</p>
+        <ul>
+            <li>Reader threads only retrieve the balance.</li>
+            <li>Writer threads deposit or withdraw money.</li>
+        </ul>
+        <p>With an ordinary mutex, only one thread can access the balance at a time, even if every thread is only reading it.</p>
+        <p>With a Reader&ndash;Writer lock:</p>
+        <ul>
+            <li>Multiple readers can execute concurrently.</li>
+            <li>Only one writer can execute at a time.</li>
+            <li>A writer cannot execute while readers hold the lock.</li>
+            <li>Readers cannot execute while a writer holds the lock.</li>
+        </ul>
+        <p class="minor-heading"><strong>Read&ndash;write lock compatibility</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Lock held by</th><th>Read requested</th><th>Write requested</th></tr></thead>
+            <tbody>
+                <tr><td>Read held</td><td>Allowed</td><td>Blocked</td></tr>
+                <tr><td>Write held</td><td>Blocked</td><td>Blocked</td></tr>
+            </tbody>
+        </table></div>
+        <p>Compatibility assumes different threads requesting locks. Reentrant acquisition by the owning thread has additional rules.</p>
+    </div>
+
+    <div class="subheading">Visual demonstration</div>
+    <div class="intro">
+        <p>This interactive example demonstrates how readers and writers acquire the same lock.</p>
+    </div>
+    <div class="gw-card" id="rw-sim">
+        <div class="gw-status" style="margin-top:0">
+            <p class="gw-label" style="margin:0">Lock simulator</p>
+            <label class="gw-small"><input type="checkbox" data-fair checked> Fair queue</label>
+        </div>
+        <div class="gw-btns">
+            <button class="gw-btn" data-thread="R1">R1</button><button class="gw-btn" data-thread="R2">R2</button><button class="gw-btn" data-thread="R3">R3</button><button class="gw-btn" data-thread="W1">W1</button><button class="gw-btn" data-thread="W2">W2</button>
+        </div>
+        <p class="gw-note">Click a thread to request a lock. Click its Release button to free it and admit waiting threads.</p>
+        <div class="gw-panel" style="margin-top:12px">
+            <p class="gw-small" style="margin:0 0 4px">Shared resource</p>
+            <p style="margin:0;font-weight:600" data-resource>Free</p>
+        </div>
+        <div class="gw-panel" style="margin-top:8px">
+            <p class="gw-small" style="margin:0 0 6px">Active lock holders</p>
+            <div class="gw-btns" data-holders></div>
+        </div>
+        <div class="gw-panel" style="margin-top:8px">
+            <p class="gw-small" style="margin:0 0 6px">Waiting queue (<span data-count>0</span>)</p>
+            <div class="gw-btns" data-queue></div>
+        </div>
+        <div class="gw-status" style="margin-bottom:0">
+            <span class="gw-small" data-last>No lock requested yet.</span>
+            <button class="gw-btn" data-reset>Reset</button>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Try this sequence:</p>
+        <ol>
+            <li>Click R1 and R2. Both acquire the read lock.</li>
+            <li>Click W1. It must wait until both readers release.</li>
+            <li>Click R3. With fair queuing enabled, it waits behind W1.</li>
+            <li>Release R1 and R2. W1 gets the write lock.</li>
+            <li>Release W1. R3 acquires the read lock.</li>
+        </ol>
+        <p>This illustrates reader concurrency, writer exclusivity and queue ordering. Actual Java lock scheduling is more nuanced than the simplified simulator.</p>
+    </div>
+
+    <div class="subheading">How does a Reader&ndash;Writer Lock work internally</div>
+    <div class="intro">
+        <p>A simplified implementation maintains:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">int</span> activeReaders = <span class="code-number">0</span>;
+<span class="code-keyword">boolean</span> activeWriter = <span class="code-keyword">false</span>;
+<span class="code-keyword">int</span> waitingWriters = <span class="code-number">0</span>;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Acquiring a read lock</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>lockRead():
+    synchronized:
+        while activeWriter OR waitingWriters &gt; 0:
+            wait()
+        activeReaders++</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This is a writer-preference policy: new readers wait if a writer is already waiting.</p>
+        <p class="minor-heading"><strong>Releasing a read lock</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>unlockRead():
+    synchronized:
+        activeReaders--
+        if activeReaders == 0:
+            notifyAll()</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>When the final reader releases its lock, a waiting writer may proceed.</p>
+        <p class="minor-heading"><strong>Acquiring a write lock</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>lockWrite():
+    synchronized:
+        waitingWriters++
+        while activeWriter OR activeReaders &gt; 0:
+            wait()
+        waitingWriters--
+        activeWriter = true</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Releasing a write lock</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>unlockWrite():
+    synchronized:
+        activeWriter = false
+        notifyAll()</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This pseudocode illustrates the state transitions. Real implementations additionally handle ownership, scheduling, interruption and other concurrency details.</p>
+    </div>
+
+    <div class="subheading">Java implementation using <code>ReentrantReadWriteLock</code></div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ThreadSafeCache</span> {
+    <span class="code-keyword">private</span> <span class="code-class">ReentrantReadWriteLock</span> rwLock = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>(<span class="code-keyword">true</span>);
+    <span class="code-keyword">private</span> <span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">String</span>&gt; cache = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;<span class="code-class">String</span>, <span class="code-class">String</span>&gt;();
+    <span class="code-keyword">private</span> <span class="code-class">Lock</span> readLock = rwLock.readLock();
+    <span class="code-keyword">private</span> <span class="code-class">Lock</span> writeLock = rwLock.writeLock();
+
+    <span class="code-keyword">public</span> <span class="code-class">String</span> get(<span class="code-class">String</span> key) {
+        readLock.lock();
+        <span class="code-keyword">try</span> {
+            <span class="code-keyword">return</span> cache.get(key);
+        } <span class="code-keyword">finally</span> {
+            readLock.unlock();
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> put(<span class="code-class">String</span> key, <span class="code-class">String</span> value) {
+        writeLock.lock();
+        <span class="code-keyword">try</span> {
+            cache.put(key, value);
+        } <span class="code-keyword">finally</span> {
+            writeLock.unlock();
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> remove(<span class="code-class">String</span> key) {
+        writeLock.lock();
+        <span class="code-keyword">try</span> {
+            cache.remove(key);
+        } <span class="code-keyword">finally</span> {
+            writeLock.unlock();
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Here:</p>
+        <ul>
+            <li><code>get</code> allows concurrent readers (Multiple threads can execute this simultaneously)</li>
+            <li><code>put</code> and <code>remove</code> need exclusive access (Only one thread can execute this at a time)</li>
+            <li><code>true</code> requests a fair lock policy, which generally favors threads that have waited longer.</li>
+            <li><code>finally</code> ensures locks are released even when exceptions occur.</li>
+        </ul>
+        <p>The underlying Hashtable is not thread-safe by itself but every access is protected by the same locking mechanism.</p>
+    </div>
+
+    <div class="subheading">Reader&ndash;Writer Lock versus Mutex</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Feature</th><th>Mutex / <code>synchronized</code></th><th>Reader&ndash;Writer Lock</th></tr></thead>
+            <tbody>
+                <tr><td>Concurrent readers</td><td>No</td><td>Yes</td></tr>
+                <tr><td>Concurrent writers</td><td>No</td><td>No</td></tr>
+                <tr><td>Reader + writer</td><td>No</td><td>No</td></tr>
+                <tr><td>Implementation</td><td>Simpler</td><td>More complex</td></tr>
+                <tr><td>Read-heavy workload</td><td>May limit throughput</td><td>Can improve throughput</td></tr>
+                <tr><td>Overhead</td><td>Usually lower</td><td>Usually higher</td></tr>
+            </tbody>
+        </table></div>
+        <p>A Reader&ndash;Writer Lock is not always faster. When operations are very short, writes are frequent, or contention is low, coordination overhead may outweigh the benefit of concurrent reading.</p>
+    </div>
+
+    <div class="subheading">Important problems</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Writer starvation</strong></p>
+        <p>Suppose readers continuously arrive:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>R1 acquires read lock
+R2 acquires read lock
+W1 requests write lock &rarr; WAIT
+R3 acquires read lock
+R4 acquires read lock
+R5 acquires read lock
+...</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>If new readers are continuously admitted, W1 may wait indefinitely.</p>
+        <p>To mitigate this, use fair queuing or a writer-preference policy. Fairness typically reduces throughput somewhat.</p>
+        <p class="minor-heading"><strong>B. Read-to-write lock upgrade</strong></p>
+        <p>A dangerous pattern:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>readLock.lock();
+<span class="code-keyword">try</span> {
+    <span class="code-keyword">if</span> (cacheNeedsUpdate()) {
+        writeLock.lock(); <span class="code-comment">Problem!</span>
+    }
+} <span class="code-keyword">finally</span> {
+    readLock.unlock();
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Java&rsquo;s <code>ReentrantReadWriteLock</code> does not support upgrading a held read lock directly to a write lock. Attempting this can cause the thread to wait indefinitely.</p>
+        <p>Instead, release the read lock, acquire the write lock, and recheck the condition because the protected state may have changed in between.</p>
+        <p class="minor-heading"><strong>C. Write-to-read lock downgrade</strong></p>
+        <p>Downgrading is supported:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>writeLock.lock();
+<span class="code-keyword">try</span> {
+    updateSharedData();
+    readLock.lock(); <span class="code-comment">Acquire read while still holding write</span>
+} <span class="code-keyword">finally</span> {
+    writeLock.unlock();
+}
+<span class="code-keyword">try</span> {
+    readSharedData();
+} <span class="code-keyword">finally</span> {
+    readLock.unlock();
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This allows a thread to move from exclusive write access to shared read access without an unlocked gap.</p>
+    </div>
+
+    <div class="subheading">7. How does this relate to SQL Server?</div>
+    <div class="intro">
+        <p>SQL Server uses a related concept through shared and exclusive database locks.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>SQL Server lock</th><th>Purpose</th><th>Java analogy</th></tr></thead>
+            <tbody>
+                <tr><td>Shared (<code>S</code>)</td><td>Reading data</td><td>Read lock</td></tr>
+                <tr><td>Exclusive (<code>X</code>)</td><td>Modifying data</td><td>Write lock</td></tr>
+                <tr><td>Update (<code>U</code>)</td><td>Coordinating potential updates</td><td>No direct equivalent</td></tr>
+            </tbody>
+        </table></div>
+        <p>For example, under traditional locking-based <code>READ COMMITTED</code> isolation, a query may acquire shared locks while reading:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">SELECT</span> balance
+<span class="code-keyword">FROM</span> Accounts
+<span class="code-keyword">WHERE</span> id = <span class="code-number">101</span>;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>A transaction modifying the same row can acquire an exclusive lock:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">BEGIN TRANSACTION</span>;
+
+<span class="code-keyword">UPDATE</span> Accounts
+<span class="code-keyword">SET</span> balance = balance + <span class="code-number">100</span>
+<span class="code-keyword">WHERE</span> id = <span class="code-number">101</span>;
+
+<span class="code-keyword">COMMIT</span>;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Shared (<code>S</code>) and exclusive (<code>X</code>) locks conflict, just as reader and writer locks do. However, SQL Server also has row versioning, intent locks, lock hierarchies, and isolation-level-specific rules.</p>
+        <p><strong>Important:</strong> If <code>READ_COMMITTED_SNAPSHOT</code> is enabled, ordinary reads under <code>READ COMMITTED</code> typically use row versions rather than shared data locks, so readers generally don&rsquo;t block writers.</p>
+    </div>
+
+    <div class="subheading">8. When should you use Reader&ndash;Writer Locks?</div>
+    <div class="intro">
+        <p>They are useful for read-heavy shared resources, such as configuration data, in-memory caches, metadata tables, and shared indexes.</p>
+        <p>For example, if 100 threads frequently read configuration data but updates occur only occasionally, permitting concurrent reads can substantially reduce contention.</p>
+        <p>However, in Java, consider <code>ConcurrentHashMap</code> for simple concurrent map operations, <code>StampedLock</code> when optimistic reads are useful, and plain <code>synchronized</code> or <code>ReentrantLock</code> when exclusive locking is simpler and sufficient.</p>
+        <p><strong>Key takeaway:</strong> A Reader&ndash;Writer Lock allows <strong>many readers OR one writer</strong>, but never readers and writers accessing the protected resource simultaneously. Its main advantage is improving concurrency in read-heavy workloads while preserving exclusive access for modifications.</p>
+    </div>
+
+    <div class="intro">
+        <p>A <strong>read-write lock</strong> is a pair of locks that guard the same data: a shared <strong>read lock</strong> and an exclusive <strong>write lock</strong>.</p>
+    </div>
+    <div class="intro"><ul>
+        <li>Any number of threads can hold the read lock at the same time, as long as no thread holds the write lock.</li>
+        <li>Only one thread can hold the write lock, and only while no thread holds the read lock.</li>
+        <li>In Java the contract is the <code>ReadWriteLock</code> interface, and <code>ReentrantReadWriteLock</code> is its standard implementation.</li>
+    </ul></div>
+    <div class="intro">
+        <p>A plain lock lets one thread in at a time, even when every thread only reads. Reads never change the data, so they cannot interfere with each other.<br>A read-write lock uses that fact: readers share the lock and run in parallel, and only a writer needs the data to itself.</p>
+    </div>
+
+    <div class="svg-diagram">
+        <img src="../static/rwlocks-shared-exclusive.svg" alt="Three readers hold the shared read lock at the same time, while a writer waits for the exclusive write lock" style="width:100%;max-width:700px">
+    </div>
+
+    <div class="section cmp">
+        <div class="section-title centered">Lock Compatibility</div>
+        <div class="section-content">
+            <table class="cmp-table">
+                <thead><tr><th>Currently Held</th><th>Read Request</th><th>Write Request</th></tr></thead>
+                <tbody>
+                    <tr><td>Nothing</td><td>Granted</td><td>Granted</td></tr>
+                    <tr><td>Read lock, other threads</td><td>Granted</td><td>Waits</td></tr>
+                    <tr><td>Write lock, another thread</td><td>Waits</td><td>Waits</td></tr>
+                    <tr><td>Read lock, same thread</td><td>Granted (reentrant)</td><td>Waits forever (no upgrade)</td></tr>
+                    <tr><td>Write lock, same thread</td><td>Granted (downgrade)</td><td>Granted (reentrant)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section cmp">
+        <div class="section-title centered">ReentrantLock vs ReentrantReadWriteLock vs StampedLock</div>
+        <div class="section-content">
+            <table class="cmp-table">
+                <thead><tr><th>Feature</th><th>ReentrantLock</th><th>ReentrantReadWriteLock</th><th>StampedLock</th></tr></thead>
+                <tbody>
+                    <tr><td>Parallel Readers</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+                    <tr><td>Reentrant</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+                    <tr><td>Optimistic Reads</td><td>No</td><td>No</td><td><code>tryOptimisticRead()</code></td></tr>
+                    <tr><td>Read to Write Upgrade</td><td>Not applicable</td><td>No, it deadlocks</td><td><code>tryConvertToWriteLock()</code></td></tr>
+                    <tr><td>Write to Read Downgrade</td><td>Not applicable</td><td>Yes</td><td><code>tryConvertToReadLock()</code></td></tr>
+                    <tr><td>Conditions</td><td>Yes</td><td>Write lock only</td><td>No</td></tr>
+                    <tr><td>Fair Mode</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+                    <tr><td>Best For</td><td>General mutual exclusion</td><td>Read-heavy data with longer reads</td><td>Very read-heavy data with short reads</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="subheading">Key Features</div>
+    <div class="intro"><ul>
+        <li><strong>Reentrancy</strong><br>A thread can take the read lock or the write lock again while it already holds it. Each lock call needs its own unlock.</li>
+        <li><strong>Downgrading</strong><br>A thread that holds the write lock can take the read lock and then release the write lock. It keeps read access and no other writer can slip in between.</li>
+        <li><strong>No Upgrading</strong><br>A thread that holds only the read lock cannot take the write lock. The write lock waits for every reader to leave, including the thread itself, so the call never returns.</li>
+        <li><strong>Fairness</strong><br>In the default non-fair mode the lock is handed to whichever thread gets it first, which gives the best throughput. In fair mode threads get it in roughly arrival order, so a stream of readers cannot hold off a waiting writer.</li>
+        <li><strong>Conditions</strong><br>The write lock supports <code>newCondition()</code>. The read lock does not, because a shared lock cannot give a thread the exclusive access that waiting on a condition needs.</li>
+        <li><strong>Hold Limit</strong><br>Each lock allows at most 65535 holds: shared holds across all readers for the read lock, and recursive holds for the write lock. Going past it throws an <code>Error</code>.</li>
+    </ul></div>
+
+    <div class="subheading">Pros and Cons</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pros</strong></p>
+    </div>
+    <div class="intro"><ul>
+        <li><strong>Higher Read Throughput</strong><br>Readers run in parallel, so read-heavy data is no longer a single-file queue.</li>
+        <li><strong>Same Correctness as a Lock</strong><br>Writes stay exclusive, so a reader never sees a half-finished update.</li>
+        <li><strong>Full Lock API</strong><br>Both locks support <code>tryLock</code>, timeouts and interruptible waits, like <code>ReentrantLock</code>.</li>
+        <li><strong>Safe Downgrading</strong><br>A writer can move straight to read access without letting another writer in.</li>
+    </ul></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Cons</strong></p>
+    </div>
+    <div class="intro"><ul>
+        <li><strong>Extra Overhead</strong><br>Tracking readers costs more than a plain lock. With short reads or frequent writes it is often slower than <code>ReentrantLock</code>.</li>
+        <li><strong>Starvation Risk</strong><br>In non-fair mode a busy stream of readers can keep a writer waiting for a long time.</li>
+        <li><strong>No Upgrade</strong><br>Code that reads, decides to write and then asks for the write lock deadlocks itself.</li>
+        <li><strong>Shared State in Reads</strong><br>Readers run together, so the read path must not change anything, not even a lazily filled field or an access-ordered map.</li>
+    </ul></div>
+
+    <div class="subheading">Best Practices</div>
+    <div class="intro"><ul>
+        <li>Use a read-write lock only when reads clearly outnumber writes and each read takes a noticeable time. Measure against a plain lock first.</li>
+        <li>Call <code>lock()</code> just before <code>try</code> and <code>unlock()</code> in the matching <code>finally</code>, for both locks.</li>
+        <li>Never ask for the write lock while holding the read lock. Release the read lock, take the write lock, then check the state again.</li>
+        <li>To keep read access after a write, downgrade: take the read lock before releasing the write lock.</li>
+        <li>Choose fair mode when writers must not wait behind an endless stream of readers, and accept the lower throughput.</li>
+        <li>Keep the read path free of side effects. A <code>LinkedHashMap</code> in access order, for example, changes on every <code>get()</code>.</li>
+        <li>For very short reads, consider <code>StampedLock</code> optimistic reads or an immutable snapshot in a <code>volatile</code> field instead.</li>
+    </ul></div>
+
+    <div class="intro"><p class="minor-heading"><strong>Read-heavy cache</strong></p></div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ExchangeRates</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Double</span>&gt; rates = <span class="code-keyword">new</span> <span class="code-class">HashMap</span>&lt;&gt;();
+    <span class="code-keyword">private</span> <span class="code-class">ReadWriteLock</span> rw = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>();
+    <span class="code-keyword">private</span> <span class="code-class">Lock</span> readLock = rw.readLock();
+    <span class="code-keyword">private</span> <span class="code-class">Lock</span> writeLock = rw.writeLock();
+
+    <span class="code-keyword">public</span> <span class="code-class">Double</span> rate(<span class="code-class">String</span> currency) {
+        readLock.lock(); <span class="code-comment">Many threads can read at once</span>
+        <span class="code-keyword">try</span> { <span class="code-keyword">return</span> rates.get(currency); } <span class="code-keyword">finally</span> { readLock.unlock(); }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> update(<span class="code-class">Map</span>&lt;<span class="code-class">String</span>, <span class="code-class">Double</span>&gt; latest) {
+        writeLock.lock(); <span class="code-comment">Waits until every reader has left</span>
+        <span class="code-keyword">try</span> { rates.clear(); rates.putAll(latest); } <span class="code-keyword">finally</span> { writeLock.unlock(); }
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="intro"><p class="minor-heading"><strong>Lock downgrading</strong></p></div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CachedReport</span> {
+    <span class="code-keyword">private</span> <span class="code-class">ReentrantReadWriteLock</span> rw = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>();
+    <span class="code-keyword">private</span> <span class="code-class">Report</span> report;
+    <span class="code-keyword">private</span> <span class="code-keyword">boolean</span> valid;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> print() {
+        rw.readLock().lock();
+        <span class="code-keyword">if</span> (!valid) {
+            rw.readLock().unlock(); <span class="code-comment">Release the read lock before asking for the write lock</span>
+            rw.writeLock().lock();
+            <span class="code-keyword">try</span> {
+                <span class="code-keyword">if</span> (!valid) { report = <span class="code-class">Report</span>.build(); valid = <span class="code-keyword">true</span>; } <span class="code-comment">Recheck: may be rebuilt</span>
+                rw.readLock().lock(); <span class="code-comment">Downgrade while holding the write lock</span>
+            } <span class="code-keyword">finally</span> {
+                rw.writeLock().unlock(); <span class="code-comment">Still holding the read lock</span>
+            }
+        }
+        <span class="code-keyword">try</span> { report.print(); } <span class="code-keyword">finally</span> { rw.readLock().unlock(); }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> invalidate() {
+        rw.writeLock().lock();
+        <span class="code-keyword">try</span> { valid = <span class="code-keyword">false</span>; } <span class="code-keyword">finally</span> { rw.writeLock().unlock(); }
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="intro"><p class="minor-heading"><strong>Wrong: upgrading a read lock</strong></p></div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>rw.readLock().lock();
+<span class="code-keyword">try</span> {
+    <span class="code-keyword">if</span> (cache.isStale()) rw.writeLock().lock(); <span class="code-comment">Deadlock: waits for its own read lock</span>
+} <span class="code-keyword">finally</span> {
+    rw.readLock().unlock();
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="intro"><p class="minor-heading"><strong>Readers in parallel, writer alone</strong></p></div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-keyword">var</span> rw = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>();
+    <span class="code-class">Runnable</span> reader = () -&gt; {
+        rw.readLock().lock();
+        <span class="code-keyword">try</span> {
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Reading, readers = {rw.getReadLockCount()}"</span>); <span class="code-comment">Readers overlap</span>
+            <span class="code-class">LockSupport</span>.parkNanos(<span class="code-number">500_000_000</span>); <span class="code-comment">Hold the read lock for half a second</span>
+        } <span class="code-keyword">finally</span> {
+            rw.readLock().unlock();
+        }
+    };
+    <span class="code-class">Runnable</span> writer = () -&gt; {
+        rw.writeLock().lock();
+        <span class="code-keyword">try</span> {
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Writing, readers = {rw.getReadLockCount()}"</span>); <span class="code-comment">Always 0</span>
+        } <span class="code-keyword">finally</span> {
+            rw.writeLock().unlock();
+        }
+    };
+    <span class="code-keyword">try</span> (<span class="code-keyword">var</span> pool = <span class="code-class">Executors</span>.newVirtualThreadPerTaskExecutor()) {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">3</span>; i++) pool.submit(reader);
+        pool.submit(writer);
+    }
+}</code></pre>
+        </div>
+    </div>
+
+<!-- api-reference:start -->
+    <div class="subheading">API Reference</div>
+
+    <div class="intro">
+        <p>Choose a method to view its signature, description and code example.</p>
+    </div>
+
+    <div class="intro"><p class="minor-heading"><strong>ReadWriteLock</strong></p></div>
+    <div class="method-picker">
+        <select aria-label="ReadWriteLock methods" hidden>
+            <option value="rwl-0">readLock()</option>
+            <option value="rwl-1">writeLock()</option>
+        </select>
+        <div class="method-entry" id="rwl-0">
+            <div class="api-sig"><span class="code-class">Lock</span> readLock()</div>
+            <p class="api-desc">Returns the shared lock used for reading. It always returns the same object, so it can be stored in a field.</p>
+            <div class="code-block"><pre><code><span class="code-class">Lock</span> readLock = rw.readLock();
+readLock.lock();
+<span class="code-keyword">try</span> {
+    <span class="code-keyword">return</span> settings.get(key);
+} <span class="code-keyword">finally</span> {
+    readLock.unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="rwl-1">
+            <div class="api-sig"><span class="code-class">Lock</span> writeLock()</div>
+            <p class="api-desc">Returns the exclusive lock used for writing. It always returns the same object, so it can be stored in a field.</p>
+            <div class="code-block"><pre><code><span class="code-class">Lock</span> writeLock = rw.writeLock();
+writeLock.lock();
+<span class="code-keyword">try</span> {
+    settings.put(key, value);
+} <span class="code-keyword">finally</span> {
+    writeLock.unlock();
+}</code></pre></div>
+        </div>
+    </div>
+
+    <div class="intro"><p class="minor-heading"><strong>ReentrantReadWriteLock</strong></p></div>
+    <div class="method-picker">
+        <select aria-label="ReentrantReadWriteLock methods" hidden>
+            <option value="rrwl-0">ReentrantReadWriteLock() / ReentrantReadWriteLock(boolean fair)</option>
+            <option value="rrwl-1">isFair()</option>
+            <option value="rrwl-2">getReadLockCount()</option>
+            <option value="rrwl-3">getReadHoldCount()</option>
+            <option value="rrwl-4">isWriteLocked()</option>
+            <option value="rrwl-5">isWriteLockedByCurrentThread()</option>
+            <option value="rrwl-6">getWriteHoldCount()</option>
+            <option value="rrwl-7">hasQueuedThreads()</option>
+            <option value="rrwl-8">hasQueuedThread(Thread thread)</option>
+            <option value="rrwl-9">getQueueLength()</option>
+            <option value="rrwl-10">hasWaiters(Condition condition)</option>
+            <option value="rrwl-11">getWaitQueueLength(Condition condition)</option>
+        </select>
+        <div class="method-entry" id="rrwl-0">
+            <div class="api-sig"><span class="code-class">ReentrantReadWriteLock</span>()
+<span class="code-class">ReentrantReadWriteLock</span>(<span class="code-keyword">boolean</span> fair)</div>
+            <p class="api-desc">Creates the lock pair. The default is non-fair, which gives higher throughput. In fair mode, threads get the lock in roughly arrival order, so waiting writers are not starved by new readers.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">var</span> rw = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>(); <span class="code-comment">Non-fair, the default</span>
+<span class="code-keyword">var</span> fairRw = <span class="code-keyword">new</span> <span class="code-class">ReentrantReadWriteLock</span>(<span class="code-keyword">true</span>); <span class="code-comment">Fair ordering</span></code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-1">
+            <div class="api-sig"><span class="code-keyword">boolean</span> isFair()</div>
+            <p class="api-desc">Returns <code>true</code> if the lock was created in fair mode.</p>
+            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Fair: {rw.isFair()}"</span>); <span class="code-comment">Fair: false</span></code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-2">
+            <div class="api-sig"><span class="code-keyword">int</span> getReadLockCount()</div>
+            <p class="api-desc">Returns the number of read holds across all threads. A thread that took the read lock twice counts twice. Meant for monitoring, not for making locking decisions.</p>
+            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Active read holds: {rw.getReadLockCount()}"</span>);</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-3">
+            <div class="api-sig"><span class="code-keyword">int</span> getReadHoldCount()</div>
+            <p class="api-desc">Returns how many read holds the current thread has on this lock: 0 if it does not hold the read lock.</p>
+            <div class="code-block"><pre><code>rw.readLock().lock();
+rw.readLock().lock(); <span class="code-comment">Reentrant</span>
+<span class="code-class">System</span>.out.println(rw.getReadHoldCount()); <span class="code-comment">2</span>
+rw.readLock().unlock();
+rw.readLock().unlock();</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-4">
+            <div class="api-sig"><span class="code-keyword">boolean</span> isWriteLocked()</div>
+            <p class="api-desc">Returns <code>true</code> if any thread holds the write lock. Meant for monitoring.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">if</span> (rw.isWriteLocked()) <span class="code-class">System</span>.out.println(<span class="code-string">"A writer is active"</span>);</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-5">
+            <div class="api-sig"><span class="code-keyword">boolean</span> isWriteLockedByCurrentThread()</div>
+            <p class="api-desc">Returns <code>true</code> if the current thread holds the write lock. Useful to check that a helper method is only called under the write lock.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">assert</span> rw.isWriteLockedByCurrentThread() : <span class="code-string">"Caller must hold the write lock"</span>;</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-6">
+            <div class="api-sig"><span class="code-keyword">int</span> getWriteHoldCount()</div>
+            <p class="api-desc">Returns how many write holds the current thread has on this lock: 0 if it does not hold the write lock.</p>
+            <div class="code-block"><pre><code>rw.writeLock().lock();
+rw.writeLock().lock(); <span class="code-comment">Reentrant</span>
+<span class="code-class">System</span>.out.println(rw.getWriteHoldCount()); <span class="code-comment">2</span>
+rw.writeLock().unlock();
+rw.writeLock().unlock();</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-7">
+            <div class="api-sig"><span class="code-keyword">boolean</span> hasQueuedThreads()</div>
+            <p class="api-desc">Returns <code>true</code> if any thread may be waiting for the read or the write lock. The answer can change right after the call, so use it only for monitoring.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">if</span> (rw.hasQueuedThreads()) <span class="code-class">System</span>.out.println(<span class="code-string">"Threads are waiting for the lock"</span>);</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-8">
+            <div class="api-sig"><span class="code-keyword">boolean</span> hasQueuedThread(<span class="code-class">Thread</span> thread)</div>
+            <p class="api-desc">Returns <code>true</code> if the given thread may be waiting for the read or the write lock.</p>
+            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Worker waiting: {rw.hasQueuedThread(worker)}"</span>);</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-9">
+            <div class="api-sig"><span class="code-keyword">int</span> getQueueLength()</div>
+            <p class="api-desc">Returns an estimate of how many threads are waiting for the read or the write lock. A growing number means the lock is a bottleneck.</p>
+            <div class="code-block"><pre><code><span class="code-class">System</span>.out.println(<span class="code-string">"Waiting threads: {rw.getQueueLength()}"</span>);</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-10">
+            <div class="api-sig"><span class="code-keyword">boolean</span> hasWaiters(<span class="code-class">Condition</span> condition)</div>
+            <p class="api-desc">Returns <code>true</code> if any thread is waiting on the given condition of the write lock. The caller must hold the write lock, or it throws <code>IllegalMonitorStateException</code>.</p>
+            <div class="code-block"><pre><code><span class="code-class">Condition</span> changed = rw.writeLock().newCondition();
+rw.writeLock().lock();
+<span class="code-keyword">try</span> {
+    <span class="code-keyword">if</span> (rw.hasWaiters(changed)) changed.signalAll();
+} <span class="code-keyword">finally</span> {
+    rw.writeLock().unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="rrwl-11">
+            <div class="api-sig"><span class="code-keyword">int</span> getWaitQueueLength(<span class="code-class">Condition</span> condition)</div>
+            <p class="api-desc">Returns an estimate of how many threads are waiting on the given condition of the write lock. The caller must hold the write lock.</p>
+            <div class="code-block"><pre><code>rw.writeLock().lock();
+<span class="code-keyword">try</span> {
+    <span class="code-class">System</span>.out.println(<span class="code-string">"Waiting on condition: {rw.getWaitQueueLength(changed)}"</span>);
+} <span class="code-keyword">finally</span> {
+    rw.writeLock().unlock();
+}</code></pre></div>
+        </div>
+    </div>
+
+    <div class="intro"><p class="minor-heading"><strong>ReentrantReadWriteLock.ReadLock</strong></p></div>
+    <div class="method-picker">
+        <select aria-label="ReadLock methods" hidden>
+            <option value="rl-0">lock()</option>
+            <option value="rl-1">lockInterruptibly()</option>
+            <option value="rl-2">tryLock()</option>
+            <option value="rl-3">tryLock(long timeout, TimeUnit unit)</option>
+            <option value="rl-4">unlock()</option>
+            <option value="rl-5">newCondition()</option>
+        </select>
+        <div class="method-entry" id="rl-0">
+            <div class="api-sig"><span class="code-keyword">void</span> lock()</div>
+            <p class="api-desc">Takes the read lock, waiting while another thread holds the write lock. The wait cannot be interrupted.</p>
+            <div class="code-block"><pre><code>rw.readLock().lock(); <span class="code-comment">Shared with other readers</span>
+<span class="code-keyword">try</span> {
+    <span class="code-keyword">return</span> rates.get(currency);
+} <span class="code-keyword">finally</span> {
+    rw.readLock().unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="rl-1">
+            <div class="api-sig"><span class="code-keyword">void</span> lockInterruptibly() <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span></div>
+            <p class="api-desc">Takes the read lock unless the current thread is interrupted while waiting for it.</p>
+            <div class="code-block"><pre><code>rw.readLock().lockInterruptibly(); <span class="code-comment">Interruptible wait</span>
+<span class="code-keyword">try</span> {
+    render(report);
+} <span class="code-keyword">finally</span> {
+    rw.readLock().unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="rl-2">
+            <div class="api-sig"><span class="code-keyword">boolean</span> tryLock()</div>
+            <p class="api-desc">Takes the read lock only if no other thread holds the write lock at that moment, and returns at once. It ignores fair ordering and can get ahead of waiting threads.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">if</span> (rw.readLock().tryLock()) {
+    <span class="code-keyword">try</span> {
+        <span class="code-keyword">return</span> rates.get(currency);
+    } <span class="code-keyword">finally</span> {
+        rw.readLock().unlock();
+    }
+}
+<span class="code-keyword">return</span> lastKnownRate; <span class="code-comment">A writer is busy, use the older value</span></code></pre></div>
+        </div>
+        <div class="method-entry" id="rl-3">
+            <div class="api-sig"><span class="code-keyword">boolean</span> tryLock(<span class="code-keyword">long</span> timeout, <span class="code-class">TimeUnit</span> unit) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span></div>
+            <p class="api-desc">Waits up to the given time for the read lock. Returns <code>true</code> if it was taken and <code>false</code> if the time ran out. Unlike <code>tryLock()</code>, it respects fair ordering.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">if</span> (!rw.readLock().tryLock(<span class="code-number">200</span>, <span class="code-class">TimeUnit</span>.MILLISECONDS)) <span class="code-keyword">return</span> <span class="code-class">Optional</span>.empty();
+<span class="code-keyword">try</span> {
+    <span class="code-keyword">return</span> <span class="code-class">Optional</span>.ofNullable(rates.get(currency));
+} <span class="code-keyword">finally</span> {
+    rw.readLock().unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="rl-4">
+            <div class="api-sig"><span class="code-keyword">void</span> unlock()</div>
+            <p class="api-desc">Releases one read hold. When the last reader leaves, a waiting writer can proceed. Throws <code>IllegalMonitorStateException</code> if the current thread does not hold the read lock.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">try</span> {
+    <span class="code-keyword">return</span> rates.get(currency);
+} <span class="code-keyword">finally</span> {
+    rw.readLock().unlock(); <span class="code-comment">Always in finally</span>
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="rl-5">
+            <div class="api-sig"><span class="code-class">Condition</span> newCondition()</div>
+            <p class="api-desc">Not supported. The read lock is shared, so it throws <code>UnsupportedOperationException</code>. Create conditions from the write lock instead.</p>
+            <div class="code-block"><pre><code>rw.readLock().newCondition(); <span class="code-comment">Throws UnsupportedOperationException</span>
+<span class="code-class">Condition</span> ready = rw.writeLock().newCondition(); <span class="code-comment">Works</span></code></pre></div>
+        </div>
+    </div>
+
+    <div class="intro"><p class="minor-heading"><strong>ReentrantReadWriteLock.WriteLock</strong></p></div>
+    <div class="method-picker">
+        <select aria-label="WriteLock methods" hidden>
+            <option value="wl-0">lock()</option>
+            <option value="wl-1">lockInterruptibly()</option>
+            <option value="wl-2">tryLock()</option>
+            <option value="wl-3">tryLock(long timeout, TimeUnit unit)</option>
+            <option value="wl-4">unlock()</option>
+            <option value="wl-5">newCondition()</option>
+            <option value="wl-6">isHeldByCurrentThread()</option>
+            <option value="wl-7">getHoldCount()</option>
+        </select>
+        <div class="method-entry" id="wl-0">
+            <div class="api-sig"><span class="code-keyword">void</span> lock()</div>
+            <p class="api-desc">Takes the write lock, waiting until no other thread holds the read or the write lock. The wait cannot be interrupted.</p>
+            <div class="code-block"><pre><code>rw.writeLock().lock(); <span class="code-comment">Exclusive: no readers and no other writers</span>
+<span class="code-keyword">try</span> {
+    rates.put(currency, rate);
+} <span class="code-keyword">finally</span> {
+    rw.writeLock().unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="wl-1">
+            <div class="api-sig"><span class="code-keyword">void</span> lockInterruptibly() <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span></div>
+            <p class="api-desc">Takes the write lock unless the current thread is interrupted while waiting. Useful for writers that must stop during shutdown.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">try</span> {
+    rw.writeLock().lockInterruptibly();
+    <span class="code-keyword">try</span> {
+        reload();
+    } <span class="code-keyword">finally</span> {
+        rw.writeLock().unlock();
+    }
+} <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
+    <span class="code-class">Thread</span>.currentThread().interrupt(); <span class="code-comment">Restore the interrupt flag</span>
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="wl-2">
+            <div class="api-sig"><span class="code-keyword">boolean</span> tryLock()</div>
+            <p class="api-desc">Takes the write lock only if no other thread holds the read or the write lock at that moment, and returns at once. It ignores fair ordering.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">if</span> (rw.writeLock().tryLock()) {
+    <span class="code-keyword">try</span> {
+        evictExpired();
+    } <span class="code-keyword">finally</span> {
+        rw.writeLock().unlock();
+    }
+} <span class="code-comment">Otherwise skip this round and clean up next time</span></code></pre></div>
+        </div>
+        <div class="method-entry" id="wl-3">
+            <div class="api-sig"><span class="code-keyword">boolean</span> tryLock(<span class="code-keyword">long</span> timeout, <span class="code-class">TimeUnit</span> unit) <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span></div>
+            <p class="api-desc">Waits up to the given time for the write lock. Returns <code>false</code> if readers or another writer kept it busy for the whole time.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">if</span> (!rw.writeLock().tryLock(<span class="code-number">1</span>, <span class="code-class">TimeUnit</span>.SECONDS)) <span class="code-keyword">return</span> <span class="code-keyword">false</span>; <span class="code-comment">Try again later</span>
+<span class="code-keyword">try</span> {
+    reload();
+    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+} <span class="code-keyword">finally</span> {
+    rw.writeLock().unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="wl-4">
+            <div class="api-sig"><span class="code-keyword">void</span> unlock()</div>
+            <p class="api-desc">Releases one write hold. When the hold count reaches 0, waiting readers or a waiting writer can proceed. Throws <code>IllegalMonitorStateException</code> if the current thread does not hold the write lock.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">try</span> {
+    rates.put(currency, rate);
+} <span class="code-keyword">finally</span> {
+    rw.writeLock().unlock(); <span class="code-comment">Always in finally</span>
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="wl-5">
+            <div class="api-sig"><span class="code-class">Condition</span> newCondition()</div>
+            <p class="api-desc">Creates a condition tied to the write lock. <code>await()</code> releases the write lock while waiting and takes it back before returning.</p>
+            <div class="code-block"><pre><code><span class="code-class">Condition</span> loaded = rw.writeLock().newCondition();
+rw.writeLock().lock();
+<span class="code-keyword">try</span> {
+    <span class="code-keyword">while</span> (!ready) loaded.await(); <span class="code-comment">Always wait in a loop</span>
+} <span class="code-keyword">finally</span> {
+    rw.writeLock().unlock();
+}</code></pre></div>
+        </div>
+        <div class="method-entry" id="wl-6">
+            <div class="api-sig"><span class="code-keyword">boolean</span> isHeldByCurrentThread()</div>
+            <p class="api-desc">Returns <code>true</code> if the current thread holds this write lock. Same as <code>isWriteLockedByCurrentThread()</code> on the outer lock.</p>
+            <div class="code-block"><pre><code><span class="code-keyword">assert</span> rw.writeLock().isHeldByCurrentThread() : <span class="code-string">"Caller must hold the write lock"</span>;</code></pre></div>
+        </div>
+        <div class="method-entry" id="wl-7">
+            <div class="api-sig"><span class="code-keyword">int</span> getHoldCount()</div>
+            <p class="api-desc">Returns how many write holds the current thread has. Same as <code>getWriteHoldCount()</code> on the outer lock.</p>
+            <div class="code-block"><pre><code>rw.writeLock().lock();
+<span class="code-class">System</span>.out.println(rw.writeLock().getHoldCount()); <span class="code-comment">1</span>
+rw.writeLock().unlock();</code></pre></div>
+        </div>
+    </div>
+<!-- api-reference:end -->
+
+<!-- chatgpt-guide:start -->
+<!-- chatgpt-guide:end -->
+</div>
+</body>
+</html>
