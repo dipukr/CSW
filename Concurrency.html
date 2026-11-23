@@ -551,7 +551,7 @@
     b.start();
     a.join();
     b.join();
-    <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment">often less than 20000</span>
+    <span class="code-class">System</span>.out.println(counter.get()); <span class="code-comment">often < 20000</span>
 }</code></pre>
             </div>
             <div class="code-explanation">
@@ -604,7 +604,7 @@
             <div class="code-wrapper">
 <pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
     <span class="code-class">AtomicInteger</span> counter = <span class="code-keyword">new</span> <span class="code-class">AtomicInteger</span>();
-    <span class="code-keyword">try</span> (<span class="code-class">ExecutorService</span> pool = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">4</span>)) {
+    <span class="code-keyword">try</span> (<span class="code-keyword">var</span> pool = <span class="code-class">Executors</span>.newFixedThreadPool(<span class="code-number">4</span>)) {
         <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">1_000</span>; i++) {
             pool.submit(counter::incrementAndGet);
         }
