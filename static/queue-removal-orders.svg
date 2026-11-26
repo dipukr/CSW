@@ -1,0 +1,42 @@
+<svg width="620" height="260" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 260" role="img" aria-label="Removal order after inserting 10, 20, 30: queue (FIFO) 10, 20, 30; stack (LIFO) 30, 20, 10; max priority queue 30, 20, 10; min priority queue 10, 20, 30">
+    <defs><marker id="ro-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <text x="24" y="44" font-size="15" font-weight="600" text-anchor="start" fill="#222222">Queue (FIFO)</text>
+        <rect x="260" y="16" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="288.0" y="42.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <rect x="356" y="16" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="384.0" y="42.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <path d="M320 37.0 H352" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <rect x="452" y="16" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="480.0" y="42.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+        <path d="M416 37.0 H448" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <text x="24" y="104" font-size="15" font-weight="600" text-anchor="start" fill="#222222">Stack (LIFO)</text>
+        <rect x="260" y="76" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="288.0" y="102.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+        <rect x="356" y="76" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="384.0" y="102.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <path d="M320 97.0 H352" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <rect x="452" y="76" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="480.0" y="102.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <path d="M416 97.0 H448" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <text x="24" y="164" font-size="15" font-weight="600" text-anchor="start" fill="#222222">Max priority queue</text>
+        <rect x="260" y="136" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="288.0" y="162.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+        <rect x="356" y="136" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="384.0" y="162.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <path d="M320 157.0 H352" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <rect x="452" y="136" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="480.0" y="162.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <path d="M416 157.0 H448" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <text x="24" y="224" font-size="15" font-weight="600" text-anchor="start" fill="#222222">Min priority queue</text>
+        <rect x="260" y="196" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="288.0" y="222.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <rect x="356" y="196" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="384.0" y="222.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <path d="M320 217.0 H352" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <rect x="452" y="196" width="56" height="42" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="480.0" y="222.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+        <path d="M416 217.0 H448" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ro-a)"/>
+        <text x="408" y="254" font-size="12" font-weight="400" text-anchor="middle" fill="#6B7280">removed first → removed last</text>
+    </g>
+</svg>

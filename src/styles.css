@@ -82,14 +82,14 @@ br {
 .math { font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", serif; font-size: 1.12em; white-space: nowrap; }
 .math i { font-style: italic; }
 .math sub { font-size: 0.7em; }
-/* display formulas: a box exactly like .code-block (no outline, same corners, padding and margins), only the fill colour differs */
+/* display formulas: a box exactly like .code-block (same fill, no outline, same corners, padding and margins), formula centred */
 .intro p.math-display {
     text-align: center;
     margin: 10px 0 20px;
     padding: 18px 22px;
     border: 0;
     border-radius: 3px;
-    background: #eef6f5;
+    background: #f4f4f4;
     font-size: 1.1em;
 }
 .math-display .katex-display { margin: 0; }   /* KaTeX's own 1em display margin removed: the box padding is the spacing */

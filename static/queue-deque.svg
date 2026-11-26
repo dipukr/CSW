@@ -1,0 +1,18 @@
+<svg width="640" height="170" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 170" role="img" aria-label="Deque holding 10, 20 and 30; the Front and Rear ends both support insertion and removal">
+    <defs><marker id="dq-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <text x="320" y="24" font-size="14" font-weight="700" text-anchor="middle" fill="#6B7280">DEQUE</text>
+        <path d="M218 40 H285 A0 0 0 0 1 285 40 V92 A0 0 0 0 1 285 92 H218 A3 3 0 0 1 215 89 V43 A3 3 0 0 1 218 40 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="250.0" y="73.0" font-size="20" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <path d="M285 40 H355 A0 0 0 0 1 355 40 V92 A0 0 0 0 1 355 92 H285 A0 0 0 0 1 285 92 V40 A0 0 0 0 1 285 40 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="320.0" y="73.0" font-size="20" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <path d="M355 40 H422 A3 3 0 0 1 425 43 V89 A3 3 0 0 1 422 92 H355 A0 0 0 0 1 355 92 V40 A0 0 0 0 1 355 40 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="390.0" y="73.0" font-size="20" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+        <path d="M130 66 H205" fill="none" stroke="#555555" stroke-width="1.5" marker-start="url(#dq-a)" marker-end="url(#dq-a)"/>
+        <path d="M435 66 H510" fill="none" stroke="#555555" stroke-width="1.5" marker-start="url(#dq-a)" marker-end="url(#dq-a)"/>
+        <text x="110" y="71" font-size="15" font-weight="600" text-anchor="end" fill="#222222">Front</text>
+        <text x="530" y="71" font-size="15" font-weight="600" text-anchor="start" fill="#222222">Rear</text>
+        <text x="320" y="128" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280">Both ends support</text>
+        <text x="320" y="147" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280">insertion and removal</text>
+    </g>
+</svg>

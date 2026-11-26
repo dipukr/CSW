@@ -1,0 +1,25 @@
+<svg width="720" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 70" role="img" aria-label="BFS visit order: 1, 2, 3, 4, 5, 6, 7">
+    <defs><marker id="bf-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <circle cx="70.0" cy="34.0" r="22.0" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="70.0" y="39.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">1</text>
+        <circle cx="162.0" cy="34.0" r="22.0" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="162.0" y="39.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">2</text>
+        <path d="M96 34.0 H136" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#bf-a)"/>
+        <circle cx="254.0" cy="34.0" r="22.0" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="254.0" y="39.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">3</text>
+        <path d="M188 34.0 H228" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#bf-a)"/>
+        <circle cx="346.0" cy="34.0" r="22.0" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="346.0" y="39.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">4</text>
+        <path d="M280 34.0 H320" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#bf-a)"/>
+        <circle cx="438.0" cy="34.0" r="22.0" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="438.0" y="39.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">5</text>
+        <path d="M372 34.0 H412" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#bf-a)"/>
+        <circle cx="530.0" cy="34.0" r="22.0" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="530.0" y="39.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">6</text>
+        <path d="M464 34.0 H504" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#bf-a)"/>
+        <circle cx="622.0" cy="34.0" r="22.0" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="622.0" y="39.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">7</text>
+        <path d="M556 34.0 H596" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#bf-a)"/>
+    </g>
+</svg>

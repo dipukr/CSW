@@ -1,0 +1,21 @@
+<svg width="780" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 120" role="img" aria-label="Processing order when higher numbers mean higher priority: Process payment (10), then Generate report (3), Update cache (2) and Send email (1)">
+    <defs><marker id="po-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <rect x="14" y="22" width="158" height="64" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="93" y="49" font-size="15" font-weight="600" text-anchor="middle" fill="#222222">Process payment</text>
+        <text x="93" y="70" font-size="12" font-weight="400" text-anchor="middle" fill="#6B7280">priority 10</text>
+        <rect x="206" y="22" width="158" height="64" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="285" y="49" font-size="15" font-weight="600" text-anchor="middle" fill="#222222">Generate report</text>
+        <text x="285" y="70" font-size="12" font-weight="400" text-anchor="middle" fill="#6B7280">priority 3</text>
+        <path d="M176 54 H202" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#po-a)"/>
+        <rect x="398" y="22" width="158" height="64" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="477" y="49" font-size="15" font-weight="600" text-anchor="middle" fill="#222222">Update cache</text>
+        <text x="477" y="70" font-size="12" font-weight="400" text-anchor="middle" fill="#6B7280">priority 2</text>
+        <path d="M368 54 H394" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#po-a)"/>
+        <rect x="590" y="22" width="158" height="64" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="669" y="49" font-size="15" font-weight="600" text-anchor="middle" fill="#222222">Send email</text>
+        <text x="669" y="70" font-size="12" font-weight="400" text-anchor="middle" fill="#6B7280">priority 1</text>
+        <path d="M560 54 H586" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#po-a)"/>
+        <text x="390" y="112" font-size="12" font-weight="400" text-anchor="middle" fill="#6B7280">processed first → processed last</text>
+    </g>
+</svg>

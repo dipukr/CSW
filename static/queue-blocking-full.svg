@@ -1,0 +1,44 @@
+<svg width="780" height="360" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 360" role="img" aria-label="BlockingQueue with capacity 3. The producer inserts A, B and C and the queue is full. put(D) blocks. The consumer removes A, leaving B and C. The producer resumes and inserts D, giving B, C, D">
+    <defs><marker id="bq-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <text x="24" y="54" font-size="14" font-weight="600" text-anchor="start" fill="#222222">Producer inserts A, B, C</text>
+        <path d="M333 24 H394 A0 0 0 0 1 394 24 V72 A0 0 0 0 1 394 72 H333 A3 3 0 0 1 330 69 V27 A3 3 0 0 1 333 24 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="362.0" y="54.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">A</text>
+        <path d="M394 24 H458 A0 0 0 0 1 458 24 V72 A0 0 0 0 1 458 72 H394 A0 0 0 0 1 394 72 V24 A0 0 0 0 1 394 24 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="426.0" y="54.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">B</text>
+        <path d="M458 24 H519 A3 3 0 0 1 522 27 V69 A3 3 0 0 1 519 72 H458 A0 0 0 0 1 458 72 V24 A0 0 0 0 1 458 24 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="490.0" y="54.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">C</text>
+        <text x="540" y="54" font-size="14" font-weight="700" text-anchor="start" fill="#222222">FULL</text>
+        <path d="M425 76 V104" fill="none" stroke="#555555" stroke-width="1.5"/>
+        <text x="24" y="138" font-size="14" font-weight="600" text-anchor="start" fill="#222222">Producer tries to insert D</text>
+        <path d="M333 108 H394 A0 0 0 0 1 394 108 V156 A0 0 0 0 1 394 156 H333 A3 3 0 0 1 330 153 V111 A3 3 0 0 1 333 108 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="362.0" y="138.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">A</text>
+        <path d="M394 108 H458 A0 0 0 0 1 458 108 V156 A0 0 0 0 1 458 156 H394 A0 0 0 0 1 394 156 V108 A0 0 0 0 1 394 108 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="426.0" y="138.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">B</text>
+        <path d="M458 108 H519 A3 3 0 0 1 522 111 V153 A3 3 0 0 1 519 156 H458 A0 0 0 0 1 458 156 V108 A0 0 0 0 1 458 108 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="490.0" y="138.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">C</text>
+        <rect x="600" y="110" width="44" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <text x="622" y="138" font-size="17" font-weight="600" text-anchor="middle" fill="#6B7280">D</text>
+        <path d="M596 132 H530" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#bq-a)"/>
+        <text x="660" y="138" font-size="13" font-weight="600" text-anchor="start" fill="#6B7280">put(D) blocks</text>
+        <path d="M425 160 V188" fill="none" stroke="#555555" stroke-width="1.5"/>
+        <text x="24" y="222" font-size="14" font-weight="600" text-anchor="start" fill="#222222">Consumer removes A</text>
+        <path d="M333 192 H394 A0 0 0 0 1 394 192 V240 A0 0 0 0 1 394 240 H333 A3 3 0 0 1 330 237 V195 A3 3 0 0 1 333 192 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="362.0" y="222.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">B</text>
+        <path d="M394 192 H458 A0 0 0 0 1 458 192 V240 A0 0 0 0 1 458 240 H394 A0 0 0 0 1 394 240 V192 A0 0 0 0 1 394 192 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="426.0" y="222.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">C</text>
+        <path d="M458 192 H519 A3 3 0 0 1 522 195 V237 A3 3 0 0 1 519 240 H458 A0 0 0 0 1 458 240 V192 A0 0 0 0 1 458 192 Z" fill="#FFFFFF" stroke="#222222" stroke-width="1.2"/>
+        <rect x="250" y="194" width="44" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <text x="272" y="222" font-size="17" font-weight="600" text-anchor="middle" fill="#6B7280">A</text>
+        <path d="M326 216 H298" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#bq-a)"/>
+        <text x="540" y="222" font-size="13" font-weight="400" text-anchor="start" fill="#6B7280">space freed</text>
+        <path d="M425 244 V272" fill="none" stroke="#555555" stroke-width="1.5"/>
+        <text x="24" y="306" font-size="14" font-weight="600" text-anchor="start" fill="#222222">Producer resumes and inserts D</text>
+        <path d="M333 276 H394 A0 0 0 0 1 394 276 V324 A0 0 0 0 1 394 324 H333 A3 3 0 0 1 330 321 V279 A3 3 0 0 1 333 276 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="362.0" y="306.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">B</text>
+        <path d="M394 276 H458 A0 0 0 0 1 458 276 V324 A0 0 0 0 1 458 324 H394 A0 0 0 0 1 394 324 V276 A0 0 0 0 1 394 276 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="426.0" y="306.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">C</text>
+        <path d="M458 276 H519 A3 3 0 0 1 522 279 V321 A3 3 0 0 1 519 324 H458 A0 0 0 0 1 458 324 V276 A0 0 0 0 1 458 276 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="490.0" y="306.3" font-size="18" font-weight="600" text-anchor="middle" fill="#222222">D</text>
+    </g>
+</svg>

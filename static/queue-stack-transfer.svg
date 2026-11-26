@@ -1,0 +1,48 @@
+<svg width="780" height="262" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 262" role="img" aria-label="Two-stack transfer. Before: inStack holds 10, 20, 30 from bottom to top and outStack is empty. After: inStack is empty and outStack holds 30, 20, 10 from bottom to top, so 10 is on top. Dequeuing then returns 10, 20, 30">
+    <defs><marker id="ts-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <text x="150" y="26" font-size="14" font-weight="700" text-anchor="middle" fill="#222222">Before transfer</text>
+        <path d="M43 64 H121 A3 3 0 0 1 124 67 V108 A0 0 0 0 1 124 108 H40 A0 0 0 0 1 40 108 V67 A3 3 0 0 1 43 64 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="82.0" y="91.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+        <path d="M40 108 H124 A0 0 0 0 1 124 108 V152 A0 0 0 0 1 124 152 H40 A0 0 0 0 1 40 152 V108 A0 0 0 0 1 40 108 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="82.0" y="135.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <path d="M40 152 H124 A0 0 0 0 1 124 152 V193 A3 3 0 0 1 121 196 H43 A3 3 0 0 1 40 193 V152 A0 0 0 0 1 40 152 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="82.0" y="179.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <text x="132" y="90" font-size="12" font-weight="400" text-anchor="start" fill="#6B7280">top</text>
+        <text x="82.0" y="218" font-size="13" font-weight="600" text-anchor="middle" fill="#222222">inStack</text>
+        <text x="82.0" y="236" font-size="11" font-weight="400" text-anchor="middle" fill="#6B7280">bottom ↑</text>
+        <rect x="170" y="152" width="84" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <text x="212.0" y="179.0" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280" font-style="italic">empty</text>
+        <text x="212.0" y="218" font-size="13" font-weight="600" text-anchor="middle" fill="#222222">outStack</text>
+        <text x="212.0" y="236" font-size="11" font-weight="400" text-anchor="middle" fill="#6B7280">bottom ↑</text>
+        <path d="M298 40 V244" fill="none" stroke="#555555" stroke-width="1.5"/>
+        <text x="450" y="26" font-size="14" font-weight="700" text-anchor="middle" fill="#222222">After transfer</text>
+        <rect x="340" y="152" width="84" height="44" rx="3" fill="#FFFFFF" stroke="#222222" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <text x="382.0" y="179.0" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280" font-style="italic">empty</text>
+        <text x="382.0" y="218" font-size="13" font-weight="600" text-anchor="middle" fill="#222222">inStack</text>
+        <text x="382.0" y="236" font-size="11" font-weight="400" text-anchor="middle" fill="#6B7280">bottom ↑</text>
+        <path d="M473 64 H551 A3 3 0 0 1 554 67 V108 A0 0 0 0 1 554 108 H470 A0 0 0 0 1 470 108 V67 A3 3 0 0 1 473 64 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="512.0" y="91.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <path d="M470 108 H554 A0 0 0 0 1 554 108 V152 A0 0 0 0 1 554 152 H470 A0 0 0 0 1 470 152 V108 A0 0 0 0 1 470 108 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="512.0" y="135.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <path d="M470 152 H554 A0 0 0 0 1 554 152 V193 A3 3 0 0 1 551 196 H473 A3 3 0 0 1 470 193 V152 A0 0 0 0 1 470 152 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="512.0" y="179.95" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+        <text x="562" y="90" font-size="12" font-weight="400" text-anchor="start" fill="#6B7280">top</text>
+        <text x="512.0" y="218" font-size="13" font-weight="600" text-anchor="middle" fill="#222222">outStack</text>
+        <text x="512.0" y="236" font-size="11" font-weight="400" text-anchor="middle" fill="#6B7280">bottom ↑</text>
+        <path d="M598 40 V244" fill="none" stroke="#555555" stroke-width="1.5"/>
+        <text x="690" y="26" font-size="14" font-weight="700" text-anchor="middle" fill="#222222">Dequeue order</text>
+        <text x="670" y="89" font-size="13" font-weight="400" text-anchor="end" fill="#6B7280">dequeue()</text>
+        <path d="M675 84 H697" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ts-a)"/>
+        <rect x="701" y="62" width="50" height="44" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="726" y="90" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">10</text>
+        <text x="670" y="145" font-size="13" font-weight="400" text-anchor="end" fill="#6B7280">dequeue()</text>
+        <path d="M675 140 H697" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ts-a)"/>
+        <rect x="701" y="118" width="50" height="44" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="726" y="146" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">20</text>
+        <text x="670" y="201" font-size="13" font-weight="400" text-anchor="end" fill="#6B7280">dequeue()</text>
+        <path d="M675 196 H697" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#ts-a)"/>
+        <rect x="701" y="174" width="50" height="44" rx="3" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="726" y="202" font-size="17" font-weight="600" text-anchor="middle" fill="#222222">30</text>
+    </g>
+</svg>

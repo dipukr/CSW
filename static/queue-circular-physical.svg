@@ -1,0 +1,22 @@
+<svg width="720" height="150" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 150" role="img" aria-label="Physical array after wrap-around: indexes 0 to 4 hold F, G, C, D and E; front points to index 2, which holds C">
+    <defs><marker id="cp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" fill="#222222">
+        <text x="160" y="24" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280">[0]</text>
+        <text x="260" y="24" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280">[1]</text>
+        <text x="360" y="24" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280">[2]</text>
+        <text x="460" y="24" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280">[3]</text>
+        <text x="560" y="24" font-size="13" font-weight="400" text-anchor="middle" fill="#6B7280">[4]</text>
+        <path d="M113 34 H210 A0 0 0 0 1 210 34 V90 A0 0 0 0 1 210 90 H113 A3 3 0 0 1 110 87 V37 A3 3 0 0 1 113 34 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="160.0" y="69.7" font-size="22" font-weight="600" text-anchor="middle" fill="#222222">F</text>
+        <path d="M210 34 H310 A0 0 0 0 1 310 34 V90 A0 0 0 0 1 310 90 H210 A0 0 0 0 1 210 90 V34 A0 0 0 0 1 210 34 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="260.0" y="69.7" font-size="22" font-weight="600" text-anchor="middle" fill="#222222">G</text>
+        <path d="M310 34 H410 A0 0 0 0 1 410 34 V90 A0 0 0 0 1 410 90 H310 A0 0 0 0 1 310 90 V34 A0 0 0 0 1 310 34 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="360.0" y="69.7" font-size="22" font-weight="600" text-anchor="middle" fill="#222222">C</text>
+        <path d="M410 34 H510 A0 0 0 0 1 510 34 V90 A0 0 0 0 1 510 90 H410 A0 0 0 0 1 410 90 V34 A0 0 0 0 1 410 34 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="460.0" y="69.7" font-size="22" font-weight="600" text-anchor="middle" fill="#222222">D</text>
+        <path d="M510 34 H607 A3 3 0 0 1 610 37 V87 A3 3 0 0 1 607 90 H510 A0 0 0 0 1 510 90 V34 A0 0 0 0 1 510 34 Z" fill="#F3F4F6" stroke="#222222" stroke-width="1.2"/>
+        <text x="560.0" y="69.7" font-size="22" font-weight="600" text-anchor="middle" fill="#222222">E</text>
+        <path d="M360 134 V98" fill="none" stroke="#555555" stroke-width="1.5" marker-end="url(#cp-a)"/>
+        <text x="360" y="146" font-size="14" font-weight="600" text-anchor="middle" fill="#222222">front</text>
+    </g>
+</svg>

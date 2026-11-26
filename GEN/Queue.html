@@ -234,7 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <p>The key formula is:</p>
         <p class="math-display"><span class="math" data-tex="\text{nextIndex}=(\text{currentIndex}+1)\bmod C" data-display="1">nextIndex=(currentIndex+1) mod C</span></p>
         <p>Where <span class="math" data-tex="C">C</span> is the capacity of the array.</p>
-        <p>Example:</p>
     </div>
     <div class="code-block"><pre><code>Capacity = 5
 
@@ -245,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
 (4 + 1) % 5 = 0   ← Wrap around</code></pre></div>
 
     <div class="intro">
-        <p class="minor-heading"><strong>Front, rear, and size</strong></p>
+        <p class="minor-heading"><strong>Front, rear and size</strong></p>
         <p>We maintain three variables:</p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Variable</th><th>Meaning</th></tr></thead>
@@ -318,12 +317,16 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="intro">
         <p>Notice that the physical array stores:</p>
     </div>
-    <div class="code-block"><pre><code>[F, G, C, D, E]</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-circular-physical.svg" alt="Physical array after wrap-around: indexes 0 to 4 hold F, G, C, D and E; front points to index 2, which holds C" style="width:100%;max-width:720px">
+    </div>
 
     <div class="intro">
         <p>But the logical queue order is:</p>
     </div>
-    <div class="code-block"><pre><code>C → D → E → F → G</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-circular-logical.svg" alt="Logical queue order: C, then D, E, F and G; C leaves first" style="width:100%;max-width:720px">
+    </div>
 
     <div class="intro">
         <p>The physical storage order is different from the FIFO order because the front has wrapped around.</p>
@@ -355,115 +358,57 @@ size--;</code></pre></div>
     <div class="intro">
         <p>There is an alternative design without a <code>size</code> variable:</p>
     </div>
-    <div class="code-block"><pre><code><span class="code-comment">// Empty</span>
+    <div class="code-block"><pre><code><span class="code-comment">Empty</span>
 front == rear
 
-<span class="code-comment">// Full, when one slot is deliberately left unused</span>
+<span class="code-comment">Full, when one slot is deliberately left unused</span>
 (rear + <span class="code-number">1</span>) % capacity == front</code></pre></div>
 
     <div class="intro">
-        <p>That alternative uses one array slot to distinguish full from empty. The implementation below uses <code>size</code> and therefore supports all allocated slots.</p>
+        <p>That alternative uses one array slot to distinguish full from empty.
+		<br>The implementation below uses <code>size</code> and therefore supports all allocated slots.</p>
         <p class="minor-heading"><strong>Complete Java implementation: Circular Queue</strong></p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Objects</span>;
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CircularQueue</span>&lt;E&gt; {
-
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Object</span>[] elements;
-
-    <span class="code-keyword">private</span> <span class="code-keyword">int</span> front = <span class="code-number">0</span>;
-    <span class="code-keyword">private</span> <span class="code-keyword">int</span> rear = <span class="code-number">0</span>;
-    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size = <span class="code-number">0</span>;
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CircularQueue</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Object</span>[] data;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> capacity;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> front;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> rear;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size;
 
     <span class="code-keyword">public</span> <span class="code-class">CircularQueue</span>(<span class="code-keyword">int</span> capacity) {
-        <span class="code-keyword">if</span> (capacity &lt;= <span class="code-number">0</span>) {
-            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(
-                <span class="code-string">"Capacity must be positive"</span>
-            );
-        }
-
-        elements = <span class="code-keyword">new</span> <span class="code-class">Object</span>[capacity];
+        <span class="code-keyword">this</span>.data = <span class="code-keyword">new</span> <span class="code-class">Object</span>[capacity];
+        <span class="code-keyword">this</span>.capacity = capacity;
+        <span class="code-keyword">this</span>.front = <span class="code-number">0</span>;
+        <span class="code-keyword">this</span>.rear = <span class="code-number">0</span>;
+        <span class="code-keyword">this</span>.size = <span class="code-number">0</span>;
     }
 
-    <span class="code-comment">// Insert at the rear</span>
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> offer(E value) {
-        <span class="code-class">Objects</span>.requireNonNull(value);
-
-        <span class="code-keyword">if</span> (isFull()) {
-            <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
-        }
-
-        elements[rear] = value;
-
-        rear = (rear + <span class="code-number">1</span>) % elements.length;
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> enqueue(<span class="code-class">Object</span> elem) {
+        <span class="code-keyword">if</span> (full()) <span class="code-class">Error</span>.fatal(<span class="code-string">"Queue overflow"</span>);
+        data[rear] = elem;
+        rear = (rear + <span class="code-number">1</span>) % capacity;
         size++;
-
-        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
     }
 
-    <span class="code-comment">// Remove from the front</span>
-    <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
-    <span class="code-keyword">public</span> E poll() {
-        <span class="code-keyword">if</span> (isEmpty()) {
-            <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
-        }
-
-        E value = (E) elements[front];
-
-        <span class="code-comment">// Release the reference for garbage collection</span>
-        elements[front] = <span class="code-keyword">null</span>;
-
-        front = (front + <span class="code-number">1</span>) % elements.length;
+    <span class="code-keyword">public</span> <span class="code-class">Object</span> dequeue() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.fatal(<span class="code-string">"Queue underflow"</span>);
+        <span class="code-class">Object</span> elem = data[front];
+        data[front] = <span class="code-keyword">null</span>;
+        front = (front + <span class="code-number">1</span>) % capacity;
         size--;
-
-        <span class="code-keyword">return</span> value;
+        <span class="code-keyword">return</span> elem;
     }
 
-    <span class="code-comment">// Read front without removing</span>
-    <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
-    <span class="code-keyword">public</span> E peek() {
-        <span class="code-keyword">if</span> (isEmpty()) {
-            <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
-        }
-
-        <span class="code-keyword">return</span> (E) elements[front];
+    <span class="code-keyword">public</span> <span class="code-class">Object</span> front() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.fatal(<span class="code-string">"Queue underflow"</span>);
+        <span class="code-keyword">return</span> data[front];
     }
 
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
-        <span class="code-keyword">return</span> size == <span class="code-number">0</span>;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isFull() {
-        <span class="code-keyword">return</span> size == elements.length;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
-        <span class="code-keyword">return</span> size;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">int</span> capacity() {
-        <span class="code-keyword">return</span> elements.length;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-        <span class="code-class">CircularQueue</span>&lt;<span class="code-class">Integer</span>&gt; queue =
-                <span class="code-keyword">new</span> <span class="code-class">CircularQueue</span>&lt;&gt;(<span class="code-number">3</span>);
-
-        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">10</span>)); <span class="code-comment">// true</span>
-        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">20</span>)); <span class="code-comment">// true</span>
-        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">30</span>)); <span class="code-comment">// true</span>
-
-        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">40</span>)); <span class="code-comment">// false</span>
-
-        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 10</span>
-        <span class="code-class">System</span>.out.println(queue.peek());    <span class="code-comment">// 20</span>
-
-        <span class="code-class">System</span>.out.println(queue.offer(<span class="code-number">40</span>)); <span class="code-comment">// true</span>
-        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 20</span>
-        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 30</span>
-        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 40</span>
-        <span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// null</span>
-    }
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() { <span class="code-keyword">return</span> size; }
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty() { <span class="code-keyword">return</span> size == <span class="code-number">0</span>; }
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> full() { <span class="code-keyword">return</span> size == capacity; }
 }</code></pre></div>
 
     <div class="intro">
@@ -474,7 +419,8 @@ front == rear
                 <tr><td>Enqueue</td><td>O(1)</td></tr>
                 <tr><td>Dequeue</td><td>O(1)</td></tr>
                 <tr><td>Peek</td><td>O(1)</td></tr>
-                <tr><td>isEmpty / isFull</td><td>O(1)</td></tr>
+                <tr><td>Empty</td><td>O(1)</td></tr>
+				<tr><td>Full</td><td>O(1)</td></tr>
                 <tr><td>Space</td><td>O(C), where C is capacity</td></tr>
             </tbody>
         </table></div>
@@ -483,23 +429,17 @@ front == rear
         <p>A dynamically growing queue can double its internal array when full, similar to an <code>ArrayList</code>.</p>
         <p>The important detail is that elements must be copied in logical queue order, starting from <code>front</code>.</p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">private</span> <span class="code-keyword">void</span> grow() {
-    <span class="code-class">Object</span>[] expanded =
-        <span class="code-keyword">new</span> <span class="code-class">Object</span>[elements.length * <span class="code-number">2</span>];
-
-    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; size; i++) {
-        expanded[i] =
-            elements[(front + i) % elements.length];
-    }
-
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> grow() {
+    <span class="code-keyword">var</span> expanded = <span class="code-keyword">new</span> <span class="code-class">Object</span>[elements.length * <span class="code-number">2</span>];
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; size; i++)
+        expanded[i] = elements[(front + i) % elements.length];
     elements = expanded;
     front = <span class="code-number">0</span>;
     rear = size;
 }</code></pre></div>
 
     <div class="intro">
-        <p>This method assumes <code>elements</code> is not <code>final</code>, the initial capacity is positive, and capacity doubling is within supported array limits.</p>
-        <p>A resize takes O(n), but if the array doubles geometrically, enqueue remains amortized O(1): the average cost over a long sequence of operations is constant.</p>
+        <p>A resize takes O(n) but if the array doubles geometrically, enqueue remains amortized O(1): the average cost over<br> a long sequence of operations is constant.</p>
     </div>
 
     <div class="subheading">Queue Implementation Using a Linked List</div>
@@ -508,9 +448,9 @@ front == rear
         <p>A linked-list queue stores elements in nodes instead of contiguous array slots.</p>
         <p>Each node contains:</p>
     </div>
-    <div class="code-block"><pre><code>+-----------+-----------+
-|   DATA    |   NEXT    |
-+-----------+-----------+</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-node.svg" alt="A linked-list node has two fields: DATA, holding the element, and NEXT, a reference to the following node" style="width:100%;max-width:560px">
+    </div>
 
     <div class="intro">
         <p>A queue using a singly linked list maintains two references:</p>
@@ -532,87 +472,47 @@ front == rear
         <p>This also requires O(1) time.</p>
         <p class="minor-heading"><strong>Complete Java implementation</strong></p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Objects</span>;
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Queue</span> {
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LinkedQueue</span>&lt;E&gt; {
-
-    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;E&gt; {
-        E data;
-        <span class="code-class">Node</span>&lt;E&gt; next;
-
-        <span class="code-class">Node</span>(E data) {
+    <span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Node</span> {
+        <span class="code-keyword">public</span> <span class="code-keyword">int</span> data;
+        <span class="code-keyword">public</span> <span class="code-class">Node</span> next;
+        <span class="code-keyword">public</span> <span class="code-class">Node</span>(<span class="code-keyword">int</span> data) {
             <span class="code-keyword">this</span>.data = data;
         }
     }
 
-    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;E&gt; head;
-    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;E&gt; tail;
-    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size;
+    <span class="code-keyword">private</span> <span class="code-class">Node</span> head = <span class="code-keyword">null</span>, tail = <span class="code-keyword">null</span>;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> nodeCount = <span class="code-number">0</span>;
 
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> offer(E value) {
-        <span class="code-class">Objects</span>.requireNonNull(value);
-
-        <span class="code-class">Node</span>&lt;E&gt; node = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(value);
-
-        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> enqueue(<span class="code-keyword">int</span> elem) {
+        <span class="code-class">Node</span> node = <span class="code-keyword">new</span> <span class="code-class">Node</span>(elem);
+        <span class="code-keyword">if</span> (empty()) {
             head = node;
             tail = node;
         } <span class="code-keyword">else</span> {
             tail.next = node;
             tail = node;
         }
-
-        size++;
-        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+        nodeCount++;
     }
 
-    <span class="code-keyword">public</span> E poll() {
-        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) {
-            <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
-        }
-
-        E result = head.data;
-
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> dequeue() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.error(<span class="code-string">"Queue underflow."</span>);
+        <span class="code-keyword">int</span> elem = head.data;
         head = head.next;
-
-        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) {
-            tail = <span class="code-keyword">null</span>;
-        }
-
-        size--;
-        <span class="code-keyword">return</span> result;
+        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) tail = <span class="code-keyword">null</span>;
+        nodeCount--;
+        <span class="code-keyword">return</span> elem;
     }
 
-    <span class="code-keyword">public</span> E peek() {
-        <span class="code-keyword">return</span> head == <span class="code-keyword">null</span> ? <span class="code-keyword">null</span> : head.data;
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> front() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.error(<span class="code-string">"Queue underflow"</span>);
+        <span class="code-keyword">return</span> head.data;
     }
 
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
-        <span class="code-keyword">return</span> head == <span class="code-keyword">null</span>;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
-        <span class="code-keyword">return</span> size;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-        <span class="code-class">LinkedQueue</span>&lt;<span class="code-class">Integer</span>&gt; queue =
-                <span class="code-keyword">new</span> <span class="code-class">LinkedQueue</span>&lt;&gt;();
-
-        queue.offer(<span class="code-number">10</span>);
-        queue.offer(<span class="code-number">20</span>);
-        queue.offer(<span class="code-number">30</span>);
-
-        <span class="code-class">System</span>.out.println(queue.peek()); <span class="code-comment">// 10</span>
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 10</span>
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 20</span>
-
-        queue.offer(<span class="code-number">40</span>);
-
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 30</span>
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 40</span>
-        <span class="code-class">System</span>.out.println(queue.isEmpty()); <span class="code-comment">// true</span>
-    }
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() { <span class="code-keyword">return</span> nodeCount; }
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty() { <span class="code-keyword">return</span> size() == <span class="code-number">0</span>; }
 }</code></pre></div>
 
     <div class="intro">
@@ -644,83 +544,42 @@ front == rear
         <p>The transfer reverses stack order to produce FIFO order.</p>
         <p>The transfer proceeds:</p>
     </div>
-    <div class="code-block"><pre><code>Before transfer:
-
-inStack:  bottom [10, 20, 30] top
-outStack: empty
-
-After transfer:
-
-inStack:  empty
-outStack: bottom [30, 20, 10] top
-
-Poll → 10
-Poll → 20
-Poll → 30</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-stack-transfer.svg" alt="Two-stack transfer. Before: inStack holds 10, 20, 30 from bottom to top and outStack is empty. After: inStack is empty and outStack holds 30, 20, 10 from bottom to top, so 10 is on top. Dequeuing then returns 10, 20, 30" style="width:100%;max-width:780px">
+    </div>
 
     <div class="intro">
         <p class="minor-heading"><strong>Java implementation</strong></p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">ArrayDeque</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">Deque</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">Objects</span>;
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Queue</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Stack</span> inStack = <span class="code-keyword">new</span> <span class="code-class">Stack</span>();
+    <span class="code-keyword">private</span> <span class="code-class">Stack</span> outStack = <span class="code-keyword">new</span> <span class="code-class">Stack</span>();
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">QueueUsingStacks</span>&lt;E&gt; {
-
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Deque</span>&lt;E&gt; inStack =
-            <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
-
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Deque</span>&lt;E&gt; outStack =
-            <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
-
-    <span class="code-keyword">public</span> <span class="code-keyword">void</span> offer(E value) {
-        inStack.push(<span class="code-class">Objects</span>.requireNonNull(value));
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> enqueue(<span class="code-keyword">int</span> elem) {
+        inStack.push(elem);
     }
 
-    <span class="code-keyword">private</span> <span class="code-keyword">void</span> moveIfNecessary() {
-        <span class="code-keyword">if</span> (outStack.isEmpty()) {
-            <span class="code-keyword">while</span> (!inStack.isEmpty()) {
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> dequeue() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.error(<span class="code-string">"Queue underflow"</span>);
+        moveAll();
+        <span class="code-keyword">return</span> outStack.pop();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> peek() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.error(<span class="code-string">"Queue is empty"</span>);
+        moveAll();
+        <span class="code-keyword">return</span> outStack.top();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> moveAll() {
+        <span class="code-keyword">if</span> (outStack.empty()) {
+            <span class="code-keyword">while</span> (!inStack.empty())
                 outStack.push(inStack.pop());
-            }
         }
     }
 
-    <span class="code-keyword">public</span> E poll() {
-        moveIfNecessary();
-
-        <span class="code-keyword">return</span> outStack.poll();
-    }
-
-    <span class="code-keyword">public</span> E peek() {
-        moveIfNecessary();
-
-        <span class="code-keyword">return</span> outStack.peek();
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
-        <span class="code-keyword">return</span> inStack.isEmpty()
-                &amp;&amp; outStack.isEmpty();
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
-        <span class="code-keyword">return</span> inStack.size() + outStack.size();
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-        <span class="code-class">QueueUsingStacks</span>&lt;<span class="code-class">Integer</span>&gt; queue =
-                <span class="code-keyword">new</span> <span class="code-class">QueueUsingStacks</span>&lt;&gt;();
-
-        queue.offer(<span class="code-number">10</span>);
-        queue.offer(<span class="code-number">20</span>);
-        queue.offer(<span class="code-number">30</span>);
-
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 10</span>
-
-        queue.offer(<span class="code-number">40</span>);
-
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 20</span>
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 30</span>
-        <span class="code-class">System</span>.out.println(queue.poll()); <span class="code-comment">// 40</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty() {
+        <span class="code-keyword">return</span> inStack.empty() &amp;&amp; outStack.empty();
     }
 }</code></pre></div>
 
@@ -759,10 +618,9 @@ Poll → 30</code></pre></div>
         </table></div>
         <p>If higher numbers indicate higher priority, the processing order would be:</p>
     </div>
-    <div class="code-block"><pre><code>Process payment  (10)
-Generate report   (3)
-Update cache      (2)
-Send email        (1)</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-priority-order.svg" alt="Processing order when higher numbers mean higher priority: Process payment (10), then Generate report (3), Update cache (2) and Send email (1)" style="width:100%;max-width:780px">
+    </div>
 
     <div class="intro">
         <p>Priority queues are commonly implemented using a Binary Heap.</p>
@@ -782,72 +640,25 @@ Send email        (1)</code></pre></div>
 <span class="code-keyword">import</span> java.util.<span class="code-class">PriorityQueue</span>;
 <span class="code-keyword">import</span> java.util.<span class="code-class">Queue</span>;
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">PriorityQueueExample</span> {
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-comment">// Min-priority queue (default)</span>
+    <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; minQueue = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;();
+    minQueue.offer(<span class="code-number">30</span>);
+    minQueue.offer(<span class="code-number">10</span>);
+    minQueue.offer(<span class="code-number">20</span>);
+    <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 10</span>
+    <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 20</span>
+    <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 30</span>
 
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-
-        <span class="code-comment">// Min-priority queue (default)</span>
-        <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; minQueue =
-                <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;();
-
-        minQueue.offer(<span class="code-number">30</span>);
-        minQueue.offer(<span class="code-number">10</span>);
-        minQueue.offer(<span class="code-number">20</span>);
-
-        <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 10</span>
-        <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 20</span>
-        <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 30</span>
-
-        <span class="code-comment">// Max-priority queue</span>
-        <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; maxQueue =
-                <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;(
-                    <span class="code-class">Comparator</span>.reverseOrder()
-                );
-
-        maxQueue.offer(<span class="code-number">30</span>);
-        maxQueue.offer(<span class="code-number">10</span>);
-        maxQueue.offer(<span class="code-number">20</span>);
-
-        <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 30</span>
-        <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 20</span>
-        <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 10</span>
-    }
+    <span class="code-comment">// Max-priority queue</span>
+    <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; maxQueue = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;(<span class="code-class">Comparator</span>.reverseOrder());
+    maxQueue.offer(<span class="code-number">30</span>);
+    maxQueue.offer(<span class="code-number">10</span>);
+    maxQueue.offer(<span class="code-number">20</span>);
+    <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 30</span>
+    <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 20</span>
+    <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 10</span>
 }</code></pre></div>
-
-    <div class="intro">
-        <p class="minor-heading"><strong>Priority queue with custom objects</strong></p>
-    </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Comparator</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">PriorityQueue</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">Queue</span>;
-
-<span class="code-keyword">record</span> <span class="code-class">Task</span>(<span class="code-class">String</span> name, <span class="code-keyword">int</span> priority) {}
-
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">TaskScheduler</span> {
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-
-        <span class="code-class">Queue</span>&lt;<span class="code-class">Task</span>&gt; tasks = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;(
-            <span class="code-class">Comparator</span>.comparingInt(<span class="code-class">Task</span>::priority)
-                      .reversed()
-        );
-
-        tasks.offer(<span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-string">"Email"</span>, <span class="code-number">1</span>));
-        tasks.offer(<span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-string">"Report"</span>, <span class="code-number">3</span>));
-        tasks.offer(<span class="code-keyword">new</span> <span class="code-class">Task</span>(<span class="code-string">"Payment"</span>, <span class="code-number">10</span>));
-
-        <span class="code-keyword">while</span> (!tasks.isEmpty()) {
-            <span class="code-class">System</span>.out.println(tasks.poll());
-        }
-    }
-}</code></pre></div>
-
-    <div class="intro">
-        <p>Output:</p>
-    </div>
-    <div class="code-block"><pre><code>Task[name=Payment, priority=10]
-Task[name=Report, priority=3]
-Task[name=Email, priority=1]</code></pre></div>
 
     <div class="intro">
         <p><strong>Important:</strong> Java's <code>PriorityQueue</code> is not stable. Two tasks with equal priority are not guaranteed to execute in insertion order. If FIFO ordering among equal-priority tasks matters, include a monotonically increasing sequence number as a secondary comparison key.</p>
@@ -870,14 +681,9 @@ Task[name=Email, priority=1]</code></pre></div>
         <p>A Deque, pronounced deck, allows both insertion and removal at either end.</p>
         <p>Unlike a normal Queue, a Deque supports:</p>
     </div>
-    <div class="code-block"><pre><code>                 DEQUE
-
-          +----+----+----+
-Front ↔   | 10 | 20 | 30 |   ↔ Rear
-          +----+----+----+
-
-          Both ends support
-          insertion and removal</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-deque.svg" alt="Deque holding 10, 20 and 30; the Front and Rear ends both support insertion and removal" style="width:100%;max-width:640px">
+    </div>
 
     <div class="intro">
         <p class="minor-heading"><strong>Deque operations</strong></p>
@@ -897,29 +703,17 @@ Front ↔   | 10 | 20 | 30 |   ↔ Rear
     <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">ArrayDeque</span>;
 <span class="code-keyword">import</span> java.util.<span class="code-class">Deque</span>;
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">DequeExample</span> {
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    deque.addLast(<span class="code-number">10</span>);
+    deque.addLast(<span class="code-number">20</span>);
+    deque.addFirst(<span class="code-number">5</span>);
+    deque.addLast(<span class="code-number">30</span>);
 
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-
-        <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
-
-        deque.addLast(<span class="code-number">10</span>);
-        deque.addLast(<span class="code-number">20</span>);
-        deque.addFirst(<span class="code-number">5</span>);
-        deque.addLast(<span class="code-number">30</span>);
-
-        <span class="code-class">System</span>.out.println(deque);
-        <span class="code-comment">// [5, 10, 20, 30]</span>
-
-        <span class="code-class">System</span>.out.println(deque.pollFirst());
-        <span class="code-comment">// 5</span>
-
-        <span class="code-class">System</span>.out.println(deque.pollLast());
-        <span class="code-comment">// 30</span>
-
-        <span class="code-class">System</span>.out.println(deque);
-        <span class="code-comment">// [10, 20]</span>
-    }
+    <span class="code-class">System</span>.out.println(deque);             <span class="code-comment">// [5, 10, 20, 30]</span>
+    <span class="code-class">System</span>.out.println(deque.pollFirst()); <span class="code-comment">// 5</span>
+    <span class="code-class">System</span>.out.println(deque.pollLast());  <span class="code-comment">// 30</span>
+    <span class="code-class">System</span>.out.println(deque);             <span class="code-comment">// [10, 20]</span>
 }</code></pre></div>
 
     <div class="intro">
@@ -939,13 +733,9 @@ Front ↔   | 10 | 20 | 30 |   ↔ Rear
         <p>Java provides the <code>Queue&lt;E&gt;</code> interface under <code>java.util</code>.</p>
         <p>The hierarchy is conceptually:</p>
     </div>
-    <div class="code-block"><pre><code>                Iterable
-                   |
-                Collection
-                   |
-                  Queue
-                   |
-                  Deque</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-hierarchy.svg" alt="Java interface hierarchy: Iterable, then Collection extends Iterable, Queue extends Collection, and Deque extends Queue" style="width:100%;max-width:360px">
+    </div>
 
     <div class="intro">
         <p><code>Deque</code> extends <code>Queue</code>, adding operations at both ends.</p>
@@ -1092,24 +882,9 @@ queue.offer(<span class="code-number">20</span>);
         <p class="minor-heading"><strong>What happens when the queue becomes full?</strong></p>
         <p>Suppose the queue capacity is 3.</p>
     </div>
-    <div class="code-block"><pre><code>Producer inserts: A, B, C
-
-Queue:
-[A, B, C]  → FULL
-
-Producer tries to insert D
-
-put(D) blocks
-        |
-        | Consumer removes A
-        v
-Queue:
-[B, C]
-
-Producer resumes and inserts D
-
-Queue:
-[B, C, D]</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-blocking-full.svg" alt="BlockingQueue with capacity 3. The producer inserts A, B and C and the queue is full. put(D) blocks. The consumer removes A, leaving B and C. The producer resumes and inserts D, giving B, C, D" style="width:100%;max-width:780px">
+    </div>
 
     <div class="intro">
         <p>This is a form of backpressure: instead of accepting unlimited work and consuming all available memory, a bounded queue limits how far a producer can get ahead of a consumer.</p>
@@ -1162,7 +937,9 @@ queue.offer(<span class="code-string">"Task-B"</span>);
         <ul><li>Level 0: 1</li><li>Level 1: 2, 3</li><li>Level 2: 4, 5, 6, 7</li></ul>
         <p>The BFS traversal order, visiting neighbors from left to right, is:</p>
     </div>
-    <div class="code-block"><pre><code>1 → 2 → 3 → 4 → 5 → 6 → 7</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-bfs-order.svg" alt="BFS visit order: 1, 2, 3, 4, 5, 6, 7" style="width:100%;max-width:720px">
+    </div>
 
     <div class="intro">
         <p>Why does BFS require a queue?</p>
@@ -1369,17 +1146,9 @@ Window size = 3</code></pre></div>
         </table></div>
         <p>For example, inserting <code>10</code>, <code>20</code>, <code>30</code> produces different removal orders:</p>
     </div>
-    <div class="code-block"><pre><code>QUEUE (FIFO):
-10 → 20 → 30
-
-STACK (LIFO):
-30 → 20 → 10
-
-MAX PRIORITY QUEUE:
-30 → 20 → 10
-
-MIN PRIORITY QUEUE:
-10 → 20 → 30</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-removal-orders.svg" alt="Removal order after inserting 10, 20, 30: queue (FIFO) 10, 20, 30; stack (LIFO) 30, 20, 10; max priority queue 30, 20, 10; min priority queue 10, 20, 30" style="width:100%;max-width:620px">
+    </div>
 
     <div class="intro">
         <p>A priority queue may produce the same order as a stack or queue for some inputs, but its behavior is based on priority, not insertion order.</p>
