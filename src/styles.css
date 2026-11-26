@@ -82,7 +82,18 @@ br {
 .math { font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", serif; font-size: 1.12em; white-space: nowrap; }
 .math i { font-style: italic; }
 .math sub { font-size: 0.7em; }
-.intro p.math-display { text-align: center; margin: 10px 0; font-size: 1.1em; }
+/* display formulas: a box exactly like .code-block (no outline, same corners, padding and margins), only the fill colour differs */
+.intro p.math-display {
+    text-align: center;
+    margin: 10px 0 20px;
+    padding: 18px 22px;
+    border: 0;
+    border-radius: 3px;
+    background: #eef6f5;
+    font-size: 1.1em;
+}
+.math-display .katex-display { margin: 0; }   /* KaTeX's own 1em display margin removed: the box padding is the spacing */
+.intro .sw-slide p.math-display { margin: 4px 0; padding: 0; border: 0; background: none; }   /* formulas inside cards stay unboxed */
 .math .katex { font-size: 0.95em; }
 
 /* numbered steps card: number + bold title, description indented beside a thin rail */
@@ -968,7 +979,7 @@ br {
     overflow-x: auto;
     color: #383a42;
     font-family: Consolas, "Source Code Pro", "Courier New", monospace;
-    font-size: 19px;
+    font-size: 18px;
     line-height: 1.65;
     white-space: pre;
 }

@@ -213,17 +213,9 @@ document.addEventListener("DOMContentLoaded", function () {
         <span class="code-keyword">return</span> data[front];
     }
 
-    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
-        <span class="code-keyword">return</span> rear - front + <span class="code-number">1</span>;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty() {
-        <span class="code-keyword">return</span> front &gt; rear;
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> full() {
-        <span class="code-keyword">return</span> rear == data.length - <span class="code-number">1</span>;
-    }
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() { <span class="code-keyword">return</span> rear - front + <span class="code-number">1</span>; }
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty() { <span class="code-keyword">return</span> front &gt; rear; }
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> full() { <span class="code-keyword">return</span> rear == data.length - <span class="code-number">1</span>; }
 }</code></pre></div>
 
     <div class="subheading">Circular Queue (Ring Buffer)</div>
