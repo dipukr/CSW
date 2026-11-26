@@ -21,15 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="title">Queue</div>
 
     <div class="intro">
-        <p>A Queue is a fundamental linear data structure used in algorithms, operating systems, databases, messaging systems, and distributed applications.</p>
-        <p>This guide covers the definition, FIFO principle, internal working, operations, types, implementations in Java, algorithms, time and space complexity, real-world applications, and common interview problems.</p>
-    </div>
-
-    <div class="subheading">What is a Queue?</div>
-
-    <div class="intro">
-        <p>A Queue is a linear data structure that follows the FIFO (First In, First Out) principle.</p>
-        <p>This means:</p>
+        <p>A Queue is a linear data structure that follows the FIFO principle, which means:</p>
         <ul><li>The first element inserted is the first element removed.</li><li>New elements are inserted at the Rear (Tail).</li><li>Existing elements are removed from the Front (Head).</li></ul>
         <p>Think of people standing in a queue at a ticket counter. The person who joins first gets served first.</p>
         <p class="minor-heading"><strong>Queue diagram</strong></p>
@@ -157,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 
     <div class="intro">
-        <p>In addition, software systems frequently use Blocking Queues, Concurrent Queues, Bounded Queues, and Monotonic Queues, which will be explained below.</p>
+        <p>Additionally software systems frequently use Blocking Queues, Concurrent Queues, Bounded Queues and Monotonic Queues, which will be explained below.</p>
     </div>
 
     <div class="subheading">Queue Implementation Using an Array</div>
@@ -170,38 +162,69 @@ document.addEventListener("DOMContentLoaded", function () {
         <p>Suppose we have an array of capacity 5.</p>
         <p>Initially:</p>
     </div>
-    <div class="code-block"><pre><code>Index:   0    1    2    3    4
-       +----+----+----+----+----+
-       |    |    |    |    |    |
-       +----+----+----+----+----+</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-linear-empty.svg" alt="Empty array of capacity 5: indexes 0 to 4, all slots empty" style="width:100%;max-width:720px">
+    </div>
 
     <div class="intro">
         <p>After inserting <code>10</code>, <code>20</code>, <code>30</code>:</p>
     </div>
-    <div class="code-block"><pre><code>Index:   0    1    2    3    4
-       +----+----+----+----+----+
-       | 10 | 20 | 30 |    |    |
-       +----+----+----+----+----+
-         ↑         ↑
-       front      rear</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-linear-enqueued.svg" alt="After inserting 10, 20 and 30: indexes 0, 1 and 2 hold 10, 20 and 30; indexes 3 and 4 are empty; front points to index 0 and rear to index 2" style="width:100%;max-width:720px">
+    </div>
 
     <div class="intro">
         <p>After removing <code>10</code>:</p>
     </div>
-    <div class="code-block"><pre><code>Index:   0    1    2    3    4
-       +----+----+----+----+----+
-       |    | 20 | 30 |    |    |
-       +----+----+----+----+----+
-              ↑    ↑
-            front rear</code></pre></div>
+    <div class="svg-diagram">
+        <img src="../static/queue-linear-dequeued.svg" alt="After removing 10: index 0 is now empty, indexes 1 and 2 hold 20 and 30, indexes 3 and 4 are empty; front points to index 1 and rear to index 2" style="width:100%;max-width:720px">
+    </div>
 
-    <div class="intro">
-        <p>There is a problem.</p>
-        <p>If we continue inserting elements, eventually the rear reaches the last array index even though some positions at the beginning have become empty.</p>
+	<div class="intro">
+        <p>There is a problem. When we continue inserting elements, eventually the rear reaches the last array index even though some positions at the beginning have become empty.</p>
         <p>Two possible approaches are:</p>
         <ul><li>Shift remaining elements left after every removal. This makes dequeue O(n).</li><li>Advance the front without shifting and reuse freed space by wrapping around. This leads to a circular queue.</li></ul>
         <p>The second approach is typically more efficient.</p>
     </div>
+
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">final</span> <span class="code-keyword">class</span> <span class="code-class">Queue</span> {
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span>[] data;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> front;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> rear;
+
+    <span class="code-keyword">public</span> <span class="code-class">Queue</span>(<span class="code-keyword">int</span> size) {
+        <span class="code-keyword">this</span>.data = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[size];
+        <span class="code-keyword">this</span>.front = <span class="code-number">0</span>;
+        <span class="code-keyword">this</span>.rear = -<span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> enqueue(<span class="code-keyword">int</span> elem) {
+        <span class="code-keyword">if</span> (full()) <span class="code-class">Error</span>.error(<span class="code-string">"Queue overflow."</span>);
+        data[++rear] = elem;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> dequeue() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.error(<span class="code-string">"Queue empty."</span>);
+        <span class="code-keyword">return</span> data[front++];
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> front() {
+        <span class="code-keyword">if</span> (empty()) <span class="code-class">Error</span>.error(<span class="code-string">"Queue empty."</span>);
+        <span class="code-keyword">return</span> data[front];
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
+        <span class="code-keyword">return</span> rear - front + <span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty() {
+        <span class="code-keyword">return</span> front &gt; rear;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> full() {
+        <span class="code-keyword">return</span> rear == data.length - <span class="code-number">1</span>;
+    }
+}</code></pre></div>
 
     <div class="subheading">Circular Queue (Ring Buffer)</div>
 
