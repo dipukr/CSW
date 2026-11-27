@@ -11,7 +11,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     var F = "system-ui, -apple-system, 'Segoe UI', Arial, sans-serif";
     function t(x, y, s, o) { o = o || {}; return '<text x="' + x + '" y="' + y + '" text-anchor="' + (o.a || "middle") + '" font-family="' + F + '" font-size="' + (o.size || 13) + '" font-weight="' + (o.w || 500) + '" fill="' + (o.c || "#222222") + '">' + s + '</text>'; }
-    function r(x, y, w, h, hi, dash) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="' + (hi ? "#EDEDED" : "#FFFFFF") + '" stroke="' + (dash ? "#AAAAAA" : "#222222") + '" stroke-width="' + (hi ? 2 : 1.2) + '"' + (dash ? ' stroke-dasharray="4 3"' : '') + '/>'; }
+    function r(x, y, w, h, hi, dash) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="' + (hi ? "#EDEDED" : "#FFFFFF") + '" stroke="' + (dash ? "#AAAAAA" : "#222222") + '" stroke-width="1.2"' + (dash ? ' stroke-dasharray="4 3"' : '') + '/>'; }
     function arrow(x1, y1, x2, y2) { return '<path d="M' + x1 + ' ' + y1 + ' L' + x2 + ' ' + y2 + '" stroke="#555555" stroke-width="1.5" marker-end="url(#st-a)"/>'; }
     function svg(w, h, body) { return '<svg viewBox="0 0 ' + w + ' ' + h + '" style="width:100%;max-width:' + (w * 1.6) + 'px;display:block;margin:8px auto" role="img"><defs><marker id="st-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>' + body + '</svg>'; }
     function q(box, k) { return box.querySelector('[data-o="' + k + '"]'); }
@@ -19,16 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
     /* push, pop and peek */
     var sim = document.getElementById("st-sim");
     if (sim) {
-        var CAP = 6, stack = [10, 20, 30], hi = true;
+        var CAP = 6, stack = [10, 20, 30];
         var draw = function (op) {
-            var b = "", n = stack.length;
+            var n = stack.length;
+            /* outer stack container: open at the top, rounded bottom corners (same style as the static diagrams) */
+            var b = '<path d="M92 4 V249 A3 3 0 0 0 95 252 H245 A3 3 0 0 0 248 249 V4" stroke="#555555" stroke-width="1.8" fill="none"/>';
             for (var i = 0; i < CAP; i++) {
                 var y = 212 - i * 40, filled = i < n;
                 b += t(70, y + 21, "[" + i + "]", {c: "#555555", size: 12, w: 400});
-                b += r(100, y, 140, 32, filled && i === n - 1 && hi, !filled);
-                if (filled) b += t(170, y + 21, stack[i], {size: 14, w: 600});
+                if (filled) b += r(100, y, 140, 32, i === n - 1) + t(170, y + 21, stack[i], {size: 14, w: 600});
             }
-            if (n) b += arrow(310, 228 - (n - 1) * 40, 246, 228 - (n - 1) * 40) + t(318, 232 - (n - 1) * 40, "TOP", {a: "start", size: 12, w: 700});
+            if (n) b += arrow(310, 228 - (n - 1) * 40, 256, 228 - (n - 1) * 40) + t(318, 232 - (n - 1) * 40, "TOP", {a: "start", size: 12, w: 700});
             b += t(170, 266, "Bottom", {c: "#555555", size: 12, w: 400});
             q(sim, "svg").innerHTML = svg(360, 276, b);
             q(sim, "size").textContent = n;
@@ -43,11 +44,11 @@ document.addEventListener("DOMContentLoaded", function () {
         sim.addEventListener("click", function (e) {
             var a = e.target.closest("[data-a]"); if (!a) return;
             var n = stack.length, act = a.dataset.a;
-            if (act === "push") { var v = Number(q(sim, "entry").value); stack.push(v); hi = true; q(sim, "entry").value = String(v + 10); draw("push(" + v + "): element inserted at TOP"); }
-            else if (act === "pop") { var top = stack.pop(); hi = false; draw("pop() → " + top + ": element removed"); }
-            else if (act === "peek") { hi = true; draw(n ? "peek() → " + stack[n - 1] + ": stack unchanged" : "Underflow: stack is empty"); }
-            else if (act === "clear") { stack = []; hi = false; draw("clear(): all elements removed"); }
-            else if (act === "reset") { stack = [10, 20, 30]; hi = true; q(sim, "entry").value = "40"; draw("Stack reset"); }
+            if (act === "push") { var v = Number(q(sim, "entry").value); stack.push(v); q(sim, "entry").value = String(v + 10); draw("push(" + v + "): element inserted at TOP"); }
+            else if (act === "pop") { var top = stack.pop(); draw("pop() → " + top + ": element removed"); }
+            else if (act === "peek") { draw(n ? "peek() → " + stack[n - 1] + ": stack unchanged" : "Underflow: stack is empty"); }
+            else if (act === "clear") { stack = []; draw("clear(): all elements removed"); }
+            else if (act === "reset") { stack = [10, 20, 30]; q(sim, "entry").value = "40"; draw("Stack reset"); }
         });
         draw("Initial stack: [10, 20, 30]");
     }
