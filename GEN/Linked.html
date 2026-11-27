@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linked List</title>
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+/* labs from the downloaded guide, restyled to the site's black-and-white look */
+.ll-lab .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: end; margin: 12px 0; }
+.ll-lab .control { display: flex; flex-direction: column; gap: 3px; min-width: 100px; }
+.ll-lab .control label { font-size: 12px; font-weight: 600; color: #5d5d5d; }
+.ll-lab select, .ll-lab input { font: inherit; font-size: 14px; border: 1px solid rgba(13, 13, 13, 0.12); border-radius: 3px; background: #fff; padding: 6px 10px; }
+.ll-lab input { width: 90px; }
+.ll-lab .stage { background: #fff; border: 1px solid #e5e7eb; border-radius: 3px; padding: 8px; overflow: auto; }
+.ll-lab .stage svg { display: block; width: 100%; height: auto; min-width: 480px; overflow: visible; }
+.ll-lab .steptext { font-size: 14px; min-height: 52px; margin: 10px 0; }
+.ll-lab .meter { height: 5px; background: #e5e5e5; border-radius: 3px; overflow: hidden; }
+.ll-lab .meter span { display: block; background: #222; height: 100%; transition: width .3s; }
+.ll-lab .legend { font-size: 12px; color: #5d5d5d; display: flex; gap: 12px; flex-wrap: wrap; }
+.ll-lab .dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; border: 1.5px solid #222; }
+.ll-lab .dot.cur { background: #ededed; border-width: 2px; }
+.ll-lab .dot.new { background: #fff; border-style: dashed; }
+.ll-lab .dot.rem { background: #cfcfcf; border-color: #888; border-style: dashed; }
+.ll-lab .dot.slow { background: #222; border-radius: 50%; }
+.ll-lab .dot.fast { background: #fff; border-radius: 50%; }
+.ll-lab .svgscroll { overflow: auto; }
+.ll-lab .data { fill: #fff; stroke: #222; stroke-width: 1.2; }
+.ll-lab .split { stroke: #888; stroke-width: 1.1; }
+.ll-lab .svglabel { fill: #222; font: 600 12px system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+.ll-lab .svgsmall { fill: #555; font: 600 10px system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+.ll-lab .svgvalue { fill: #222; font: 600 20px system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+.ll-lab .svgmuted { fill: #555; font: 12px system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+.ll-lab .activeNode { fill: #ededed; stroke: #222; stroke-width: 2.4; }
+.ll-lab .newNode { fill: #fff; stroke: #222; stroke-width: 2; stroke-dasharray: 5 3; }
+.ll-lab .removedNode { fill: #cfcfcf; stroke: #888; stroke-width: 2; stroke-dasharray: 3 3; }
+.ll-lab .pulse { animation: ll-pulse .55s ease-out; }
+@keyframes ll-pulse { from { opacity: .35; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ll-lab .pulse { animation: none; } .ll-lab .meter span { transition: none; } }
+.ll-qa details { border-top: 1px solid #e5e7eb; padding: 10px 0; }
+.ll-qa details:last-child { border-bottom: 1px solid #e5e7eb; }
+.ll-qa summary { cursor: pointer; font-weight: 600; }
+.ll-qa details p { margin: 8px 0 0; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function player(prefix,render){let frames=[],i=0,timer=null;function stop(){if(timer!==null)clearInterval(timer);timer=null;$(prefix+'Play').textContent='Play';}function draw(){if(!frames.length)return;render(frames[i]);$(prefix+'Count').textContent=`Step ${i+1} / ${frames.length}`;$(prefix+'Meter').style.width=`${100*(i+1)/frames.length}%`;$(prefix+'Prev').disabled=i===0;$(prefix+'Next').disabled=i===frames.length-1;const commit=$(prefix+'Commit');if(commit)commit.disabled=i!==frames.length-1||!frames[i].result;}
+$(prefix+'Prev').onclick=()=>{stop();i=Math.max(0,i-1);draw();};$(prefix+'Next').onclick=()=>{stop();i=Math.min(frames.length-1,i+1);draw();};$(prefix+'Play').onclick=()=>{if(timer!==null){stop();return;}if(i===frames.length-1)i=0;draw();if(frames.length<=1)return;$(prefix+'Play').textContent='Pause';timer=setInterval(()=>{if(i<frames.length-1){i++;draw();}if(i===frames.length-1)stop();},950);};return {set(f){stop();frames=f;i=0;draw();},current(){return frames[i];},stop};}
+let values=[10,20,30,40], serial=0;
+function initial(){const nodes=values.map(v=>({id:++serial,v,next:null}));nodes.forEach((n,i)=>n.next=nodes[i+1]?.id??null);return {nodes,head:nodes[0]?.id??null,tail:nodes.at(-1)?.id??null};}
+function drawSim(f){const {nodes,head,tail,active,added,removed,prev,cur,next}=f;const W=Math.max(570,60+nodes.length*125),H=225;let xmap=new Map(nodes.map((n,i)=>[n.id,34+i*125]));const x=id=>xmap.get(id);let out=`<defs><marker id="simArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#555555"/></marker></defs>`;const line=d=>`<path d="${d}" fill="none" stroke="#555555" stroke-width="1.8" marker-end="url(#simArrow)"/>`;const txt=(a,b,s,cls='svglabel')=>`<text x="${a}" y="${b}" text-anchor="middle" class="${cls}">${esc(s)}</text>`;
+if(!nodes.length)out+=txt(W/2,104,'Empty list: head = tail = null');
+for(const n of nodes){let a=x(n.id),b=n.next===null?null:x(n.next);if(b===null||b===undefined){out+=line(`M${a+83} 108H${a+101}`)+txt(a+108,128,'null','svgsmall');}else if(b>a){if(b-a===125)out+=line(`M${a+83} 108H${b-4}`);else out+=line(`M${a+83} 108H${a+91}V73H${b+41}V91`);}else if(b<a){out+=line(`M${a+41} 144V165H${b+41}V148`);}else{out+=line(`M${a+83} 108H${a+100}V72H${a+41}V91`);}}
+for(const n of nodes){const a=x(n.id);const cls=n.id===removed?'removedNode':n.id===active?'activeNode':n.id===added?'newNode':'data';out+=`<g class="pulse"><rect x="${a}" y="95" width="83" height="49" rx="3" class="${cls}" stroke="#7c8fa1"/><path d="M${a+59} 95V144" class="split"/>${txt(a+30,126,n.v,'svgvalue')}${txt(a+71,125,'N','svgsmall')}</g>`;let labs=[];if(n.id===head)labs.push('HEAD');if(n.id===tail)labs.push('TAIL');if(labs.length){out+=txt(a+41,26,labs.join(' / '));out+=line(`M${a+41} 32V91`);}let refs=[];if(n.id===prev)refs.push('prev');if(n.id===cur)refs.push('cur');if(n.id===next)refs.push('next');if(refs.length)out+=txt(a+41,192,refs.join(' / '));}
+if(nodes.length)out+=txt(W/2,217,`head = ${head===null?'null':nodes.find(n=>n.id===head)?.v??'?'}  ·  tail = ${tail===null?'null':nodes.find(n=>n.id===tail)?.v??'?'}`,'svgmuted');$('simSvg').setAttribute('viewBox',`0 0 ${W} ${H}`);$('simSvg').innerHTML=out;$('simText').textContent=f.text;}
+const sim=player('sim',drawSim);
+function prepare(){const op=$('op').value, v=Number($('val').value),i=Number($('idx').value),st=initial(),frames=[];let active=null,added=null,removed=null,prev=null,cur=null,next=null;const find=id=>st.nodes.find(n=>n.id===id);const snap=(text,result)=>frames.push({nodes:st.nodes.map(n=>({...n})),head:st.head,tail:st.tail,active,added,removed,prev,cur,next,text,result});const ids=st.nodes.map(n=>n.id);const finish=(text)=>{let out=[],seen=new Set(),p=st.head;while(p!==null&&!seen.has(p)){seen.add(p);const n=find(p);if(!n)break;out.push(n.v);p=n.next;}st.nodes=st.nodes.filter(n=>seen.has(n.id)); // reorder nodes for final logical view
+let order=[],q=st.head;while(q!==null){const n=find(q);order.push(n);q=n.next;}st.nodes=order;active=added=removed=prev=cur=next=null;snap(text,out);};
+snap('Initial state. Follow next links from head to tail.');
+if(['front','back','insert'].includes(op)){const k=op==='front'?0:op==='back'?ids.length:i;if(!Number.isInteger(k)||k<0||k>ids.length||$('val').value===''||!Number.isSafeInteger(v)||Math.abs(v)>999999||ids.length>=8){snap('Invalid input: use an integer between −999999 and 999999, an index from 0 to size, and at most 8 nodes.');sim.set(frames);return;}
+const pred=k===0?null:ids[k-1],succ=k===ids.length?null:ids[k];if(op==='insert'&&k>0&&k<ids.length){for(let j=0;j<k;j++){active=ids[j];snap(`Traverse to predecessor: visit node ${find(active).v}.`);}}const n={id:++serial,v,next:null};st.nodes.splice(k,0,n);added=n.id;active=null;snap(`Allocate node ${v}; its next is initially null.`);n.next=succ;snap(`new.next = ${succ===null?'null':find(succ).v}. Save the successor link before publishing the new node.`);if(pred===null){st.head=n.id;snap('head = newNode. The new node becomes the first element.');}else{find(pred).next=n.id;active=pred;snap(`${find(pred).v}.next = newNode. The predecessor now reaches the new node.`);}if(succ===null){st.tail=n.id;snap('tail = newNode. Update the final node reference.');}finish('Insertion complete. All nodes are reachable and endpoints are consistent.');
+}else if(op==='delete'){if(!Number.isInteger(i)||i<0||i>=ids.length){snap('Invalid index: deletion requires 0 ≤ index < size.');sim.set(frames);return;}const victim=ids[i],pred=i===0?null:ids[i-1],n=find(victim);for(let j=0;j<i;j++){active=ids[j];snap(`Traverse to predecessor: visit node ${find(active).v}.`);}removed=victim;active=null;snap(`Identify victim ${n.v} and save its successor.`);if(pred===null)st.head=n.next;else find(pred).next=n.next;snap(pred===null?'head = victim.next.':'predecessor.next = victim.next. The victim is bypassed.');if(victim===st.tail){st.tail=pred;snap('Update tail to the predecessor (null if now empty).');}n.next=null;snap('victim.next = null. Detach the removed node.');finish('Deletion complete. The detached node is no longer part of the list.');
+}else if(op==='search'){if($('val').value===''||!Number.isSafeInteger(v)){snap('Enter a valid integer to search.');sim.set(frames);return;}let found=false;for(let j=0;j<ids.length;j++){active=ids[j];if(find(active).v===v){snap(`Found ${v} at index ${j}.`);found=true;break;}snap(`Compare ${find(active).v} with ${v}: not equal. Follow next.`);}if(!found){active=null;snap('Reached null. Value not found.');}finish(found?'Search finished; list unchanged.':'Search finished; value not found.');
+}else{prev=null;cur=st.head;const oldHead=st.head;while(cur!==null){let n=find(cur);active=cur;next=n.next;snap(`Save next = ${next===null?'null':find(next).v}; cur = ${n.v}.`);n.next=prev;snap(`cur.next = ${prev===null?'null':find(prev).v}. Reverse one link.`);prev=cur;cur=next;next=null;snap('Advance prev and cur. The saved suffix remains accessible.');}st.head=prev;st.tail=oldHead;snap('head = prev; tail = oldHead.');finish('Reversal complete. The final diagram is arranged in the new logical order.');}sim.set(frames);}
+$('build').onclick=prepare;$('resetList').onclick=()=>{values=[10,20,30,40];prepare();};$('simCommit').onclick=()=>{const f=sim.current();if(f&&f.result){values=[...f.result];prepare();}};$('op').onchange=()=>{const op=$('op').value;$('val').disabled=!['front','back','insert','search'].includes(op);$('idx').disabled=!['insert','delete'].includes(op);};$('op').onchange();prepare();
+function drawCycle(f){const W=760,H=230,entry=f.entry;const X=i=>30+i*115;let out='<defs><marker id="cycleArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#555555"/></marker></defs>';const line=d=>`<path d="${d}" fill="none" stroke="#555555" stroke-width="1.8" marker-end="url(#cycleArrow)"/>`;for(let i=0;i<6;i++){const x=X(i);if(i<5)out+=line(`M${x+70} 104H${X(i+1)-4}`);else if(entry<0)out+=line(`M${x+70} 104H${x+93}`)+`<text x="${x+98}" y="126" class="svgsmall" text-anchor="middle">null</text>`;else if(entry===5)out+=line(`M${x+70} 104H${x+91}V153H${x+35}V133`);else out+=line(`M${x+70} 104H${x+95}V181H${X(entry)+35}V133`);}
+for(let i=0;i<6;i++){const x=X(i);out+=`<rect x="${x}" y="80" width="70" height="49" rx="3" class="${f.slow===i&&f.fast===i&&f.meet?'newNode':'data'}" stroke="#7c8fa1"/><text x="${x+35}" y="111" text-anchor="middle" class="svgvalue">${(i+1)*10}</text>`;if(f.slow===i)out+=`<g class="pulse"><circle cx="${x+22}" cy="51" r="12" fill="#222222"/><text x="${x+22}" y="55" text-anchor="middle" fill="white" font-size="11" font-weight="700">S</text></g>`;if(f.fast===i)out+=`<g class="pulse"><circle cx="${x+49}" cy="51" r="12" fill="#FFFFFF" stroke="#222222" stroke-width="1.5"/><text x="${x+49}" y="55" text-anchor="middle" fill="#222222" font-size="11" font-weight="700">F</text></g>`;if(entry===i)out+=`<text x="${x+35}" y="146" text-anchor="middle" class="svgsmall">entry</text>`;}
+out+=`<text x="380" y="216" text-anchor="middle" class="svgmuted">Slow: ${f.slow<0?'null':(f.slow+1)*10} · Fast: ${f.fast<0?'null':(f.fast+1)*10}</text>`;$('cycleSvg').setAttribute('viewBox',`0 0 ${W} ${H}`);$('cycleSvg').innerHTML=out;$('cycleText').textContent=f.text;}
+const cycle=player('cycle',drawCycle);function buildCycle(){const entry=Number($('cycleEntry').value),frames=[];let slow=0,fast=0;const n=i=>i<0?-1:i<5?i+1:entry;const snap=(text,meet=false)=>frames.push({entry,slow,fast,text,meet});snap('Start both pointers at head. Initial equality does not prove a cycle.');let met=false;while(fast>=0&&n(fast)>=0){slow=n(slow);fast=n(n(fast));if(slow===fast){snap('The pointers meet at the same node. A cycle exists.',true);met=true;break;}snap('Move slow one link and fast two links. Compare their node identities.');}if(!met)snap('Fast is null or fast.next is null. No cycle exists.');else{slow=0;snap('Find entry: reset slow to head; leave fast at the meeting node.');while(slow!==fast){slow=n(slow);fast=n(fast);snap('Move both pointers one link.');}snap(`They meet at node ${(slow+1)*10}, the cycle entry.`,true);}cycle.set(frames);}$('cycleReset').onclick=buildCycle;$('cycleEntry').onchange=buildCycle;buildCycle();
+
+(function () {
+    var box = document.getElementById("ll-rev"); if (!box) return;
+    var F = "system-ui, -apple-system, 'Segoe UI', Arial, sans-serif";
+    var msgs = ["Initialize prev = null and current = head.", "Save next = 20. Reverse 10.next to null. Advance prev and current.", "Save next = 30. Reverse 20.next to 10. Advance prev and current.", "Save next = 40. Reverse 30.next to 20. Advance prev and current.", "Reverse 40.next to 30. Current becomes null.", "Set head = prev. Reversal is complete."];
+    var t = function (x, y, s, o) { o = o || {}; return '<text x="' + x + '" y="' + y + '" text-anchor="' + (o.a || "middle") + '" font-family="' + F + '" font-size="' + (o.size || 13) + '" font-weight="' + (o.w || 600) + '" fill="' + (o.c || "#222222") + '">' + s + '</text>'; };
+    var line = function (d) { return '<path d="' + d + '" fill="none" stroke="#555555" stroke-width="1.8" marker-end="url(#ll-rev-a)"/>'; };
+    var draw = function (step) {
+        var b = '<defs><marker id="ll-rev-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>';
+        [10, 20, 30, 40].forEach(function (n, i) {
+            var x = 68 + i * 148, done = i < step, cur = i === step;
+            b += '<rect x="' + x + '" y="85" width="82" height="55" rx="3" fill="' + (done ? "#EDEDED" : "#FFFFFF") + '" stroke="#222222" stroke-width="' + (cur ? 2.6 : 1.4) + '"' + (cur ? ' stroke-dasharray="6 3"' : '') + '/>';
+            b += t(x + 41, 119, n, {size: 22});
+            b += done ? line("M" + x + " 113H" + (i === 0 ? 38 : 156 + (i - 1) * 148)) : line("M" + (150 + i * 148) + " 113H" + (i === 3 ? 616 : 210 + i * 148));
+        });
+        if (step > 0) b += t(18, 117, "null", {a: "start", size: 11, w: 400});
+        if (step < 4) b += t(622, 117, "∅", {a: "start", size: 11, w: 400});
+        if (step === 0) b += t(20, 34, "prev = null", {a: "start"});
+        else { var px = 109 + (Math.min(step, 4) - 1) * 148; b += t(px, 28, step === 5 ? "HEAD" : "prev") + line("M" + px + " 36V79"); }
+        if (step < 4) { var cx = 109 + step * 148; b += t(cx, 185, "current") + line("M" + cx + " 169V146"); }
+        else b += t(320, 185, "current = null", {w: 400});
+        b += t(320, 215, step === 5 ? "40 → 30 → 20 → 10 → null" : "Shaded nodes belong to the reversed portion", {size: 12, w: 400, c: "#555555"});
+        return '<svg viewBox="0 0 640 225" style="width:100%;max-width:760px;display:block;margin:8px auto" role="img">' + b + '</svg>';
+    };
+    var i = 0, q = function (k) { return box.querySelector('[data-o="' + k + '"]'); };
+    var show = function () {
+        q("svg").innerHTML = draw(i); q("msg").textContent = msgs[i]; q("step").textContent = "Step " + (i + 1) + " of 6"; q("range").value = i;
+        box.querySelector('[data-a="prev"]').disabled = i === 0; box.querySelector('[data-a="next"]').disabled = i === 5; box.querySelector('[data-a="reset"]').disabled = i === 0;
+    };
+    q("range").addEventListener("input", function () { i = Number(q("range").value); show(); });
+    box.addEventListener("click", function (e) {
+        var a = e.target.closest("[data-a]"); if (!a) return;
+        i = a.dataset.a === "next" ? Math.min(i + 1, 5) : a.dataset.a === "prev" ? Math.max(i - 1, 0) : 0; show();
+    });
+    show();
+})();
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Linked List Data Structure</div>
+
+<!-- chatgpt-guide:start -->
+    <div class="intro">
+        <p>A <strong>Linked List</strong> is a linear data structure consisting of a collection of elements called <strong>nodes</strong>, where each node contains data and one or more references to other nodes.</p>
+        <p>Unlike an array, a linked list does not require its elements to occupy contiguous memory locations. Instead, elements are logically connected through references (pointers).</p>
+        <p>Linked lists are particularly useful for understanding dynamic memory allocation, pointer manipulation, stacks, queues, graph representations, hash tables and cache implementations.</p>
+    </div>
+
+    <div class="subheading">Basic structure of a linked list</div>
+    <div class="intro">
+        <p>Consider a linked list containing four integers: 10, 20, 30 and 40.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-basic-structure.svg" alt="A linked list of four nodes 10, 20, 30 and 40: each node stores a value and a reference to the next node, head points to the first node and the last node points to null" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>Each node stores a value and a reference to the next node. The last node points to null.</p>
+        <p>A node in a singly linked list has two components:</p>
+        <ul>
+            <li><strong>Data:</strong> The value stored inside the node.</li>
+            <li><strong>Next:</strong> A reference to the next node in the sequence.</li>
+        </ul>
+        <p>The linked list itself maintains a <code>head</code> reference and may also maintain a <code>tail</code> reference and a <code>size</code> counter.</p>
+        <p class="minor-heading"><strong>Java representation of a node</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-class">T</span> data;
+    <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next;
+
+    <span class="code-class">Node</span>(<span class="code-class">T</span> data) {
+        <span class="code-keyword">this</span>.data = data;
+        <span class="code-keyword">this</span>.next = <span class="code-keyword">null</span>;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Creating and connecting nodes manually:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; first = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">10</span>);
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; second = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">20</span>);
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; third = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">30</span>);
+first.next = second;
+second.next = third;
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; head = first;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The resulting structure is:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>head → 10 → 20 → 30 → null</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>In Java, <code>next</code> is an object reference rather than a directly manipulable memory address.</p>
+    </div>
+
+    <div class="subheading">Array vs linked list: memory representation</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Array — contiguous storage of elements</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-array-memory.svg" alt="Array: elements stored in contiguous memory, with illustrative addresses for 4-byte integers" style="width:100%;max-width:650px">
+    </div>
+    <div class="intro">
+        <p>Illustrative memory addresses for an array of 4-byte integers.</p>
+        <p class="minor-heading"><strong>Linked list — independently allocated nodes</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-linked-memory.svg" alt="Linked list: independently allocated nodes at scattered conceptual addresses, connected by next references" style="width:100%;max-width:650px">
+    </div>
+    <div class="intro">
+        <p>The addresses are conceptual; Java&rsquo;s JVM manages actual object placement and may move objects during garbage collection.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Characteristic</th><th>Array</th><th>Linked list</th></tr></thead>
+            <tbody>
+                <tr><td>Memory layout</td><td>Contiguous element storage</td><td>Independently allocated nodes</td></tr>
+                <tr><td>Size</td><td>Fixed for a basic array</td><td>Dynamic</td></tr>
+                <tr><td>Random access</td><td>O(1)</td><td>O(n)</td></tr>
+                <tr><td>Search, unsorted</td><td>O(n)</td><td>O(n)</td></tr>
+                <tr><td>Insertion at beginning</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Deletion at beginning</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Memory overhead</td><td>Lower</td><td>Higher</td></tr>
+                <tr><td>CPU cache locality</td><td>Usually good</td><td>Usually poor</td></tr>
+                <tr><td>Resizing</td><td>Requires a new array</td><td>Not required</td></tr>
+                <tr><td>Reverse traversal</td><td>Direct indexing</td><td>Depends on list type</td></tr>
+            </tbody>
+        </table></div>
+        <p>Although linked lists have efficient pointer-based insertion and deletion, locating the required node may still take O(n) time. This distinction is important in real-world performance.</p>
+    </div>
+
+    <div class="subheading">Types of linked lists</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Singly linked list (SLL)</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-type-singly.svg" alt="Singly linked list: each node has a next reference, and the last node points to null" style="width:100%;max-width:630px">
+    </div>
+    <div class="intro">
+        <p>Each node contains a <code>next</code> reference. Traversal is possible only in the forward direction.</p>
+        <p class="minor-heading"><strong>Doubly linked list (DLL)</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-type-doubly.svg" alt="Doubly linked list: each node has prev and next references" style="width:100%;max-width:630px">
+    </div>
+    <div class="intro">
+        <p>Each node contains <code>prev</code> and <code>next</code> references, allowing traversal in both directions.</p>
+        <p class="minor-heading"><strong>Circular singly linked list (CSLL)</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-type-circular-singly.svg" alt="Circular singly linked list: the last node points back to the first node" style="width:100%;max-width:630px">
+    </div>
+    <div class="intro">
+        <p>The last node points back to the first node instead of null.</p>
+        <p class="minor-heading"><strong>Circular doubly linked list (CDLL)</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-type-circular-doubly.svg" alt="Circular doubly linked list: bidirectional links with the last node connected back to the first" style="width:100%;max-width:630px">
+    </div>
+    <div class="intro">
+        <p>Combines bidirectional traversal with circular connectivity.</p>
+    </div>
+
+    <div class="subheading">Interactive animation — Linked list reversal</div>
+    <div class="intro">
+        <p>The following animation demonstrates how three references (<code>prev</code>, <code>current</code> and <code>next</code>) are used to reverse a linked list without losing any nodes.</p>
+    </div>
+    <div class="gw-card" id="ll-rev">
+        <p class="gw-title">Reverse a singly linked list</p>
+        <p class="gw-small" data-o="step"></p>
+        <div data-o="svg"></div>
+        <div class="gw-log"><p data-o="msg"></p></div>
+        <input class="gw-range" type="range" min="0" max="5" step="1" value="0" data-o="range" aria-label="Step">
+        <div class="gw-btns">
+            <button class="gw-btn" type="button" data-a="reset">Reset</button>
+            <button class="gw-btn" type="button" data-a="prev">Previous</button>
+            <button class="gw-btn primary" type="button" data-a="next">Next step</button>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Java implementation</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; reverse(<span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; head) {
+    <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; prev = <span class="code-keyword">null</span>;
+    <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; current = head;
+    <span class="code-keyword">while</span> (current != <span class="code-keyword">null</span>) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next = current.next;    <span class="code-comment">Preserve the remaining list</span>
+        current.next = prev;            <span class="code-comment">Reverse the current link</span>
+        prev = current;                 <span class="code-comment">Advance both references</span>
+        current = next;
+    }
+    <span class="code-keyword">return</span> prev;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <ul>
+            <li><strong>Time complexity:</strong> O(n)</li>
+            <li><strong>Auxiliary space complexity:</strong> O(1)</li>
+        </ul>
+    </div>
+
+    <div class="subheading">Complete interactive HTML learning document</div>
+    <div class="intro">
+        <p>The document contains comprehensive explanations of the following topics.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Chapter</th><th>Topics covered</th></tr></thead>
+            <tbody>
+                <tr><td>1. Fundamentals</td><td>Nodes, references, memory allocation, internal representation</td></tr>
+                <tr><td>2. Types</td><td>Singly, doubly, circular, sentinel, intrusive and unrolled lists</td></tr>
+                <tr><td>3. Operations</td><td>Insertion, deletion, searching, traversal and pointer manipulation</td></tr>
+                <tr><td>4. Singly linked list</td><td>Complete generic Java implementation from scratch</td></tr>
+                <tr><td>5. Doubly linked list</td><td>Complete generic Java implementation from scratch</td></tr>
+                <tr><td>6. Circular linked list</td><td>Java implementation and sentinel nodes</td></tr>
+                <tr><td>7. Complexity</td><td>Time complexity, space complexity and memory overhead</td></tr>
+                <tr><td>8. Algorithms</td><td>Eleven important linked-list algorithms with Java code</td></tr>
+                <tr><td>9. Java Collections</td><td>Internal behavior and usage of <code>java.util.LinkedList</code></td></tr>
+                <tr><td>10. Applications</td><td>LRU cache, stack, queue, scheduling, hashing and graphs</td></tr>
+                <tr><td>11. Implementation concerns</td><td>Concurrency, advantages, disadvantages and common mistakes</td></tr>
+                <tr><td>12. Practice</td><td>Interview questions, answers and exercises</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Interactive animations included in the document</strong></p>
+        <p>The HTML document includes an interactive linked-list playground with customizable values and indices, automatic playback, previous/next controls and SVG pointer visualizations for:</p>
+        <ul>
+            <li>Insertion at the beginning, middle and end.</li>
+            <li>Deletion at a specified index.</li>
+            <li>Searching for an element.</li>
+            <li>Reversing a linked list.</li>
+            <li>Floyd&rsquo;s cycle detection algorithm.</li>
+            <li>Finding the starting node of a cycle.</li>
+        </ul>
+        <p class="minor-heading"><strong>Algorithms implemented</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Algorithm</th><th>Time</th><th>Auxiliary space</th></tr></thead>
+            <tbody>
+                <tr><td>Iterative reversal</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Recursive reversal</td><td>O(n)</td><td>O(n)</td></tr>
+                <tr><td>Find middle node</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Detect cycle</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Find cycle starting point</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Nth node from end</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Merge two sorted lists</td><td>O(m+n)</td><td>O(1)</td></tr>
+                <tr><td>Merge sort</td><td>O(n log n)</td><td>O(log n)</td></tr>
+                <tr><td>Find intersection</td><td>O(m+n)</td><td>O(1)</td></tr>
+                <tr><td>Remove sorted duplicates</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Palindrome detection</td><td>O(n)</td><td>O(1)</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Fundamentals and mental model</div>
+    <div class="intro">
+        <p>A linked list is a sequence of independently allocated nodes connected by references. Each node holds a value and at least one link. The list stores an entry reference, <code>head</code>; a <code>tail</code> reference and a size counter are optional optimizations.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-singly-linked-list.svg" alt="Singly linked list. The head points to the first node. The tail points to the last node; tail.next is null." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>The head points to the first node. The tail points to the last node; tail.next is null.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-class">T</span> data;
+    <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next;
+    <span class="code-class">Node</span>(<span class="code-class">T</span> data) { <span class="code-keyword">this</span>.data = data; }
+}
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; a = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">10</span>);
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; b = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">20</span>);
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; c = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">30</span>);
+a.next = b;
+b.next = c;
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; head = a;</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Node identity is different from data equality: two nodes containing 10 can be separate objects. Assigning <code>Node&lt;Integer&gt; x = a</code> copies a reference, not the node. A change to <code>x.next</code> is visible through <code>a.next</code>.</p>
+        <ul>
+            <li><strong>Empty list:</strong> <code>head = tail = null</code>, size 0.</li>
+            <li><strong>One-element list:</strong> <code>head == tail</code>, and <code>head.next == null</code> for a linear singly linked list.</li>
+        </ul>
+        <p class="minor-heading"><strong>Physical vs logical order</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-array-contiguous-slots-and-independently.svg" alt="Array contiguous slots and independently allocated linked nodes. Illustrative addresses only. Java does not expose raw object addresses; garbage collection may relocate objects." style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Illustrative addresses only. Java does not expose raw object addresses; garbage collection may relocate objects.</p>
+        <p>Arrays of primitives store their values inline; arrays of object references store contiguous reference slots, not necessarily contiguous objects. Linked nodes add references and object overhead and commonly have weaker cache locality.</p>
+    </div>
+
+    <div class="subheading">The four major linked-list variants</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Singly linked list</strong></p>
+        <p>One next link per node. Forward traversal only; inexpensive head operations.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-singly-linked-list.svg" alt="Singly linked list. Singly linked list. N = next; P = previous." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>Singly linked list. N = next; P = previous.</p>
+        <p class="minor-heading"><strong>Doubly linked list</strong></p>
+        <p>Both previous and next links. Bidirectional navigation and O(1) removal given the node itself.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-doubly-linked-list.svg" alt="Doubly linked list. Doubly linked list. N = next; P = previous." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>Doubly linked list. N = next; P = previous.</p>
+        <p class="minor-heading"><strong>Circular Singly linked list</strong></p>
+        <p>The last node links back to the head. Useful for round-robin processing; traversal must stop after returning to the start.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-circular-singly-linked-list.svg" alt="Circular singly linked list. Circular singly linked list. N = next; P = previous." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>Circular singly linked list. N = next; P = previous.</p>
+        <p class="minor-heading"><strong>Circular Doubly linked list</strong></p>
+        <p>Both directions form a ring. Often implemented with a sentinel node to simplify boundaries.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-circular-doubly-linked-list.svg" alt="Circular doubly linked list. Circular doubly linked list. N = next; P = previous." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>Circular doubly linked list. N = next; P = previous.</p>
+        <p class="minor-heading"><strong>Other variants</strong></p>
+        <p><strong>Sentinel/dummy:</strong> an extra non-data node removes many head/tail special cases. <strong>Unrolled:</strong> each node stores a small array of elements to improve locality. <strong>Intrusive:</strong> the link fields live inside the object being stored. <strong>Skip list:</strong> extra levels of forward links give expected logarithmic search in sorted data.</p>
+    </div>
+
+    <div class="subheading">Interactive SVG lab: operations and pointer rewiring</div>
+    <div class="intro">
+        <p>Choose an operation and step through the actual link changes. The lab models a linear singly linked list with stable node identities. Its intermediate states intentionally show detached nodes or temporarily stale head/tail references.</p>
+    </div>
+    <div class="gw-card ll-lab"><p class="gw-title">Pointer playground</p><div class="controls"><div class="control"><label for="op">Operation</label><select id="op"><option value="front">Insert at head</option><option value="back">Insert at tail</option><option value="insert">Insert at index</option><option value="delete">Delete at index</option><option value="search">Search value</option><option value="reverse">Reverse list</option></select></div><div class="control"><label for="val">Value</label><input id="val" type="number" value="25" step="1"></div><div class="control"><label for="idx">Index (0-based)</label><input id="idx" type="number" value="2" min="0" step="1"></div><button id="build" class="gw-btn primary" type="button">Prepare steps</button><button id="resetList" class="gw-btn" type="button">Reset list</button></div><div class="stage"><svg id="simSvg" role="img" aria-label="Animated linked list operation"></svg></div><div class="steptext" id="simText" aria-live="polite"></div><div class="meter"><span id="simMeter"></span></div><div class="controls"><button id="simPrev" class="gw-btn" type="button">Previous</button><button id="simNext" class="gw-btn" type="button">Next step</button><button id="simPlay" class="gw-btn primary" type="button">Play</button><button id="simCommit" class="gw-btn" type="button">Apply final list</button><span id="simCount" class="svgmuted"></span></div><div class="legend"><span><i class="dot cur"></i>Current node</span><span><i class="dot new"></i>New node</span><span><i class="dot rem"></i>Removed node</span></div><p class="gw-small">Apply final list commits a completed operation and prepares the next one against that list. For readability, the playground limits lists to 8 nodes.</p></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Traversal and search</strong></p>
+        <p>Start at head; follow next until null. Searching by value returns the first matching node/index or a failure indicator. Both are O(n) time and O(1) auxiliary space.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">for</span> (<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; cur = head; cur != <span class="code-keyword">null</span>; cur = cur.next) {
+    <span class="code-class">System</span>.out.println(cur.data);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Insert at the head</strong></p>
+        <p>Set the new node&rsquo;s next to the old head, then replace head. If the list was empty, tail must also become the new node.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-singly-linked-list-2.svg" alt="Singly linked list. After inserting 5: new.next = oldHead; head = new." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>After inserting 5: new.next = oldHead; head = new.</p>
+        <p class="minor-heading"><strong>Insert after a known node</strong></p>
+        <p>Save the successor by assigning <code>newNode.next = prev.next</code> first; then write <code>prev.next = newNode</code>. Reversing these assignments without saving the old link can create a self-loop and lose the suffix.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; newNode = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">25</span>);
+newNode.next = prev.next;
+prev.next = newNode;
+<span class="code-comment">If prev was tail, tail = newNode.</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Delete a node</strong></p>
+        <p>For a singly linked list, deletion normally requires its predecessor. Redirect the predecessor to the victim&rsquo;s successor. For head deletion, move head forward. If removing the final node, update tail. Clear detached links when appropriate to avoid unnecessary retention.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; victim = prev.next;
+prev.next = victim.next;
+victim.next = <span class="code-keyword">null</span>;    <span class="code-comment">If victim was tail, tail = prev.</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Index-based access</strong></p>
+        <p>Unlike an array, you cannot calculate a node address from its index. To reach index k, follow k links starting at head. A doubly linked list can traverse from the closer end when its size is known.</p>
+    </div>
+    <div class="callout callout-note"><p><strong>Complexity rule:</strong> the pointer rewrite is O(1); finding the position can be O(n). Appending is O(1) only if a tail reference is maintained.</p></div>
+
+    <div class="subheading">Complete singly linked list implementation</div>
+    <div class="intro">
+        <p>Generic, null-tolerant, maintains head, tail and size. All index operations are bounds checked. Save as <code>SinglyLinkedList.java</code>.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SinglyLinkedList</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; {
+        <span class="code-class">T</span> data;
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next;
+        <span class="code-class">Node</span>(<span class="code-class">T</span> data) { <span class="code-keyword">this</span>.data = data; }
+    }
+
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; head, tail;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() { <span class="code-keyword">return</span> size; }
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() { <span class="code-keyword">return</span> size == <span class="code-number">0</span>; }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> addFirst(<span class="code-class">T</span> data) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(data);
+        n.next = head;
+        head = n;
+        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) tail = n;
+        size++;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> addLast(<span class="code-class">T</span> data) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(data);
+        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) head = n;
+        <span class="code-keyword">else</span> tail.next = n;
+        tail = n;
+        size++;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> add(<span class="code-keyword">int</span> index, <span class="code-class">T</span> data) {
+        <span class="code-keyword">if</span> (index &lt; <span class="code-number">0</span> || index &gt; size)
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IndexOutOfBoundsException</span>(index);
+        <span class="code-keyword">if</span> (index == <span class="code-number">0</span>) { addFirst(data); <span class="code-keyword">return</span>; }
+        <span class="code-keyword">if</span> (index == size) { addLast(data); <span class="code-keyword">return</span>; }
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; prev = nodeAt(index - <span class="code-number">1</span>);
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(data);
+        n.next = prev.next;
+        prev.next = n;
+        size++;
+    }
+
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; nodeAt(<span class="code-keyword">int</span> index) {
+        <span class="code-keyword">if</span> (index &lt; <span class="code-number">0</span> || index &gt;= size)
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IndexOutOfBoundsException</span>(index);
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; cur = head;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; index; i++) cur = cur.next;
+        <span class="code-keyword">return</span> cur;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> get(<span class="code-keyword">int</span> index) { <span class="code-keyword">return</span> nodeAt(index).data; }
+    <span class="code-keyword">public</span> <span class="code-class">T</span> set(<span class="code-keyword">int</span> index, <span class="code-class">T</span> data) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n = nodeAt(index);
+        <span class="code-class">T</span> old = n.data;
+        n.data = data;
+        <span class="code-keyword">return</span> old;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> removeFirst() {
+        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>();
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; old = head;
+        head = old.next;
+        old.next = <span class="code-keyword">null</span>;
+        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) tail = <span class="code-keyword">null</span>;
+        size--;
+        <span class="code-keyword">return</span> old.data;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> removeLast() {
+        <span class="code-keyword">if</span> (size == <span class="code-number">0</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>();
+        <span class="code-keyword">return</span> remove(size - <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> remove(<span class="code-keyword">int</span> index) {
+        <span class="code-keyword">if</span> (index &lt; <span class="code-number">0</span> || index &gt;= size)
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IndexOutOfBoundsException</span>(index);
+        <span class="code-keyword">if</span> (index == <span class="code-number">0</span>) <span class="code-keyword">return</span> removeFirst();
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; prev = nodeAt(index - <span class="code-number">1</span>);
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; victim = prev.next;
+        prev.next = victim.next;
+        <span class="code-keyword">if</span> (victim == tail) tail = prev;
+        victim.next = <span class="code-keyword">null</span>;
+        size--;
+        <span class="code-keyword">return</span> victim.data;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> indexOf(<span class="code-class">T</span> value) {
+        <span class="code-keyword">int</span> i = <span class="code-number">0</span>;
+        <span class="code-keyword">for</span> (<span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; cur = head; cur != <span class="code-keyword">null</span>; cur = cur.next, i++)
+            <span class="code-keyword">if</span> (<span class="code-class">Objects</span>.equals(cur.data, value)) <span class="code-keyword">return</span> i;
+        <span class="code-keyword">return</span> -<span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> contains(<span class="code-class">T</span> value) { <span class="code-keyword">return</span> indexOf(value) &gt;= <span class="code-number">0</span>; }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> removeValue(<span class="code-class">T</span> value) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; prev = <span class="code-keyword">null</span>, cur = head;
+        <span class="code-keyword">while</span> (cur != <span class="code-keyword">null</span> &amp;&amp; !<span class="code-class">Objects</span>.equals(cur.data, value)) {
+            prev = cur;
+            cur = cur.next;
+        }
+        <span class="code-keyword">if</span> (cur == <span class="code-keyword">null</span>) <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+        <span class="code-keyword">if</span> (prev == <span class="code-keyword">null</span>) { removeFirst(); <span class="code-keyword">return</span> <span class="code-keyword">true</span>; }
+        prev.next = cur.next;
+        <span class="code-keyword">if</span> (cur == tail) tail = prev;
+        cur.next = <span class="code-keyword">null</span>;
+        size--;
+        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> reverse() {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; prev = <span class="code-keyword">null</span>, cur = head;
+        tail = head;
+        <span class="code-keyword">while</span> (cur != <span class="code-keyword">null</span>) {
+            <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        head = prev;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> clear() { head = tail = <span class="code-keyword">null</span>; size = <span class="code-number">0</span>; }
+
+    <span class="code-annotation">@Override</span> <span class="code-keyword">public</span> <span class="code-class">String</span> toString() {
+        <span class="code-class">StringBuilder</span> out = <span class="code-keyword">new</span> <span class="code-class">StringBuilder</span>(<span class="code-string">"["</span>);
+        <span class="code-keyword">for</span> (<span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; cur = head; cur != <span class="code-keyword">null</span>; cur = cur.next) {
+            <span class="code-keyword">if</span> (cur != head) out.append(<span class="code-string">", "</span>);
+            out.append(cur.data);
+        }
+        <span class="code-keyword">return</span> out.append(<span class="code-string">"]"</span>).toString();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">SinglyLinkedList</span>&lt;<span class="code-class">Integer</span>&gt; list = <span class="code-keyword">new</span> <span class="code-class">SinglyLinkedList</span>&lt;&gt;();
+        list.addLast(<span class="code-number">10</span>);
+        list.addLast(<span class="code-number">20</span>);
+        list.addFirst(<span class="code-number">5</span>);
+        list.add(<span class="code-number">2</span>, <span class="code-number">15</span>);
+        <span class="code-class">System</span>.out.println(list);           <span class="code-comment">[5, 10, 15, 20]</span>
+        list.remove(<span class="code-number">1</span>);
+        list.reverse();
+        <span class="code-class">System</span>.out.println(list);           <span class="code-comment">[20, 15, 5]</span>
+        <span class="code-class">System</span>.out.println(list.get(<span class="code-number">1</span>));    <span class="code-comment">15</span>
+        <span class="code-class">System</span>.out.println(list.size());    <span class="code-comment">3</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Invariants after each public method: size counts reachable nodes; empty means both endpoints are null; otherwise tail is reachable from head and tail.next is null. This implementation is not thread-safe and does not implement the full Java List interface.</p>
+    </div>
+
+    <div class="subheading">Doubly linked list implementation</div>
+    <div class="intro">
+        <p>A doubly linked list makes backward navigation possible. With the node already known, removal is O(1), including tail removal. For a middle insertion or removal, both adjacent links must be updated.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-doubly-linked-list.svg" alt="Doubly linked list. Doubly linked list. N = next; P = previous." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>Doubly linked list. N = next; P = previous.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>n.prev = left;    <span class="code-comment">Insert n between left and right (both may be null at boundaries).</span>
+n.next = right;
+<span class="code-keyword">if</span> (left != <span class="code-keyword">null</span>) left.next = n; <span class="code-keyword">else</span> head = n;
+<span class="code-keyword">if</span> (right != <span class="code-keyword">null</span>) right.prev = n; <span class="code-keyword">else</span> tail = n;</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">DoublyLinkedList</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; {
+        <span class="code-class">T</span> data;
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; prev, next;
+        <span class="code-class">Node</span>(<span class="code-class">T</span> data) { <span class="code-keyword">this</span>.data = data; }
+    }
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; head, tail;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() { <span class="code-keyword">return</span> size; }
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() { <span class="code-keyword">return</span> size == <span class="code-number">0</span>; }
+
+    <span class="code-keyword">private</span> <span class="code-keyword">void</span> linkBetween(<span class="code-class">T</span> data, <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; left, <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; right) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(data);
+        n.prev = left; n.next = right;
+        <span class="code-keyword">if</span> (left == <span class="code-keyword">null</span>) head = n; <span class="code-keyword">else</span> left.next = n;
+        <span class="code-keyword">if</span> (right == <span class="code-keyword">null</span>) tail = n; <span class="code-keyword">else</span> right.prev = n;
+        size++;
+    }
+
+    <span class="code-keyword">private</span> <span class="code-class">T</span> unlink(<span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; left = n.prev, right = n.next;
+        <span class="code-keyword">if</span> (left == <span class="code-keyword">null</span>) head = right; <span class="code-keyword">else</span> left.next = right;
+        <span class="code-keyword">if</span> (right == <span class="code-keyword">null</span>) tail = left; <span class="code-keyword">else</span> right.prev = left;
+        n.prev = n.next = <span class="code-keyword">null</span>;
+        size--;
+        <span class="code-keyword">return</span> n.data;
+    }
+
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; nodeAt(<span class="code-keyword">int</span> i) {
+        <span class="code-keyword">if</span> (i &lt; <span class="code-number">0</span> || i &gt;= size) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IndexOutOfBoundsException</span>(i);
+        <span class="code-keyword">if</span> (i &lt; size / <span class="code-number">2</span>) {
+            <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; cur = head;
+            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> k = <span class="code-number">0</span>; k &lt; i; k++) cur = cur.next;
+            <span class="code-keyword">return</span> cur;
+        }
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; cur = tail;
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> k = size - <span class="code-number">1</span>; k &gt; i; k--) cur = cur.prev;
+        <span class="code-keyword">return</span> cur;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> addFirst(<span class="code-class">T</span> data) { linkBetween(data, <span class="code-keyword">null</span>, head); }
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> addLast(<span class="code-class">T</span> data) { linkBetween(data, tail, <span class="code-keyword">null</span>); }
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> add(<span class="code-keyword">int</span> i, <span class="code-class">T</span> data) {
+        <span class="code-keyword">if</span> (i &lt; <span class="code-number">0</span> || i &gt; size) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IndexOutOfBoundsException</span>(i);
+        <span class="code-keyword">if</span> (i == size) { addLast(data); <span class="code-keyword">return</span>; }
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; right = nodeAt(i);
+        linkBetween(data, right.prev, right);
+    }
+    <span class="code-keyword">public</span> <span class="code-class">T</span> get(<span class="code-keyword">int</span> i) { <span class="code-keyword">return</span> nodeAt(i).data; }
+    <span class="code-keyword">public</span> <span class="code-class">T</span> remove(<span class="code-keyword">int</span> i) { <span class="code-keyword">return</span> unlink(nodeAt(i)); }
+    <span class="code-keyword">public</span> <span class="code-class">T</span> removeFirst() {
+        <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>();
+        <span class="code-keyword">return</span> unlink(head);
+    }
+    <span class="code-keyword">public</span> <span class="code-class">T</span> removeLast() {
+        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>();
+        <span class="code-keyword">return</span> unlink(tail);
+    }
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> printBackward() {
+        <span class="code-keyword">for</span> (<span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n = tail; n != <span class="code-keyword">null</span>; n = n.prev)
+            <span class="code-class">System</span>.out.print(<span class="code-string">"{n.data} "</span>);
+        <span class="code-class">System</span>.out.println();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Invariants: head.prev = null, tail.next = null and whenever x.next = y, y.prev = x. Searching by index takes O(min(i, n−1−i)) hops, still O(n) worst case.</p>
+    </div>
+
+    <div class="subheading">Circular linked lists and sentinel nodes</div>
+    <div class="intro">
+        <p>A circular singly linked list can store only tail: head is <code>tail.next</code>. A one-element ring has <code>tail.next == tail</code>. Use a do-while traversal, bounded iteration or an explicit stopping condition; a null-based loop would never terminate.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-circular-singly-linked-list.svg" alt="Circular singly linked list. Circular singly linked list. N = next; P = previous." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>Circular singly linked list. N = next; P = previous.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">CircularLinkedList</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; {
+        <span class="code-class">T</span> data; <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next;
+        <span class="code-class">Node</span>(<span class="code-class">T</span> data) { <span class="code-keyword">this</span>.data = data; }
+    }
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; tail;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size;
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() { <span class="code-keyword">return</span> size; }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> addFirst(<span class="code-class">T</span> data) {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; n = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(data);
+        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) { n.next = n; tail = n; }
+        <span class="code-keyword">else</span> { n.next = tail.next; tail.next = n; }
+        size++;
+    }
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> addLast(<span class="code-class">T</span> data) {
+        addFirst(data);
+        tail = tail.next;
+    }
+    <span class="code-keyword">public</span> <span class="code-class">T</span> removeFirst() {
+        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>();
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; first = tail.next;
+        <span class="code-keyword">if</span> (first == tail) tail = <span class="code-keyword">null</span>;
+        <span class="code-keyword">else</span> tail.next = first.next;
+        first.next = <span class="code-keyword">null</span>;
+        size--;
+        <span class="code-keyword">return</span> first.data;
+    }
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> rotate() {
+        <span class="code-keyword">if</span> (tail != <span class="code-keyword">null</span>) tail = tail.next;
+    }
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> print() {
+        <span class="code-keyword">if</span> (tail == <span class="code-keyword">null</span>) <span class="code-keyword">return</span>;
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; head = tail.next, cur = head;
+        <span class="code-keyword">do</span> {
+            <span class="code-class">System</span>.out.print(<span class="code-string">"{cur.data} "</span>);
+            cur = cur.next;
+        } <span class="code-keyword">while</span> (cur != head);
+        <span class="code-class">System</span>.out.println();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Circular doubly linked list with sentinel</strong></p>
+        <p>A sentinel is a special node that is never returned as a data element. Initially its next and prev point to itself. Inserting between any two adjacent nodes follows the same four assignments; deleting a real node uses two assignments. The sentinel is never removed.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-circular-doubly-linked-list-2.svg" alt="Circular doubly linked list. S represents the sentinel; the circular links connect the final node back to S. Head and tail labels here indicate traversal endpoints, not separate required fields." style="width:100%;max-width:686px">
+    </div>
+    <div class="intro">
+        <p>S represents the sentinel; the circular links connect the final node back to S. Head and tail labels here indicate traversal endpoints, not separate required fields.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>sentinel.next = sentinel;    <span class="code-comment">Empty sentinel ring</span>
+sentinel.prev = sentinel;
+n.prev = p.prev;             <span class="code-comment">Insert n before p (p may be sentinel)</span>
+n.next = p;
+p.prev.next = n;
+p.prev = n;
+n.prev.next = n.next;        <span class="code-comment">Remove real node n (never remove sentinel)</span>
+n.next.prev = n.prev;
+n.prev = n.next = <span class="code-keyword">null</span>;</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Time and space complexity</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Singly (head + tail)</th><th>Doubly (head + tail)</th><th>ArrayList (dynamic array)</th></tr></thead>
+            <tbody>
+                <tr><td>Read head / tail</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+                <tr><td>Get / set index i</td><td>O(i) → O(n)</td><td>O(min(i,n−1−i)) → O(n)</td><td>O(1)</td></tr>
+                <tr><td>Search unsorted</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
+                <tr><td>Insert front</td><td>O(1)</td><td>O(1)</td><td>O(n)</td></tr>
+                <tr><td>Append</td><td>O(1)</td><td>O(1)</td><td>Amortized O(1); worst O(n)</td></tr>
+                <tr><td>Remove first</td><td>O(1)</td><td>O(1)</td><td>O(n)</td></tr>
+                <tr><td>Remove last</td><td>O(n)</td><td>O(1)</td><td>O(1)</td></tr>
+                <tr><td>Insert at arbitrary index</td><td>O(n) worst</td><td>O(n) worst</td><td>O(n) worst</td></tr>
+                <tr><td>Insert after known node</td><td>O(1)</td><td>O(1)</td><td>O(n) worst (known index)</td></tr>
+                <tr><td>Delete known node</td><td>O(1) with predecessor; otherwise O(n)</td><td>O(1)</td><td>O(n) worst (known index)</td></tr>
+                <tr><td>Reverse</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
+                <tr><td>Total storage</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
+            </tbody>
+        </table></div>
+        <p>For circular lists, head and tail insertion remain O(1) with tail access. Removing the tail of a singly circular list still requires its predecessor, so O(n). Circular doubly linked lists allow O(1) removal at either end.</p>
+        <p>Space for each singly node: payload or payload reference + one link + object metadata/alignment; doubly adds one link. Exact byte counts depend on JVM settings, compressed references, object layout and element type. An array stores slots together, so sequential scans are often much faster despite identical O(n) complexity.</p>
+    </div>
+    <div class="callout callout-note"><p><strong>Amortized vs worst case:</strong> dynamic arrays occasionally allocate a larger backing array and copy references, but repeated appends average constant cost. A linked list allocates a separate node per insertion.</p></div>
+
+    <div class="subheading">Algorithms and pointer patterns</div>
+    <div class="intro">
+        <p>The following static methods use the simple integer <code>Node</code> below. Unless otherwise stated, assume an acyclic linear list and exclusive access to nodes. Algorithms that modify links return the new head when necessary; update any wrapper list&rsquo;s tail and size accordingly.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span> {
+    <span class="code-keyword">int</span> val;
+    <span class="code-class">Node</span> next;
+    <span class="code-class">Node</span>(<span class="code-keyword">int</span> val) { <span class="code-keyword">this</span>.val = val; }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Reverse a linked list iteratively</strong></p>
+        <p>Maintain <code>prev</code> (reversed prefix), <code>cur</code> (current node), and <code>next</code> (saved suffix). Save next before changing the link. Each node is processed once. Time O(n), auxiliary space O(1).</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> reverse(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> prev = <span class="code-keyword">null</span>, cur = head;
+    <span class="code-keyword">while</span> (cur != <span class="code-keyword">null</span>) {
+        <span class="code-class">Node</span> next = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = next;
+    }
+    <span class="code-keyword">return</span> prev;
+}</code></pre>
+        </div>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-reversal-loop-invariant.svg" alt="Reversal loop invariant. After processing 10 and 20, the two chains are separate. The saved suffix prevents data loss." style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>After processing 10 and 20, the two chains are separate. The saved suffix prevents data loss.</p>
+        <p class="minor-heading"><strong>Recursive reversal</strong></p>
+        <p>Reverse the suffix, redirect the successor to the current node, then terminate the old forward link. Time O(n); O(n) call stack. Java does not guarantee tail-call optimization, so prefer iteration for long lists.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> reverseRecursive(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>) <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> newHead = reverseRecursive(head.next);
+    head.next.next = head;
+    head.next = <span class="code-keyword">null</span>;
+    <span class="code-keyword">return</span> newHead;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Find the middle node</strong></p>
+        <p>Move slow one link and fast two. When fast reaches the end, slow is at the midpoint. For even lengths this version returns the second middle. Time O(n), space O(1).</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> middle(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="code-keyword">return</span> slow;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Floyd&rsquo;s cycle detection (tortoise and hare)</strong></p>
+        <p>Inside a cycle of length λ, fast gains one position on slow each iteration modulo λ. Thus they must meet within at most λ iterations after both are in the cycle. If there is no cycle, fast reaches null. Compare references, not values.</p>
+    </div>
+    <div class="gw-card ll-lab"><p class="gw-title">Cycle detection animation</p><div class="controls"><div class="control"><label for="cycleEntry">Tail points to</label><select id="cycleEntry"><option value="-1">null (no cycle)</option><option value="0">Node 10</option><option value="1">Node 20</option><option value="2" selected>Node 30</option><option value="3">Node 40</option><option value="4">Node 50</option><option value="5">Node 60 (self-loop)</option></select></div><button id="cycleReset" class="gw-btn" type="button">Reset</button></div><div class="stage"><svg id="cycleSvg" role="img" aria-label="Floyd cycle detection animation"></svg></div><div id="cycleText" class="steptext" aria-live="polite"></div><div class="meter"><span id="cycleMeter"></span></div><div class="controls"><button id="cyclePrev" class="gw-btn" type="button">Previous</button><button id="cycleNext" class="gw-btn" type="button">Next step</button><button id="cyclePlay" class="gw-btn primary" type="button">Play</button><span id="cycleCount" class="svgmuted"></span></div><div class="legend"><span><i class="dot slow"></i>Slow</span><span><i class="dot fast"></i>Fast</span></div></div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-keyword">boolean</span> hasCycle(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+        <span class="code-keyword">if</span> (slow == fast) <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+}
+
+<span class="code-keyword">static</span> <span class="code-class">Node</span> cycleStart(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+        <span class="code-keyword">if</span> (slow == fast) {
+            slow = head;
+            <span class="code-keyword">while</span> (slow != fast) {
+                slow = slow.next;
+                fast = fast.next;
+            }
+            <span class="code-keyword">return</span> slow;
+        }
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Why the reset works: let μ be the distance from head to cycle entry and λ the cycle length. At the meeting after t slow steps, fast has traveled 2t, so t is a multiple of λ. The meeting offset is (t−μ) modulo λ. Moving μ steps from the meeting reaches the entry, just as moving μ steps from head does. Both algorithms use O(n) time and O(1) space, where n counts distinct reachable nodes.</p>
+        <p class="minor-heading"><strong>Nth node from the end (one pass)</strong></p>
+        <p>Advance fast by n links, then move both pointers together. When fast reaches null, slow is the nth node from the end. n is 1-based.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> nthFromEnd(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> n) {
+    <span class="code-keyword">if</span> (n &lt;= <span class="code-number">0</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; n; i++) {
+        <span class="code-keyword">if</span> (fast == <span class="code-keyword">null</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+        fast = fast.next;
+    }
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+    <span class="code-keyword">return</span> slow;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Merge two sorted lists</strong></p>
+        <p>A dummy node simplifies the first insertion. Choose the smaller front node and move its input pointer. Append the remaining suffix. This destructive merge assumes disjoint acyclic sorted lists. O(m+n) time and O(1) extra space.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> merge(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b) {
+    <span class="code-class">Node</span> dummy = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>), tail = dummy;
+    <span class="code-keyword">while</span> (a != <span class="code-keyword">null</span> &amp;&amp; b != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (a.val &lt;= b.val) {
+            tail.next = a; a = a.next;
+        } <span class="code-keyword">else</span> {
+            tail.next = b; b = b.next;
+        }
+        tail = tail.next;
+    }
+    tail.next = a != <span class="code-keyword">null</span> ? a : b;
+    <span class="code-keyword">return</span> dummy.next;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Merge sort</strong></p>
+        <p>Split the list into halves using two pointers; recursively sort both halves and merge. Use fast = head.next to guarantee a proper split for two nodes. O(n log n) time, O(log n) recursion space with iterative merge. Bottom-up merge sort can avoid recursive stack space.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> mergeSort(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>) <span class="code-keyword">return</span> head;
+    <span class="code-class">Node</span> slow = head, fast = head.next;
+    <span class="code-keyword">while</span> (fast != <span class="code-keyword">null</span> &amp;&amp; fast.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="code-class">Node</span> right = slow.next;
+    slow.next = <span class="code-keyword">null</span>;
+    <span class="code-keyword">return</span> merge(mergeSort(head), mergeSort(right));
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Intersection of two lists</strong></p>
+        <p>Intersection means the same node object, not just equal values. Switching each pointer to the other head when it reaches null cancels the difference in list lengths. O(m+n) time, O(1) extra space, assuming acyclic lists.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> intersection(<span class="code-class">Node</span> a, <span class="code-class">Node</span> b) {
+    <span class="code-class">Node</span> p = a, q = b;
+    <span class="code-keyword">while</span> (p != q) {
+        p = p == <span class="code-keyword">null</span> ? b : p.next;
+        q = q == <span class="code-keyword">null</span> ? a : q.next;
+    }
+    <span class="code-keyword">return</span> p;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Remove duplicates from a sorted list</strong></p>
+        <p>Equal values are adjacent. Keep the first node of each run and bypass following duplicates. O(n) time, O(1) extra space. For unsorted lists, use a HashSet with O(n) expected time and O(n) extra space, or nested scans with O(n²) time.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> deduplicateSorted(<span class="code-class">Node</span> head) {
+    <span class="code-class">Node</span> cur = head;
+    <span class="code-keyword">while</span> (cur != <span class="code-keyword">null</span> &amp;&amp; cur.next != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (cur.val == cur.next.val) cur.next = cur.next.next;
+        <span class="code-keyword">else</span> cur = cur.next;
+    }
+    <span class="code-keyword">return</span> head;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Palindrome check with restoration</strong></p>
+        <p>Find the end of the first half, reverse the second half, compare, and restore the original links even on mismatch. O(n) time, O(1) extra space.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-keyword">boolean</span> isPalindrome(<span class="code-class">Node</span> head) {
+    <span class="code-keyword">if</span> (head == <span class="code-keyword">null</span> || head.next == <span class="code-keyword">null</span>) <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+    <span class="code-class">Node</span> slow = head, fast = head;
+    <span class="code-keyword">while</span> (fast.next != <span class="code-keyword">null</span> &amp;&amp; fast.next.next != <span class="code-keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="code-class">Node</span> second = reverse(slow.next);
+    slow.next = second;
+    <span class="code-class">Node</span> p = head, q = second;
+    <span class="code-keyword">boolean</span> equal = <span class="code-keyword">true</span>;
+    <span class="code-keyword">while</span> (q != <span class="code-keyword">null</span>) {
+        <span class="code-keyword">if</span> (p.val != q.val) { equal = <span class="code-keyword">false</span>; <span class="code-keyword">break</span>; }
+        p = p.next; q = q.next;
+    }
+    slow.next = reverse(second);
+    <span class="code-keyword">return</span> equal;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Remove nth node from end</strong></p>
+        <p>Use a dummy node before head so deleting the actual head is not a special case. Move fast n steps, then both pointers until fast.next is null; slow is the predecessor. O(n) time, O(1) auxiliary space.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">Node</span> removeNthFromEnd(<span class="code-class">Node</span> head, <span class="code-keyword">int</span> n) {
+    <span class="code-keyword">if</span> (n &lt;= <span class="code-number">0</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+    <span class="code-class">Node</span> dummy = <span class="code-keyword">new</span> <span class="code-class">Node</span>(<span class="code-number">0</span>);
+    dummy.next = head;
+    <span class="code-class">Node</span> slow = dummy, fast = dummy;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; n; i++) {
+        <span class="code-keyword">if</span> (fast.next == <span class="code-keyword">null</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+        fast = fast.next;
+    }
+    <span class="code-keyword">while</span> (fast.next != <span class="code-keyword">null</span>) {
+        fast = fast.next; slow = slow.next;
+    }
+    slow.next = slow.next.next;
+    <span class="code-keyword">return</span> dummy.next;
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Java Collections Framework</div>
+    <div class="intro">
+        <p><code>java.util.LinkedList&lt;E&gt;</code> is a doubly linked implementation of List and Deque. It permits null elements and is not synchronized. Index-based methods traverse from whichever end is closer. ListIterator supports backward movement and efficient local insertion/removal.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">LinkedList</span>&lt;<span class="code-class">Integer</span>&gt; list = <span class="code-keyword">new</span> <span class="code-class">LinkedList</span>&lt;&gt;();
+list.add(<span class="code-number">10</span>);                           <span class="code-comment">[10]</span>
+list.addFirst(<span class="code-number">5</span>);                       <span class="code-comment">[5, 10]</span>
+list.addLast(<span class="code-number">20</span>);                       <span class="code-comment">[5, 10, 20]</span>
+list.add(<span class="code-number">1</span>, <span class="code-number">7</span>);                         <span class="code-comment">[5, 7, 10, 20]</span>
+list.remove(<span class="code-class">Integer</span>.valueOf(<span class="code-number">10</span>));       <span class="code-comment">remove value, not index</span>
+<span class="code-class">System</span>.out.println(list.getFirst());    <span class="code-comment">5</span>
+<span class="code-class">ListIterator</span>&lt;<span class="code-class">Integer</span>&gt; it = list.listIterator();
+<span class="code-keyword">while</span> (it.hasNext()) {
+    <span class="code-keyword">if</span> (it.next() == <span class="code-number">7</span>) it.remove();
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Method family</th><th>Empty behavior</th></tr></thead>
+            <tbody>
+                <tr><td>getFirst / getLast / removeFirst / removeLast</td><td>Throws NoSuchElementException</td></tr>
+                <tr><td>peekFirst / peekLast / pollFirst / pollLast</td><td>Returns null</td></tr>
+                <tr><td>offerFirst / offerLast</td><td>Adds at the requested end; returns true for LinkedList</td></tr>
+                <tr><td>push / pop</td><td>Stack behavior at head; pop throws when empty</td></tr>
+            </tbody>
+        </table></div>
+        <p>Because null elements are allowed, a null returned by peek or poll can be ambiguous. Prefer avoiding null when using queue semantics. Also distinguish <code>remove(1)</code> (index 1) from <code>remove(Integer.valueOf(1))</code> (value 1).</p>
+        <p class="minor-heading"><strong>Do not loop by index</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; list.size(); i++) {    <span class="code-comment">O(n²): every get(i) traverses part of the list.</span>
+    <span class="code-class">System</span>.out.println(list.get(i));
+}
+<span class="code-keyword">for</span> (<span class="code-class">Integer</span> value : list) {               <span class="code-comment">O(n): the iterator follows each link once.</span>
+    <span class="code-class">System</span>.out.println(value);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Iterators are fail-fast on a best-effort basis for unsupported structural modification; that is a bug-detection mechanism, not a thread-safety guarantee. Use the iterator’s own remove/add methods where supported.</p>
+    </div>
+
+    <div class="subheading">Real-world applications</div>
+    <div class="intro">
+        <ul>
+            <li><strong>Stacks and queues:</strong> Stack: push/pop at head. Queue: enqueue at tail, dequeue at head. Both O(1) with appropriate endpoints.</li>
+            <li><strong>LRU cache:</strong> HashMap locates entries in expected O(1); a doubly linked list moves entries to the most-recent end and evicts the least-recent entry.</li>
+            <li><strong>Round-robin scheduling:</strong> A circular list can visit each runnable task repeatedly. Real schedulers often use specialized queues and additional policies.</li>
+            <li><strong>Hash collision chains:</strong> Separate chaining can use linked nodes for entries sharing a bucket. Modern Java HashMap can also treeify heavily collided buckets under certain conditions.</li>
+            <li><strong>Graph adjacency lists:</strong> Each vertex stores a list of neighbors; arrays/dynamic arrays are also common and often faster.</li>
+            <li><strong>History navigation:</strong> Previous/next links model backward and forward traversal; real implementations may instead use arrays or stacks.</li>
+        </ul>
+        <p class="minor-heading"><strong>LRU architecture</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/ll-hash-map-references-doubly-linked-cache.svg" alt="Hash map references doubly linked cache entries. Hash lookup and list rewiring work together. A plain linked list alone would require linear key lookup." style="width:100%;max-width:700px">
+    </div>
+    <div class="intro">
+        <p>Hash lookup and list rewiring work together. A plain linked list alone would require linear key lookup.</p>
+        <p>Java&rsquo;s <code>LinkedHashMap</code> already supports access-order iteration, which can implement an elementary fixed-capacity LRU cache. It is not thread-safe.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LruCache</span>&lt;<span class="code-class">K</span>,<span class="code-class">V</span>&gt; <span class="code-keyword">extends</span> <span class="code-class">LinkedHashMap</span>&lt;<span class="code-class">K</span>,<span class="code-class">V</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> capacity;
+    <span class="code-keyword">public</span> <span class="code-class">LruCache</span>(<span class="code-keyword">int</span> capacity) {
+        <span class="code-keyword">super</span>(<span class="code-number">16</span>, <span class="code-number">0.75f</span>, <span class="code-keyword">true</span>);    <span class="code-comment">access order</span>
+        <span class="code-keyword">if</span> (capacity &lt;= <span class="code-number">0</span>) <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+        <span class="code-keyword">this</span>.capacity = capacity;
+    }
+    <span class="code-annotation">@Override</span> <span class="code-keyword">protected</span> <span class="code-keyword">boolean</span> removeEldestEntry(<span class="code-class">Map</span>.<span class="code-class">Entry</span>&lt;<span class="code-class">K</span>,<span class="code-class">V</span>&gt; eldest) {
+        <span class="code-keyword">return</span> size() &gt; capacity;
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Trade-offs, concurrency and correctness</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>When to use a linked list</strong></p>
+        <p>Useful when node handles or a positioned iterator are already available, splicing/reordering dominates, or implementing specialized intrusive structures. A singly list saves one reference per node; doubly lists make tail removal and backward movement efficient.</p>
+        <p class="minor-heading"><strong>When to avoid it</strong></p>
+        <p>For random access or ordinary append-and-scan workloads, prefer ArrayList. For most non-concurrent Java stack/queue/deque workloads, ArrayDeque is usually a better default because it avoids per-element node allocations and has good locality (it rejects null). Benchmark actual workloads before optimizing.</p>
+        <p class="minor-heading"><strong>Concurrency</strong></p>
+        <p>Multiple pointer assignments are not a single atomic operation. Concurrent writers can lose nodes, corrupt links or produce inconsistent size counters. Even <code>volatile</code> on next does not make compound operations atomic. Guard all reads/writes with a common lock, or choose a concurrent collection such as ConcurrentLinkedQueue, ConcurrentLinkedDeque or LinkedBlockingQueue according to semantics. Lock-free lists use CAS and careful publication, deletion and reclamation protocols; they are not equivalent to ordinary lists with atomic references.</p>
+        <p class="minor-heading"><strong>Common mistakes</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Bug</th><th>Prevention</th></tr></thead>
+            <tbody>
+                <tr><td>Losing suffix during insertion/reversal</td><td>Save the old successor before overwriting next.</td></tr>
+                <tr><td>Stale tail after removing final node</td><td>Update both endpoints on empty transition.</td></tr>
+                <tr><td>Accidental infinite traversal</td><td>Use null for linear lists and bounded/start-node termination for circular lists.</td></tr>
+                <tr><td>Comparing node data to detect intersection/cycle</td><td>Compare references (==).</td></tr>
+                <tr><td>Incorrect null equality</td><td>Use Objects.equals for generic data.</td></tr>
+                <tr><td>Wrong bounds</td><td>Insert: 0 ≤ i ≤ size; access/remove: 0 ≤ i &lt; size.</td></tr>
+                <tr><td>Broken backward link</td><td>Maintain x.next.prev == x and x.prev.next == x where applicable.</td></tr>
+                <tr><td>O(n²) traversal</td><td>Use an iterator or follow next directly.</td></tr>
+                <tr><td>Unexpected mutations through aliases</td><td>Avoid exposing mutable nodes unnecessarily; document destructive algorithms.</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Test cases</strong></p>
+        <p>Test empty and singleton lists, insert/remove at both ends, middle changes, duplicate and null values, reversing twice, out-of-bounds indices, and reuse after clear. Check structural invariants, not just printed values. For circular lists test one-node self-loops and rotation. For cycle detection test null, linear, self-loop, entry at head and entry in the middle.</p>
+    </div>
+
+    <div class="subheading">Revision and practice</div>
+    <div class="intro">
+        <p>Use these exercises to consolidate pointer reasoning. Try solving without allocating unnecessary nodes, then compare the complexity and edge cases.</p>
+    </div>
+    <div class="intro ll-qa"><details><summary>Why does a tail pointer not make singly linked tail deletion O(1)?</summary><p>The predecessor is needed to become the new tail; the tail pointer cannot navigate backwards.</p></details><details><summary>What happens if you set prev.next = newNode before setting newNode.next = prev.next?</summary><p>The second assignment links newNode to itself, losing the original suffix unless it was saved separately.</p></details><details><summary>How can a doubly linked list remove a known node in O(1)?</summary><p>Read its previous and next references and connect those neighbors directly, adjusting endpoints if necessary.</p></details><details><summary>Why is binary search not normally O(log n) on a linked list?</summary><p>Finding the middle requires traversal; logarithmic comparisons do not imply logarithmic total traversal time.</p></details><details><summary>How can you find a cycle without extra storage?</summary><p>Floyd’s slow/fast pointers meet if the cycle exists; otherwise fast reaches null.</p></details><details><summary>Why is an array often faster for sequential scanning?</summary><p>Contiguous slots favor cache lines, prefetching, and lower allocation overhead; linked traversal follows dependent references.</p></details><details><summary>How do you implement a queue with a singly linked list?</summary><p>Maintain head and tail; enqueue at tail and dequeue at head. Reset tail when the final node is dequeued.</p></details></div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Practice progression</strong></p>
+        <p><strong>Beginner:</strong> traversal, insertion, removal, count, find maximum. <strong>Intermediate:</strong> reverse, middle, kth-from-end, merge, cycle detection. <strong>Advanced:</strong> merge sort, reverse in k groups, copy random-pointer list, LRU cache, flatten multilevel doubly linked list, design a concurrent queue.</p>
+    </div>
+    <div class="callout callout-note"><p><strong>Core mental model:</strong> always track node identity, save links before overwriting them, and preserve the list&rsquo;s endpoint and reachability invariants.</p></div>
+<!-- chatgpt-guide:end -->
+</div>
+</body>
+</html>

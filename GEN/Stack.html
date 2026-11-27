@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stack</title>
+<link rel="stylesheet" href="../src/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var F = "system-ui, -apple-system, 'Segoe UI', Arial, sans-serif";
+    function t(x, y, s, o) { o = o || {}; return '<text x="' + x + '" y="' + y + '" text-anchor="' + (o.a || "middle") + '" font-family="' + F + '" font-size="' + (o.size || 13) + '" font-weight="' + (o.w || 500) + '" fill="' + (o.c || "#222222") + '">' + s + '</text>'; }
+    function r(x, y, w, h, hi, dash) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="' + (hi ? "#EDEDED" : "#FFFFFF") + '" stroke="' + (dash ? "#AAAAAA" : "#222222") + '" stroke-width="' + (hi ? 2 : 1.2) + '"' + (dash ? ' stroke-dasharray="4 3"' : '') + '/>'; }
+    function arrow(x1, y1, x2, y2) { return '<path d="M' + x1 + ' ' + y1 + ' L' + x2 + ' ' + y2 + '" stroke="#555555" stroke-width="1.5" marker-end="url(#st-a)"/>'; }
+    function svg(w, h, body) { return '<svg viewBox="0 0 ' + w + ' ' + h + '" style="width:100%;max-width:' + (w * 1.6) + 'px;display:block;margin:8px auto" role="img"><defs><marker id="st-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>' + body + '</svg>'; }
+    function q(box, k) { return box.querySelector('[data-o="' + k + '"]'); }
+
+    /* push, pop and peek */
+    var sim = document.getElementById("st-sim");
+    if (sim) {
+        var CAP = 6, stack = [10, 20, 30], hi = true;
+        var draw = function (op) {
+            var b = "", n = stack.length;
+            for (var i = 0; i < CAP; i++) {
+                var y = 212 - i * 40, filled = i < n;
+                b += t(70, y + 21, "[" + i + "]", {c: "#555555", size: 12, w: 400});
+                b += r(100, y, 140, 32, filled && i === n - 1 && hi, !filled);
+                if (filled) b += t(170, y + 21, stack[i], {size: 14, w: 600});
+            }
+            if (n) b += arrow(310, 228 - (n - 1) * 40, 246, 228 - (n - 1) * 40) + t(318, 232 - (n - 1) * 40, "TOP", {a: "start", size: 12, w: 700});
+            b += t(170, 266, "Bottom", {c: "#555555", size: 12, w: 400});
+            q(sim, "svg").innerHTML = svg(360, 276, b);
+            q(sim, "size").textContent = n;
+            q(sim, "topi").textContent = n ? n - 1 : -1;
+            q(sim, "topv").textContent = n ? stack[n - 1] : "—";
+            if (op) q(sim, "op").textContent = op;
+            var v = q(sim, "entry").value.trim();
+            sim.querySelector('[data-a="push"]').disabled = n >= CAP || !/^[-+]?\d+$/.test(v) || !Number.isSafeInteger(Number(v));
+            sim.querySelector('[data-a="pop"]').disabled = !n;
+        };
+        q(sim, "entry").addEventListener("input", function () { draw(); });
+        sim.addEventListener("click", function (e) {
+            var a = e.target.closest("[data-a]"); if (!a) return;
+            var n = stack.length, act = a.dataset.a;
+            if (act === "push") { var v = Number(q(sim, "entry").value); stack.push(v); hi = true; q(sim, "entry").value = String(v + 10); draw("push(" + v + "): element inserted at TOP"); }
+            else if (act === "pop") { var top = stack.pop(); hi = false; draw("pop() → " + top + ": element removed"); }
+            else if (act === "peek") { hi = true; draw(n ? "peek() → " + stack[n - 1] + ": stack unchanged" : "Underflow: stack is empty"); }
+            else if (act === "clear") { stack = []; hi = false; draw("clear(): all elements removed"); }
+            else if (act === "reset") { stack = [10, 20, 30]; hi = true; q(sim, "entry").value = "40"; draw("Stack reset"); }
+        });
+        draw("Initial stack: [10, 20, 30]");
+    }
+
+    /* step-by-step widgets */
+    function stepper(id, steps, render, msg) {
+        var box = document.getElementById(id); if (!box) return;
+        var i = 0, range = q(box, "range");
+        range.max = steps.length - 1;
+        var show = function () {
+            q(box, "svg").innerHTML = render(steps[i], i);
+            q(box, "msg").textContent = msg(steps[i]);
+            q(box, "step").textContent = "Step " + (i + 1) + " of " + steps.length;
+            range.value = i;
+            box.querySelector('[data-a="prev"]').disabled = i === 0;
+            box.querySelector('[data-a="next"]').disabled = i === steps.length - 1;
+            box.querySelector('[data-a="reset"]').disabled = i === 0;
+        };
+        range.addEventListener("input", function () { i = Number(range.value); show(); });
+        box.addEventListener("click", function (e) {
+            var a = e.target.closest("[data-a]"); if (!a) return;
+            if (a.dataset.a === "next") i = Math.min(i + 1, steps.length - 1);
+            else if (a.dataset.a === "prev") i = Math.max(i - 1, 0);
+            else i = 0;
+            show();
+        });
+        show();
+    }
+
+    stepper("st-call", [
+        {f: ["main()"], m: "main() is executing."},
+        {f: ["main()", "factorial(4)"], m: "main() calls factorial(4)."},
+        {f: ["main()", "factorial(4)", "factorial(3)"], m: "factorial(4) waits for factorial(3)."},
+        {f: ["main()", "factorial(4)", "factorial(3)", "factorial(2)"], m: "factorial(3) waits for factorial(2)."},
+        {f: ["main()", "factorial(4)", "factorial(3)", "factorial(2)", "factorial(1)"], m: "Base case reached: factorial(1) returns 1."},
+        {f: ["main()", "factorial(4)", "factorial(3)", "factorial(2)"], m: "factorial(2) computes 2 × 1 = 2."},
+        {f: ["main()", "factorial(4)", "factorial(3)"], m: "factorial(3) computes 3 × 2 = 6."},
+        {f: ["main()", "factorial(4)"], m: "factorial(4) computes 4 × 6 = 24."},
+        {f: ["main()"], m: "main() receives 24 and prints the result."}
+    ], function (s) {
+        var b = t(170, 20, "JVM thread stack", {size: 13, w: 700});
+        b += '<rect x="80" y="32" width="180" height="214" rx="3" fill="none" stroke="#AAAAAA" stroke-width="1.2" stroke-dasharray="5 4"/>';
+        s.f.forEach(function (name, k) {
+            var y = 204 - k * 40, top = k === s.f.length - 1;
+            b += r(92, y, 156, 34, top) + t(170, y + 22, name, {size: 13, w: top ? 700 : 500});
+            b += t(270, y + 22, "Frame " + (k + 1), {a: "start", c: "#555555", size: 11, w: 400});
+        });
+        return svg(340, 268, b + t(170, 262, "Bottom of stack", {c: "#555555", size: 11, w: 400}));
+    }, function (s) { return s.m; });
+
+    var tokens = ["5", "3", "+", "2", "*"];
+    stepper("st-post", [
+        {s: [], m: "Start with an empty operand stack."},
+        {s: [5], m: "Read 5 → push(5)."},
+        {s: [5, 3], m: "Read 3 → push(3)."},
+        {s: [8], m: "Read + → pop 3 and 5 → push(5 + 3)."},
+        {s: [8, 2], m: "Read 2 → push(2)."},
+        {s: [16], m: "Read * → pop 2 and 8 → push(8 × 2)."}
+    ], function (s, i) {
+        var b = "";
+        tokens.forEach(function (tok, k) { var x = 60 + k * 48; b += r(x, 8, 40, 40, k === i - 1) + t(x + 20, 33, tok, {size: 15, w: 600}); });
+        b += t(170, 70, "Operand stack", {c: "#555555", size: 12, w: 600});
+        if (!s.s.length) b += r(110, 112, 120, 34, false, true) + t(170, 134, "Empty", {c: "#555555", size: 12, w: 400});
+        s.s.forEach(function (v, k) { var y = 152 - k * 40; b += r(110, y, 120, 34, k === s.s.length - 1) + t(170, y + 22, v, {size: 14, w: 600}); });
+        return svg(340, 196, b);
+    }, function (s) { return s.m; });
+
+    var arr = [4, 5, 2, 10, 8];
+    stepper("st-mono", [
+        {s: [], a: ["?", "?", "?", "?", "?"], i: -1, m: "Start with an empty stack."},
+        {s: [0], a: ["?", "?", "?", "?", "?"], i: 0, m: "Push index 0 (value 4)."},
+        {s: [], a: [5, "?", "?", "?", "?"], i: 1, m: "5 > 4. Pop 4; its next greater element is 5."},
+        {s: [1], a: [5, "?", "?", "?", "?"], i: 1, m: "Push index 1 (value 5)."},
+        {s: [1, 2], a: [5, "?", "?", "?", "?"], i: 2, m: "2 is smaller than 5. Push index 2."},
+        {s: [1], a: [5, "?", 10, "?", "?"], i: 3, m: "10 > 2. Pop 2; its answer is 10."},
+        {s: [], a: [5, 10, 10, "?", "?"], i: 3, m: "10 > 5. Pop 5; its answer is 10."},
+        {s: [3], a: [5, 10, 10, "?", "?"], i: 3, m: "Push index 3 (value 10)."},
+        {s: [3, 4], a: [5, 10, 10, "?", "?"], i: 4, m: "8 is smaller than 10. Push index 4."},
+        {s: [3, 4], a: [5, 10, 10, -1, -1], i: -1, m: "Complete. Remaining elements have no greater element to their right."}
+    ], function (s) {
+        var b = t(20, 20, "Input array", {a: "start", c: "#555555", size: 12, w: 600});
+        arr.forEach(function (v, k) { var x = 20 + k * 64; b += r(x, 30, 56, 36, k === s.i) + t(x + 28, 53, v, {size: 14, w: 600}) + t(x + 28, 82, k, {c: "#555555", size: 11, w: 400}); });
+        b += t(20, 110, "Next greater elements", {a: "start", c: "#555555", size: 12, w: 600});
+        s.a.forEach(function (v, k) { var x = 20 + k * 64; b += r(x, 120, 56, 36, false, v === "?") + t(x + 28, 143, v, {size: 14, w: 600, c: v === "?" ? "#AAAAAA" : "#222222"}); });
+        b += t(20, 186, "Monotonic stack", {a: "start", c: "#555555", size: 12, w: 600});
+        if (!s.s.length) b += r(20, 196, 120, 34, false, true) + t(80, 218, "Empty stack", {c: "#555555", size: 12, w: 400});
+        s.s.forEach(function (idx, k) { var x = 20 + k * 96; b += r(x, 196, 88, 34, k === s.s.length - 1) + t(x + 44, 218, idx + " : " + arr[idx], {size: 13, w: 600}); });
+        return svg(360, 240, b);
+    }, function (s) { return s.m; });
+
+    if (window.katex) document.querySelectorAll("[data-tex]").forEach(function (el) {
+        katex.render(el.dataset.tex, el, {displayMode: el.dataset.display === "1", throwOnError: false});
+    });
+});
+</script>
+</head>
+<body>
+<div class="note">
+    <div class="title">Stack Data Structure</div>
+
+<!-- chatgpt-guide:start -->
+    <div class="intro">
+        <p>A <strong>Stack</strong> is a linear data structure in which insertion and removal of elements happen at the same end, known as the <strong>TOP</strong> of the stack.</p>
+        <p>A stack follows the <strong>LIFO (Last In, First Out)</strong> principle: the last element inserted is the first element removed.</p>
+        <p>In this guide, we will cover stack fundamentals, internal memory representation, array-based and linked-list-based implementations, Java collections, algorithms, real-world applications, complexity analysis, SVG diagrams, and interactive animations.</p>
+    </div>
+
+    <div class="subheading">Understanding the Stack</div>
+    <div class="intro">
+        <p>Consider a stack of plates. You place a new plate on top of the existing plates, and when you need a plate, you remove the topmost one first.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-plates.svg" alt="A stack of plates beside a stack in memory holding 10, 20, 30, 40 and 50, with 50 at the TOP" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>The element 50 was inserted last and will be removed first.</p>
+        <p>For example, if we insert elements in the following order:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Insertion order: 10 → 20 → 30 → 40 → 50
+
+Removal order:   50 → 40 → 30 → 20 → 10</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>A stack is an <strong>Abstract Data Type (ADT)</strong>. It defines how elements are accessed and manipulated, rather than specifying how they must be physically stored in memory.</p>
+        <p>A stack can be implemented using an array, dynamic array, linked list, or even queues.</p>
+    </div>
+
+    <div class="subheading">Basic stack operations</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Description</th><th>Time complexity*</th></tr></thead>
+            <tbody>
+                <tr><td><code>push(x)</code></td><td>Inserts an element at the top</td><td>O(1)</td></tr>
+                <tr><td><code>pop()</code></td><td>Removes and returns the top element</td><td>O(1)</td></tr>
+                <tr><td><code>peek()</code></td><td>Returns the top element without removing it</td><td>O(1)</td></tr>
+                <tr><td><code>isEmpty()</code></td><td>Checks whether the stack is empty</td><td>O(1)</td></tr>
+                <tr><td><code>isFull()</code></td><td>Checks capacity of a bounded stack</td><td>O(1)</td></tr>
+                <tr><td><code>size()</code></td><td>Returns the number of elements</td><td>O(1)</td></tr>
+                <tr><td><code>clear()</code></td><td>Removes all elements</td><td>O(n)</td></tr>
+                <tr><td><code>search(x)</code></td><td>Searches for an element</td><td>O(n)</td></tr>
+            </tbody>
+        </table></div>
+        <p>*For typical implementations, with a maintained size counter. Dynamic-array push is amortized O(1), with occasional O(n) resizing.</p>
+        <p class="minor-heading"><strong>Interactive stack animation</strong></p>
+        <p>Use the controls below to insert, remove, and inspect elements. Notice how all insertions and removals take place at the same end.</p>
+    </div>
+    <div class="gw-card" id="st-sim">
+        <div class="gw-cols3">
+            <div class="gw-stat"><p class="gw-k">Size</p><p class="gw-v" data-o="size"></p></div>
+            <div class="gw-stat"><p class="gw-k">Top index</p><p class="gw-v" data-o="topi"></p></div>
+            <div class="gw-stat"><p class="gw-k">Top value</p><p class="gw-v" data-o="topv"></p></div>
+        </div>
+        <div data-o="svg"></div>
+        <div class="gw-btns">
+            <input type="text" value="40" placeholder="Enter integer" aria-label="Value to push" data-o="entry" style="font:inherit;font-size:14px;padding:6px 10px;border:1px solid rgba(13,13,13,0.12);border-radius:3px;width:120px">
+            <button class="gw-btn primary" type="button" data-a="push">Push</button>
+            <button class="gw-btn" type="button" data-a="pop">Pop</button>
+            <button class="gw-btn" type="button" data-a="peek">Peek</button>
+            <button class="gw-btn" type="button" data-a="clear">Clear</button>
+            <button class="gw-btn" type="button" data-a="reset">Reset</button>
+        </div>
+        <div class="gw-log"><p data-o="op"></p><p>Capacity: 6 elements</p></div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Push operation</strong></p>
+        <p>The <code>push()</code> operation adds an element to the top of the stack.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-push.svg" alt="Push: before push the stack holds 10, 20, 30; after push(40) the new element 40 is the new TOP" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>Algorithm for an array-based stack:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>PUSH(value):
+    if top == capacity - 1:
+        throw StackOverflow
+
+    top = top + 1
+    array[top] = value</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Pop operation</strong></p>
+        <p>The <code>pop()</code> operation removes and returns the top element.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-pop.svg" alt="Pop: before pop the stack holds 10, 20, 30, 40; after pop 40 is removed and 30 is the new TOP" style="width:100%;max-width:680px">
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>POP():
+    if top == -1:
+        throw StackUnderflow
+
+    value = array[top]
+    top = top - 1
+
+    return value</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Peek operation</strong></p>
+        <p>Unlike <code>pop()</code>, <code>peek()</code> does not modify the stack.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>PEEK():
+    if top == -1:
+        throw StackUnderflow
+
+    return array[top]</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>For a stack containing <code>[10, 20, 30]</code> from bottom to top:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Return value</th><th>Stack afterwards</th></tr></thead>
+            <tbody>
+                <tr><td><code>peek()</code></td><td>30</td><td>[10, 20, 30]</td></tr>
+                <tr><td><code>peek()</code></td><td>30</td><td>[10, 20, 30]</td></tr>
+                <tr><td><code>pop()</code></td><td>30</td><td>[10, 20]</td></tr>
+                <tr><td><code>peek()</code></td><td>20</td><td>[10, 20]</td></tr>
+                <tr><td><code>pop()</code></td><td>20</td><td>[10]</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Stack overflow and underflow</div>
+    <div class="svg-diagram">
+        <img src="../static/stack-overflow-underflow.svg" alt="Stack overflow: pushing into a full stack of 10 to 50; stack underflow: popping an empty stack where top = -1" style="width:100%;max-width:648px">
+    </div>
+    <div class="intro">
+        <ul>
+            <li><strong>Stack overflow:</strong> Attempting to push into a full, fixed-capacity stack.</li>
+            <li><strong>Stack underflow:</strong> Attempting to pop or inspect an empty stack when the API requires an element.</li>
+        </ul>
+        <p>In Java, a call-stack overflow caused by excessive recursion results in <code>StackOverflowError</code>. This is different from exceeding the capacity of a custom stack data structure, for which we can define our own exception behavior.</p>
+    </div>
+
+    <div class="subheading">Implementation of a stack</div>
+    <div class="intro">
+        <p>There are three primary implementations:</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Implementation</th><th>Storage</th><th>Capacity</th></tr></thead>
+            <tbody>
+                <tr><td>Array</td><td>Indexed array slots</td><td>Fixed</td></tr>
+                <tr><td>Dynamic array</td><td>Resizable array</td><td>Dynamic</td></tr>
+                <tr><td>Linked list</td><td>Individually allocated nodes</td><td>Dynamic</td></tr>
+            </tbody>
+        </table></div>
+        <p class="minor-heading"><strong>Array-based stack</strong></p>
+        <p>An array-based stack maintains a variable called <code>top</code>, which stores the index of the topmost element.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-array.svg" alt="Array-based stack with capacity 5: slots 0 to 2 hold 10, 20, 30, slots 3 and 4 are free, and top = 2" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Size = top + 1 = 3. Capacity = 5.</p>
+        <p>Important conditions:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>top == -<span class="code-number">1</span>              <span class="code-comment">Stack is empty</span>
+top == capacity - <span class="code-number">1</span>    <span class="code-comment">Stack is full</span>
+top + <span class="code-number">1</span>                <span class="code-comment">Number of elements</span>
+array[top]             <span class="code-comment">Topmost element, if nonempty</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Complete generic implementation in Java</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ArrayStack</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-class">Object</span>[] elements;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> top = -<span class="code-number">1</span>;
+
+    <span class="code-keyword">public</span> <span class="code-class">ArrayStack</span>(<span class="code-keyword">int</span> capacity) {
+        <span class="code-keyword">if</span> (capacity &lt;= <span class="code-number">0</span>) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Capacity must be positive"</span>);
+        }
+        elements = <span class="code-keyword">new</span> <span class="code-class">Object</span>[capacity];
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> push(<span class="code-class">T</span> value) {
+        <span class="code-class">Objects</span>.requireNonNull(value);
+        <span class="code-keyword">if</span> (isFull()) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalStateException</span>(<span class="code-string">"Stack overflow"</span>);
+        }
+        elements[++top] = value;
+    }
+
+    <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
+    <span class="code-keyword">public</span> <span class="code-class">T</span> pop() {
+        <span class="code-keyword">if</span> (isEmpty()) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>(<span class="code-string">"Stack underflow"</span>);
+        }
+        <span class="code-class">T</span> value = (<span class="code-class">T</span>) elements[top];
+        elements[top] = <span class="code-keyword">null</span>;
+        top--;
+        <span class="code-keyword">return</span> value;
+    }
+
+    <span class="code-annotation">@SuppressWarnings</span>(<span class="code-string">"unchecked"</span>)
+    <span class="code-keyword">public</span> <span class="code-class">T</span> peek() {
+        <span class="code-keyword">if</span> (isEmpty()) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>(<span class="code-string">"Stack is empty"</span>);
+        }
+        <span class="code-keyword">return</span> (<span class="code-class">T</span>) elements[top];
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
+        <span class="code-keyword">return</span> top == -<span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isFull() {
+        <span class="code-keyword">return</span> top == elements.length - <span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
+        <span class="code-keyword">return</span> top + <span class="code-number">1</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> clear() {
+        <span class="code-keyword">while</span> (!isEmpty()) {
+            pop();
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Usage:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-class">ArrayStack</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayStack</span>&lt;&gt;(<span class="code-number">5</span>);
+    stack.push(<span class="code-number">10</span>);
+    stack.push(<span class="code-number">20</span>);
+    stack.push(<span class="code-number">30</span>);
+    <span class="code-class">System</span>.out.println(stack.peek());       <span class="code-comment">30</span>
+    <span class="code-class">System</span>.out.println(stack.pop());        <span class="code-comment">30</span>
+    <span class="code-class">System</span>.out.println(stack.size());       <span class="code-comment">2</span>
+    <span class="code-class">System</span>.out.println(stack.isEmpty());    <span class="code-comment">false</span>
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Why do we set <code>elements[top] = null</code>?</strong></p>
+        <p>If we only decrement <code>top</code>, the removed object may still be referenced by the underlying array. This could prevent the garbage collector from reclaiming it.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-loitering.svg" alt="After pop without clearing, the array still references the removed object; after pop with clearing, the slot is set to null" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>This issue is sometimes called <strong>object loitering</strong>. Clearing the reference allows the object to become eligible for garbage collection, provided no other references exist.</p>
+        <p class="minor-heading"><strong>Dynamic array-based stack</strong></p>
+        <p>The disadvantage of a fixed-size array is that its capacity cannot change.</p>
+        <p>A dynamic stack solves this problem by allocating a larger array whenever the current one becomes full.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-resize.svg" alt="Resizing: the full original array of capacity 4 is copied into a larger array, then the new element 50 is inserted" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Allocate → copy existing elements → insert the new element.</p>
+        <p>To convert the previous implementation into a dynamic stack, remove <code>final</code> from the <code>elements</code> field and replace the <code>push()</code> method:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-comment">Inside ArrayStack&lt;T&gt;</span>
+<span class="code-keyword">private</span> <span class="code-class">Object</span>[] elements;
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> push(<span class="code-class">T</span> value) {
+    <span class="code-class">Objects</span>.requireNonNull(value);
+    <span class="code-keyword">if</span> (isFull()) {
+        resize();
+    }
+    elements[++top] = value;
+}
+
+<span class="code-keyword">private</span> <span class="code-keyword">void</span> resize() {
+    <span class="code-keyword">int</span> newCapacity = <span class="code-class">Math</span>.multiplyExact(elements.length, <span class="code-number">2</span>);
+    elements = <span class="code-class">Arrays</span>.copyOf(elements, newCapacity);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Why is push amortized O(1)?</strong></p>
+        <p>Consider inserting nine elements into a stack with an initial capacity of two.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Insertion</th><th>Capacity</th><th>Existing elements copied</th></tr></thead>
+            <tbody>
+                <tr><td>1–2</td><td>2</td><td>0</td></tr>
+                <tr><td>3</td><td>4</td><td>2</td></tr>
+                <tr><td>4</td><td>4</td><td>0</td></tr>
+                <tr><td>5</td><td>8</td><td>4</td></tr>
+                <tr><td>6–8</td><td>8</td><td>0</td></tr>
+                <tr><td>9</td><td>16</td><td>8</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-capacity-chart.svg" alt="Line chart of array capacity and stack size over nine insertions: capacity doubles from 2 to 4, 8 and 16 while size grows by one each time" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Although an individual resizing operation takes O(n), resizing happens infrequently.</p>
+        <p>The total number of elements copied over n insertions is bounded by a geometric series:</p>
+    </div>
+    <div class="intro"><p class="math-display"><span class="math" data-tex="1+2+4+8+\cdots &lt; 2n" data-display="1">1+2+4+8+cdots &lt; 2n</span></p></div>
+    <div class="intro">
+        <p>Therefore:</p>
+        <ul>
+            <li>Individual push without resizing: O(1).</li>
+            <li>Worst-case push with resizing: O(n).</li>
+            <li>Total cost of n pushes: O(n).</li>
+            <li>Amortized cost per push: O(1).</li>
+        </ul>
+        <p class="minor-heading"><strong>Linked-list-based stack</strong></p>
+        <p>Instead of an array, we can use a singly linked list.</p>
+        <p>Each node contains a value and a reference to the next node. The head of the linked list represents the top of the stack.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-linked-list.svg" alt="Linked-list stack: the TOP or head node 30 points to 20, which points to 10, which points to null; each node holds data and a next reference" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Nodes do not need to occupy contiguous memory locations.</p>
+        <p class="minor-heading"><strong>Internal working of push and pop</strong></p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-linked-push-pop.svg" alt="Linked-list push and pop: before push(40) the top is 30; after push(40) the new node 40 is the top; after pop() returns 40 the top is 30 again" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Push does not traverse the linked list. It simply points the new node to the previous head.</p>
+        <p>Pop changes the head reference to the next node.</p>
+        <p class="minor-heading"><strong>Complete Java implementation</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LinkedStack</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; {
+        <span class="code-class">T</span> value;
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next;
+
+        <span class="code-class">Node</span>(<span class="code-class">T</span> value, <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next) {
+            <span class="code-keyword">this</span>.value = value;
+            <span class="code-keyword">this</span>.next = next;
+        }
+    }
+
+    <span class="code-keyword">private</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; top;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> size;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> push(<span class="code-class">T</span> value) {
+        top = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-class">Objects</span>.requireNonNull(value), top);
+        size++;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> pop() {
+        <span class="code-keyword">if</span> (isEmpty()) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>(<span class="code-string">"Stack underflow"</span>);
+        }
+        <span class="code-class">T</span> value = top.value;
+        top = top.next;
+        size--;
+        <span class="code-keyword">return</span> value;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> peek() {
+        <span class="code-keyword">if</span> (isEmpty()) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">NoSuchElementException</span>(<span class="code-string">"Stack is empty"</span>);
+        }
+        <span class="code-keyword">return</span> top.value;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
+        <span class="code-keyword">return</span> top == <span class="code-keyword">null</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() {
+        <span class="code-keyword">return</span> size;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> clear() {
+        top = <span class="code-keyword">null</span>;
+        size = <span class="code-number">0</span>;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Linked-list stacks do not require resizing. However, each element requires an additional node object and a reference to the next node.</p>
+        <p>The array implementation generally has better CPU cache locality, while the linked-list implementation avoids occasional array-copying costs.</p>
+    </div>
+
+    <div class="subheading">Stack in the Java Collections Framework</div>
+    <div class="intro">
+        <p>Java provides multiple classes that can be used as a stack.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-java-collections.svg" alt="Java collections usable as a stack: Stack extends the legacy Vector class, while ArrayDeque (preferred) and LinkedList (node based) implement the Deque interface" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Using <code>java.util.Stack</code></strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-class">Stack</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">Stack</span>&lt;&gt;();
+    stack.push(<span class="code-number">10</span>);
+    stack.push(<span class="code-number">20</span>);
+    stack.push(<span class="code-number">30</span>);
+    <span class="code-class">System</span>.out.println(stack);               <span class="code-comment">[10, 20, 30]</span>
+    <span class="code-class">System</span>.out.println(stack.peek());        <span class="code-comment">30</span>
+    <span class="code-class">System</span>.out.println(stack.search(<span class="code-number">10</span>));    <span class="code-comment">3</span>
+    <span class="code-class">System</span>.out.println(stack.pop());         <span class="code-comment">30</span>
+    <span class="code-class">System</span>.out.println(stack.size());        <span class="code-comment">2</span>
+    <span class="code-class">System</span>.out.println(stack.empty());       <span class="code-comment">false</span>
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The <code>search()</code> method returns the 1-based position relative to the top, or <code>-1</code> if the element is not found.</p>
+        <p class="minor-heading"><strong>Using <code>ArrayDeque</code> (recommended)</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+    <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    stack.push(<span class="code-number">10</span>);
+    stack.push(<span class="code-number">20</span>);
+    stack.push(<span class="code-number">30</span>);
+    <span class="code-class">System</span>.out.println(stack);           <span class="code-comment">[30, 20, 10]</span>
+    <span class="code-class">System</span>.out.println(stack.peek());    <span class="code-comment">30</span>
+    <span class="code-class">System</span>.out.println(stack.pop());     <span class="code-comment">30</span>
+    <span class="code-class">System</span>.out.println(stack.size());    <span class="code-comment">2</span>
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><code>ArrayDeque</code> is implemented using a resizable circular array. When used as a stack, both insertion and removal occur at the front of the deque.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Stack operation</th><th>Equivalent Deque operation</th></tr></thead>
+            <tbody>
+                <tr><td><code>push(x)</code></td><td><code>addFirst(x)</code></td></tr>
+                <tr><td><code>pop()</code></td><td><code>removeFirst()</code></td></tr>
+                <tr><td><code>peek()</code></td><td><code>peekFirst()</code></td></tr>
+                <tr><td><code>size()</code></td><td><code>size()</code></td></tr>
+                <tr><td><code>isEmpty()</code></td><td><code>isEmpty()</code></td></tr>
+            </tbody>
+        </table></div>
+        <p><code>ArrayDeque</code> does not permit null elements. Its <code>pop()</code> throws <code>NoSuchElementException</code> when empty, whereas <code>pollFirst()</code> and <code>peek()</code> return null.</p>
+        <p class="minor-heading"><strong>Stack vs ArrayDeque vs LinkedList</strong></p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Feature</th><th>Stack</th><th>ArrayDeque</th><th>LinkedList</th></tr></thead>
+            <tbody>
+                <tr><td>Internal structure</td><td>Dynamic array</td><td>Circular array</td><td>Doubly linked list</td></tr>
+                <tr><td>Push</td><td>Amortized O(1)</td><td>Amortized O(1)</td><td>O(1)</td></tr>
+                <tr><td>Pop</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+                <tr><td>Thread-safe</td><td>Individual methods</td><td>No</td><td>No</td></tr>
+                <tr><td>Null elements</td><td>Allowed</td><td>Not allowed</td><td>Allowed</td></tr>
+                <tr><td>Memory overhead</td><td>Moderate</td><td>Low</td><td>Higher</td></tr>
+                <tr><td>Cache locality</td><td>Good</td><td>Good</td><td>Poorer</td></tr>
+                <tr><td>Recommended for general stack usage</td><td>No</td><td>Yes</td><td>Situational</td></tr>
+            </tbody>
+        </table></div>
+        <p>For ordinary single-threaded Java applications, prefer:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Deque</span>&lt;<span class="code-class">T</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();</code></pre>
+        </div>
+    </div>
+
+    <div class="subheading">Real-world applications of stacks</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Application</th><th>What the stack stores</th></tr></thead>
+            <tbody>
+                <tr><td>Function calls</td><td>Method frames</td></tr>
+                <tr><td>Recursion</td><td>Pending recursive calls</td></tr>
+                <tr><td>Text editor undo/redo</td><td>Previous states or commands</td></tr>
+                <tr><td>Browser history</td><td>Previously visited pages</td></tr>
+                <tr><td>Compilers</td><td>Operators, operands, parser state</td></tr>
+                <tr><td>Expression evaluation</td><td>Intermediate results</td></tr>
+                <tr><td>Depth-first search</td><td>Pending vertices or traversal frames</td></tr>
+                <tr><td>Backtracking</td><td>Previous decisions</td></tr>
+                <tr><td>Syntax validation</td><td>Unmatched opening brackets</td></tr>
+                <tr><td>Virtual machines</td><td>Operands and intermediate values</td></tr>
+                <tr><td>Stock span</td><td>Indices of previous prices</td></tr>
+                <tr><td>Histogram algorithms</td><td>Indices of bars</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Function call stack and recursion</div>
+    <div class="intro">
+        <p>Every JVM thread has its own logical call stack. When a method is invoked, a new <strong>stack frame</strong> is created.</p>
+        <p>A stack frame conceptually contains local variables, an operand stack, and information needed for returning from the method or handling exceptions.</p>
+        <p>Consider the following recursive factorial function:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">RecursionExample</span> {
+    <span class="code-keyword">static</span> <span class="code-keyword">int</span> factorial(<span class="code-keyword">int</span> n) {
+        <span class="code-keyword">if</span> (n &lt; <span class="code-number">0</span>) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+        }
+        <span class="code-keyword">if</span> (n &lt;= <span class="code-number">1</span>) {
+            <span class="code-keyword">return</span> <span class="code-number">1</span>;
+        }
+        <span class="code-keyword">return</span> n * factorial(n - <span class="code-number">1</span>);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-class">System</span>.out.println(factorial(<span class="code-number">4</span>));    <span class="code-comment">24</span>
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Interactive call stack visualization</strong></p>
+    </div>
+    <div class="gw-card" id="st-call">
+        <p class="gw-small" data-o="step"></p>
+        <div data-o="svg"></div>
+        <div class="gw-log"><p data-o="msg"></p></div>
+        <input class="gw-range" type="range" min="0" step="1" value="0" data-o="range" aria-label="Step">
+        <div class="gw-btns">
+            <button class="gw-btn" type="button" data-a="reset">Reset</button>
+            <button class="gw-btn" type="button" data-a="prev">Previous</button>
+            <button class="gw-btn primary" type="button" data-a="next">Next step</button>
+        </div>
+    </div>
+    <div class="intro">
+        <p>During recursion, frames accumulate on the call stack. During returning, the frames are removed in reverse order.</p>
+        <p class="minor-heading"><strong>Recursive vs iterative implementation</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-keyword">int</span> factorialIterative(<span class="code-keyword">int</span> n) {
+    <span class="code-keyword">if</span> (n &lt; <span class="code-number">0</span>) {
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>();
+    }
+    <span class="code-keyword">int</span> result = <span class="code-number">1</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">2</span>; i &lt;= n; i++) {
+        result *= i;
+    }
+    <span class="code-keyword">return</span> result;
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Complexity</th><th>Recursive</th><th>Iterative</th></tr></thead>
+            <tbody>
+                <tr><td>Time</td><td>O(n)</td><td>O(n)</td></tr>
+                <tr><td>Auxiliary space</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td>Uses recursive call frames</td><td>Yes</td><td>No</td></tr>
+                <tr><td>Risk of excessive call depth</td><td>Yes</td><td>No</td></tr>
+            </tbody>
+        </table></div>
+        <p>Both examples use Java&rsquo;s <code>int</code>, which cannot represent factorial results beyond <code>12!</code>. Use <code>BigInteger</code> for larger exact results.</p>
+    </div>
+
+    <div class="subheading">Stack algorithms with Java code</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Reversing a string</strong></p>
+        <p>Because a stack follows LIFO, inserting elements and subsequently removing them reverses their order.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-reverse-string.svg" alt="Reversing ABCD: push A, B, C, D onto a stack, then pop them to get DCBA" style="width:100%;max-width:720px">
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-class">String</span> reverse(<span class="code-class">String</span> input) {
+    <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    input.codePoints().forEach(stack::push);
+    <span class="code-class">StringBuilder</span> result = <span class="code-keyword">new</span> <span class="code-class">StringBuilder</span>();
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        result.appendCodePoint(stack.pop());
+    }
+    <span class="code-keyword">return</span> result.toString();
+}
+<span class="code-comment">reverse("HELLO") → "OLLEH"</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>This reverses Unicode code points, not necessarily entire user-perceived characters such as combined emoji.</p>
+        <p><strong>Time:</strong> O(n) | <strong>Auxiliary space:</strong> O(n)</p>
+        <p class="minor-heading"><strong>Balanced parentheses</strong></p>
+        <p>Given an expression containing parentheses, square brackets and curly braces, determine whether every opening bracket has a matching closing bracket in the correct order.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>{[()]}   → Valid
+([]{})   → Valid
+([)]     → Invalid
+((       → Invalid</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Algorithm:</p>
+        <ol>
+            <li>Push every opening bracket.</li>
+            <li>When a closing bracket is encountered, pop the top opening bracket.</li>
+            <li>Check whether the brackets match.</li>
+            <li>At the end, the stack must be empty.</li>
+        </ol>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-balanced.svg" alt="Balanced brackets for {[()]}: push {, push [, push (, then ) pops (, ] pops [, } pops {, leaving the stack empty so all brackets matched" style="width:100%;max-width:720px">
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-keyword">boolean</span> isBalanced(<span class="code-class">String</span> expression) {
+    <span class="code-class">Deque</span>&lt;<span class="code-class">Character</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    <span class="code-keyword">for</span> (<span class="code-keyword">char</span> c : expression.toCharArray()) {
+        <span class="code-keyword">switch</span> (c) {
+            <span class="code-keyword">case</span> <span class="code-string">'('</span>, <span class="code-string">'['</span>, <span class="code-string">'{'</span> -&gt; stack.push(c);
+            <span class="code-keyword">case</span> <span class="code-string">')'</span>, <span class="code-string">']'</span>, <span class="code-string">'}'</span> -&gt; {
+                <span class="code-keyword">if</span> (stack.isEmpty()) {
+                    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+                }
+                <span class="code-keyword">char</span> opening = stack.pop();
+                <span class="code-keyword">if</span> ((c == <span class="code-string">')'</span> &amp;&amp; opening != <span class="code-string">'('</span>) || (c == <span class="code-string">']'</span> &amp;&amp; opening != <span class="code-string">'['</span>) || (c == <span class="code-string">'}'</span> &amp;&amp; opening != <span class="code-string">'{'</span>)) {
+                    <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+                }
+            }
+            <span class="code-keyword">default</span> -&gt; {
+                <span class="code-comment">Ignore non-bracket characters</span>
+            }
+        }
+    }
+    <span class="code-keyword">return</span> stack.isEmpty();
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><strong>Time:</strong> O(n) | <strong>Auxiliary space:</strong> O(n)</p>
+        <p class="minor-heading"><strong>Postfix expression evaluation</strong></p>
+        <p>Arithmetic expressions can be represented in three forms.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Notation</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td>Infix</td><td><code>(5 + 3) * 2</code></td></tr>
+                <tr><td>Prefix</td><td><code>* + 5 3 2</code></td></tr>
+                <tr><td>Postfix</td><td><code>5 3 + 2 *</code></td></tr>
+            </tbody>
+        </table></div>
+        <p>A postfix expression can be evaluated using a single stack without needing parentheses or operator precedence rules during evaluation.</p>
+    </div>
+    <div class="gw-card" id="st-post">
+        <p class="gw-small" data-o="step"></p>
+        <div data-o="svg"></div>
+        <div class="gw-log"><p data-o="msg"></p></div>
+        <input class="gw-range" type="range" min="0" step="1" value="0" data-o="range" aria-label="Step">
+        <div class="gw-btns">
+            <button class="gw-btn" type="button" data-a="reset">Reset</button>
+            <button class="gw-btn" type="button" data-a="prev">Previous</button>
+            <button class="gw-btn primary" type="button" data-a="next">Next step</button>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Java implementation:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-keyword">int</span> evaluatePostfix(<span class="code-class">String</span> expression) {
+    <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    <span class="code-keyword">for</span> (<span class="code-class">String</span> token : expression.trim().split(<span class="code-string">"\\s+"</span>)) {
+        <span class="code-keyword">if</span> (token.matches(<span class="code-string">"-?\\d+"</span>)) {
+            stack.push(<span class="code-class">Integer</span>.parseInt(token));
+        } <span class="code-keyword">else</span> {
+            <span class="code-keyword">if</span> (stack.size() &lt; <span class="code-number">2</span>) {
+                <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Missing operands"</span>);
+            }
+            <span class="code-keyword">int</span> right = stack.pop();
+            <span class="code-keyword">int</span> left = stack.pop();
+            <span class="code-keyword">int</span> result = <span class="code-keyword">switch</span> (token) {
+                <span class="code-keyword">case</span> <span class="code-string">"+"</span> -&gt; <span class="code-class">Math</span>.addExact(left, right);
+                <span class="code-keyword">case</span> <span class="code-string">"-"</span> -&gt; <span class="code-class">Math</span>.subtractExact(left, right);
+                <span class="code-keyword">case</span> <span class="code-string">"*"</span> -&gt; <span class="code-class">Math</span>.multiplyExact(left, right);
+                <span class="code-keyword">case</span> <span class="code-string">"/"</span> -&gt; {
+                    <span class="code-keyword">if</span> (left == <span class="code-class">Integer</span>.MIN_VALUE &amp;&amp; right == -<span class="code-number">1</span>) {
+                        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">ArithmeticException</span>(<span class="code-string">"Integer overflow"</span>);
+                    }
+                    <span class="code-keyword">yield</span> left / right;
+                }
+                <span class="code-keyword">default</span> -&gt; <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Unknown operator: "</span> + token);
+            };
+            stack.push(result);
+        }
+    }
+    <span class="code-keyword">if</span> (stack.size() != <span class="code-number">1</span>) {
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(<span class="code-string">"Invalid expression"</span>);
+    }
+    <span class="code-keyword">return</span> stack.pop();
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>evaluatePostfix(<span class="code-string">"5 3 + 2 *"</span>);     <span class="code-comment">16</span>
+evaluatePostfix(<span class="code-string">"10 2 - 3 *"</span>);    <span class="code-comment">24</span>
+evaluatePostfix(<span class="code-string">"20 5 /"</span>);        <span class="code-comment">4</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The order in which operands are popped is important. For subtraction and division, the first popped value is the <strong>right operand</strong>, not the left.</p>
+        <p><strong>Time:</strong> O(n) | <strong>Auxiliary space:</strong> O(n)</p>
+        <p>The reverse approach can evaluate prefix notation by scanning from right to left. To convert infix notation to postfix notation, we can use the <strong>shunting-yard algorithm</strong>, which maintains a separate stack for operators.</p>
+    </div>
+
+    <div class="subheading">Monotonic stack</div>
+    <div class="intro">
+        <p>A <strong>monotonic stack</strong> is a stack that maintains its elements in either increasing or decreasing order.</p>
+        <p>Unlike an ordinary stack, a monotonic stack removes elements that violate its ordering condition before inserting a new element.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-monotonic.svg" alt="Monotonic stacks: an increasing stack holds 10, 20, 30, 40 from bottom to top, and a decreasing stack holds 40, 30, 20, 10 from bottom to top" style="width:100%;max-width:648px">
+    </div>
+    <div class="intro">
+        <p>Monotonic stacks are particularly useful for solving next greater element, next smaller element, stock span, daily temperatures and largest rectangle in a histogram problems.</p>
+        <p class="minor-heading"><strong>Next greater element</strong></p>
+        <p>For every element in an array, find the first element to its right that is strictly greater than it.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>Input:  [4, 5,  2, 10,  8]
+Output: [5, 10, 10, -1, -1]</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Here, <code>-1</code> represents the absence of a greater element.</p>
+    </div>
+    <div class="gw-card" id="st-mono">
+        <p class="gw-small" data-o="step"></p>
+        <div data-o="svg"></div>
+        <p class="gw-small">Stack entries are shown as index : value. The rightmost entry is the top.</p>
+        <div class="gw-log"><p data-o="msg"></p></div>
+        <input class="gw-range" type="range" min="0" step="1" value="0" data-o="range" aria-label="Step">
+        <div class="gw-btns">
+            <button class="gw-btn" type="button" data-a="reset">Reset</button>
+            <button class="gw-btn" type="button" data-a="prev">Previous</button>
+            <button class="gw-btn primary" type="button" data-a="next">Next step</button>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Java implementation</strong></p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">NextGreaterElement</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">int</span>[] find(<span class="code-keyword">int</span>[] nums) {
+        <span class="code-keyword">int</span>[] result = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[nums.length];
+        <span class="code-class">Arrays</span>.fill(result, -<span class="code-number">1</span>);
+        <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; nums.length; i++) {
+            <span class="code-keyword">while</span> (!stack.isEmpty() &amp;&amp; nums[i] &gt; nums[stack.peek()]) {
+                <span class="code-keyword">int</span> index = stack.pop();
+                result[index] = nums[i];
+            }
+            stack.push(i);
+        }
+        <span class="code-keyword">return</span> result;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
+        <span class="code-keyword">int</span>[] nums = {<span class="code-number">4</span>, <span class="code-number">5</span>, <span class="code-number">2</span>, <span class="code-number">10</span>, <span class="code-number">8</span>};
+        <span class="code-class">System</span>.out.println(<span class="code-class">Arrays</span>.toString(find(nums)));
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Output:</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code>[5, 10, 10, -1, -1]</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Why is this O(n) despite the nested while loop?</strong></p>
+        <p>Every array index is pushed at most once and popped at most once.</p>
+        <p>Therefore, at most n push operations and n pop operations occur across the entire algorithm.</p>
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Approach</th><th>Time complexity</th><th>Auxiliary space</th></tr></thead>
+            <tbody>
+                <tr><td>Nested loop (brute force)</td><td>O(n²)</td><td>O(1)</td></tr>
+                <tr><td>Monotonic stack</td><td>O(n)</td><td>O(n)</td></tr>
+            </tbody>
+        </table></div>
+        <p>The output array is excluded from auxiliary space in this comparison.</p>
+    </div>
+
+    <div class="subheading">Min Stack</div>
+    <div class="intro">
+        <p>A Min Stack is a specialized stack that supports retrieving the minimum element without traversing the entire stack.</p>
+        <p>It supports <code>push()</code>, <code>pop()</code>, <code>peek()</code> and <code>getMin()</code> in constant time, amortized for push when implemented using dynamic arrays.</p>
+        <p class="minor-heading"><strong>Using two stacks</strong></p>
+        <p>Maintain one stack for values and another stack for the minimum value at each depth.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-min-stack.svg" alt="Min stack: the value stack holds 5, 2, 7, 1 and the minimum stack holds 5, 2, 2, 1, so the current minimum is the top of the minimum stack" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>After removing 1 from both stacks, the minimum automatically becomes 2.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">MinStack</span> {
+    <span class="code-keyword">private</span> <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; values = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    <span class="code-keyword">private</span> <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; minimums = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> push(<span class="code-keyword">int</span> value) {
+        values.push(value);
+        <span class="code-keyword">if</span> (minimums.isEmpty()) {
+            minimums.push(value);
+        } <span class="code-keyword">else</span> {
+            minimums.push(<span class="code-class">Math</span>.min(value, minimums.peek()));
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> pop() {
+        <span class="code-keyword">int</span> value = values.pop();
+        minimums.pop();
+        <span class="code-keyword">return</span> value;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> peek() {
+        <span class="code-keyword">return</span> values.getFirst();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> getMin() {
+        <span class="code-keyword">return</span> minimums.getFirst();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
+        <span class="code-keyword">return</span> values.isEmpty();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">MinStack</span> stack = <span class="code-keyword">new</span> <span class="code-class">MinStack</span>();
+stack.push(<span class="code-number">5</span>);
+stack.push(<span class="code-number">2</span>);
+stack.push(<span class="code-number">7</span>);
+stack.push(<span class="code-number">1</span>);
+<span class="code-class">System</span>.out.println(stack.getMin());    <span class="code-comment">1</span>
+stack.pop();
+<span class="code-class">System</span>.out.println(stack.getMin());    <span class="code-comment">2</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><strong>Space complexity:</strong> O(n).</p>
+    </div>
+
+    <div class="subheading">Undo and redo operations</div>
+    <div class="intro">
+        <p>Applications such as text editors, drawing applications and IDEs can implement undo and redo using two stacks.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-undo-redo.svg" alt="Undo and redo: the undo stack holds states A, B and C, the current state is D and the redo stack is empty; undo moves the current state to the redo stack and redo moves it back" style="width:100%;max-width:720px">
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">TextEditor</span> {
+    <span class="code-keyword">private</span> <span class="code-class">String</span> text = <span class="code-string">""</span>;
+    <span class="code-keyword">private</span> <span class="code-class">Deque</span>&lt;<span class="code-class">String</span>&gt; undoStack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    <span class="code-keyword">private</span> <span class="code-class">Deque</span>&lt;<span class="code-class">String</span>&gt; redoStack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> write(<span class="code-class">String</span> newText) {
+        <span class="code-class">Objects</span>.requireNonNull(newText);
+        undoStack.push(text);
+        text = newText;
+        redoStack.clear();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> undo() {
+        <span class="code-keyword">if</span> (undoStack.isEmpty()) {
+            <span class="code-keyword">return</span>;
+        }
+        redoStack.push(text);
+        text = undoStack.pop();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> redo() {
+        <span class="code-keyword">if</span> (redoStack.isEmpty()) {
+            <span class="code-keyword">return</span>;
+        }
+        undoStack.push(text);
+        text = redoStack.pop();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">String</span> getText() {
+        <span class="code-keyword">return</span> text;
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">TextEditor</span> editor = <span class="code-keyword">new</span> <span class="code-class">TextEditor</span>();
+editor.write(<span class="code-string">"Hello"</span>);
+editor.write(<span class="code-string">"Hello World"</span>);
+editor.write(<span class="code-string">"Hello World Java"</span>);
+editor.undo();
+<span class="code-class">System</span>.out.println(editor.getText());    <span class="code-comment">Hello World</span>
+editor.undo();
+<span class="code-class">System</span>.out.println(editor.getText());    <span class="code-comment">Hello</span>
+editor.redo();
+<span class="code-class">System</span>.out.println(editor.getText());    <span class="code-comment">Hello World</span></code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Real-world editors often store commands, inverse operations or changes instead of copying the complete document for every edit. This is closely related to the Command and Memento design patterns.</p>
+    </div>
+
+    <div class="subheading">Depth-first search using a stack</div>
+    <div class="intro">
+        <p>Depth-first search (DFS) can be implemented using recursion or an explicit stack.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-dfs.svg" alt="Depth-first search with a stack over a tree rooted at A, visiting A, B, D, E, C, F, G in that order" style="width:100%;max-width:680px">
+    </div>
+    <div class="intro">
+        <p>One possible DFS traversal using a stack.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">static</span> <span class="code-keyword">void</span> dfs(<span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph, <span class="code-keyword">int</span> start) {
+    <span class="code-keyword">boolean</span>[] visited = <span class="code-keyword">new</span> <span class="code-keyword">boolean</span>[graph.size()];
+    <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    stack.push(start);
+    visited[start] = <span class="code-keyword">true</span>;
+    <span class="code-keyword">while</span> (!stack.isEmpty()) {
+        <span class="code-keyword">int</span> vertex = stack.pop();
+        <span class="code-class">System</span>.out.println(vertex);
+        <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; neighbors = graph.get(vertex);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = neighbors.size() - <span class="code-number">1</span>; i &gt;= <span class="code-number">0</span>; i--) {
+            <span class="code-keyword">int</span> neighbor = neighbors.get(i);
+            <span class="code-keyword">if</span> (!visited[neighbor]) {
+                visited[neighbor] = <span class="code-keyword">true</span>;
+                stack.push(neighbor);
+            }
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>The reverse iteration makes the leftmost listed neighbor get processed first among newly pushed neighbors.</p>
+        <p>For general graphs, marking vertices when pushed prevents duplicate entries but can produce a different traversal order from recursive DFS. To reproduce exact recursive entry and exit semantics, use a stack of traversal frames or iterators.</p>
+        <p><strong>Time complexity:</strong> O(V + E).</p>
+        <p><strong>Auxiliary space:</strong> O(V).</p>
+    </div>
+
+    <div class="subheading">Implementing a queue using two stacks</div>
+    <div class="intro">
+        <p>A stack can also be used as a building block for other data structures.</p>
+        <p>A queue follows FIFO (First In, First Out), while a stack follows LIFO. By reversing the order twice, two stacks can implement a queue.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-queue-two-stacks.svg" alt="Queue from two stacks: the input stack holds 10, 20, 30 with 30 on top; transferring reverses the order so the output stack has 10 on top and 10 is dequeued first" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Input stack before transfer and output stack after transfer.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">StackQueue</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-class">Deque</span>&lt;<span class="code-class">T</span>&gt; input = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    <span class="code-keyword">private</span> <span class="code-class">Deque</span>&lt;<span class="code-class">T</span>&gt; output = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> enqueue(<span class="code-class">T</span> value) {
+        input.push(value);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> dequeue() {
+        <span class="code-keyword">if</span> (output.isEmpty()) {
+            <span class="code-keyword">while</span> (!input.isEmpty()) {
+                output.push(input.pop());
+            }
+        }
+        <span class="code-keyword">return</span> output.pop();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() {
+        <span class="code-keyword">return</span> input.isEmpty() &amp;&amp; output.isEmpty();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Transfer elements only when the output stack is empty. This ensures every element is transferred at most once.</p>
+        <p>Enqueue and dequeue have amortized O(1) time complexity.</p>
+    </div>
+
+    <div class="subheading">Thread-safe and lock-free stacks</div>
+    <div class="intro">
+        <p>The custom array and linked-list implementations discussed earlier are not thread-safe.</p>
+        <p>For example, consider two threads simultaneously executing <code>pop()</code>.</p>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-race.svg" alt="Race condition on a shared stack: Thread A and Thread B both read top = 30 and both return 30, a duplicate removal" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>Both threads may read the same top element before either thread completes the update.</p>
+        <p class="minor-heading"><strong>Using ConcurrentLinkedDeque</strong></p>
+        <p>Java provides a thread-safe concurrent deque.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; stack = <span class="code-keyword">new</span> <span class="code-class">ConcurrentLinkedDeque</span>&lt;&gt;();
+stack.push(<span class="code-number">10</span>);
+stack.push(<span class="code-number">20</span>);
+stack.push(<span class="code-number">30</span>);
+<span class="code-class">Integer</span> value = stack.pollFirst();</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p>Using <code>pollFirst()</code> is preferable to performing separate <code>isEmpty()</code> and <code>pop()</code> calls when removing an element concurrently.</p>
+        <p class="minor-heading"><strong>Implementing a lock-free stack using CAS</strong></p>
+        <p>The <strong>Treiber Stack</strong> is a classic lock-free stack based on Compare-And-Set (CAS).</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LockFreeStack</span>&lt;<span class="code-class">T</span>&gt; {
+    <span class="code-keyword">private</span> <span class="code-keyword">record</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt;(<span class="code-class">T</span> value, <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next) {}
+
+    <span class="code-keyword">private</span> <span class="code-class">AtomicReference</span>&lt;<span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt;&gt; top = <span class="code-keyword">new</span> <span class="code-class">AtomicReference</span>&lt;&gt;();
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> push(<span class="code-class">T</span> value) {
+        <span class="code-class">Objects</span>.requireNonNull(value);
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; oldTop;
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; newTop;
+        <span class="code-keyword">do</span> {
+            oldTop = top.get();
+            newTop = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(value, oldTop);
+        } <span class="code-keyword">while</span> (!top.compareAndSet(oldTop, newTop));
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> pop() {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; oldTop;
+        <span class="code-keyword">do</span> {
+            oldTop = top.get();
+            <span class="code-keyword">if</span> (oldTop == <span class="code-keyword">null</span>) {
+                <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+            }
+        } <span class="code-keyword">while</span> (!top.compareAndSet(oldTop, oldTop.next()));
+        <span class="code-keyword">return</span> oldTop.value();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-class">T</span> peek() {
+        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; node = top.get();
+        <span class="code-keyword">return</span> node == <span class="code-keyword">null</span> ? <span class="code-keyword">null</span> : node.value();
+    }
+}</code></pre>
+        </div>
+    </div>
+    <div class="svg-diagram">
+        <img src="../static/stack-cas.svg" alt="Treiber stack CAS loop: read the current top, prepare the new top, compare-and-set; if CAS fails retry, otherwise complete" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <p>CAS changes the top reference only if it still matches the reference previously read by the thread. Otherwise, the thread retries.</p>
+        <p>This implementation does not use <code>synchronized</code>, explicit locks, <code>wait()</code> or <code>notify()</code>.</p>
+        <p>It is <strong>lock-free, but not wait-free</strong>: system-wide progress is guaranteed by the algorithm, but an individual thread may repeatedly fail under contention. Individual operation time is therefore not necessarily O(1) under contention.</p>
+    </div>
+
+    <div class="subheading">Stack vs Queue vs Deque</div>
+    <div class="svg-diagram">
+        <img src="../static/stack-vs-queue-deque.svg" alt="Stack is LIFO with in and out at the top, queue is FIFO with in at the rear and out at the front, and a deque allows insertion and removal at both ends" style="width:100%;max-width:720px">
+    </div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Feature</th><th>Stack</th><th>Queue</th><th>Deque</th></tr></thead>
+            <tbody>
+                <tr><td>Ordering</td><td>LIFO</td><td>FIFO</td><td>Flexible</td></tr>
+                <tr><td>Insertion</td><td>Top</td><td>Rear</td><td>Both ends</td></tr>
+                <tr><td>Removal</td><td>Top</td><td>Front</td><td>Both ends</td></tr>
+                <tr><td>Primary operations</td><td>Push, pop</td><td>Enqueue, dequeue</td><td>Add/remove first/last</td></tr>
+                <tr><td>Common application</td><td>Recursion</td><td>Task scheduling</td><td>Sliding window</td></tr>
+                <tr><td>Java implementation</td><td>ArrayDeque</td><td>ArrayDeque</td><td>ArrayDeque</td></tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="subheading">Complexity analysis</div>
+    <div class="intro">
+        <div class="gpt-table-wrap"><table class="gpt-table">
+            <thead><tr><th>Operation</th><th>Fixed array</th><th>Dynamic array</th><th>Linked list</th></tr></thead>
+            <tbody>
+                <tr><td>Push</td><td>O(1)</td><td>Amortized O(1)</td><td>O(1)</td></tr>
+                <tr><td>Worst-case push</td><td>O(1)</td><td>O(n)</td><td>O(1)*</td></tr>
+                <tr><td>Pop</td><td>O(1)</td><td>O(1)**</td><td>O(1)*</td></tr>
+                <tr><td>Peek</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+                <tr><td>Size</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+                <tr><td>Search</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
+                <tr><td>Clear</td><td>O(n)</td><td>O(n)</td><td>O(1)***</td></tr>
+                <tr><td>Storage</td><td>O(capacity)</td><td>O(capacity)</td><td>O(n)</td></tr>
+            </tbody>
+        </table></div>
+        <p>* Excluding allocation and garbage collection costs.</p>
+        <p>** Assuming the array is not shrunk during pop.</p>
+        <p>*** Dropping the head reference takes O(1); eventual garbage collection may require additional work.</p>
+    </div>
+
+    <div class="subheading">Advantages and disadvantages</div>
+    <div class="intro">
+        <p class="minor-heading"><strong>Advantages</strong></p>
+        <ul>
+            <li>Simple implementation</li>
+            <li>Fast insertion and removal</li>
+            <li>Efficient access to the latest element</li>
+            <li>Natural support for recursion</li>
+            <li>Useful for backtracking</li>
+            <li>Enables efficient O(n) algorithms</li>
+        </ul>
+        <p class="minor-heading"><strong>Disadvantages</strong></p>
+        <ul>
+            <li>Restricted element access</li>
+            <li>O(n) searching</li>
+            <li>Potential overflow</li>
+            <li>Resizing overhead for arrays</li>
+            <li>Node overhead for linked lists</li>
+            <li>Synchronization needed for shared mutable stacks</li>
+        </ul>
+    </div>
+<!-- chatgpt-guide:end -->
+</div>
+</body>
+</html>
