@@ -636,32 +636,27 @@ front == rear
         <p class="minor-heading"><strong>Java implementation</strong></p>
         <p>Java provides <code>java.util.PriorityQueue</code>.</p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">Comparator</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">PriorityQueue</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">Queue</span>;
-
-<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
-    <span class="code-comment">// Min-priority queue (default)</span>
-    <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; minQueue = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;();
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; minQueue = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;Integer&gt;();
     minQueue.offer(<span class="code-number">30</span>);
     minQueue.offer(<span class="code-number">10</span>);
     minQueue.offer(<span class="code-number">20</span>);
-    <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 10</span>
-    <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 20</span>
-    <span class="code-class">System</span>.out.println(minQueue.poll()); <span class="code-comment">// 30</span>
+    <span class="code-class">System</span>.out.println(minQueue.poll());
+    <span class="code-class">System</span>.out.println(minQueue.poll());
+    <span class="code-class">System</span>.out.println(minQueue.poll());
 
-    <span class="code-comment">// Max-priority queue</span>
-    <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; maxQueue = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;&gt;(<span class="code-class">Comparator</span>.reverseOrder());
+    <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; maxQueue = <span class="code-keyword">new</span> <span class="code-class">PriorityQueue</span>&lt;Integer&gt;(<span class="code-class">Comparator</span>.reverseOrder());
     maxQueue.offer(<span class="code-number">30</span>);
     maxQueue.offer(<span class="code-number">10</span>);
     maxQueue.offer(<span class="code-number">20</span>);
-    <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 30</span>
-    <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 20</span>
-    <span class="code-class">System</span>.out.println(maxQueue.poll()); <span class="code-comment">// 10</span>
+    <span class="code-class">System</span>.out.println(maxQueue.poll());
+    <span class="code-class">System</span>.out.println(maxQueue.poll());
+    <span class="code-class">System</span>.out.println(maxQueue.poll());
 }</code></pre></div>
 
     <div class="intro">
-        <p><strong>Important:</strong> Java's <code>PriorityQueue</code> is not stable. Two tasks with equal priority are not guaranteed to execute in insertion order. If FIFO ordering among equal-priority tasks matters, include a monotonically increasing sequence number as a secondary comparison key.</p>
+        <p>Java's <code>PriorityQueue</code> is not stable. Two tasks with equal priority are not guaranteed to execute in insertion order.
+		<br>When FIFO ordering among equal-priority tasks matters, include a monotonically increasing sequence number<br> as a secondary comparison key.</p>
         <p class="minor-heading"><strong>Complexity</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
             <thead><tr><th>Operation</th><th>Time</th></tr></thead>
@@ -700,20 +695,17 @@ front == rear
         </table></div>
         <p class="minor-heading"><strong>Java example</strong></p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">ArrayDeque</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">Deque</span>;
-
-<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
-    <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
+    <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;Integer&gt;();
     deque.addLast(<span class="code-number">10</span>);
     deque.addLast(<span class="code-number">20</span>);
     deque.addFirst(<span class="code-number">5</span>);
     deque.addLast(<span class="code-number">30</span>);
 
-    <span class="code-class">System</span>.out.println(deque);             <span class="code-comment">// [5, 10, 20, 30]</span>
-    <span class="code-class">System</span>.out.println(deque.pollFirst()); <span class="code-comment">// 5</span>
-    <span class="code-class">System</span>.out.println(deque.pollLast());  <span class="code-comment">// 30</span>
-    <span class="code-class">System</span>.out.println(deque);             <span class="code-comment">// [10, 20]</span>
+    <span class="code-class">System</span>.out.println(deque);         
+    <span class="code-class">System</span>.out.println(deque.pollFirst());
+    <span class="code-class">System</span>.out.println(deque.pollLast());
+    <span class="code-class">System</span>.out.println(deque);
 }</code></pre></div>
 
     <div class="intro">
@@ -751,29 +743,28 @@ front == rear
         </table></div>
         <p>Examples:</p>
     </div>
-    <div class="code-block"><pre><code><span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
+    <div class="code-block"><pre><code><span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;Integer&gt;();
 
 queue.offer(<span class="code-number">10</span>);
 queue.offer(<span class="code-number">20</span>);
 
-<span class="code-class">System</span>.out.println(queue.peek());    <span class="code-comment">// 10</span>
-<span class="code-class">System</span>.out.println(queue.element()); <span class="code-comment">// 10</span>
+<span class="code-class">System</span>.out.println(queue.peek());   
+<span class="code-class">System</span>.out.println(queue.element());
 
-<span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// 10</span>
-<span class="code-class">System</span>.out.println(queue.remove());  <span class="code-comment">// 20</span>
+<span class="code-class">System</span>.out.println(queue.poll());   
+<span class="code-class">System</span>.out.println(queue.remove()); 
 
-<span class="code-class">System</span>.out.println(queue.poll());    <span class="code-comment">// null</span>
-
-<span class="code-comment">// Throws NoSuchElementException</span>
+<span class="code-class">System</span>.out.println(queue.poll());
 <span class="code-class">System</span>.out.println(queue.remove());</code></pre></div>
 
     <div class="intro">
-        <p><code>add()</code> can throw <code>IllegalStateException</code> for a capacity-restricted queue if an element cannot be inserted because the queue is full. <code>offer()</code> instead returns <code>false</code> for that condition.</p>
-        <p><code>remove()</code> and <code>element()</code> throw <code>NoSuchElementException</code> for an empty queue, whereas <code>poll()</code> and <code>peek()</code> return <code>null</code>.</p>
+        <p><code>add</code> can throw <code>IllegalStateException</code> for a capacity-restricted queue if an element cannot be inserted because
+		<br>the queue is full. <code>offer</code> instead returns <code>false</code> for that condition.</p>
+        <p><code>remove</code> and <code>element</code> throw <code>NoSuchElementException</code> for an empty queue, whereas <code>poll</code> and <code>peek</code> return <code>null</code>.</p>
         <p>Because <code>null</code> indicates absence, avoiding null queue elements is strongly recommended. Many implementations, including <code>ArrayDeque</code>, prohibit them.</p>
         <p class="minor-heading"><strong>Important Java Queue implementations</strong></p>
         <div class="gpt-table-wrap"><table class="gpt-table">
-            <thead><tr><th>Implementation</th><th>Ordering</th><th>Thread-safe?</th><th>Main use</th></tr></thead>
+            <thead><tr><th>Implementation</th><th>Ordering</th><th>Thread-safe</th><th>Main use</th></tr></thead>
             <tbody>
                 <tr><td><code>ArrayDeque</code></td><td>FIFO or LIFO</td><td>No</td><td>General-purpose queue/deque</td></tr>
                 <tr><td><code>LinkedList</code></td><td>FIFO or LIFO</td><td>No</td><td>Node-based queue/deque</td></tr>
@@ -786,10 +777,10 @@ queue.offer(<span class="code-number">20</span>);
                 <tr><td><code>SynchronousQueue</code></td><td>Direct handoff</td><td>Yes</td><td>Thread rendezvous</td></tr>
             </tbody>
         </table></div>
-        <p class="minor-heading"><strong>Which ordinary Java queue should you use?</strong></p>
-        <p>For most non-concurrent FIFO requirements, prefer:</p>
+        <p class="minor-heading"><strong>Which ordinary Java queue should you use</strong></p>
+        <p>For most non-concurrent FIFO requirements prefer:</p>
     </div>
-    <div class="code-block"><pre><code><span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();</code></pre></div>
+    <div class="code-block"><pre><code><span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();</code></pre></div>
 
     <div class="intro">
         <p><code>ArrayDeque</code> typically offers better cache locality and lower per-element memory overhead than a linked list.</p>
@@ -811,7 +802,7 @@ queue.offer(<span class="code-number">20</span>);
     </div>
 
     <div class="intro">
-        <p class="minor-heading"><strong>What is a BlockingQueue?</strong></p>
+        <p class="minor-heading"><strong>What is a BlockingQueue</strong></p>
         <p>A <code>BlockingQueue</code> is a thread-safe queue that can make threads wait when a required condition is not satisfied.</p>
         <p>For a bounded blocking queue:</p>
         <ul><li><code>put(x)</code> waits if the queue is full.</li><li><code>take()</code> waits if the queue is empty.</li></ul>
@@ -821,59 +812,39 @@ queue.offer(<span class="code-number">20</span>);
     <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.concurrent.<span class="code-class">ArrayBlockingQueue</span>;
 <span class="code-keyword">import</span> java.util.concurrent.<span class="code-class">BlockingQueue</span>;
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">ProducerConsumerExample</span> {
+<span class="code-keyword">static</span> <span class="code-keyword">final</span> <span class="code-class">String</span> <span class="code-class">STOP</span> = <span class="code-string">"STOP"</span>;
 
-    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">final</span> <span class="code-class">String</span> STOP = <span class="code-string">"STOP"</span>;
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> main() <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayBlockingQueue</span>&lt;<span class="code-class">String</span>&gt;(<span class="code-number">2</span>);
+    <span class="code-keyword">var</span> producer = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; produce(queue));
+    <span class="code-keyword">var</span> consumer = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; consume(queue));
 
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args)
-            <span class="code-keyword">throws</span> <span class="code-class">InterruptedException</span> {
+    producer.start();
+    consumer.start();
+    producer.join();
+    consumer.join();
+}
 
-        <span class="code-class">BlockingQueue</span>&lt;<span class="code-class">String</span>&gt; queue =
-                <span class="code-keyword">new</span> <span class="code-class">ArrayBlockingQueue</span>&lt;&gt;(<span class="code-number">2</span>);
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> produce(<span class="code-class">BlockingQueue</span>&lt;<span class="code-class">String</span>&gt; queue) {
+    <span class="code-keyword">try</span> {
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++) {
+            <span class="code-class">String</span> task = <span class="code-string">"Task-"</span> + i;
+            queue.put(task);
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Produced: "</span> + task);
+        }
+        queue.put(<span class="code-class">STOP</span>);
+    } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
+        <span class="code-class">Thread</span>.currentThread().interrupt();
+    }
+}
 
-        <span class="code-class">Thread</span> producer = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
-            <span class="code-keyword">try</span> {
-                <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++) {
-                    <span class="code-class">String</span> task = <span class="code-string">"Task-"</span> + i;
-
-                    queue.put(task);
-
-                    <span class="code-class">System</span>.out.println(
-                        <span class="code-string">"Produced: "</span> + task
-                    );
-                }
-
-                queue.put(STOP);
-
-            } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
-                <span class="code-class">Thread</span>.currentThread().interrupt();
-            }
-        });
-
-        <span class="code-class">Thread</span> consumer = <span class="code-keyword">new</span> <span class="code-class">Thread</span>(() -&gt; {
-            <span class="code-keyword">try</span> {
-                <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {
-                    <span class="code-class">String</span> task = queue.take();
-
-                    <span class="code-keyword">if</span> (STOP.equals(task)) {
-                        <span class="code-keyword">break</span>;
-                    }
-
-                    <span class="code-class">System</span>.out.println(
-                        <span class="code-string">"Consumed: "</span> + task
-                    );
-                }
-
-            } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
-                <span class="code-class">Thread</span>.currentThread().interrupt();
-            }
-        });
-
-        producer.start();
-        consumer.start();
-
-        producer.join();
-        consumer.join();
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> consume(<span class="code-class">BlockingQueue</span>&lt;<span class="code-class">String</span>&gt; queue) {
+    <span class="code-keyword">try</span> {
+        <span class="code-class">String</span> task;
+        <span class="code-keyword">while</span> (!<span class="code-class">STOP</span>.equals(task = queue.take()))
+            <span class="code-class">System</span>.out.println(<span class="code-string">"Consumed: "</span> + task);
+    } <span class="code-keyword">catch</span> (<span class="code-class">InterruptedException</span> e) {
+        <span class="code-class">Thread</span>.currentThread().interrupt();
     }
 }</code></pre></div>
 
@@ -947,52 +918,20 @@ queue.offer(<span class="code-string">"Task-B"</span>);
         <p>FIFO ensures vertices are explored in nondecreasing distance (number of edges) from the starting vertex.</p>
         <p class="minor-heading"><strong>Java BFS implementation</strong></p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.*;
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-class">BFS</span>(<span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph, <span class="code-keyword">int</span> start) {
+    <span class="code-keyword">var</span> visited = <span class="code-keyword">new</span> <span class="code-keyword">boolean</span>[graph.size()];
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+    visited[start] = <span class="code-keyword">true</span>;
+    queue.offer(start);
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">BFSExample</span> {
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> bfs(
-            <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph,
-            <span class="code-keyword">int</span> start) {
-
-        <span class="code-keyword">boolean</span>[] visited =
-                <span class="code-keyword">new</span> <span class="code-keyword">boolean</span>[graph.size()];
-
-        <span class="code-class">Queue</span>&lt;<span class="code-class">Integer</span>&gt; queue =
-                <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
-
-        visited[start] = <span class="code-keyword">true</span>;
-        queue.offer(start);
-
-        <span class="code-keyword">while</span> (!queue.isEmpty()) {
-
-            <span class="code-keyword">int</span> current = queue.poll();
-
-            <span class="code-class">System</span>.out.print(current + <span class="code-string">" "</span>);
-
-            <span class="code-keyword">for</span> (<span class="code-keyword">int</span> neighbor : graph.get(current)) {
-
-                <span class="code-keyword">if</span> (!visited[neighbor]) {
-                    visited[neighbor] = <span class="code-keyword">true</span>;
-                    queue.offer(neighbor);
-                }
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">int</span> current = queue.poll();
+        <span class="code-class">System</span>.out.println(current);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> neighbor: graph.get(current))
+            <span class="code-keyword">if</span> (!visited[neighbor]) {
+                visited[neighbor] = <span class="code-keyword">true</span>;
+                queue.offer(neighbor);
             }
-        }
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> main(<span class="code-class">String</span>[] args) {
-
-        <span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph = <span class="code-class">List</span>.of(
-            <span class="code-class">List</span>.of(<span class="code-number">1</span>, <span class="code-number">2</span>), <span class="code-comment">// 0</span>
-            <span class="code-class">List</span>.of(<span class="code-number">3</span>, <span class="code-number">4</span>), <span class="code-comment">// 1</span>
-            <span class="code-class">List</span>.of(<span class="code-number">5</span>),    <span class="code-comment">// 2</span>
-            <span class="code-class">List</span>.of(),     <span class="code-comment">// 3</span>
-            <span class="code-class">List</span>.of(),     <span class="code-comment">// 4</span>
-            <span class="code-class">List</span>.of()      <span class="code-comment">// 5</span>
-        );
-
-        bfs(graph, <span class="code-number">0</span>);
-        <span class="code-comment">// 0 1 2 3 4 5</span>
     }
 }</code></pre></div>
 
@@ -1027,51 +966,22 @@ Window size = 3</code></pre></div>
         <p>A naive approach checks all k items per window: O(nk).</p>
         <p>Using a monotonic deque, this becomes O(n).</p>
     </div>
-    <div class="code-block"><pre><code><span class="code-keyword">import</span> java.util.<span class="code-class">ArrayDeque</span>;
-<span class="code-keyword">import</span> java.util.<span class="code-class">Deque</span>;
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span>[] maxSlidingWindow(<span class="code-keyword">int</span>[] nums, <span class="code-keyword">int</span> k) {
+    <span class="code-keyword">assert</span> k &gt; <span class="code-number">0</span> &amp;&amp; k &lt;= nums.length : <span class="code-string">"Invalid window size"</span>;
 
-<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">SlidingWindowMaximum</span> {
+    <span class="code-keyword">var</span> result = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[nums.length - k + <span class="code-number">1</span>];
+    <span class="code-keyword">var</span> deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
 
-    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">int</span>[] maxSlidingWindow(
-            <span class="code-keyword">int</span>[] nums,
-            <span class="code-keyword">int</span> k) {
-
-        <span class="code-keyword">if</span> (k &lt;= <span class="code-number">0</span> || k &gt; nums.length) {
-            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> <span class="code-class">IllegalArgumentException</span>(
-                <span class="code-string">"Invalid window size"</span>
-            );
-        }
-
-        <span class="code-keyword">int</span>[] result =
-                <span class="code-keyword">new</span> <span class="code-keyword">int</span>[nums.length - k + <span class="code-number">1</span>];
-
-        <span class="code-comment">// Stores array indices, not values</span>
-        <span class="code-class">Deque</span>&lt;<span class="code-class">Integer</span>&gt; deque = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
-
-        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; nums.length; i++) {
-
-            <span class="code-comment">// Remove indices outside the window</span>
-            <span class="code-keyword">while</span> (!deque.isEmpty()
-                    &amp;&amp; deque.peekFirst() &lt;= i - k) {
-                deque.pollFirst();
-            }
-
-            <span class="code-comment">// Remove smaller or equal candidates</span>
-            <span class="code-keyword">while</span> (!deque.isEmpty()
-                    &amp;&amp; nums[deque.peekLast()] &lt;= nums[i]) {
-                deque.pollLast();
-            }
-
-            deque.offerLast(i);
-
-            <span class="code-keyword">if</span> (i &gt;= k - <span class="code-number">1</span>) {
-                result[i - k + <span class="code-number">1</span>] =
-                        nums[deque.peekFirst()];
-            }
-        }
-
-        <span class="code-keyword">return</span> result;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; nums.length; i++) {
+        <span class="code-keyword">while</span> (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt;= i - k)
+            deque.pollFirst();
+        <span class="code-keyword">while</span> (!deque.isEmpty() &amp;&amp; nums[deque.peekLast()] &lt;= nums[i])
+            deque.pollLast();
+        deque.offerLast(i);
+        <span class="code-keyword">if</span> (i &gt;= k - <span class="code-number">1</span>)
+            result[i - k + <span class="code-number">1</span>] = nums[deque.peekFirst()];
     }
+    <span class="code-keyword">return</span> result;
 }</code></pre></div>
 
     <div class="intro">
@@ -1080,6 +990,32 @@ Window size = 3</code></pre></div>
         <p>A queue is also used to perform topological sorting on a directed acyclic graph (DAG).</p>
         <p>The algorithm:</p>
         <ol><li>Calculate the in-degree of each vertex.</li><li>Enqueue all vertices with in-degree zero.</li><li>Remove a vertex and output it.</li><li>Decrease the in-degree of each outgoing neighbor.</li><li>Enqueue any neighbor whose in-degree becomes zero.</li><li>Repeat until the queue is empty.</li></ol>
+    </div>
+    <div class="code-block"><pre><code><span class="code-keyword">public</span> <span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; topologicalSort(<span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph) {
+    <span class="code-keyword">var</span> inDegree = <span class="code-keyword">new</span> <span class="code-keyword">int</span>[graph.size()];
+    <span class="code-keyword">for</span> (<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt; edges : graph)
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> v : edges)
+            inDegree[v]++;
+
+    <span class="code-keyword">var</span> queue = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> v = <span class="code-number">0</span>; v &lt; graph.size(); v++)
+        <span class="code-keyword">if</span> (inDegree[v] == <span class="code-number">0</span>)
+            queue.offer(v);
+
+    <span class="code-keyword">var</span> order = <span class="code-keyword">new</span> <span class="code-class">ArrayList</span>&lt;<span class="code-class">Integer</span>&gt;();
+    <span class="code-keyword">while</span> (!queue.isEmpty()) {
+        <span class="code-keyword">int</span> current = queue.poll();
+        order.add(current);
+        <span class="code-keyword">for</span> (<span class="code-keyword">int</span> next : graph.get(current))
+            <span class="code-keyword">if</span> (--inDegree[next] == <span class="code-number">0</span>)
+                queue.offer(next);
+    }
+
+    <span class="code-keyword">assert</span> order.size() == graph.size() : <span class="code-string">"Graph contains a cycle"</span>;
+    <span class="code-keyword">return</span> order;
+}</code></pre></div>
+
+    <div class="intro">
         <p>If fewer than V vertices are output, the graph contains a cycle.</p>
         <p>Applications include dependency resolution, build systems, and scheduling jobs with prerequisite tasks.</p>
         <p class="minor-heading"><strong>Other applications</strong></p>
@@ -1132,7 +1068,7 @@ Window size = 3</code></pre></div>
         <p>For a general-purpose, single-threaded Java FIFO queue, a dynamically resized array-based <code>ArrayDeque</code> is usually a strong default.</p>
     </div>
 
-    <div class="subheading">Queue vs. Stack vs. Deque vs. Priority Queue</div>
+    <div class="subheading">Queue vs Stack vs Deque vs Priority Queue</div>
 
     <div class="intro">
         <div class="gpt-table-wrap"><table class="gpt-table">
@@ -1159,7 +1095,7 @@ Window size = 3</code></pre></div>
     <div class="intro">
         <p class="minor-heading"><strong>Queue overflow</strong></p>
         <p>Overflow happens when insertion is attempted into a full bounded queue.</p>
-        <p>Possible behaviors include returning <code>false</code>, throwing an exception, blocking the producer, or growing capacity if the implementation supports resizing.</p>
+        <p>Possible behaviors include returning <code>false</code>, throwing an exception, blocking the producer, or growing capacity when the implementation supports resizing.</p>
         <p class="minor-heading"><strong>Queue underflow</strong></p>
         <p>Underflow happens when removal is attempted from an empty queue.</p>
         <p>Depending on the API, the operation might return <code>null</code>, throw an exception, or block waiting for an element.</p>
@@ -1172,25 +1108,16 @@ Window size = 3</code></pre></div>
         <p>Otherwise, the internal array may continue retaining objects that are no longer logically stored in the queue.</p>
         <p class="minor-heading"><strong>Concurrency</strong></p>
         <p>An ordinary <code>ArrayDeque</code> is not thread-safe.</p>
-        <p>Using it concurrently without proper synchronization can cause races and inconsistent results. Use an appropriate concurrent queue or external synchronization when multiple threads need access.</p>
+        <p>Using it concurrently without proper synchronization can cause races and inconsistent results.
+		<br>Use an appropriate concurrent queue or external synchronization when multiple threads need access.</p>
         <p class="minor-heading"><strong>Backpressure</strong></p>
-        <p>For a producer-consumer system, unbounded queues can accumulate unlimited pending tasks if the consumer is slower than the producer, eventually exhausting memory.</p>
+        <p>For a producer-consumer system, unbounded queues can accumulate unlimited pending tasks when the consumer
+		<br>is slower than the producer, eventually exhausting memory.</p>
         <p>Bounded queues make overload behavior explicit.</p>
         <p class="minor-heading"><strong>Fairness and starvation</strong></p>
-        <p>FIFO queues normally serve elements in insertion order. Priority queues can starve low-priority tasks if higher-priority tasks continue arriving.</p>
+        <p>FIFO queues normally serve elements in insertion order.
+		<br>Priority queues can starve low-priority tasks if higher-priority tasks continue arriving.</p>
         <p>Some schedulers use aging, which raises the effective priority of tasks that have waited a long time.</p>
-    </div>
-
-    <div class="subheading">Common Queue Interview Questions</div>
-    <div class="steps">
-        <div class="step"><div class="step-title">Why use a circular queue instead of a linear array queue?</div><div class="step-body">It reuses vacant positions at the beginning of the array without shifting existing elements, supporting O(1) enqueue and dequeue.</div></div>
-        <div class="step"><div class="step-title">Can a queue be implemented using one or two stacks?</div><div class="step-body">Yes. Two stacks support amortized O(1) queue operations. A one-stack recursive approach is also possible but can require O(n) call-stack space and O(n) removal time.</div></div>
-        <div class="step"><div class="step-title">How do we detect a full circular queue?</div><div class="step-body">With an explicit size variable: size == capacity. With one deliberately unused slot: (rear + 1) % capacity == front.</div></div>
-        <div class="step"><div class="step-title">Why is BFS implemented using a queue?</div><div class="step-body">Because FIFO processing visits vertices in increasing discovery distance from the start, assuming each edge has equal cost.</div></div>
-        <div class="step"><div class="step-title">Why is a heap suitable for a priority queue?</div><div class="step-body">A binary heap keeps the highest- or lowest-priority element at the root, supporting O(1) peek and O(log n) insertion and removal.</div></div>
-        <div class="step"><div class="step-title">Is ArrayDeque thread-safe?</div><div class="step-body">No. For concurrent access, use a suitable concurrent or blocking queue, or provide correct synchronization.</div></div>
-        <div class="step"><div class="step-title">Does FIFO guarantee that concurrent tasks finish in FIFO order?</div><div class="step-body">No. Tasks may be dequeued in FIFO order but finish in a different order because workers run concurrently and task durations differ.</div></div>
-        <div class="step"><div class="step-title">What is the best general-purpose Java queue?</div><div class="step-body">For a normal, non-concurrent FIFO queue, ArrayDeque is typically preferred. Other requirements, such as priority, blocking, or concurrency, call for specialized implementations.</div></div>
     </div>
 
     <div class="subheading">Final Summary</div>
@@ -1199,7 +1126,6 @@ Window size = 3</code></pre></div>
         <p>A Queue is a FIFO abstraction, not a particular storage implementation. Its defining behavior is that elements are normally inserted at one end and removed from the other.</p>
         <p>The main concepts to retain are:</p>
         <ul><li>FIFO: The first inserted element is the first removed.</li><li>Circular Queue: Efficient array-based implementation with wrap-around indexing.</li><li>Linked Queue: Dynamically grows with O(1) head and tail operations.</li><li>Two-Stack Queue: Demonstrates how FIFO can be implemented using LIFO structures.</li><li>Priority Queue: Processes according to priority, often using a heap.</li><li>Deque: Supports insertions and removals at both ends.</li><li>Blocking/Concurrent Queue: Enables safe inter-thread communication, with blocking and non-blocking behaviors depending on implementation.</li></ul>
-        <p>For Java development, master <code>ArrayDeque</code>, <code>PriorityQueue</code>, and <code>BlockingQueue</code> first, then implement circular and linked-list queues yourself to understand how FIFO ordering is maintained internally.</p>
     </div>
 </div>
 </body>
