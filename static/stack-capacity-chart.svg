@@ -1,0 +1,48 @@
+<svg width="720" height="360" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-label="Line chart of array capacity and stack size over nine insertions: capacity doubles from 2 to 4, 8 and 16 while size grows by one each time">
+    <defs><marker id="ch-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#555555"/></marker></defs>
+    <path d="M70 300 H670" fill="none" stroke="#E2E2E2" stroke-width="1"/>
+    <text x="60" y="304" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">0</text>
+    <path d="M70 240 H670" fill="none" stroke="#E2E2E2" stroke-width="1"/>
+    <text x="60" y="244" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">5</text>
+    <path d="M70 180 H670" fill="none" stroke="#E2E2E2" stroke-width="1"/>
+    <text x="60" y="184" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">10</text>
+    <path d="M70 120 H670" fill="none" stroke="#E2E2E2" stroke-width="1"/>
+    <text x="60" y="124" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">15</text>
+    <path d="M70 60 H670" fill="none" stroke="#E2E2E2" stroke-width="1"/>
+    <text x="60" y="64" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">20</text>
+    <path d="M70 54 V300 H670" fill="none" stroke="#555555" stroke-width="1.2"/>
+    <text x="70" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">1</text>
+    <text x="145" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">2</text>
+    <text x="220" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">3</text>
+    <text x="295" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">4</text>
+    <text x="370" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">5</text>
+    <text x="445" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">6</text>
+    <text x="520" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">7</text>
+    <text x="595" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">8</text>
+    <text x="670" y="320" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="400" fill="#555555">9</text>
+    <text x="370" y="342" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="500" fill="#555555">Insertion</text>
+    <path d="M70 276 L145 276 L220 252 L295 252 L370 204 L445 204 L520 204 L595 204 L670 108" fill="none" stroke="#222222" stroke-width="2"/>
+    <path d="M70 288 L145 276 L220 264 L295 252 L370 240 L445 228 L520 216 L595 204 L670 192" fill="none" stroke="#555555" stroke-width="2" stroke-dasharray="6 4"/>
+    <circle cx="70" cy="276" r="3.5" fill="#222222"/>
+    <circle cx="145" cy="276" r="3.5" fill="#222222"/>
+    <circle cx="220" cy="252" r="3.5" fill="#222222"/>
+    <circle cx="295" cy="252" r="3.5" fill="#222222"/>
+    <circle cx="370" cy="204" r="3.5" fill="#222222"/>
+    <circle cx="445" cy="204" r="3.5" fill="#222222"/>
+    <circle cx="520" cy="204" r="3.5" fill="#222222"/>
+    <circle cx="595" cy="204" r="3.5" fill="#222222"/>
+    <circle cx="670" cy="108" r="3.5" fill="#222222"/>
+    <circle cx="70" cy="288" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="145" cy="276" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="220" cy="264" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="295" cy="252" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="370" cy="240" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="445" cy="228" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="520" cy="216" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="595" cy="204" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <circle cx="670" cy="192" r="3" fill="#FFFFFF" stroke="#555555" stroke-width="1.5"/>
+    <path d="M120 26 H150" stroke="#222222" stroke-width="2"/>
+    <text x="158" y="30" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Array capacity</text>
+    <path d="M290 26 H320" stroke="#555555" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="328" y="30" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="500" fill="#222222">Stack size</text>
+</svg>
