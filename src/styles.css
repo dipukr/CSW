@@ -849,6 +849,14 @@ br {
     height: auto;
 }
 
+/* diagram box holding the figure on the left and its explanation on the right; stacked on narrow screens */
+.svg-diagram.figure-aside { display: flex; align-items: center; gap: 28px; text-align: left; }
+.figure-aside > img { flex: 0 1 auto; margin: 0; }
+.figure-aside-text { flex: 1 1 260px; min-width: 0; }
+.figure-aside-text .code-section { margin-bottom: 0; }
+.figure-aside-text .code-section, .figure-aside-text .code-wrapper { background: #ffffff; }   /* stays visible on the grey box */
+@media (max-width: 800px) { .svg-diagram.figure-aside { flex-direction: column; align-items: stretch; } .figure-aside > img { margin: 0 auto; } }
+
 .callout {
     margin: 16px 0;
     padding: 12px 16px;
@@ -1035,7 +1043,7 @@ br {
     margin: 0;
     color: #383a42;
     font-family: Consolas, "Source Code Pro", "Courier New", monospace;
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.65;
     word-spacing: normal;
     white-space: pre;
