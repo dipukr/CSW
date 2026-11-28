@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     /* push, pop and peek */
     var sim = document.getElementById("st-sim");
     if (sim) {
-        var CAP = 6, stack = [10, 20, 30];
+        var CAP = 6, stack = [10, 20, 30], busy = false;
         var draw = function (op) {
             var n = stack.length;
             /* outer stack container: open at the top, rounded bottom corners (same style as the static diagrams) */
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (var i = 0; i < CAP; i++) {
                 var y = 212 - i * 40, filled = i < n;
                 b += t(70, y + 21, "[" + i + "]", {c: "#555555", size: 12, w: 400});
-                if (filled) b += r(100, y, 140, 32, i === n - 1) + t(170, y + 21, stack[i], {size: 14, w: 600});
+                if (filled) b += '<g class="st-cell">' + r(100, y, 140, 32, i === n - 1) + t(170, y + 21, stack[i], {size: 14, w: 600}) + "</g>";
             }
             if (n) b += arrow(310, 228 - (n - 1) * 40, 256, 228 - (n - 1) * 40) + t(318, 232 - (n - 1) * 40, "TOP", {a: "start", size: 12, w: 700});
             b += t(170, 266, "Bottom", {c: "#555555", size: 12, w: 400});
@@ -42,10 +42,21 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         q(sim, "entry").addEventListener("input", function () { draw(); });
         sim.addEventListener("click", function (e) {
-            var a = e.target.closest("[data-a]"); if (!a) return;
+            var a = e.target.closest("[data-a]"); if (!a || busy) return;
             var n = stack.length, act = a.dataset.a;
             if (act === "push") { var v = Number(q(sim, "entry").value); stack.push(v); q(sim, "entry").value = String(v + 10); draw("push(" + v + "): element inserted at TOP"); }
-            else if (act === "pop") { var top = stack.pop(); draw("pop() → " + top + ": element removed"); }
+            else if (act === "pop") {
+                /* slide the top cell up and fade it out, then remove it */
+                var cells = q(sim, "svg").querySelectorAll(".st-cell"), cell = cells[cells.length - 1];
+                var done = function () { busy = false; var top = stack.pop(); draw("pop() → " + top + ": element removed"); };
+                if (!cell || matchMedia("(prefers-reduced-motion: reduce)").matches) return done();
+                busy = true;
+                cell.style.transition = "transform .35s ease-in, opacity .35s ease-in";
+                cell.getBoundingClientRect();
+                cell.style.transform = "translateY(-60px)";
+                cell.style.opacity = "0";
+                setTimeout(done, 350);
+            }
             else if (act === "peek") { draw(n ? "peek() → " + stack[n - 1] + ": stack unchanged" : "Underflow: stack is empty"); }
             else if (act === "clear") { stack = []; draw("clear(): all elements removed"); }
             else if (act === "reset") { stack = [10, 20, 30]; q(sim, "entry").value = "40"; draw("Stack reset"); }
@@ -57,17 +68,17 @@ document.addEventListener("DOMContentLoaded", function () {
     function stepper(id, steps, render, msg) {
         var box = document.getElementById(id); if (!box) return;
         var i = 0, range = q(box, "range");
-        range.max = steps.length - 1;
+        if (range) range.max = steps.length - 1;
         var show = function () {
             q(box, "svg").innerHTML = render(steps[i], i);
             q(box, "msg").textContent = msg(steps[i]);
             q(box, "step").textContent = "Step " + (i + 1) + " of " + steps.length;
-            range.value = i;
+            if (range) range.value = i;
             box.querySelector('[data-a="prev"]').disabled = i === 0;
             box.querySelector('[data-a="next"]').disabled = i === steps.length - 1;
             box.querySelector('[data-a="reset"]').disabled = i === 0;
         };
-        range.addEventListener("input", function () { i = Number(range.value); show(); });
+        if (range) range.addEventListener("input", function () { i = Number(range.value); show(); });
         box.addEventListener("click", function (e) {
             var a = e.target.closest("[data-a]"); if (!a) return;
             if (a.dataset.a === "next") i = Math.min(i + 1, steps.length - 1);
@@ -90,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {f: ["main()"], m: "main() receives 24 and prints the result."}
     ], function (s) {
         var b = t(170, 20, "JVM thread stack", {size: 13, w: 700});
-        b += '<rect x="80" y="32" width="180" height="214" rx="3" fill="none" stroke="#AAAAAA" stroke-width="1.2" stroke-dasharray="5 4"/>';
+        b += '<path d="M80 32 V243 A3 3 0 0 0 83 246 H257 A3 3 0 0 0 260 243 V32" stroke="#555555" stroke-width="1.8" fill="none"/>';
         s.f.forEach(function (name, k) {
             var y = 204 - k * 40, top = k === s.f.length - 1;
             b += r(92, y, 156, 34, top) + t(170, y + 22, name, {size: 13, w: top ? 700 : 500});
@@ -154,8 +165,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <p>A <strong>Stack</strong> is a linear data structure in which insertion and removal of elements happen at the same end, known as the <strong>TOP</strong> of the stack. A stack follows the <strong>LIFO (Last In, First Out)</strong> principle: the last element inserted is the first element removed.</p>
         <p>A stack is an abstract data type that serves as a collection of elements with two main operations.</p>
 		<ul>
-			<li>Push, which adds an element to the collection</li>
-			<li>Pop, which removes the most recently added element.</li>
+			<li>Push - which adds an element to the collection.</li>
+			<li>Pop - which removes the most recently added element.</li>
 		</ul>
     </div>
 
@@ -225,74 +236,56 @@ Removal order:
         <p class="minor-heading"><strong>Push operation</strong></p>
         <p>The <code>push()</code> operation adds an element to the top of the stack.</p>
     </div>
-    <div class="svg-diagram">
+    <div class="svg-diagram figure-aside plain-code">
         <img src="../static/stack-push.svg" alt="Push: before push the stack holds 10, 20, 30; after push(40) the new element 40 is the new TOP" style="width:100%;max-width:544px">
-    </div>
-    <div class="intro">
-        <p>Algorithm for an array-based stack:</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
+        <div class="figure-aside-text">
+            <div class="intro">
+                <p>Algorithm for an array-based stack:</p>
+            </div>
+            <div class="section code-section">
+                <div class="code-wrapper">
 <pre><code>PUSH(value):
     if top == capacity - 1:
         throw StackOverflow
     top = top + 1
     array[top] = value</code></pre>
+                </div>
+            </div>
         </div>
     </div>
     <div class="intro">
         <p class="minor-heading"><strong>Pop operation</strong></p>
         <p>The <code>pop()</code> operation removes and returns the top element.</p>
     </div>
-    <div class="svg-diagram">
+    <div class="svg-diagram figure-aside plain-code">
         <img src="../static/stack-pop.svg" alt="Pop: before pop the stack holds 10, 20, 30, 40; after pop 40 is removed and 30 is the new TOP" style="width:100%;max-width:544px">
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
+        <div class="figure-aside-text">
+            <div class="intro">
+                <p>Algorithm for an array-based stack:</p>
+            </div>
+            <div class="section code-section">
+                <div class="code-wrapper">
 <pre><code>POP():
     if top == -1:
         throw StackUnderflow
     value = array[top]
     top = top - 1
     return value</code></pre>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="intro">
-        <p class="minor-heading"><strong>Peek operation</strong></p>
-        <p>Unlike <code>pop()</code>, <code>peek()</code> does not modify the stack.</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code>PEEK():
-    if top == -1:
-        throw StackUnderflow
-    return array[top]</code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p>For a stack containing <code>[10, 20, 30]</code> from bottom to top:</p>
-        <div class="gpt-table-wrap"><table class="gpt-table">
-            <thead><tr><th>Operation</th><th>Return value</th><th>Stack afterwards</th></tr></thead>
-            <tbody>
-                <tr><td><code>peek()</code></td><td>30</td><td>[10, 20, 30]</td></tr>
-                <tr><td><code>peek()</code></td><td>30</td><td>[10, 20, 30]</td></tr>
-                <tr><td><code>pop()</code></td><td>30</td><td>[10, 20]</td></tr>
-                <tr><td><code>peek()</code></td><td>20</td><td>[10, 20]</td></tr>
-                <tr><td><code>pop()</code></td><td>20</td><td>[10]</td></tr>
-            </tbody>
-        </table></div>
     </div>
 
     <div class="subheading">Stack overflow and underflow</div>
     <div class="svg-diagram">
-        <img src="../static/stack-overflow-underflow.svg" alt="Stack overflow: pushing into a full stack of 10 to 50; stack underflow: popping an empty stack where top = -1" style="width:100%;max-width:518px">
+        <img src="../static/stack-overflow-underflow.svg" alt="Stack overflow: pushing 50 into a full stack holding 10 to 40; stack underflow: popping an empty stack where top = -1" style="width:100%;max-width:518px">
     </div>
     <div class="intro">
         <ul>
             <li><strong>Stack overflow:</strong> Attempting to push into a full, fixed-capacity stack.</li>
             <li><strong>Stack underflow:</strong> Attempting to pop or inspect an empty stack when the API requires an element.</li>
         </ul>
-        <p>In Java, a call-stack overflow caused by excessive recursion results in <code>StackOverflowError</code>. This is different from exceeding the capacity of a custom stack data structure, for which we can define our own exception behavior.</p>
+        <p><code>StackOverflowError</code> is a call-stack overflow caused by excessive recursion results in Java. This is different from exceeding the capacity of a custom stack data structure, for which we can define our own exception behavior.</p>
     </div>
 
     <div class="subheading">Implementation of a stack</div>
@@ -313,24 +306,11 @@ Removal order:
         <img src="../static/stack-array.svg" alt="Array-based stack with capacity 5: slots 0 to 2 hold 10, 20, 30, slots 3 and 4 are free, and top = 2" style="width:100%;max-width:576px">
     </div>
     <div class="intro">
-        <p>Size = sp + 1 = 3. Capacity = 5.</p>
-        <p>Important conditions:</p>
+        <p class="minor-heading"><strong>Java implementation</strong></p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
-<pre><code>sp == -<span class="code-number">1</span>               <span class="code-comment">Stack is empty</span>
-sp == data.length - <span class="code-number">1</span>  <span class="code-comment">Stack is full</span>
-sp + <span class="code-number">1</span>                 <span class="code-comment">Number of elements</span>
-data[sp]               <span class="code-comment">Topmost element, if nonempty</span></code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p class="minor-heading"><strong>Complete generic implementation in Java</strong></p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">StackArray</span> {
-
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Stack</span> {
     <span class="code-keyword">private</span> <span class="code-class">Object</span>[] data;
     <span class="code-keyword">private</span> <span class="code-keyword">int</span> sp;
 
@@ -355,25 +335,8 @@ data[sp]               <span class="code-comment">Topmost element, if nonempty</
     }
 
     <span class="code-keyword">public</span> <span class="code-keyword">int</span> size() { <span class="code-keyword">return</span> sp + <span class="code-number">1</span>; }
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> full() { <span class="code-keyword">return</span> sp == data.length - <span class="code-number">1</span>; }
     <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> empty() { <span class="code-keyword">return</span> size() == <span class="code-number">0</span>; }
-}</code></pre>
-        </div>
-    </div>
-    <div class="intro">
-        <p>Usage:</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
-    <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">StackArray</span>(<span class="code-number">5</span>);
-    stack.push(<span class="code-number">10</span>);
-    stack.push(<span class="code-number">20</span>);
-    stack.push(<span class="code-number">30</span>);
-    <span class="code-class">System</span>.out.println(stack.top());        <span class="code-comment">30</span>
-    <span class="code-class">System</span>.out.println(stack.pop());        <span class="code-comment">30</span>
-    <span class="code-class">System</span>.out.println(stack.size());       <span class="code-comment">2</span>
-    <span class="code-class">System</span>.out.println(stack.empty());      <span class="code-comment">false</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> full() { <span class="code-keyword">return</span> sp == data.length - <span class="code-number">1</span>; }
 }</code></pre>
         </div>
     </div>
@@ -619,14 +582,12 @@ data[sp]               <span class="code-comment">Topmost element, if nonempty</
     <div class="section code-section">
         <div class="code-wrapper">
 <pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> factorial(<span class="code-keyword">int</span> n) {
-    <span class="code-keyword">assert</span> n &gt;= <span class="code-number">0</span> : <span class="code-string">"n must be non-negative"</span>;
-    <span class="code-keyword">if</span> (n &lt;= <span class="code-number">1</span>)
-        <span class="code-keyword">return</span> <span class="code-number">1</span>;
+    <span class="code-keyword">if</span> (n &lt;= <span class="code-number">1</span>) <span class="code-keyword">return</span> <span class="code-number">1</span>;
     <span class="code-keyword">return</span> n * factorial(n - <span class="code-number">1</span>);
 }
 
 <span class="code-keyword">public</span> <span class="code-keyword">void</span> main() {
-    <span class="code-class">System</span>.out.println(factorial(<span class="code-number">4</span>));    <span class="code-comment">24</span>
+    <span class="code-class">System</span>.out.println(factorial(<span class="code-number">4</span>));
 }</code></pre>
         </div>
     </div>
@@ -637,7 +598,6 @@ data[sp]               <span class="code-comment">Topmost element, if nonempty</
         <p class="gw-small" data-o="step"></p>
         <div data-o="svg"></div>
         <div class="gw-log"><p data-o="msg"></p></div>
-        <input class="gw-range" type="range" min="0" step="1" value="0" data-o="range" aria-label="Step">
         <div class="gw-btns">
             <button class="gw-btn" type="button" data-a="reset">Reset</button>
             <button class="gw-btn" type="button" data-a="prev">Previous</button>
@@ -650,8 +610,7 @@ data[sp]               <span class="code-comment">Topmost element, if nonempty</
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> factorialIterative(<span class="code-keyword">int</span> n) {
-    <span class="code-keyword">assert</span> n &gt;= <span class="code-number">0</span> : <span class="code-string">"n must be non-negative"</span>;
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">int</span> factorial(<span class="code-keyword">int</span> n) {
     <span class="code-keyword">int</span> result = <span class="code-number">1</span>;
     <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">2</span>; i &lt;= n; i++)
         result *= i;
@@ -669,7 +628,6 @@ data[sp]               <span class="code-comment">Topmost element, if nonempty</
                 <tr><td>Risk of excessive call depth</td><td>Yes</td><td>No</td></tr>
             </tbody>
         </table></div>
-        <p>Both examples use Java&rsquo;s <code>int</code>, which cannot represent factorial results beyond <code>12!</code>. Use <code>BigInteger</code> for larger exact results.</p>
     </div>
 
     <div class="subheading">Stack algorithms with Java code</div>
@@ -689,13 +647,28 @@ data[sp]               <span class="code-comment">Topmost element, if nonempty</
     <span class="code-keyword">while</span> (!stack.isEmpty())
         result.appendCodePoint(stack.pop());
     <span class="code-keyword">return</span> result.toString();
-}
-<span class="code-comment">reverse("HELLO") → "OLLEH"</span></code></pre>
+}</code></pre>
         </div>
     </div>
     <div class="intro">
         <p>This reverses Unicode code points, not necessarily entire user-perceived characters such as combined emoji.</p>
         <p><strong>Time:</strong> O(n) | <strong>Auxiliary space:</strong> O(n)</p>
+        <p class="minor-heading"><strong>Recursive version</strong></p>
+        <p>The recursive version uses the call stack instead of an explicit stack: each call holds the first code point while the rest of the string is reversed, and appends it after the deeper call returns.</p>
+    </div>
+    <div class="section code-section">
+        <div class="code-wrapper">
+<pre><code><span class="code-keyword">public</span> <span class="code-class">String</span> reverseRecursive(<span class="code-class">String</span> input) {
+    <span class="code-keyword">if</span> (input.isEmpty()) <span class="code-keyword">return</span> input;
+    <span class="code-keyword">int</span> first = input.codePointAt(<span class="code-number">0</span>);
+    <span class="code-keyword">return</span> reverseRecursive(input.substring(<span class="code-class">Character</span>.charCount(first))) + 
+		<span class="code-class">Character</span>.toString(first);
+}</code></pre>
+        </div>
+    </div>
+    <div class="intro">
+        <p><strong>Time:</strong> O(n²) because of the repeated <code>substring</code> and string concatenation.
+		<br><strong>Call-stack space:</strong> O(n) frames, so very long strings can cause a <code>StackOverflowError</code>.</p>
         <p class="minor-heading"><strong>Balanced parentheses</strong></p>
         <p>Given an expression containing parentheses, square brackets and curly braces, determine whether every opening bracket has a matching closing bracket in the correct order.</p>
     </div>
@@ -729,8 +702,8 @@ data[sp]               <span class="code-comment">Topmost element, if nonempty</
             <span class="code-keyword">case</span> <span class="code-string">')'</span>, <span class="code-string">']'</span>, <span class="code-string">'}'</span> -&gt; {
                 <span class="code-keyword">if</span> (stack.isEmpty())
                     <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
-                <span class="code-keyword">char</span> opening = stack.pop();
-                <span class="code-keyword">if</span> ((c == <span class="code-string">')'</span> &amp;&amp; opening != <span class="code-string">'('</span>) || (c == <span class="code-string">']'</span> &amp;&amp; opening != <span class="code-string">'['</span>) || (c == <span class="code-string">'}'</span> &amp;&amp; opening != <span class="code-string">'{'</span>))
+                <span class="code-keyword">char</span> open = stack.pop();
+                <span class="code-keyword">if</span> ((c == <span class="code-string">')'</span> &amp;&amp; open != <span class="code-string">'('</span>) || (c == <span class="code-string">']'</span> &amp;&amp; open != <span class="code-string">'['</span>) || (c == <span class="code-string">'}'</span> &amp;&amp; open != <span class="code-string">'{'</span>))
                     <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
             }
             <span class="code-keyword">default</span> -&gt; {}    <span class="code-comment">Ignore non-bracket characters</span>
@@ -1004,7 +977,7 @@ editor.redo();
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> dfs(<span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph, <span class="code-keyword">int</span> start) {
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">void</span> DFS(<span class="code-class">List</span>&lt;<span class="code-class">List</span>&lt;<span class="code-class">Integer</span>&gt;&gt; graph, <span class="code-keyword">int</span> start) {
     <span class="code-keyword">var</span> visited = <span class="code-keyword">new</span> <span class="code-keyword">boolean</span>[graph.size()];
     <span class="code-keyword">var</span> stack = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;<span class="code-class">Integer</span>&gt;();
     stack.push(start);
@@ -1031,36 +1004,6 @@ editor.redo();
         <p><strong>Auxiliary space:</strong> O(V).</p>
     </div>
 
-    <div class="subheading">Implementing a queue using two stacks</div>
-    <div class="intro">
-        <p>A stack can also be used as a building block for other data structures.</p>
-        <p>A queue follows FIFO (First In, First Out), while a stack follows LIFO. By reversing the order twice, two stacks can implement a queue.</p>
-    </div>
-    <div class="svg-diagram">
-        <img src="../static/stack-queue-two-stacks.svg" alt="Queue from two stacks: the input stack holds 10, 20, 30 with 30 on top; transferring reverses the order so the output stack has 10 on top and 10 is dequeued first" style="width:100%;max-width:576px">
-    </div>
-    <div class="intro">
-        <p>Input stack before transfer and output stack after transfer.</p>
-    </div>
-    <div class="section code-section">
-        <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">StackQueue</span>&lt;<span class="code-class">T</span>&gt; {
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Deque</span>&lt;<span class="code-class">T</span>&gt; input = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">Deque</span>&lt;<span class="code-class">T</span>&gt; output = <span class="code-keyword">new</span> <span class="code-class">ArrayDeque</span>&lt;&gt;();
-
-    <span class="code-keyword">public</span> <span class="code-keyword">void</span> enqueue(<span class="code-class">T</span> value) { input.push(value); }
-
-    <span class="code-keyword">public</span> <span class="code-class">T</span> dequeue() {
-        <span class="code-keyword">if</span> (output.isEmpty())
-            <span class="code-keyword">while</span> (!input.isEmpty())
-                output.push(input.pop());
-        <span class="code-keyword">return</span> output.pop();
-    }
-
-    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> isEmpty() { <span class="code-keyword">return</span> input.isEmpty() &amp;&amp; output.isEmpty(); }
-}</code></pre>
-        </div>
-    </div>
     <div class="intro">
         <p>Transfer elements only when the output stack is empty. This ensures every element is transferred at most once.</p>
         <p>Enqueue and dequeue have amortized O(1) time complexity.</p>
@@ -1089,38 +1032,31 @@ stack.push(<span class="code-number">30</span>);
         </div>
     </div>
     <div class="intro">
-        <p>Using <code>pollFirst()</code> is preferable to performing separate <code>isEmpty()</code> and <code>pop()</code> calls when removing an element concurrently.</p>
+        <p>Using <code>pollFirst</code> is preferable to performing separate <code>isEmpty</code> and <code>pop</code> calls when removing an element concurrently.</p>
         <p class="minor-heading"><strong>Implementing a lock-free stack using CAS</strong></p>
         <p>The <strong>Treiber Stack</strong> is a classic lock-free stack based on Compare-And-Set (CAS).</p>
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
-<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LockFreeStack</span>&lt;<span class="code-class">T</span>&gt; {
-    <span class="code-keyword">private</span> <span class="code-keyword">record</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt;(<span class="code-class">T</span> value, <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next) {}
+<pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">LockFreeStack</span> {
+    <span class="code-keyword">private</span> <span class="code-class">AtomicReference</span>&lt;<span class="code-class">Node</span>&gt; top = <span class="code-keyword">new</span> <span class="code-class">AtomicReference</span>&lt;&gt;();
+    <span class="code-keyword">private</span> <span class="code-keyword">record</span> <span class="code-class">Node</span>(<span class="code-class">Object</span> value, <span class="code-class">Node</span> next) {}
 
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-class">AtomicReference</span>&lt;<span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt;&gt; top = <span class="code-keyword">new</span> <span class="code-class">AtomicReference</span>&lt;&gt;();
-
-    <span class="code-keyword">public</span> <span class="code-keyword">void</span> push(<span class="code-class">T</span> value) {
-        <span class="code-class">Objects</span>.requireNonNull(value);
-        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; oldTop, newTop;
-        <span class="code-keyword">do</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> push(<span class="code-class">Object</span> value) {
+        <span class="code-class">Node</span> oldTop = top.get();
+        <span class="code-keyword">while</span> (!top.compareAndSet(oldTop, <span class="code-keyword">new</span> <span class="code-class">Node</span>(value, oldTop)))
             oldTop = top.get();
-            newTop = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(value, oldTop);
-        } <span class="code-keyword">while</span> (!top.compareAndSet(oldTop, newTop));
     }
 
-    <span class="code-keyword">public</span> <span class="code-class">T</span> pop() {
-        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; oldTop;
-        <span class="code-keyword">do</span> {
+    <span class="code-keyword">public</span> <span class="code-class">Object</span> pop() {
+        <span class="code-class">Node</span> oldTop = top.get();
+        <span class="code-keyword">while</span> (oldTop != <span class="code-keyword">null</span> &amp;&amp; !top.compareAndSet(oldTop, oldTop.next()))
             oldTop = top.get();
-            <span class="code-keyword">if</span> (oldTop == <span class="code-keyword">null</span>)
-                <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
-        } <span class="code-keyword">while</span> (!top.compareAndSet(oldTop, oldTop.next()));
-        <span class="code-keyword">return</span> oldTop.value();
+        <span class="code-keyword">return</span> oldTop == <span class="code-keyword">null</span> ? <span class="code-keyword">null</span> : oldTop.value();
     }
 
-    <span class="code-keyword">public</span> <span class="code-class">T</span> peek() {
-        <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; node = top.get();
+    <span class="code-keyword">public</span> <span class="code-class">Object</span> peek() {
+        <span class="code-class">Node</span> node = top.get();
         <span class="code-keyword">return</span> node == <span class="code-keyword">null</span> ? <span class="code-keyword">null</span> : node.value();
     }
 }</code></pre>
@@ -1130,8 +1066,7 @@ stack.push(<span class="code-number">30</span>);
         <img src="../static/stack-cas.svg" alt="Treiber stack CAS loop: read the current top, prepare the new top, compare-and-set; if CAS fails retry, otherwise complete" style="width:100%;max-width:576px">
     </div>
     <div class="intro">
-        <p>CAS changes the top reference only if it still matches the reference previously read by the thread. Otherwise, the thread retries.</p>
-        <p>This implementation does not use <code>synchronized</code>, explicit locks, <code>wait()</code> or <code>notify()</code>.</p>
+        <p>CAS changes the top reference only if it still matches the reference previously read by the thread. Otherwise, the thread retries. This implementation does not use <code>synchronized</code>, explicit locks, <code>wait</code> or <code>notify</code>.</p>
         <p>It is <strong>lock-free, but not wait-free</strong>: system-wide progress is guaranteed by the algorithm, but an individual thread may repeatedly fail under contention. Individual operation time is therefore not necessarily O(1) under contention.</p>
     </div>
 

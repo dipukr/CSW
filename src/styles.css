@@ -855,6 +855,8 @@ br {
 .figure-aside-text { flex: 1 1 260px; min-width: 0; }
 .figure-aside-text .code-section { margin-bottom: 0; }
 .figure-aside-text .code-section, .figure-aside-text .code-wrapper { background: #ffffff; }   /* stays visible on the grey box */
+.plain-code .figure-aside-text .code-section, .plain-code .figure-aside-text .code-wrapper { background: none; }
+.plain-code .figure-aside-text .code-wrapper { padding: 0; }
 @media (max-width: 800px) { .svg-diagram.figure-aside { flex-direction: column; align-items: stretch; } .figure-aside > img { margin: 0 auto; } }
 
 .callout {
@@ -1396,7 +1398,7 @@ p:not([class]) strong {
 .gw-btn:disabled { color: #8f8f8f; cursor: default; }
 .gw-btn.primary { background: #0d0d0d; color: #fff; border-color: #0d0d0d; }
 .gw-btn.primary:disabled { background: #8f8f8f; border-color: #8f8f8f; }
-.gw-log { background: #f9f9f9; border-radius: 3px; padding: 10px 12px; margin-top: 12px; font-size: 12px; }
+.gw-log { background: #f4f4f4; border-radius: 3px; padding: 12px 16px; margin: 12px 0 14px; font-size: 15px; line-height: 1.5; color: #222222; }
 .gw-log p { margin: 2px 0; }
 .gw-chart { display: flex; align-items: flex-end; gap: 14px; height: 150px; border-bottom: 1px solid rgba(13, 13, 13, 0.15); padding: 0 8px; }
 .gw-bar { flex: 1; background: linear-gradient(#539af8, rgba(83, 154, 248, 0.9)); border-radius: 3px 3px 0 0; position: relative; }

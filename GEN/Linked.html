@@ -111,13 +111,12 @@ const cycle=player('cycle',drawCycle);function buildCycle(){const entry=Number($
 </head>
 <body>
 <div class="note">
-    <div class="title">Linked List Data Structure</div>
+    <div class="title">Linked List</div>
 
-<!-- chatgpt-guide:start -->
     <div class="intro">
-        <p>A <strong>Linked List</strong> is a linear data structure consisting of a collection of elements called <strong>nodes</strong>, where each node contains data and one or more references to other nodes.</p>
-        <p>Unlike an array, a linked list does not require its elements to occupy contiguous memory locations. Instead, elements are logically connected through references (pointers).</p>
-        <p>Linked lists are particularly useful for understanding dynamic memory allocation, pointer manipulation, stacks, queues, graph representations, hash tables and cache implementations.</p>
+        <p>A <strong>Linked List</strong> is a linear data structure consisting of a collection of elements called <strong>nodes</strong>, where each node contains data and one or more references to other nodes. Unlike array, a linked list does not require its elements to occupy contiguous memory locations. Instead, elements are logically connected through references (pointers).</p>
+        <p>Linked lists are particularly useful for understanding dynamic memory allocation and pointer manipulation.</p>
+		<p>Linked list are used in stacks, queues, graph representation, hast tables and cache implementations.</p>
     </div>
 
     <div class="subheading">Basic structure of a linked list</div>
@@ -140,10 +139,9 @@ const cycle=player('cycle',drawCycle);function buildCycle(){const entry=Number($
     <div class="section code-section">
         <div class="code-wrapper">
 <pre><code><span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; {
-    <span class="code-class">T</span> data;
-    <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next;
-
-    <span class="code-class">Node</span>(<span class="code-class">T</span> data) {
+    <span class="code-keyword">public</span> <span class="code-class">T</span> data;
+    <span class="code-keyword">public</span> <span class="code-class">Node</span>&lt;<span class="code-class">T</span>&gt; next;
+    <span class="code-keyword">public</span> <span class="code-class">Node</span>(<span class="code-class">T</span> data) {
         <span class="code-keyword">this</span>.data = data;
         <span class="code-keyword">this</span>.next = <span class="code-keyword">null</span>;
     }
@@ -155,9 +153,9 @@ const cycle=player('cycle',drawCycle);function buildCycle(){const entry=Number($
     </div>
     <div class="section code-section">
         <div class="code-wrapper">
-<pre><code><span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; first = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">10</span>);
-<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; second = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">20</span>);
-<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; third = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;&gt;(<span class="code-number">30</span>);
+<pre><code><span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; first = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt;(<span class="code-number">10</span>);
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; second = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt;(<span class="code-number">20</span>);
+<span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; third = <span class="code-keyword">new</span> <span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt;(<span class="code-number">30</span>);
 first.next = second;
 second.next = third;
 <span class="code-class">Node</span>&lt;<span class="code-class">Integer</span>&gt; head = first;</code></pre>
